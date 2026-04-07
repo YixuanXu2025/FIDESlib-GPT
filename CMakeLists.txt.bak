@@ -1,0 +1,54 @@
+cmake_minimum_required(VERSION 3.25)
+project(FIDESlibGPT LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(FIDESLIB_ROOT "/root/fideslib")
+set(OPENFHE_ROOT "/root/fideslib/deps/openfhe-install")
+
+execute_process(
+    COMMAND python3 -m pybind11 --cmakedir
+    OUTPUT_VARIABLE PYBIND11_CMAKE_DIR
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+list(APPEND CMAKE_PREFIX_PATH "${PYBIND11_CMAKE_DIR}")
+
+find_package(pybind11 CONFIG REQUIRED)
+find_package(OpenFHE 1.4.2 CONFIG REQUIRED
+    PATHS "${OPENFHE_ROOT}/lib/OpenFHE"
+    NO_DEFAULT_PATH
+)
+find_package(TBB REQUIRED)
+find_package(OpenMP REQUIRED)
+find_package(Threads REQUIRED)
+find_package(CUDAToolkit REQUIRED)
+find_library(NCCL_LIB nccl REQUIRED)
+
+add_executable(fideslib_gpt_minimal main.cpp)
+pybind11_add_module(_fideslib MODULE bindings.cpp)
+
+foreach(tgt IN ITEMS fideslib_gpt_minimal _fideslib)
+    target_include_directories(${tgt} PRIVATE
+        "${FIDESLIB_ROOT}/api"
+    )
+
+    target_link_libraries(${tgt} PRIVATE
+        "${FIDESLIB_ROOT}/build/fideslib.a"
+        OPENFHEpke
+        OPENFHEbinfhe
+        OPENFHEcore
+        TBB::tbb
+        OpenMP::OpenMP_CXX
+        Threads::Threads
+        CUDA::cudart
+        CUDA::cuda_driver
+        ${NCCL_LIB}
+    )
+
+    set_target_properties(${tgt} PROPERTIES
+        BUILD_RPATH "${OPENFHE_ROOT}/lib;/usr/local/cuda/lib64"
+        INSTALL_RPATH "${OPENFHE_ROOT}/lib;/usr/local/cuda/lib64"
+    )
+endforeach()

@@ -1,0 +1,4 @@
+/workspace/FIDESlib-GPT/build/CMakeFiles/_fideslib.dir
+/workspace/FIDESlib-GPT/build/CMakeFiles/fideslib_gpt_minimal.dir
+/workspace/FIDESlib-GPT/build/CMakeFiles/edit_cache.dir
+/workspace/FIDESlib-GPT/build/CMakeFiles/rebuild_cache.dir
