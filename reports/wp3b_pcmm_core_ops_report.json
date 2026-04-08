@@ -1,0 +1,122 @@
+{
+  "case_1_square_input": {
+    "rows": 8,
+    "mid_dim": 8,
+    "out_dim": 8,
+    "split_dim": 4,
+    "num_splits": 2,
+    "per_row_split_op_counts": {
+      "mult_plain": 8,
+      "rotate": 31,
+      "add": 31,
+      "add_plain": 0
+    },
+    "per_row_core_op_counts": {
+      "mult_plain": 16,
+      "rotate": 62,
+      "add": 63,
+      "add_plain": 0
+    },
+    "total_core_op_counts": {
+      "mult_plain": 128,
+      "rotate": 496,
+      "add": 504,
+      "add_plain": 0
+    },
+    "encrypt_ct_count_per_run": 16,
+    "decrypt_ct_count_per_run": 8,
+    "split_accum_add_per_row": 1,
+    "total_split_accum_add": 8,
+    "case_name": "square_input_8x8__8x8"
+  },
+  "case_2_non_square_input": {
+    "rows": 4,
+    "mid_dim": 8,
+    "out_dim": 8,
+    "split_dim": 4,
+    "num_splits": 2,
+    "per_row_split_op_counts": {
+      "mult_plain": 8,
+      "rotate": 31,
+      "add": 31,
+      "add_plain": 0
+    },
+    "per_row_core_op_counts": {
+      "mult_plain": 16,
+      "rotate": 62,
+      "add": 63,
+      "add_plain": 0
+    },
+    "total_core_op_counts": {
+      "mult_plain": 64,
+      "rotate": 248,
+      "add": 252,
+      "add_plain": 0
+    },
+    "encrypt_ct_count_per_run": 8,
+    "decrypt_ct_count_per_run": 4,
+    "split_accum_add_per_row": 1,
+    "total_split_accum_add": 4,
+    "case_name": "rect_input_4x8__8x8"
+  },
+  "case_3_non_square_output": {
+    "rows": 8,
+    "mid_dim": 8,
+    "out_dim": 16,
+    "split_dim": 4,
+    "num_splits": 2,
+    "per_row_split_op_counts": {
+      "mult_plain": 16,
+      "rotate": 63,
+      "add": 63,
+      "add_plain": 0
+    },
+    "per_row_core_op_counts": {
+      "mult_plain": 32,
+      "rotate": 126,
+      "add": 127,
+      "add_plain": 0
+    },
+    "total_core_op_counts": {
+      "mult_plain": 256,
+      "rotate": 1008,
+      "add": 1016,
+      "add_plain": 0
+    },
+    "encrypt_ct_count_per_run": 16,
+    "decrypt_ct_count_per_run": 8,
+    "split_accum_add_per_row": 1,
+    "total_split_accum_add": 8,
+    "case_name": "square_input_8x8__8x16"
+  },
+  "case_4_projected_block_like": {
+    "rows": 8,
+    "mid_dim": 64,
+    "out_dim": 64,
+    "split_dim": 16,
+    "num_splits": 4,
+    "per_row_split_op_counts": {
+      "mult_plain": 64,
+      "rotate": 1023,
+      "add": 1023,
+      "add_plain": 0
+    },
+    "per_row_core_op_counts": {
+      "mult_plain": 256,
+      "rotate": 4092,
+      "add": 4095,
+      "add_plain": 0
+    },
+    "total_core_op_counts": {
+      "mult_plain": 2048,
+      "rotate": 32736,
+      "add": 32760,
+      "add_plain": 0
+    },
+    "encrypt_ct_count_per_run": 32,
+    "decrypt_ct_count_per_run": 8,
+    "split_accum_add_per_row": 3,
+    "total_split_accum_add": 24,
+    "case_name": "projected_block_like_8x64__64x64"
+  }
+}
