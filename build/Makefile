@@ -166,6 +166,33 @@ bindings/bindings.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/_fideslib.dir/build.make CMakeFiles/_fideslib.dir/bindings/bindings.cpp.s
 .PHONY : bindings/bindings.cpp.s
 
+cpp/native_helpers.o: cpp/native_helpers.cpp.o
+.PHONY : cpp/native_helpers.o
+
+# target to build an object file
+cpp/native_helpers.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/_fideslib.dir/build.make CMakeFiles/_fideslib.dir/cpp/native_helpers.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fideslib_gpt_minimal.dir/build.make CMakeFiles/fideslib_gpt_minimal.dir/cpp/native_helpers.cpp.o
+.PHONY : cpp/native_helpers.cpp.o
+
+cpp/native_helpers.i: cpp/native_helpers.cpp.i
+.PHONY : cpp/native_helpers.i
+
+# target to preprocess a source file
+cpp/native_helpers.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/_fideslib.dir/build.make CMakeFiles/_fideslib.dir/cpp/native_helpers.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fideslib_gpt_minimal.dir/build.make CMakeFiles/fideslib_gpt_minimal.dir/cpp/native_helpers.cpp.i
+.PHONY : cpp/native_helpers.cpp.i
+
+cpp/native_helpers.s: cpp/native_helpers.cpp.s
+.PHONY : cpp/native_helpers.s
+
+# target to generate assembly for a file
+cpp/native_helpers.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/_fideslib.dir/build.make CMakeFiles/_fideslib.dir/cpp/native_helpers.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fideslib_gpt_minimal.dir/build.make CMakeFiles/fideslib_gpt_minimal.dir/cpp/native_helpers.cpp.s
+.PHONY : cpp/native_helpers.cpp.s
+
 cpp/native_smoke_test.o: cpp/native_smoke_test.cpp.o
 .PHONY : cpp/native_smoke_test.o
 
@@ -203,6 +230,9 @@ help:
 	@echo "... bindings/bindings.o"
 	@echo "... bindings/bindings.i"
 	@echo "... bindings/bindings.s"
+	@echo "... cpp/native_helpers.o"
+	@echo "... cpp/native_helpers.i"
+	@echo "... cpp/native_helpers.s"
 	@echo "... cpp/native_smoke_test.o"
 	@echo "... cpp/native_smoke_test.i"
 	@echo "... cpp/native_smoke_test.s"

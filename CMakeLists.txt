@@ -23,10 +23,7 @@ endif()
 list(APPEND CMAKE_PREFIX_PATH "${PYBIND11_CMAKE_DIR}")
 
 find_package(pybind11 CONFIG REQUIRED)
-find_package(OpenFHE 1.4.2 CONFIG REQUIRED
-    PATHS "${OPENFHE_ROOT}/lib/OpenFHE"
-    NO_DEFAULT_PATH
-)
+find_package(OpenFHE 1.4.2 CONFIG REQUIRED PATHS "${OPENFHE_ROOT}/lib/OpenFHE" NO_DEFAULT_PATH)
 find_package(TBB REQUIRED)
 find_package(OpenMP REQUIRED)
 find_package(Threads REQUIRED)
@@ -35,6 +32,8 @@ find_library(NCCL_LIB nccl REQUIRED)
 
 set(COMMON_INCLUDE_DIRS
     "${FIDESLIB_ROOT}/api"
+    "${CMAKE_SOURCE_DIR}"
+    "${CMAKE_SOURCE_DIR}/cpp"
 )
 
 set(COMMON_LINK_LIBS
@@ -50,19 +49,17 @@ set(COMMON_LINK_LIBS
     ${NCCL_LIB}
 )
 
+set(HEGPT_HELPER_SOURCES
+    cpp/native_helpers.cpp
+)
+
 # Python extension module
 pybind11_add_module(_fideslib MODULE
     bindings/bindings.cpp
+    ${HEGPT_HELPER_SOURCES}
 )
-
-target_include_directories(_fideslib PRIVATE
-    ${COMMON_INCLUDE_DIRS}
-)
-
-target_link_libraries(_fideslib PRIVATE
-    ${COMMON_LINK_LIBS}
-)
-
+target_include_directories(_fideslib PRIVATE ${COMMON_INCLUDE_DIRS})
+target_link_libraries(_fideslib PRIVATE ${COMMON_LINK_LIBS})
 set_target_properties(_fideslib PROPERTIES
     BUILD_RPATH "${OPENFHE_ROOT}/lib;/usr/local/cuda/lib64"
     INSTALL_RPATH "${OPENFHE_ROOT}/lib;/usr/local/cuda/lib64"
@@ -72,23 +69,17 @@ set_target_properties(_fideslib PROPERTIES
 if(BUILD_NATIVE_SMOKE AND EXISTS "${CMAKE_SOURCE_DIR}/cpp/native_smoke_test.cpp")
     add_executable(fideslib_gpt_minimal
         cpp/native_smoke_test.cpp
+        ${HEGPT_HELPER_SOURCES}
     )
-
-    target_include_directories(fideslib_gpt_minimal PRIVATE
-        ${COMMON_INCLUDE_DIRS}
-    )
-
-    target_link_libraries(fideslib_gpt_minimal PRIVATE
-        ${COMMON_LINK_LIBS}
-    )
-
+    target_include_directories(fideslib_gpt_minimal PRIVATE ${COMMON_INCLUDE_DIRS})
+    target_link_libraries(fideslib_gpt_minimal PRIVATE ${COMMON_LINK_LIBS})
     set_target_properties(fideslib_gpt_minimal PROPERTIES
         BUILD_RPATH "${OPENFHE_ROOT}/lib;/usr/local/cuda/lib64"
         INSTALL_RPATH "${OPENFHE_ROOT}/lib;/usr/local/cuda/lib64"
     )
 endif()
 
-message(STATUS "FIDESLIB_ROOT      = ${FIDESLIB_ROOT}")
-message(STATUS "OPENFHE_ROOT       = ${OPENFHE_ROOT}")
+message(STATUS "FIDESLIB_ROOT = ${FIDESLIB_ROOT}")
+message(STATUS "OPENFHE_ROOT = ${OPENFHE_ROOT}")
 message(STATUS "PYBIND11_CMAKE_DIR = ${PYBIND11_CMAKE_DIR}")
 message(STATUS "BUILD_NATIVE_SMOKE = ${BUILD_NATIVE_SMOKE}")

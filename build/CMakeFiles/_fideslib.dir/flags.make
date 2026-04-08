@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -D_fideslib_EXPORTS
 
-CXX_INCLUDES = -I/root/fideslib/api -isystem /usr/local/lib/python3.10/dist-packages/pybind11/include -isystem /usr/include/python3.10 -isystem /usr/local/cuda/targets/x86_64-linux/include
+CXX_INCLUDES = -I/root/fideslib/api -I/workspace/FIDESlib-GPT -I/workspace/FIDESlib-GPT/cpp -isystem /usr/local/lib/python3.10/dist-packages/pybind11/include -isystem /usr/include/python3.10 -isystem /usr/local/cuda/targets/x86_64-linux/include
 
 CXX_FLAGS = -std=gnu++20 -fPIC -fvisibility=hidden -flto=auto -fno-fat-lto-objects -fopenmp
 

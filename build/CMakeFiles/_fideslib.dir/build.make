@@ -86,14 +86,30 @@ CMakeFiles/_fideslib.dir/bindings/bindings.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/_fideslib.dir/bindings/bindings.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/FIDESlib-GPT/bindings/bindings.cpp -o CMakeFiles/_fideslib.dir/bindings/bindings.cpp.s
 
+CMakeFiles/_fideslib.dir/cpp/native_helpers.cpp.o: CMakeFiles/_fideslib.dir/flags.make
+CMakeFiles/_fideslib.dir/cpp/native_helpers.cpp.o: /workspace/FIDESlib-GPT/cpp/native_helpers.cpp
+CMakeFiles/_fideslib.dir/cpp/native_helpers.cpp.o: CMakeFiles/_fideslib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/FIDESlib-GPT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/_fideslib.dir/cpp/native_helpers.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/_fideslib.dir/cpp/native_helpers.cpp.o -MF CMakeFiles/_fideslib.dir/cpp/native_helpers.cpp.o.d -o CMakeFiles/_fideslib.dir/cpp/native_helpers.cpp.o -c /workspace/FIDESlib-GPT/cpp/native_helpers.cpp
+
+CMakeFiles/_fideslib.dir/cpp/native_helpers.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/_fideslib.dir/cpp/native_helpers.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/FIDESlib-GPT/cpp/native_helpers.cpp > CMakeFiles/_fideslib.dir/cpp/native_helpers.cpp.i
+
+CMakeFiles/_fideslib.dir/cpp/native_helpers.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/_fideslib.dir/cpp/native_helpers.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/FIDESlib-GPT/cpp/native_helpers.cpp -o CMakeFiles/_fideslib.dir/cpp/native_helpers.cpp.s
+
 # Object files for target _fideslib
 _fideslib_OBJECTS = \
-"CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o"
+"CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o" \
+"CMakeFiles/_fideslib.dir/cpp/native_helpers.cpp.o"
 
 # External object files for target _fideslib
 _fideslib_EXTERNAL_OBJECTS =
 
 _fideslib.cpython-310-x86_64-linux-gnu.so: CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o
+_fideslib.cpython-310-x86_64-linux-gnu.so: CMakeFiles/_fideslib.dir/cpp/native_helpers.cpp.o
 _fideslib.cpython-310-x86_64-linux-gnu.so: CMakeFiles/_fideslib.dir/build.make
 _fideslib.cpython-310-x86_64-linux-gnu.so: /root/fideslib/build/fideslib.a
 _fideslib.cpython-310-x86_64-linux-gnu.so: /root/fideslib/deps/openfhe-install/lib/libOPENFHEpke.so.1.4.2
@@ -107,7 +123,7 @@ _fideslib.cpython-310-x86_64-linux-gnu.so: /usr/lib/gcc/x86_64-linux-gnu/11/libg
 _fideslib.cpython-310-x86_64-linux-gnu.so: /usr/lib/x86_64-linux-gnu/libpthread.a
 _fideslib.cpython-310-x86_64-linux-gnu.so: /usr/lib/x86_64-linux-gnu/librt.a
 _fideslib.cpython-310-x86_64-linux-gnu.so: CMakeFiles/_fideslib.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/FIDESlib-GPT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX shared module _fideslib.cpython-310-x86_64-linux-gnu.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/FIDESlib-GPT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX shared module _fideslib.cpython-310-x86_64-linux-gnu.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/_fideslib.dir/link.txt --verbose=$(VERBOSE)
 	/usr/bin/strip /workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so
 

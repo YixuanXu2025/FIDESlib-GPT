@@ -539,7 +539,8 @@ CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o: /workspace/FIDESlib-GPT/bindin
   /usr/local/lib/python3.10/dist-packages/pybind11/include/pybind11/pytypes.h \
   /usr/local/lib/python3.10/dist-packages/pybind11/include/pybind11/stl.h \
   /usr/local/lib/python3.10/dist-packages/pybind11/include/pybind11/trampoline_self_life_support.h \
-  /usr/local/lib/python3.10/dist-packages/pybind11/include/pybind11/typing.h
+  /usr/local/lib/python3.10/dist-packages/pybind11/include/pybind11/typing.h \
+  /workspace/FIDESlib-GPT/cpp/native_helpers.hpp
 
 
 /usr/local/lib/python3.10/dist-packages/pybind11/include/pybind11/typing.h:
@@ -1193,6 +1194,8 @@ CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o: /workspace/FIDESlib-GPT/bindin
 /root/fideslib/api/Plaintext.hpp:
 
 /usr/include/c++/11/bits/unordered_set.h:
+
+/workspace/FIDESlib-GPT/cpp/native_helpers.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/semaphore.h:
 

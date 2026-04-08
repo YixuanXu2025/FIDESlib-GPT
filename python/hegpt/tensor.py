@@ -1,26 +1,30 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 from typing import Any, Optional, Tuple
 
 
 @dataclass
 class CipherTensor:
     """
-    对“密文对象 + 张量语义”的最小封装。
-
-    注意：
-    - ct: 目前先放底层密文句柄（未来由 _fideslib 暴露）
-    - shape/layout/slots_used: 由 Python 上层维护
+    当前先把 single-token 和 matrix-block/tile 两类语义统一到一个壳子里。
     """
     ct: Any = None
     shape: Tuple[int, ...] = ()
     layout: str = "unknown"
     slots_used: int = 0
+
     level: Optional[int] = None
     scale: Optional[float] = None
     device: Optional[int] = None
     name: str = ""
+
+    padded_shape: Optional[Tuple[int, ...]] = None
+    logical_block_shape: Optional[Tuple[int, int]] = None
+    physical_tile_shape: Optional[Tuple[int, int]] = None
+    block_coord: Optional[Tuple[int, int]] = None
+    tile_index: Optional[int] = None
+    logical_axes: Optional[Tuple[str, ...]] = None
 
     @property
     def ndim(self) -> int:
@@ -55,6 +59,12 @@ class CipherTensor:
         scale: Optional[float] = None,
         device: Optional[int] = None,
         name: Optional[str] = None,
+        padded_shape: Optional[Tuple[int, ...]] = None,
+        logical_block_shape: Optional[Tuple[int, int]] = None,
+        physical_tile_shape: Optional[Tuple[int, int]] = None,
+        block_coord: Optional[Tuple[int, int]] = None,
+        tile_index: Optional[int] = None,
+        logical_axes: Optional[Tuple[str, ...]] = None,
     ) -> "CipherTensor":
         return CipherTensor(
             ct=self.ct if ct is None else ct,
@@ -65,6 +75,12 @@ class CipherTensor:
             scale=self.scale if scale is None else scale,
             device=self.device if device is None else device,
             name=self.name if name is None else name,
+            padded_shape=self.padded_shape if padded_shape is None else padded_shape,
+            logical_block_shape=self.logical_block_shape if logical_block_shape is None else logical_block_shape,
+            physical_tile_shape=self.physical_tile_shape if physical_tile_shape is None else physical_tile_shape,
+            block_coord=self.block_coord if block_coord is None else block_coord,
+            tile_index=self.tile_index if tile_index is None else tile_index,
+            logical_axes=self.logical_axes if logical_axes is None else logical_axes,
         )
 
     def summary(self) -> dict:
@@ -77,6 +93,12 @@ class CipherTensor:
             "scale": self.scale,
             "device": self.device,
             "has_cipher": self.has_cipher(),
+            "padded_shape": self.padded_shape,
+            "logical_block_shape": self.logical_block_shape,
+            "physical_tile_shape": self.physical_tile_shape,
+            "block_coord": self.block_coord,
+            "tile_index": self.tile_index,
+            "logical_axes": self.logical_axes,
         }
 
 
@@ -86,10 +108,6 @@ def make_token_cipher_placeholder(
     device: Optional[int] = None,
     name: str = "",
 ) -> CipherTensor:
-    """
-    第一版最常用布局：
-    一个密文 = 一个 token 的 hidden 向量。
-    """
     return CipherTensor(
         ct=None,
         shape=(hidden_dim,),
@@ -99,4 +117,34 @@ def make_token_cipher_placeholder(
         scale=None,
         device=device,
         name=name,
+        padded_shape=(hidden_dim,),
+        logical_axes=("hidden",),
+    )
+
+
+def make_block_tile_cipher_placeholder(
+    *,
+    tile_rows: int,
+    tile_cols: int,
+    block_coord: Tuple[int, int],
+    tile_index: int,
+    padded_shape: Tuple[int, int],
+    device: Optional[int] = None,
+    name: str = "",
+) -> CipherTensor:
+    return CipherTensor(
+        ct=None,
+        shape=(tile_rows, tile_cols),
+        layout="matrix_block_tile_row_major",
+        slots_used=tile_rows * tile_cols,
+        level=None,
+        scale=None,
+        device=device,
+        name=name,
+        padded_shape=padded_shape,
+        logical_block_shape=(128, 128),
+        physical_tile_shape=(tile_rows, tile_cols),
+        block_coord=block_coord,
+        tile_index=tile_index,
+        logical_axes=("row", "col"),
     )

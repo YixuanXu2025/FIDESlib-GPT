@@ -1,12 +1,12 @@
 #include "fideslib.hpp"
-#include <cuda_runtime.h>
+#include "cpp/native_helpers.hpp"
 
+#include <cuda_runtime.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
 #include <cstdint>
 #include <stdexcept>
-#include <string>
 #include <utility>
 #include <vector>
 
@@ -16,18 +16,20 @@ using namespace fideslib;
 class CiphertextHandle {
 public:
     CiphertextHandle() = default;
-    explicit CiphertextHandle(Ciphertext<DCRTPoly> ct) : ct_(std::move(ct)) {}
+
+    explicit CiphertextHandle(Ciphertext<DCRTPoly> ct)
+        : ct_(std::move(ct)) {}
 
     bool valid() const {
         return static_cast<bool>(ct_);
     }
 
-    size_t level() const {
+    std::size_t level() const {
         require_valid();
         return ct_->GetLevel();
     }
 
-    size_t noise_scale_deg() const {
+    std::size_t noise_scale_deg() const {
         require_valid();
         return ct_->GetNoiseScaleDeg();
     }
@@ -55,15 +57,17 @@ public:
         }
     }
 
-    void init(uint32_t multiplicative_depth = 2,
-              uint32_t scaling_mod_size = 50,
-              uint32_t batch_size = 8,
-              uint32_t ring_dim = (1u << 14),
-              std::vector<int> devices = {0},
-              bool plaintext_autoload = true,
-              bool ciphertext_autoload = true,
-              bool with_mult_key = true,
-              std::vector<int32_t> rotation_steps = {}) {
+    void init(
+        std::uint32_t multiplicative_depth = 2,
+        std::uint32_t scaling_mod_size = 50,
+        std::uint32_t batch_size = 8,
+        std::uint32_t ring_dim = (1u << 14),
+        std::vector<int> devices = {0},
+        bool plaintext_autoload = true,
+        bool ciphertext_autoload = true,
+        bool with_mult_key = true,
+        std::vector<int> rotation_steps = {}
+    ) {
         close();
 
         CCParams<CryptoContextCKKSRNS> params;
@@ -84,7 +88,6 @@ public:
         if (!kp.publicKey || !kp.secretKey) {
             throw std::runtime_error("KeyGen failed");
         }
-
         pk_ = kp.publicKey;
         sk_ = kp.secretKey;
 
@@ -93,7 +96,7 @@ public:
             cc_->EvalMultKeyGen(sk_);
         }
 
-        // 你刚确认过：EvalRotateKeyGen 也必须在 LoadContext 之前
+        // 旋转 key 也必须在 LoadContext 之前
         if (!rotation_steps.empty()) {
             cc_->EvalRotateKeyGen(sk_, rotation_steps);
         }
@@ -110,7 +113,7 @@ public:
     }
 
     // ------------------------------------------------------------------
-    // 新增：真正的密文句柄式接口
+    // 基础句柄式接口
     // ------------------------------------------------------------------
 
     CiphertextHandle encrypt(const std::vector<double>& x) {
@@ -121,7 +124,7 @@ public:
         return CiphertextHandle(ct);
     }
 
-    std::vector<double> decrypt(CiphertextHandle& h, size_t logical_length = 0) {
+    std::vector<double> decrypt(CiphertextHandle& h, std::size_t logical_length = 0) {
         require_ready();
         h.require_valid();
 
@@ -144,7 +147,6 @@ public:
         require_ready();
         a.require_valid();
         b.require_valid();
-
         auto ct_out = cc_->EvalAdd(a.ct_, b.ct_);
         return CiphertextHandle(ct_out);
     }
@@ -152,7 +154,6 @@ public:
     CiphertextHandle eval_add_plain_ct(const CiphertextHandle& a, const std::vector<double>& plain) {
         require_ready();
         a.require_valid();
-
         auto pt = cc_->MakeCKKSPackedPlaintext(plain);
         auto ct_out = cc_->EvalAdd(a.ct_, pt);
         pt.reset();
@@ -162,7 +163,6 @@ public:
     CiphertextHandle eval_mult_scalar_ct(const CiphertextHandle& a, double scalar) {
         require_ready();
         a.require_valid();
-
         auto ct_out = cc_->EvalMult(a.ct_, scalar);
         return CiphertextHandle(ct_out);
     }
@@ -170,23 +170,146 @@ public:
     CiphertextHandle eval_mult_plain_ct(const CiphertextHandle& a, const std::vector<double>& plain) {
         require_ready();
         a.require_valid();
-
         auto pt = cc_->MakeCKKSPackedPlaintext(plain);
         auto ct_out = cc_->EvalMult(a.ct_, pt);
         pt.reset();
         return CiphertextHandle(ct_out);
     }
 
-    CiphertextHandle eval_rotate_ct(const CiphertextHandle& a, int32_t steps) {
+    CiphertextHandle eval_rotate_ct(const CiphertextHandle& a, std::int32_t steps) {
         require_ready();
         a.require_valid();
-
         auto ct_out = cc_->EvalRotate(a.ct_, steps);
         return CiphertextHandle(ct_out);
     }
 
     // ------------------------------------------------------------------
-    // 保留旧接口：兼容你现有的 runtime / test_bindings.py
+    // block / PCMM / CCMM scaffold 接口
+    // 说明：
+    //   这一步先把 Python <-> C++ <-> helper 的接口形状固定下来。
+    //   真正的 bert-tiny 协议迁移，后续再把 stub/reference 替换成真实实现。
+    // ------------------------------------------------------------------
+
+    py::dict block_layout_summary(
+        std::uint32_t rows,
+        std::uint32_t cols,
+        std::uint32_t ring_dim = (1u << 14),
+        std::uint32_t block_rows = 128,
+        std::uint32_t block_cols = 128
+    ) const {
+        auto s = hegpt::summarize_block_layout(rows, cols, ring_dim, block_rows, block_cols);
+
+        py::dict d;
+        d["rows"] = s.rows;
+        d["cols"] = s.cols;
+        d["ring_dim"] = s.ring_dim;
+        d["slots_per_ct"] = s.slots_per_ct;
+        d["block_rows"] = s.block_rows;
+        d["block_cols"] = s.block_cols;
+        d["logical_block_elems"] = s.logical_block_elems;
+        d["act_tile_rows"] = s.act_tile_rows;
+        d["act_tile_cols"] = s.act_tile_cols;
+        d["weight_tile_rows"] = s.weight_tile_rows;
+        d["weight_tile_cols"] = s.weight_tile_cols;
+        d["tiles_per_logical_block"] = s.tiles_per_logical_block;
+        return d;
+    }
+
+    std::vector<double> extract_block_row_major(
+        const std::vector<double>& matrix_flat,
+        std::uint32_t rows,
+        std::uint32_t cols,
+        std::uint32_t row0,
+        std::uint32_t col0,
+        std::uint32_t block_rows = 128,
+        std::uint32_t block_cols = 128,
+        bool zero_pad = true
+    ) const {
+        return hegpt::extract_block_row_major(
+            matrix_flat, rows, cols, row0, col0, block_rows, block_cols, zero_pad
+        );
+    }
+
+    std::vector<std::vector<double>> split_activation_block_tiles(
+        const std::vector<double>& block_flat,
+        std::uint32_t block_rows = 128,
+        std::uint32_t block_cols = 128,
+        std::uint32_t tile_cols = 64
+    ) const {
+        return hegpt::split_activation_block_tiles(
+            block_flat, block_rows, block_cols, tile_cols
+        );
+    }
+
+    std::vector<std::vector<double>> split_weight_block_tiles(
+        const std::vector<double>& block_flat,
+        std::uint32_t block_rows = 128,
+        std::uint32_t block_cols = 128,
+        std::uint32_t tile_rows = 64
+    ) const {
+        return hegpt::split_weight_block_tiles(
+            block_flat, block_rows, block_cols, tile_rows
+        );
+    }
+
+    std::vector<double> pcmm_square_plain_reference(
+        const std::vector<double>& x_block_flat,
+        const std::vector<double>& w_block_flat,
+        std::uint32_t block_rows = 128,
+        std::uint32_t block_cols = 128,
+        std::uint32_t split_dim = 64
+    ) const {
+        return hegpt::pcmm_square_plain_reference(
+            x_block_flat, w_block_flat, block_rows, block_cols, split_dim
+        );
+    }
+
+    std::vector<double> ccmm_square_plain_reference(
+        const std::vector<double>& a_block_flat,
+        const std::vector<double>& b_block_flat,
+        std::uint32_t block_rows = 128,
+        std::uint32_t block_cols = 128
+    ) const {
+        return hegpt::ccmm_square_plain_reference(
+            a_block_flat, b_block_flat, block_rows, block_cols
+        );
+    }
+
+    // 预留：后续真正接 bert-tiny 的 PCMMSquare / CCMMSquare 协议实现
+    CiphertextHandle eval_pcmm_square_ct_plain_stub(
+        const CiphertextHandle& x_block_ct,
+        const std::vector<double>& w_block_flat,
+        std::uint32_t block_rows = 128,
+        std::uint32_t block_cols = 128
+    ) {
+        require_ready();
+        x_block_ct.require_valid();
+        (void)w_block_flat;
+        (void)block_rows;
+        (void)block_cols;
+        throw std::runtime_error(
+            "eval_pcmm_square_ct_plain_stub: protocol port not implemented yet"
+        );
+    }
+
+    CiphertextHandle eval_ccmm_square_ct_ct_stub(
+        const CiphertextHandle& a_block_ct,
+        const CiphertextHandle& b_block_ct,
+        std::uint32_t block_rows = 128,
+        std::uint32_t block_cols = 128
+    ) {
+        require_ready();
+        a_block_ct.require_valid();
+        b_block_ct.require_valid();
+        (void)block_rows;
+        (void)block_cols;
+        throw std::runtime_error(
+            "eval_ccmm_square_ct_ct_stub: protocol port not implemented yet"
+        );
+    }
+
+    // ------------------------------------------------------------------
+    // 旧接口（保留兼容）
     // ------------------------------------------------------------------
 
     std::vector<double> roundtrip(const std::vector<double>& x) {
@@ -194,14 +317,11 @@ public:
         return decrypt(ct, x.size());
     }
 
-    std::vector<double> eval_add(const std::vector<double>& x,
-                                 const std::vector<double>& y) {
+    std::vector<double> eval_add(const std::vector<double>& x, const std::vector<double>& y) {
         require_ready();
-
         if (x.size() != y.size()) {
             throw std::runtime_error("eval_add(): x and y must have the same length");
         }
-
         auto ct_x = encrypt(x);
         auto ct_y = encrypt(y);
         auto ct_sum = eval_add_ct(ct_x, ct_y);
@@ -210,7 +330,6 @@ public:
 
     std::vector<double> eval_mult_scalar(const std::vector<double>& x, double scalar) {
         require_ready();
-
         auto ct_x = encrypt(x);
         auto ct_mul = eval_mult_scalar_ct(ct_x, scalar);
         return decrypt(ct_mul, x.size());
@@ -236,7 +355,7 @@ private:
 };
 
 PYBIND11_MODULE(_fideslib, m) {
-    m.doc() = "pybind11 bindings for FIDESlib";
+    m.doc() = "pybind11 bindings for FIDESlib + hegpt native helper scaffolds";
 
     py::class_<CiphertextHandle>(m, "CiphertextHandle")
         .def(py::init<>())
@@ -247,40 +366,106 @@ PYBIND11_MODULE(_fideslib, m) {
     py::class_<FidesCKKSContext>(m, "FidesCKKSContext")
         .def(py::init<>())
 
-        .def("init",
-             &FidesCKKSContext::init,
-             py::arg("multiplicative_depth") = 2,
-             py::arg("scaling_mod_size") = 50,
-             py::arg("batch_size") = 8,
-             py::arg("ring_dim") = (1u << 14),
-             py::arg("devices") = std::vector<int>{0},
-             py::arg("plaintext_autoload") = true,
-             py::arg("ciphertext_autoload") = true,
-             py::arg("with_mult_key") = true,
-             py::arg("rotation_steps") = std::vector<int32_t>{})
+        .def(
+            "init",
+            &FidesCKKSContext::init,
+            py::arg("multiplicative_depth") = 2,
+            py::arg("scaling_mod_size") = 50,
+            py::arg("batch_size") = 8,
+            py::arg("ring_dim") = (1u << 14),
+            py::arg("devices") = std::vector<int>{0},
+            py::arg("plaintext_autoload") = true,
+            py::arg("ciphertext_autoload") = true,
+            py::arg("with_mult_key") = true,
+            py::arg("rotation_steps") = std::vector<int>{}
+        )
 
         .def("info", &FidesCKKSContext::info)
 
-        // 新句柄式接口
+        // 基础句柄式接口
         .def("encrypt", &FidesCKKSContext::encrypt, py::arg("x"))
-        .def("decrypt", &FidesCKKSContext::decrypt,
-             py::arg("ciphertext"),
-             py::arg("logical_length") = 0)
-        .def("eval_add_ct", &FidesCKKSContext::eval_add_ct,
-             py::arg("a"), py::arg("b"))
-        .def("eval_add_plain_ct", &FidesCKKSContext::eval_add_plain_ct,
-             py::arg("a"), py::arg("plain"))
-        .def("eval_mult_scalar_ct", &FidesCKKSContext::eval_mult_scalar_ct,
-             py::arg("a"), py::arg("scalar"))
-        .def("eval_mult_plain_ct", &FidesCKKSContext::eval_mult_plain_ct,
-             py::arg("a"), py::arg("plain"))
-        .def("eval_rotate_ct", &FidesCKKSContext::eval_rotate_ct,
-             py::arg("a"), py::arg("steps"))
+        .def("decrypt", &FidesCKKSContext::decrypt, py::arg("ciphertext"), py::arg("logical_length") = 0)
+        .def("eval_add_ct", &FidesCKKSContext::eval_add_ct, py::arg("a"), py::arg("b"))
+        .def("eval_add_plain_ct", &FidesCKKSContext::eval_add_plain_ct, py::arg("a"), py::arg("plain"))
+        .def("eval_mult_scalar_ct", &FidesCKKSContext::eval_mult_scalar_ct, py::arg("a"), py::arg("scalar"))
+        .def("eval_mult_plain_ct", &FidesCKKSContext::eval_mult_plain_ct, py::arg("a"), py::arg("plain"))
+        .def("eval_rotate_ct", &FidesCKKSContext::eval_rotate_ct, py::arg("a"), py::arg("steps"))
+
+        // block / PCMM / CCMM scaffold
+        .def(
+            "block_layout_summary",
+            &FidesCKKSContext::block_layout_summary,
+            py::arg("rows"),
+            py::arg("cols"),
+            py::arg("ring_dim") = (1u << 14),
+            py::arg("block_rows") = 128,
+            py::arg("block_cols") = 128
+        )
+        .def(
+            "extract_block_row_major",
+            &FidesCKKSContext::extract_block_row_major,
+            py::arg("matrix_flat"),
+            py::arg("rows"),
+            py::arg("cols"),
+            py::arg("row0"),
+            py::arg("col0"),
+            py::arg("block_rows") = 128,
+            py::arg("block_cols") = 128,
+            py::arg("zero_pad") = true
+        )
+        .def(
+            "split_activation_block_tiles",
+            &FidesCKKSContext::split_activation_block_tiles,
+            py::arg("block_flat"),
+            py::arg("block_rows") = 128,
+            py::arg("block_cols") = 128,
+            py::arg("tile_cols") = 64
+        )
+        .def(
+            "split_weight_block_tiles",
+            &FidesCKKSContext::split_weight_block_tiles,
+            py::arg("block_flat"),
+            py::arg("block_rows") = 128,
+            py::arg("block_cols") = 128,
+            py::arg("tile_rows") = 64
+        )
+        .def(
+            "pcmm_square_plain_reference",
+            &FidesCKKSContext::pcmm_square_plain_reference,
+            py::arg("x_block_flat"),
+            py::arg("w_block_flat"),
+            py::arg("block_rows") = 128,
+            py::arg("block_cols") = 128,
+            py::arg("split_dim") = 64
+        )
+        .def(
+            "ccmm_square_plain_reference",
+            &FidesCKKSContext::ccmm_square_plain_reference,
+            py::arg("a_block_flat"),
+            py::arg("b_block_flat"),
+            py::arg("block_rows") = 128,
+            py::arg("block_cols") = 128
+        )
+        .def(
+            "eval_pcmm_square_ct_plain_stub",
+            &FidesCKKSContext::eval_pcmm_square_ct_plain_stub,
+            py::arg("x_block_ct"),
+            py::arg("w_block_flat"),
+            py::arg("block_rows") = 128,
+            py::arg("block_cols") = 128
+        )
+        .def(
+            "eval_ccmm_square_ct_ct_stub",
+            &FidesCKKSContext::eval_ccmm_square_ct_ct_stub,
+            py::arg("a_block_ct"),
+            py::arg("b_block_ct"),
+            py::arg("block_rows") = 128,
+            py::arg("block_cols") = 128
+        )
 
         // 旧接口（保留兼容）
         .def("roundtrip", &FidesCKKSContext::roundtrip)
         .def("eval_add", &FidesCKKSContext::eval_add)
         .def("eval_mult_scalar", &FidesCKKSContext::eval_mult_scalar)
-
         .def("close", &FidesCKKSContext::close);
 }

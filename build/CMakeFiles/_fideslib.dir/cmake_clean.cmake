@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o"
   "CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o.d"
+  "CMakeFiles/_fideslib.dir/cpp/native_helpers.cpp.o"
+  "CMakeFiles/_fideslib.dir/cpp/native_helpers.cpp.o.d"
   "_fideslib.cpython-310-x86_64-linux-gnu.so"
   "_fideslib.pdb"
 )

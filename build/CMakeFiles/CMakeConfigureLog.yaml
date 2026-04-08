@@ -24443,3 +24443,150 @@ events:
       CMAKE_SYSTEM_INCLUDE_PATH:
         - "/usr/include/X11"
 ...
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/local/lib/python3.10/dist-packages/cmake/data/share/cmake-4.3/Modules/FindCUDAToolkit.cmake:1101 (find_path)"
+      - "CMakeLists.txt:33 (find_package)"
+    mode: "path"
+    variable: "CUDAToolkit_CUBLAS_INCLUDE_DIR"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "cublas_v2.h"
+    candidate_directories:
+      - "/usr/local/cuda/targets/x86_64-linux/include/"
+    found: "/usr/local/cuda/targets/x86_64-linux/include/"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.10/dist-packages/pybind11/share/cmake/pybind11"
+      ENV{PATH}:
+        - "/opt/rocm/bin"
+        - "/usr/local/cuda/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr/local/lib/python3.10/dist-packages/cmake/data"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_INCLUDE_PATH:
+        - "/usr/include/X11"
+...
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/local/lib/python3.10/dist-packages/cmake/data/share/cmake-4.3/Modules/FindCUDAToolkit.cmake:1101 (find_path)"
+      - "CMakeLists.txt:30 (find_package)"
+    mode: "path"
+    variable: "CUDAToolkit_CUBLAS_INCLUDE_DIR"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "cublas_v2.h"
+    candidate_directories:
+      - "/usr/local/cuda/targets/x86_64-linux/include/"
+    found: "/usr/local/cuda/targets/x86_64-linux/include/"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.10/dist-packages/pybind11/share/cmake/pybind11"
+      ENV{PATH}:
+        - "/opt/rocm/bin"
+        - "/usr/local/cuda/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr/local/lib/python3.10/dist-packages/cmake/data"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_INCLUDE_PATH:
+        - "/usr/include/X11"
+...
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/local/lib/python3.10/dist-packages/cmake/data/share/cmake-4.3/Modules/FindCUDAToolkit.cmake:1101 (find_path)"
+      - "CMakeLists.txt:30 (find_package)"
+    mode: "path"
+    variable: "CUDAToolkit_CUBLAS_INCLUDE_DIR"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "cublas_v2.h"
+    candidate_directories:
+      - "/usr/local/cuda/targets/x86_64-linux/include/"
+    found: "/usr/local/cuda/targets/x86_64-linux/include/"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.10/dist-packages/pybind11/share/cmake/pybind11"
+      ENV{PATH}:
+        - "/opt/rocm/bin"
+        - "/usr/local/cuda/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr/local/lib/python3.10/dist-packages/cmake/data"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_INCLUDE_PATH:
+        - "/usr/include/X11"
+...

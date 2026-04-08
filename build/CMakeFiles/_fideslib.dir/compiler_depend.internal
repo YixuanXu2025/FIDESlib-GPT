@@ -541,4 +541,5 @@ CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o
  /usr/local/lib/python3.10/dist-packages/pybind11/include/pybind11/stl.h
  /usr/local/lib/python3.10/dist-packages/pybind11/include/pybind11/trampoline_self_life_support.h
  /usr/local/lib/python3.10/dist-packages/pybind11/include/pybind11/typing.h
+ /workspace/FIDESlib-GPT/cpp/native_helpers.hpp
 
