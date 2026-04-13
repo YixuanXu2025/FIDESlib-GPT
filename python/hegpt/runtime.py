@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Iterable, Optional, Sequence
+from typing import Iterable, Optional
 
 from _fideslib import FidesCKKSContext as _NativeFidesCKKSContext
 
@@ -10,22 +10,6 @@ from .config import HEConfig
 class FidesContext:
     """
     对 _fideslib.FidesCKKSContext 的轻包装。
-
-    当前支持两类接口：
-      1) 兼容旧测试的最小接口
-         - info()
-         - roundtrip()
-         - add()
-         - mult_scalar()
-
-      2) 真实 ciphertext-handle 接口
-         - encrypt()
-         - decrypt()
-         - add_ct()
-         - add_plain_ct()
-         - mult_scalar_ct()
-         - mult_plain_ct()
-         - rotate_ct()
     """
 
     def __init__(
@@ -34,6 +18,12 @@ class FidesContext:
         scaling_mod_size: int = 50,
         batch_size: int = 8,
         ring_dim: int = 1 << 14,
+        first_mod_size: Optional[int] = None,
+        num_large_digits: Optional[int] = None,
+        scaling_technique: Optional[str] = None,
+        key_switch_technique: Optional[str] = None,
+        security_level: Optional[str] = None,
+        secret_key_dist: Optional[str] = None,
         devices=None,
         plaintext_autoload: bool = True,
         ciphertext_autoload: bool = True,
@@ -45,20 +35,22 @@ class FidesContext:
 
         self._ctx = _NativeFidesCKKSContext()
         self._ctx.init(
-            multiplicative_depth=multiplicative_depth,
-            scaling_mod_size=scaling_mod_size,
-            batch_size=batch_size,
-            ring_dim=ring_dim,
+            multiplicative_depth=int(multiplicative_depth),
+            scaling_mod_size=int(scaling_mod_size),
+            batch_size=int(batch_size),
+            ring_dim=int(ring_dim),
+            first_mod_size=-1 if first_mod_size is None else int(first_mod_size),
+            num_large_digits=-1 if num_large_digits is None else int(num_large_digits),
+            scaling_technique="" if scaling_technique is None else str(scaling_technique),
+            key_switch_technique="" if key_switch_technique is None else str(key_switch_technique),
+            security_level="" if security_level is None else str(security_level),
+            secret_key_dist="" if secret_key_dist is None else str(secret_key_dist),
             devices=list(devices),
-            plaintext_autoload=plaintext_autoload,
-            ciphertext_autoload=ciphertext_autoload,
-            with_mult_key=with_mult_key,
+            plaintext_autoload=bool(plaintext_autoload),
+            ciphertext_autoload=bool(ciphertext_autoload),
+            with_mult_key=bool(with_mult_key),
             rotation_steps=[int(s) for s in rotation_steps],
         )
-
-    # ------------------------------------------------------------------
-    # 兼容旧最小接口
-    # ------------------------------------------------------------------
 
     def info(self):
         return dict(self._ctx.info())
@@ -77,10 +69,6 @@ class FidesContext:
             [float(v) for v in x],
             float(scalar),
         )
-
-    # ------------------------------------------------------------------
-    # 新 ciphertext-handle 接口
-    # ------------------------------------------------------------------
 
     def encrypt(self, x):
         return self._ctx.encrypt([float(v) for v in x])
@@ -117,11 +105,6 @@ class FidesContext:
 class HERuntime:
     """
     工程正式运行时入口。
-
-    当前职责：
-      - 管理底层 FidesContext 生命周期
-      - 统一暴露旧最小接口与新 ciphertext-handle 接口
-      - 保存 rotation_steps 等运行时参数
     """
 
     def __init__(self, cfg: HEConfig, rotation_steps: Iterable[int] = ()):
@@ -139,6 +122,12 @@ class HERuntime:
             scaling_mod_size=self.cfg.scaling_mod_size,
             batch_size=self.cfg.batch_size,
             ring_dim=self.cfg.ring_dim,
+            first_mod_size=self.cfg.first_mod_size,
+            num_large_digits=self.cfg.num_large_digits,
+            scaling_technique=self.cfg.scaling_technique,
+            key_switch_technique=self.cfg.key_switch_technique,
+            security_level=self.cfg.security_level,
+            secret_key_dist=self.cfg.secret_key_dist,
             devices=list(self.cfg.devices),
             plaintext_autoload=self.cfg.plaintext_autoload,
             ciphertext_autoload=self.cfg.ciphertext_autoload,
@@ -155,10 +144,6 @@ class HERuntime:
             raise RuntimeError("HERuntime is not initialized")
         return self.ctx
 
-    # ------------------------------------------------------------------
-    # 旧最小接口
-    # ------------------------------------------------------------------
-
     def info(self):
         return self.require_context().info()
 
@@ -170,10 +155,6 @@ class HERuntime:
 
     def mult_scalar(self, x, scalar):
         return self.require_context().mult_scalar(x, scalar)
-
-    # ------------------------------------------------------------------
-    # 新 ciphertext-handle 接口
-    # ------------------------------------------------------------------
 
     def encrypt(self, x):
         return self.require_context().encrypt(x)

@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Sequence, Tuple
+from typing import Optional, Tuple
 
 
 @dataclass
@@ -26,6 +26,14 @@ class HEConfig:
     multiplicative_depth: int = 2
     scaling_mod_size: int = 50
     batch_size: int = 8
+
+    # 新增：OpenFHE/FIDESlib 常用参数
+    first_mod_size: Optional[int] = None
+    num_large_digits: Optional[int] = None
+    scaling_technique: Optional[str] = None
+    key_switch_technique: Optional[str] = None
+    security_level: Optional[str] = None
+    secret_key_dist: Optional[str] = None
 
     devices: Tuple[int, ...] = (0,)
     plaintext_autoload: bool = True
@@ -62,6 +70,12 @@ class ProjectConfig:
             "ring_dim": self.he.ring_dim,
             "multiplicative_depth": self.he.multiplicative_depth,
             "scaling_mod_size": self.he.scaling_mod_size,
+            "first_mod_size": self.he.first_mod_size,
+            "num_large_digits": self.he.num_large_digits,
+            "scaling_technique": self.he.scaling_technique,
+            "key_switch_technique": self.he.key_switch_technique,
+            "security_level": self.he.security_level,
+            "secret_key_dist": self.he.secret_key_dist,
             "he_batch_size": self.he.batch_size,
             "devices": list(self.he.devices),
             "gelu_fit_degree": self.approx.gelu_fit_degree,

@@ -7,11 +7,50 @@
 
 #include <cstdint>
 #include <stdexcept>
+#include <string>
 #include <utility>
 #include <vector>
 
 namespace py = pybind11;
 using namespace fideslib;
+using namespace lbcrypto;
+
+namespace {
+
+ScalingTechnique parse_scaling_technique(const std::string& s) {
+    if (s == "FIXEDMANUAL") return FIXEDMANUAL;
+    if (s == "FIXEDAUTO") return FIXEDAUTO;
+    if (s == "FLEXIBLEAUTO") return FLEXIBLEAUTO;
+    if (s == "FLEXIBLEAUTOEXT") return FLEXIBLEAUTOEXT;
+    if (s == "NORESCALE") return NORESCALE;
+    throw std::runtime_error("Unknown scaling_technique: " + s);
+}
+
+KeySwitchTechnique parse_key_switch_technique(const std::string& s) {
+    if (s == "BV") return BV;
+    if (s == "HYBRID") return HYBRID;
+    throw std::runtime_error("Unknown key_switch_technique: " + s);
+}
+
+SecurityLevel parse_security_level(const std::string& s) {
+    if (s == "HEStd_NotSet") return HEStd_NotSet;
+    if (s == "HEStd_128_classic") return HEStd_128_classic;
+    if (s == "HEStd_192_classic") return HEStd_192_classic;
+    if (s == "HEStd_256_classic") return HEStd_256_classic;
+    if (s == "HEStd_128_quantum") return HEStd_128_quantum;
+    if (s == "HEStd_192_quantum") return HEStd_192_quantum;
+    if (s == "HEStd_256_quantum") return HEStd_256_quantum;
+    throw std::runtime_error("Unknown security_level: " + s);
+}
+
+SecretKeyDist parse_secret_key_dist(const std::string& s) {
+    if (s == "GAUSSIAN") return GAUSSIAN;
+    if (s == "UNIFORM_TERNARY") return UNIFORM_TERNARY;
+    if (s == "SPARSE_TERNARY") return SPARSE_TERNARY;
+    throw std::runtime_error("Unknown secret_key_dist: " + s);
+}
+
+}  // namespace
 
 class CiphertextHandle {
 public:
@@ -62,6 +101,12 @@ public:
         std::uint32_t scaling_mod_size = 50,
         std::uint32_t batch_size = 8,
         std::uint32_t ring_dim = (1u << 14),
+        std::int32_t first_mod_size = -1,
+        std::int32_t num_large_digits = -1,
+        const std::string& scaling_technique = "",
+        const std::string& key_switch_technique = "",
+        const std::string& security_level = "",
+        const std::string& secret_key_dist = "",
         std::vector<int> devices = {0},
         bool plaintext_autoload = true,
         bool ciphertext_autoload = true,
@@ -78,6 +123,25 @@ public:
         params.SetPlaintextAutoload(plaintext_autoload);
         params.SetCiphertextAutoload(ciphertext_autoload);
         params.SetDevices(std::move(devices));
+
+        if (first_mod_size > 0) {
+            params.SetFirstModSize(static_cast<std::uint32_t>(first_mod_size));
+        }
+        if (num_large_digits > 0) {
+            params.SetNumLargeDigits(static_cast<std::uint32_t>(num_large_digits));
+        }
+        if (!scaling_technique.empty()) {
+            params.SetScalingTechnique(parse_scaling_technique(scaling_technique));
+        }
+        if (!key_switch_technique.empty()) {
+            params.SetKeySwitchTechnique(parse_key_switch_technique(key_switch_technique));
+        }
+        if (!security_level.empty()) {
+            params.SetSecurityLevel(parse_security_level(security_level));
+        }
+        if (!secret_key_dist.empty()) {
+            params.SetSecretKeyDist(parse_secret_key_dist(secret_key_dist));
+        }
 
         cc_ = GenCryptoContext(params);
         cc_->Enable(PKE);
@@ -373,6 +437,12 @@ PYBIND11_MODULE(_fideslib, m) {
             py::arg("scaling_mod_size") = 50,
             py::arg("batch_size") = 8,
             py::arg("ring_dim") = (1u << 14),
+            py::arg("first_mod_size") = -1,
+            py::arg("num_large_digits") = -1,
+            py::arg("scaling_technique") = "",
+            py::arg("key_switch_technique") = "",
+            py::arg("security_level") = "",
+            py::arg("secret_key_dist") = "",
             py::arg("devices") = std::vector<int>{0},
             py::arg("plaintext_autoload") = true,
             py::arg("ciphertext_autoload") = true,
