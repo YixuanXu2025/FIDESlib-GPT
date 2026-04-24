@@ -11,9 +11,6 @@ from hegpt.tensor import CipherTensor
 from hegpt.ops import he_add, he_mult_plain, he_rotate
 
 
-# ============================================================
-# 全局 Python/RAM cache
-# ============================================================
 BSGS_PLAIN_CACHE = {}
 
 
@@ -118,10 +115,6 @@ def plain_rotate(vec, steps, sigma):
 
 
 def detect_rotation_sigma():
-    """
-    用一个轻量 context 探测 rotate 方向，避免在重参数上下文里额外生成很多 key。
-    sigma 只反映语义方向，不依赖你最终的大参数设置。
-    """
     cfg = HEConfig(
         ring_dim=16384,
         multiplicative_depth=1,
@@ -184,9 +177,6 @@ def decode_periodic_square_output(rt, ct, d):
     return full[: d * d].reshape(d, d)
 
 
-# ============================================================
-# rotation steps
-# ============================================================
 def collect_bsgs_rotation_steps(d):
     g_pos = int(math.ceil(math.sqrt(d)))
     h_pos = int(math.ceil(d / g_pos))
@@ -215,27 +205,6 @@ def collect_bsgs_rotation_steps(d):
     return out
 
 
-def collect_jkls_rotation_steps(d, sigma):
-    steps = []
-    for k in range(1, d):
-        steps.append(sigma * k)
-    step = 1
-    while step < d:
-        steps.append(-sigma * step)
-        step *= 2
-
-    out = []
-    seen = set()
-    for s in steps:
-        if s not in seen:
-            out.append(s)
-            seen.add(s)
-    return out
-
-
-# ============================================================
-# BSGS cache
-# ============================================================
 def hash_weight_block(B_square):
     arr = np.ascontiguousarray(B_square, dtype=np.float64)
     return hashlib.sha1(arr.tobytes()).hexdigest()
@@ -403,163 +372,34 @@ def square_block_bsgs_kernel_timed_cached(rt, ct_A, cached_plain, d, sigma, name
     return out, finalize_stats(stats)
 
 
-# ============================================================
-# JKLS
-# ============================================================
-def column_mask_plain_periodic(d, k, physical_slots):
-    mask = np.zeros((d * d,), dtype=np.float64)
-    for i in range(d):
-        mask[i * d + k] = 1.0
-    return periodic_pack(mask, physical_slots)
-
-
-def repeat_plain_row_periodic(row_vec, d, physical_slots):
-    row_vec = np.asarray(row_vec, dtype=np.float64).reshape(-1)
-    mat = np.tile(row_vec.reshape(1, d), (d, 1))
-    return periodic_pack(flatten_row_major(mat), physical_slots)
-
-
-def replicate_rowwise_from_col0_timed(rt, ct_col0, d, sigma, name_prefix, stats):
-    acc = ct_col0
-    step = 1
-    while step < d:
-        rot_step = -sigma * step
-        shifted = timed_he_rotate(rt, acc, rot_step, f"{name_prefix}_rep_{step}", stats)
-        acc = timed_he_add(rt, acc, shifted, f"{name_prefix}_rep_add_{step}", stats)
-        step *= 2
-    return acc
-
-
-def jkls_square_kernel_pcmm_timed(rt, ct_A, B_square, d, sigma, name_prefix):
-    slots_per_ct = get_physical_slots(rt)
-    B_square = np.asarray(B_square, dtype=np.float64)
-
-    stats = {
-        "pMult_count": 0,
-        "pMult_total_us": 0.0,
-        "add_count": 0,
-        "add_total_us": 0.0,
-        "rotate_count": 0,
-        "rotate_total_us": 0.0,
-    }
-
-    acc = None
-    for k in range(d):
-        col_mask = column_mask_plain_periodic(d, k, slots_per_ct)
-        ct_col = timed_he_mult_plain(rt, ct_A, col_mask.tolist(), f"{name_prefix}_maskcol_{k}", stats)
-
-        move_step = sigma * k
-        ct_col0 = ct_col if k == 0 else timed_he_rotate(rt, ct_col, move_step, f"{name_prefix}_movecol_{k}", stats)
-
-        ct_rowrep = replicate_rowwise_from_col0_timed(rt, ct_col0, d, sigma, f"{name_prefix}_repl_{k}", stats)
-
-        plain_rowrep = repeat_plain_row_periodic(B_square[k, :], d, slots_per_ct)
-        term = timed_he_mult_plain(rt, ct_rowrep, plain_rowrep.tolist(), f"{name_prefix}_mulrow_{k}", stats)
-
-        acc = term if acc is None else timed_he_add(rt, acc, term, f"{name_prefix}_acc_{k}", stats)
-
-    return acc, finalize_stats(stats)
-
-
-# ============================================================
-# direct primitive timing
-# ============================================================
-def bench_direct_primitives_same_scale(rt, d, sigma, needed_rotation_steps, repeats=12):
-    slots_per_ct = get_physical_slots(rt)
-    rng = np.random.default_rng(203799)
-
-    A = rng.normal(0.0, 1.0, size=(d, d)).astype(np.float64)
-    B = rng.normal(0.0, 1.0, size=(d, d)).astype(np.float64)
-    W = rng.normal(0.0, 0.2, size=(d, d)).astype(np.float64)
-
-    ct_A = matrix_to_periodic_cipher(rt, A, "direct_ct_A")
-    ct_B = matrix_to_periodic_cipher(rt, B, "direct_ct_B")
-
-    diag0 = build_signed_diagonal_periodic(W, d, 0, sigma, slots_per_ct).tolist()
-
-    pmult_times = []
-    for i in range(repeats):
-        t0 = now_us()
-        _ = call_he_mult_plain(rt, ct_A, diag0, f"direct_pmult_{i}")
-        t1 = now_us()
-        pmult_times.append(t1 - t0)
-
-    add_times = []
-    for i in range(repeats):
-        t0 = now_us()
-        _ = call_he_add(rt, ct_A, ct_B, f"direct_add_{i}")
-        t1 = now_us()
-        add_times.append(t1 - t0)
-
-    rotate_times = []
-    per_step_repeats = 2
-    for step in needed_rotation_steps:
-        for i in range(per_step_repeats):
-            t0 = now_us()
-            _ = call_he_rotate(rt, ct_A, step, f"direct_rot_{step}_{i}")
-            t1 = now_us()
-            rotate_times.append(t1 - t0)
-
-    return {
-        "direct_pmult_single_us_median": median(pmult_times),
-        "direct_add_single_us_median": median(add_times),
-        "direct_rotate_single_us_median": median(rotate_times),
-        "rotate_steps_used": needed_rotation_steps,
-    }
-
-
-# ============================================================
-# main run
-# ============================================================
-def print_direct_stats(stats):
-    print_sep("131072 / 29 / 59 同参数 single-primitive timing")
-    print(f"direct pMult 单次中位(us): {stats['direct_pmult_single_us_median']:.3f}")
-    print(f"direct add   单次中位(us): {stats['direct_add_single_us_median']:.3f}")
-    print(f"direct rotate单次中位(us): {stats['direct_rotate_single_us_median']:.3f}")
-    print(f"rotation steps: {stats['rotate_steps_used']}")
-
-
-def print_round_compare(rounds_bsgs, rounds_jkls, final_err_bsgs, final_err_jkls):
-    print_sep("单输入密文 + 连续5轮同一W：BSGS vs JKLS")
+def print_rounds(rounds_bsgs, final_err_bsgs):
+    print_sep("单输入密文 + 连续5轮同一W + 最后解密（BSGS-only）")
     header = (
         f"{'轮次':<6}"
-        f"{'B_cache(us)':>14}{'B_hit':>8}{'B_new':>8}{'B_core(us)':>16}"
-        f"{'J_core(us)':>16}"
-        f"{'B_pM(us)':>12}{'J_pM(us)':>12}"
-        f"{'B_add(us)':>12}{'J_add(us)':>12}"
-        f"{'B_rot(us)':>12}{'J_rot(us)':>12}"
+        f"{'cache构建(us)':>16}{'命中':>8}{'新建':>8}{'核心(us)':>16}"
+        f"{'pMult均值(us)':>16}{'add均值(us)':>14}{'rotate均值(us)':>16}"
     )
     print(header)
     print("-" * len(header))
 
-    for i in range(len(rounds_bsgs)):
-        rb = rounds_bsgs[i]
-        rj = rounds_jkls[i]
+    for r in rounds_bsgs:
         print(
-            f"{i+1:<6}"
-            f"{rb['cache_build_us']:>14.3f}{rb['cache_hits']:>8}{rb['cache_misses']:>8}{rb['core_us']:>16.3f}"
-            f"{rj['core_us']:>16.3f}"
-            f"{rb['primitive_stats']['pMult_avg_us']:>12.3f}{rj['primitive_stats']['pMult_avg_us']:>12.3f}"
-            f"{rb['primitive_stats']['add_avg_us']:>12.3f}{rj['primitive_stats']['add_avg_us']:>12.3f}"
-            f"{rb['primitive_stats']['rotate_avg_us']:>12.3f}{rj['primitive_stats']['rotate_avg_us']:>12.3f}"
+            f"{r['round_idx']:<6}"
+            f"{r['cache_build_us']:>16.3f}{r['cache_hits']:>8}{r['cache_misses']:>8}{r['core_us']:>16.3f}"
+            f"{r['primitive_stats']['pMult_avg_us']:>16.3f}"
+            f"{r['primitive_stats']['add_avg_us']:>14.3f}"
+            f"{r['primitive_stats']['rotate_avg_us']:>16.3f}"
         )
 
-    tail_b = rounds_bsgs[1:]
-    tail_j = rounds_jkls[1:]
-
+    tail = rounds_bsgs[1:]
     print("-" * len(header))
     print("第2轮及以后中位数:")
-    print(f"  BSGS cache构建(us): {median([r['cache_build_us'] for r in tail_b]):.3f}")
-    print(f"  BSGS core(us):      {median([r['core_us'] for r in tail_b]):.3f}")
-    print(f"  JKLS core(us):      {median([r['core_us'] for r in tail_j]):.3f}")
-    print(f"  BSGS pMult均值(us): {median([r['primitive_stats']['pMult_avg_us'] for r in tail_b]):.3f}")
-    print(f"  JKLS pMult均值(us): {median([r['primitive_stats']['pMult_avg_us'] for r in tail_j]):.3f}")
-    print(f"  BSGS add均值(us):   {median([r['primitive_stats']['add_avg_us'] for r in tail_b]):.3f}")
-    print(f"  JKLS add均值(us):   {median([r['primitive_stats']['add_avg_us'] for r in tail_j]):.3f}")
-    print(f"  BSGS rot均值(us):   {median([r['primitive_stats']['rotate_avg_us'] for r in tail_b]):.3f}")
-    print(f"  JKLS rot均值(us):   {median([r['primitive_stats']['rotate_avg_us'] for r in tail_j]):.3f}")
-    print(f"最终一次解密后的 BSGS 误差(max_abs_err): {final_err_bsgs:.6e}")
-    print(f"最终一次解密后的 JKLS 误差(max_abs_err): {final_err_jkls:.6e}")
+    print(f"  cache构建(us): {median([r['cache_build_us'] for r in tail]):.3f}")
+    print(f"  核心计算(us):  {median([r['core_us'] for r in tail]):.3f}")
+    print(f"  pMult均值(us): {median([r['primitive_stats']['pMult_avg_us'] for r in tail]):.3f}")
+    print(f"  add均值(us):   {median([r['primitive_stats']['add_avg_us'] for r in tail]):.3f}")
+    print(f"  rotate均值(us): {median([r['primitive_stats']['rotate_avg_us'] for r in tail]):.3f}")
+    print(f"最终一次解密后的误差(max_abs_err): {final_err_bsgs:.6e}")
 
 
 def main():
@@ -571,22 +411,19 @@ def main():
     X = rng.normal(0.0, 1.0, size=(D, D)).astype(np.float64)
     W = rng.normal(0.0, 0.2, size=(D, D)).astype(np.float64)
 
-    # 明文参考：连续乘5次同一个 W
     Y_plain = X.copy()
     for _ in range(NUM_ROUNDS):
         Y_plain = Y_plain @ W
 
     sigma = detect_rotation_sigma()
-
-    bsgs_steps = collect_bsgs_rotation_steps(D)
-    jkls_steps = collect_jkls_rotation_steps(D, sigma)
-    needed_rotation_steps = sorted(set(bsgs_steps + jkls_steps))
+    needed_rotation_steps = collect_bsgs_rotation_steps(D)
 
     cfg = HEConfig(
-        # 沿用你这次已经跑通的大参数
-        ring_dim=131072,
+        ring_dim=1 << 17,
         multiplicative_depth=29,
         scaling_mod_size=59,
+        first_mod_size=60,
+        num_large_digits=3,
         batch_size=4096,
         devices=(0,),
         plaintext_autoload=True,
@@ -597,80 +434,41 @@ def main():
     BSGS_PLAIN_CACHE.clear()
 
     with HERuntime(cfg, rotation_steps=needed_rotation_steps) as rt:
-        # 同参数下的 single-primitive timing
-        direct_stats = bench_direct_primitives_same_scale(
-            rt, D, sigma, needed_rotation_steps, repeats=12
-        )
-
-        # 只各加密一次
         t0 = now_us()
-        ct_init_bsgs = matrix_to_periodic_cipher(rt, X, "X_init_bsgs")
+        ct_current = matrix_to_periodic_cipher(rt, X, "X_init_bsgs")
         t1 = now_us()
-        encrypt_once_bsgs_us = t1 - t0
-
-        t2 = now_us()
-        ct_init_jkls = matrix_to_periodic_cipher(rt, X, "X_init_jkls")
-        t3 = now_us()
-        encrypt_once_jkls_us = t3 - t2
+        encrypt_once_us = t1 - t0
 
         slots_per_ct = get_physical_slots(rt)
-
         rounds_bsgs = []
-        ct_current_bsgs = ct_init_bsgs
 
         for k in range(NUM_ROUNDS):
-            # BSGS cache 查询/构建
-            t4 = now_us()
+            t2 = now_us()
             cached_obj, hit = get_or_build_bsgs_cached_plain_tables(W, D, sigma, slots_per_ct)
-            t5 = now_us()
-            cache_build_us = t5 - t4
+            t3 = now_us()
 
-            t6 = now_us()
+            t4 = now_us()
             ct_next, stats = square_block_bsgs_kernel_timed_cached(
-                rt, ct_current_bsgs, cached_obj, D, sigma, f"bsgs_round{k+1}"
+                rt, ct_current, cached_obj, D, sigma, f"bsgs_round{k+1}"
             )
-            t7 = now_us()
+            t5 = now_us()
 
             rounds_bsgs.append({
                 "round_idx": k + 1,
-                "cache_build_us": cache_build_us,
+                "cache_build_us": t3 - t2,
                 "cache_hits": int(hit),
                 "cache_misses": int(not hit),
-                "core_us": t7 - t6,
+                "core_us": t5 - t4,
                 "primitive_stats": stats,
             })
-            ct_current_bsgs = ct_next
+            ct_current = ct_next
 
-        rounds_jkls = []
-        ct_current_jkls = ct_init_jkls
-
-        for k in range(NUM_ROUNDS):
-            t8 = now_us()
-            ct_next, stats = jkls_square_kernel_pcmm_timed(
-                rt, ct_current_jkls, W, D, sigma, f"jkls_round{k+1}"
-            )
-            t9 = now_us()
-
-            rounds_jkls.append({
-                "round_idx": k + 1,
-                "core_us": t9 - t8,
-                "primitive_stats": stats,
-            })
-            ct_current_jkls = ct_next
-
-        # 最后各解密一次
-        t10 = now_us()
-        Y_bsgs = decode_periodic_square_output(rt, ct_current_bsgs, D)
-        t11 = now_us()
-        decrypt_once_bsgs_us = t11 - t10
-
-        t12 = now_us()
-        Y_jkls = decode_periodic_square_output(rt, ct_current_jkls, D)
-        t13 = now_us()
-        decrypt_once_jkls_us = t13 - t12
+        t6 = now_us()
+        Y_bsgs = decode_periodic_square_output(rt, ct_current, D)
+        t7 = now_us()
+        decrypt_once_us = t7 - t6
 
     final_err_bsgs = float(np.max(np.abs(Y_plain - Y_bsgs)))
-    final_err_jkls = float(np.max(np.abs(Y_plain - Y_jkls)))
 
     print_sep("总体信息")
     print(f"输入大小: ({D}, {D})")
@@ -678,13 +476,10 @@ def main():
     print(f"连续轮数: {NUM_ROUNDS}")
     print(f"rotation sigma: {sigma}")
     print(f"实际生成的 rotation key 数量: {len(needed_rotation_steps)}")
-    print(f"仅首次加密一次(BSGS) (us): {encrypt_once_bsgs_us:.3f}")
-    print(f"仅首次加密一次(JKLS) (us): {encrypt_once_jkls_us:.3f}")
-    print(f"仅最后解密一次(BSGS) (us): {decrypt_once_bsgs_us:.3f}")
-    print(f"仅最后解密一次(JKLS) (us): {decrypt_once_jkls_us:.3f}")
+    print(f"仅首次加密一次(us): {encrypt_once_us:.3f}")
+    print(f"仅最后解密一次(us): {decrypt_once_us:.3f}")
 
-    print_direct_stats(direct_stats)
-    print_round_compare(rounds_bsgs, rounds_jkls, final_err_bsgs, final_err_jkls)
+    print_rounds(rounds_bsgs, final_err_bsgs)
 
     out = {
         "input_shape": (D, D),
@@ -692,25 +487,16 @@ def main():
         "num_rounds": NUM_ROUNDS,
         "sigma": sigma,
         "needed_rotation_steps": needed_rotation_steps,
-        "encrypt_once_bsgs_us": encrypt_once_bsgs_us,
-        "encrypt_once_jkls_us": encrypt_once_jkls_us,
-        "decrypt_once_bsgs_us": decrypt_once_bsgs_us,
-        "decrypt_once_jkls_us": decrypt_once_jkls_us,
-        "direct_primitive_stats": direct_stats,
+        "encrypt_once_us": encrypt_once_us,
+        "decrypt_once_us": decrypt_once_us,
         "final_max_abs_err_bsgs": final_err_bsgs,
-        "final_max_abs_err_jkls": final_err_jkls,
         "rounds_bsgs": rounds_bsgs,
-        "rounds_jkls": rounds_jkls,
         "post_round2_summary": {
-            "bsgs_cache_build_us_median": median([r["cache_build_us"] for r in rounds_bsgs[1:]]),
-            "bsgs_core_us_median": median([r["core_us"] for r in rounds_bsgs[1:]]),
-            "jkls_core_us_median": median([r["core_us"] for r in rounds_jkls[1:]]),
-            "bsgs_pmult_avg_us_median": median([r["primitive_stats"]["pMult_avg_us"] for r in rounds_bsgs[1:]]),
-            "jkls_pmult_avg_us_median": median([r["primitive_stats"]["pMult_avg_us"] for r in rounds_jkls[1:]]),
-            "bsgs_add_avg_us_median": median([r["primitive_stats"]["add_avg_us"] for r in rounds_bsgs[1:]]),
-            "jkls_add_avg_us_median": median([r["primitive_stats"]["add_avg_us"] for r in rounds_jkls[1:]]),
-            "bsgs_rotate_avg_us_median": median([r["primitive_stats"]["rotate_avg_us"] for r in rounds_bsgs[1:]]),
-            "jkls_rotate_avg_us_median": median([r["primitive_stats"]["rotate_avg_us"] for r in rounds_jkls[1:]]),
+            "cache_build_us_median": median([r["cache_build_us"] for r in rounds_bsgs[1:]]),
+            "core_us_median": median([r["core_us"] for r in rounds_bsgs[1:]]),
+            "pmult_avg_us_median": median([r["primitive_stats"]["pMult_avg_us"] for r in rounds_bsgs[1:]]),
+            "add_avg_us_median": median([r["primitive_stats"]["add_avg_us"] for r in rounds_bsgs[1:]]),
+            "rotate_avg_us_median": median([r["primitive_stats"]["rotate_avg_us"] for r in rounds_bsgs[1:]]),
         },
     }
 

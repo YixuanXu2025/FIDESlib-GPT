@@ -10,6 +10,7 @@ from .config import HEConfig
 class FidesContext:
     """
     对 _fideslib.FidesCKKSContext 的轻包装。
+    这一版先只透传 first_mod_size / num_large_digits。
     """
 
     def __init__(
@@ -20,10 +21,6 @@ class FidesContext:
         ring_dim: int = 1 << 14,
         first_mod_size: Optional[int] = None,
         num_large_digits: Optional[int] = None,
-        scaling_technique: Optional[str] = None,
-        key_switch_technique: Optional[str] = None,
-        security_level: Optional[str] = None,
-        secret_key_dist: Optional[str] = None,
         devices=None,
         plaintext_autoload: bool = True,
         ciphertext_autoload: bool = True,
@@ -41,16 +38,16 @@ class FidesContext:
             ring_dim=int(ring_dim),
             first_mod_size=-1 if first_mod_size is None else int(first_mod_size),
             num_large_digits=-1 if num_large_digits is None else int(num_large_digits),
-            scaling_technique="" if scaling_technique is None else str(scaling_technique),
-            key_switch_technique="" if key_switch_technique is None else str(key_switch_technique),
-            security_level="" if security_level is None else str(security_level),
-            secret_key_dist="" if secret_key_dist is None else str(secret_key_dist),
             devices=list(devices),
             plaintext_autoload=bool(plaintext_autoload),
             ciphertext_autoload=bool(ciphertext_autoload),
             with_mult_key=bool(with_mult_key),
             rotation_steps=[int(s) for s in rotation_steps],
         )
+
+    # ----------------------------------------------------------
+    # 旧最小接口
+    # ----------------------------------------------------------
 
     def info(self):
         return dict(self._ctx.info())
@@ -69,6 +66,10 @@ class FidesContext:
             [float(v) for v in x],
             float(scalar),
         )
+
+    # ----------------------------------------------------------
+    # ciphertext-handle 接口
+    # ----------------------------------------------------------
 
     def encrypt(self, x):
         return self._ctx.encrypt([float(v) for v in x])
@@ -124,10 +125,6 @@ class HERuntime:
             ring_dim=self.cfg.ring_dim,
             first_mod_size=self.cfg.first_mod_size,
             num_large_digits=self.cfg.num_large_digits,
-            scaling_technique=self.cfg.scaling_technique,
-            key_switch_technique=self.cfg.key_switch_technique,
-            security_level=self.cfg.security_level,
-            secret_key_dist=self.cfg.secret_key_dist,
             devices=list(self.cfg.devices),
             plaintext_autoload=self.cfg.plaintext_autoload,
             ciphertext_autoload=self.cfg.ciphertext_autoload,
@@ -144,6 +141,10 @@ class HERuntime:
             raise RuntimeError("HERuntime is not initialized")
         return self.ctx
 
+    # ----------------------------------------------------------
+    # 旧最小接口
+    # ----------------------------------------------------------
+
     def info(self):
         return self.require_context().info()
 
@@ -155,6 +156,10 @@ class HERuntime:
 
     def mult_scalar(self, x, scalar):
         return self.require_context().mult_scalar(x, scalar)
+
+    # ----------------------------------------------------------
+    # ciphertext-handle 接口
+    # ----------------------------------------------------------
 
     def encrypt(self, x):
         return self.require_context().encrypt(x)
