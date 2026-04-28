@@ -1,0 +1,20 @@
+[ 50%] Built target fideslib_gpt_minimal
+[ 66%] Building CXX object CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘std::vector<CiphertextHandle> FidesCKKSContext::component_linear_matmul_gpu_fused_raw(const std::vector<CiphertextHandle>&, const std::vector<std::vector<double> >&, bool)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:952:35: error: ‘gpu_chain_cpu_template_’ was not declared in this scope; did you mean ‘have_cpu_template’?
+  952 |         if (!have_cpu_template && gpu_chain_cpu_template_.has_value()) {
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~
+      |                                   have_cpu_template
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:965:9: error: ‘gpu_chain_cpu_template_’ was not declared in this scope; did you mean ‘have_cpu_template’?
+  965 |         gpu_chain_cpu_template_ = cpu_template;
+      |         ^~~~~~~~~~~~~~~~~~~~~~~
+      |         have_cpu_template
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:966:9: error: ‘gpu_chain_slots_’ was not declared in this scope
+  966 |         gpu_chain_slots_ = cpu_template->GetSlots();
+      |         ^~~~~~~~~~~~~~~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:969:9: error: ‘gpu_chain_moduli_’ was not declared in this scope
+  969 |         gpu_chain_moduli_.clear();
+      |         ^~~~~~~~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/_fideslib.dir/build.make:79: CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:90: CMakeFiles/_fideslib.dir/all] Error 2
+gmake: *** [Makefile:91: all] Error 2

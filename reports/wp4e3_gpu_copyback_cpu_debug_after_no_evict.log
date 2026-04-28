@@ -1,0 +1,37 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+WP4-E3 GPU -> CPU copyback debug
+====================================================================================================
+input state:
+{'valid': True, 'loaded': True, 'gpu': 2, 'has_cpu': True, 'level': 4294967295, 'noise_scale_deg': 2, 'original_level': 18446744069414584323}
+original_decrypt_error=None
+original_err_to_input=9.976742e-14
+----------------------------------------------------------------------------------------------------
+rev=0
+{'valid': True, 'loaded': False, 'gpu': 0, 'has_cpu': True, 'level': 4294967295, 'noise_scale_deg': 2, 'original_level': 3}
+decrypt_error=RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/ckkspackedencoding.cpp:l.453:Decode(): The decryption failed because the approximation error is too high. Check the parameters. ')
+----------------------------------------------------------------------------------------------------
+rev=1
+{'valid': True, 'loaded': False, 'gpu': 0, 'has_cpu': True, 'level': 4294967295, 'noise_scale_deg': 2, 'original_level': 3}
+decrypt_error=None
+err_to_input=1.129929e-13
+err_to_original_decrypt=1.728895e-13
+====================================================================================================
+报告已保存
+JSON路径: /workspace/FIDESlib-GPT/reports/wp4e3_gpu_copyback_cpu_debug_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

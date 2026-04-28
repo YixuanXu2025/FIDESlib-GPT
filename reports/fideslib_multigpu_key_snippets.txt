@@ -1,0 +1,589 @@
+============================================================
+Context.cu: P2P / NCCL init area
+============================================================
+   660	                                  precomp.StC.at(0).A.at(0).c0.isModUp() * specialMeta[0].size()) +
+   661	                             precomp.CtS.size() * precomp.CtS.at(0).A.size() *
+   662	                                 (1 + precomp.CtS.at(0).A.at(0).c0.getLevel() +
+   663	                                  precomp.CtS.at(0).A.at(0).c0.isModUp() * specialMeta[0].size()))) *
+   664	                         N * 8 / (1 << 20)
+   665	                  << "MB\n";
+   666	    }
+   667	
+   668	    precom.boot.emplace(slots, std::move(precomp));
+   669	}
+   670	
+   671	FIDESlib::CKKS::RESCALE_TECHNIQUE ContextData::translateRescalingTechnique(lbcrypto::ScalingTechnique technique) {
+   672	    return technique == lbcrypto::ScalingTechnique::FIXEDAUTO         ? FIDESlib::CKKS::FIXEDAUTO
+   673	           : technique == lbcrypto::ScalingTechnique::FIXEDMANUAL     ? FIDESlib::CKKS::FIXEDMANUAL
+   674	           : technique == lbcrypto::ScalingTechnique::FLEXIBLEAUTOEXT ? FIDESlib::CKKS::FLEXIBLEAUTOEXT
+   675	           : technique == lbcrypto::ScalingTechnique::FLEXIBLEAUTO    ? FIDESlib::CKKS::FLEXIBLEAUTO
+   676	                                                                      : FIDESlib::CKKS::NO_RESCALE;
+   677	}
+   678	
+   679	void ContextData::PrepareNCCLCommunication() {
+   680	
+   681	    if (GPUid.size() > 1) {
+   682	
+   683	        std::set<int> ids;
+   684	        for (int i : GPUid)
+   685	            ids.insert(i);
+   686	        int num_ranks = ids.size();
+   687	
+   688	        bool p2p = true;
+   689	        for (auto& i : ids) {
+   690	            cudaSetDevice(i);
+   691	            for (auto& j : ids) {
+   692	                if (i != j) {
+   693	                    int canAccessPeer;
+   694	                    cudaDeviceCanAccessPeer(&canAccessPeer, i, j);
+   695	                    if (canAccessPeer)
+   696	                        cudaDeviceEnablePeerAccess(j, 0);
+   697	                    else
+   698	                        p2p = false;
+   699	
+   700	                    cudaDeviceCanAccessPeer(&canAccessPeer, j, i);
+   701	                    if (canAccessPeer)
+   702	                        cudaDeviceEnablePeerAccess(j, 0);
+   703	                    else
+   704	                        p2p = false;
+   705	                }
+   706	            }
+   707	        }
+   708	        this->canP2P = p2p;
+   709	        std::cout << "GPU P2P? " << this->canP2P << std::endl;
+   710	
+   711	        /*
+   712	        if (GPUid.size() > 1) {
+   713	            if (this->canP2P)
+   714	                std::cout << "P2P (Nvlink?) detected" << std::endl;
+   715	            else
+   716	                std::cout << "NO P2P" << std::endl;
+   717	        }*/
+   718	#ifdef NCCL
+   719	        NCCLCHECK(ncclGetUniqueId(&communicatorID));
+   720	        GPUrank.resize(GPUid.size());
+   721	        ncclGroupStart();
+   722	        for (int i = 0; i < GPUid.size(); i++) {
+   723	            cudaSetDevice(GPUid[i]);
+   724	            if (precom.dev_to_communicator[GPUid[i]] == nullptr) {
+   725	                NCCLCHECK(ncclCommInitRank(GPUrank.data() + i, num_ranks, communicatorID, i));
+   726	                precom.dev_to_communicator[GPUid[i]] = GPUrank.data() + i;
+   727	            } else {
+   728	                GPUrank[i] = *precom.dev_to_communicator[GPUid[i]];
+   729	            }
+   730	        }
+   731	        ncclGroupEnd();
+   732	#endif
+   733	        cudaDeviceSynchronize();
+   734	    }
+   735	
+   736	    top_limb_stream.resize(2 * GPUid.size());
+   737	    top_limb_stream2.resize(2 * GPUid.size());
+   738	    top_limb_buffer.resize(2 * GPUid.size());
+   739	    top_limb_buffer2.resize(2 * GPUid.size());
+   740	    top_limb_buffer_handle.resize(2 * GPUid.size());
+   741	    top_limb_buffer2_handle.resize(2 * GPUid.size());
+   742	    for (size_t i = 0; i < 2 * GPUid.size(); ++i) {
+   743	        int g = i % GPUid.size();
+   744	        cudaSetDevice(GPUid[g]);
+   745	
+   746	        top_limb_stream[g].init(100);
+   747	        top_limb_stream2[g].init(100);
+   748	
+   749	        if (GPUid.size() > 1) {
+   750	#ifdef NCCL
+   751	            NCCLCHECK(ncclMemAlloc((void**)&top_limb_buffer[i], sizeof(uint64_t) * N));
+   752	            NCCLCHECK(
+   753	                ncclCommRegister(GPUrank[g], top_limb_buffer[i], sizeof(uint64_t) * N, &top_limb_buffer_handle[i]));
+   754	            NCCLCHECK(ncclMemAlloc((void**)&top_limb_buffer2[i], sizeof(uint64_t) * N));
+   755	            NCCLCHECK(
+   756	                ncclCommRegister(GPUrank[g], top_limb_buffer2[i], sizeof(uint64_t) * N, &top_limb_buffer2_handle[i]));
+   757	#else
+   758	            cudaMalloc((void**)&top_limb_buffer[i], sizeof(uint63_t) * N);
+   759	            cudaMalloc((void**)&top_limb_buffer2[i], sizeof(uint64_t) * N);
+   760	#endif
+
+============================================================
+Context.cu: NCCL communicator / buffer area
+============================================================
+   760	#endif
+   761	        } else {
+   762	            cudaMalloc((void**)&top_limb_buffer[i], sizeof(uint64_t) * N);
+   763	            cudaMalloc((void**)&top_limb_buffer2[i], sizeof(uint64_t) * N);
+   764	        }
+   765	        //cudaDeviceSynchronize();
+   766	        top_limbptr.emplace_back(top_limb_stream[g], 1, GPUid[g], (void**)&top_limb_buffer[i]);
+   767	        top_limbptr2.emplace_back(top_limb_stream2[g], 1, GPUid[g], (void**)&top_limb_buffer2[i]);
+   768	        gatherStream.resize(GPUid.size());
+   769	
+   770	        for (size_t i = 0; i < GPUid.size(); ++i) {
+   771	            gatherStream[i].resize(GPUid.size());
+   772	            for (size_t j = 0; j < GPUid.size(); ++j) {
+   773	                cudaSetDevice(GPUid[j]);
+   774	                gatherStream[i][j].init(100);
+   775	            }
+   776	        }
+   777	
+   778	        /* for (int i = 0; i < dnum; ++i) {
+   779	            key_switch_digits.emplace_back(*this, L, true);
+   780	            key_switch_digits.back().generateSpecialLimbs();
+   781	        }*/
+   782	
+   783	        CudaCheckErrorModNoSync;
+   784	    }
+   785	
+   786	    digitStream.resize(dnum);
+   787	    digitStreamForMemcpyPeer.resize(dnum);
+   788	    for (int i = 0; i < dnum; ++i) {
+   789	        digitStream[i].resize(GPUid.size());
+   790	        digitStreamForMemcpyPeer[i].resize(GPUid.size());
+   791	        for (size_t j = 0; j < GPUid.size(); ++j) {
+   792	            cudaSetDevice(GPUid[j]);
+   793	            digitStream[i][j].init(100);
+   794	            digitStreamForMemcpyPeer[i][j].resize(GPUid.size());
+   795	            for (size_t k = 0; k < GPUid.size(); ++k) {
+   796	                digitStreamForMemcpyPeer[i][j][k].init(100);
+   797	            }
+   798	        }
+   799	    }
+   800	
+   801	    digitStream2.resize(dnum);
+   802	    for (int i = 0; i < dnum; ++i) {
+   803	        digitStream2[i].resize(GPUid.size());
+   804	        for (size_t j = 0; j < GPUid.size(); ++j) {
+   805	            cudaSetDevice(GPUid[j]);
+   806	            digitStream2[i][j].init();
+   807	        }
+   808	    }
+   809	}
+   810	
+   811	const std::vector<int> ContextData::generateDigitGPUid(std::vector<std::vector<LimbRecord>>& meta, const int L,
+   812	                                                       const int dnum) {
+   813	    std::vector<int> res(dnum);
+   814	    for (size_t i = 0; i < meta.size(); ++i) {
+   815	        for (auto& j : meta[i]) {
+   816	            res[j.digit] = i;
+   817	        }
+   818	    }
+   819	    return res;
+   820	}
+   821	
+   822	std::vector<std::vector<LimbRecord>> ContextData::generateSplitSpecialMeta(std::vector<LimbRecord>& specialMeta,
+   823	                                                                           const std::vector<int> GPUid) {
+   824	    std::vector<std::vector<LimbRecord>> res(GPUid.size());
+   825	
+   826	    int init = 0;
+   827	    for (int i = 0; i < GPUid.size(); ++i) {
+   828	        cudaSetDevice(GPUid[i]);
+   829	        int num = (specialMeta.size() - init) / (GPUid.size() - i);
+   830	        for (int j = init; j < init + num; ++j) {
+   831	            res[i].emplace_back(
+   832	                LimbRecord{.id = specialMeta[j].id, .type = specialMeta[j].type, .digit = specialMeta[j].digit});
+   833	            res[i].back().stream.init();
+   834	        }
+   835	        init += num;
+   836	    }
+   837	    return res;
+   838	}
+   839	
+   840	ContextData::~ContextData() {
+   841	    CudaCheckErrorMod;
+   842	    key_switch_aux.reset(nullptr);
+   843	    //   CudaCheckErrorMod;
+   844	    key_switch_aux2.reset(nullptr);
+   845	    //   CudaCheckErrorMod;
+   846	    for (auto& i : moddown_aux) {
+   847	        i.reset(nullptr);
+   848	    }
+   849	    //   CudaCheckErrorMod;
+   850	    precom.auxPoly.clear();
+   851	    //   CudaCheckErrorMod;
+   852	    precom.monomialCache.clear();
+   853	    //   CudaCheckErrorMod;
+   854	    precom.boot.clear();
+   855	    //   CudaCheckErrorMod;
+   856	    for (size_t i = 0; i < top_limbptr.size(); ++i) {
+   857	        int g = i % GPUid.size();
+   858	        cudaSetDevice(GPUid[g]);
+   859	        if (GPUid.size() > 1) {
+   860	#ifdef NCCL
+   861	            if (top_limb_buffer_handle[i])
+   862	                NCCLCHECK(ncclCommDeregister(GPUrank[g], top_limb_buffer_handle[i]));
+   863	            if (top_limb_buffer2_handle[i])
+   864	                NCCLCHECK(ncclCommDeregister(GPUrank[g], top_limb_buffer2_handle[i]));
+   865	            NCCLCHECK(ncclMemFree(top_limb_buffer[i]));
+   866	            NCCLCHECK(ncclMemFree(top_limb_buffer2[i]));
+   867	#else
+   868	
+   869	            cudaFree(top_limb_buffer[i]);
+   870	            cudaFree(top_limb_buffer2[i]);
+   871	#endif
+   872	        } else {
+   873	            cudaFree(top_limb_buffer[i]);
+   874	            cudaFree(top_limb_buffer2[i]);
+   875	        }
+   876	        top_limbptr[i].free(top_limb_stream[g]);
+   877	        top_limbptr2[i].free(top_limb_stream2[g]);
+   878	    }
+   879	    top_limbptr.clear();
+   880	    top_limbptr2.clear();
+
+============================================================
+Context.cu: cleanup area
+============================================================
+   840	ContextData::~ContextData() {
+   841	    CudaCheckErrorMod;
+   842	    key_switch_aux.reset(nullptr);
+   843	    //   CudaCheckErrorMod;
+   844	    key_switch_aux2.reset(nullptr);
+   845	    //   CudaCheckErrorMod;
+   846	    for (auto& i : moddown_aux) {
+   847	        i.reset(nullptr);
+   848	    }
+   849	    //   CudaCheckErrorMod;
+   850	    precom.auxPoly.clear();
+   851	    //   CudaCheckErrorMod;
+   852	    precom.monomialCache.clear();
+   853	    //   CudaCheckErrorMod;
+   854	    precom.boot.clear();
+   855	    //   CudaCheckErrorMod;
+   856	    for (size_t i = 0; i < top_limbptr.size(); ++i) {
+   857	        int g = i % GPUid.size();
+   858	        cudaSetDevice(GPUid[g]);
+   859	        if (GPUid.size() > 1) {
+   860	#ifdef NCCL
+   861	            if (top_limb_buffer_handle[i])
+   862	                NCCLCHECK(ncclCommDeregister(GPUrank[g], top_limb_buffer_handle[i]));
+   863	            if (top_limb_buffer2_handle[i])
+   864	                NCCLCHECK(ncclCommDeregister(GPUrank[g], top_limb_buffer2_handle[i]));
+   865	            NCCLCHECK(ncclMemFree(top_limb_buffer[i]));
+   866	            NCCLCHECK(ncclMemFree(top_limb_buffer2[i]));
+   867	#else
+   868	
+   869	            cudaFree(top_limb_buffer[i]);
+   870	            cudaFree(top_limb_buffer2[i]);
+   871	#endif
+   872	        } else {
+   873	            cudaFree(top_limb_buffer[i]);
+   874	            cudaFree(top_limb_buffer2[i]);
+   875	        }
+   876	        top_limbptr[i].free(top_limb_stream[g]);
+   877	        top_limbptr2[i].free(top_limb_stream2[g]);
+   878	    }
+   879	    top_limbptr.clear();
+   880	    top_limbptr2.clear();
+   881	    CudaCheckErrorMod;
+   882	#ifdef NCCL
+   883	    NCCLCHECK(ncclGroupStart());
+   884	    for (auto rank : precom.dev_to_communicator) {
+   885	        if (rank.second) {
+   886	            cudaSetDevice(rank.first);
+   887	            NCCLCHECK(ncclCommFinalize(*rank.second));
+   888	            // CudaCheckErrorMod;
+   889	            NCCLCHECK(ncclCommDestroy(*rank.second));
+   890	            // CudaCheckErrorMod;
+   891	        }
+   892	    }
+   893	    NCCLCHECK(ncclGroupEnd());
+   894	#endif
+   895	    Ciphertext::clearOpRecord();
+   896	    CudaCheckErrorMod;
+   897	}
+   898	
+   899	bool ContextData::hasAuxilarPoly() const {
+   900	    return precom.auxPoly.empty();
+   901	}
+   902	
+   903	RNSPoly ContextData::getAuxilarPoly() {
+   904	
+   905	    if (precom.auxPoly.empty()) {
+   906	        return RNSPoly(*this);
+   907	    } else {
+   908	        RNSPoly res(std::move(precom.auxPoly.back()));
+   909	        precom.auxPoly.pop_back();
+   910	        return res;
+
+============================================================
+LimbPartitionMGPU.cu around first cudaMemcpyPeerAsync
+============================================================
+   100	            //STREAM(top).wait(stream);
+   101	            //cudaMemcpyAsync(buffer, std::get<U64>(top).v.data, cc.N * sizeof(uint64_t), cudaMemcpyDeviceToDevice,
+   102	            //                STREAM(top).ptr());
+   103	            //stream.wait(STREAM(top));
+   104	            /*
+   105	            std::cout << "GPU: " << id << " ";
+   106	            SWITCH(top, printThisLimb(2));
+   107	            std::cout << std::endl;
+   108	*/
+   109	            //while (bufferLIMB == nullptr && limb.size() > limbsize - 1) {
+   110	            //    STREAM(limb.back()).wait(stream);
+   111	            //    limb.pop_back();
+   112	            //}
+   113	        } else {
+   114	            std::cout << "Cant find the top limb!!!" << id << " " << *level << " " << cc.limbGPUid[*level].y << " "
+   115	                      << limb.size() << std::endl;
+   116	        }
+   117	    } else {
+   118	        //stream.wait(s);
+   119	    }
+   120	
+   121	    if (cc.GPUid.size() > 1) {
+   122	        if (MEMCPY_PEER) {
+   123	
+   124	            int top_gpu = cc.limbGPUid[*level].x;
+   125	            if (top_gpu == id)
+   126	                stream.record();
+   127	
+   128	            openmp_synchronize();
+   129	
+   130	            if (top_gpu != id) {
+   131	                for (int i = 0; i < cc.GPUid.size(); ++i) {
+   132	                    if (i == id) {
+   133	                        //cudaSetDevice(cc.GPUid[i]);
+   134	                        stream.wait(cc.top_limb_stream[top_gpu]);
+   135	                        cudaMemcpyPeerAsync(buffer, cc.GPUid[i], cc.top_limb_buffer[top_gpu], cc.GPUid[top_gpu],
+   136	                                            cc.N * sizeof(uint64_t), stream.ptr());
+   137	                    }
+   138	                    CudaCheckErrorModNoSync;
+   139	                }
+   140	                cudaSetDevice(device);
+   141	            }
+   142	        } else {
+   143	
+   144	#ifdef NCCL
+   145	            if constexpr (0) {
+   146	                NCCLCHECK(ncclBroadcast(buffer, buffer, cc.N, ncclUint64, cc.limbGPUid[*level].x, rank, stream.ptr()));
+   147	            } else {
+   148	                NCCLCHECK(ncclGroupStart());
+   149	                if (id == cc.limbGPUid[*level].x) {
+   150	                    for (int i = 0; i < cc.GPUid.size(); ++i) {
+   151	                        if (i != id)
+   152	                            ncclSend(buffer, cc.N, ncclUint64, i, rank, stream.ptr());
+   153	                    }
+   154	                } else {
+   155	                    ncclRecv(buffer, cc.N, ncclUint64, cc.limbGPUid[*level].x, rank, stream.ptr());
+   156	                }
+   157	                NCCLCHECK(ncclGroupEnd());
+   158	            }
+   159	#else
+   160	            assert(false);
+   161	#endif
+   162	        }
+   163	    }
+   164	    /* {
+   165	        std::vector<uint64_t> data(cc.N, 0);
+   166	        cudaMemcpyAsync(data.data(), buffer, cc.N * sizeof(uint64_t), cudaMemcpyDeviceToHost, stream.ptr());
+   167	        cudaDeviceSynchronize();
+   168	        std::cout << "GPU " << id << " (" << data[0] << " " << data[1] << ")" << std::endl;
+   169	    } */
+   170	
+   171	    {
+   172	        {
+   173	            stream.wait(s);
+   174	            constexpr ALGO algo = ALGO_SHOUP;
+   175	            constexpr int M = 4;
+   176	
+   177	            const dim3 blockDimFirst{(uint32_t)(1 << ((cc.logN + 1) / 2 - 1))};
+   178	            const dim3 blockDimSecond = dim3{(uint32_t)(1 << ((cc.logN) / 2 - 1))};
+   179	            const int bytesFirst = 8 * blockDimFirst.x * (2 * M + 1 + (algo == 2 || algo == ALGO_SHOUP ? 1 : 0));
+   180	            const int bytesSecond = 8 * blockDimSecond.x * (2 * M + 1 + (algo == 2 || algo == ALGO_SHOUP ? 1 : 0));
+
+============================================================
+LimbPartitionMGPU.cu around second cudaMemcpyPeerAsync
+============================================================
+   280	            //stream[i]->record();
+   281	        }
+   282	    }
+   283	
+   284	    if (cc.GPUid.size() > 1) {
+   285	        if (MEMCPY_PEER) {
+   286	            //openmp_synchronize();
+   287	
+   288	            int top_gpu = cc.limbGPUid[*level].x;
+   289	            if (top_gpu == id) {
+   290	                stream[0]->record();
+   291	                stream[1]->record();
+   292	            }
+   293	            openmp_synchronize();
+   294	
+   295	            if (top_gpu != id) {
+   296	                for (int i = 0; i < cc.GPUid.size(); ++i) {
+   297	
+   298	                    if (i == id) {
+   299	                        {
+   300	                            // auto& stream_0 = cc.digitStreamForMemcpyPeer[0].at(id).at(i);
+   301	                            // auto& stream_1 = cc.digitStreamForMemcpyPeer[cc.dnum > 1 ? 1 : 0].at(id).at(i);
+   302	
+   303	                            if (limbsize > 0) {
+   304	                                stream[0]->wait(cc.top_limb_stream[top_gpu]);
+   305	                                stream[1]->wait(cc.top_limb_stream2[top_gpu]);
+   306	
+   307	                                //stream_0.wait(cc.top_limb_stream[i]);
+   308	                                //stream_1.wait(cc.top_limb_stream2[i]);
+   309	                                cudaMemcpyPeerAsync(buffer[0], cc.GPUid[i], cc.top_limb_buffer[top_gpu],
+   310	                                                    cc.GPUid[top_gpu], cc.N * sizeof(uint64_t), stream[0]->ptr());
+   311	                                cudaMemcpyPeerAsync(buffer[1], cc.GPUid[i], cc.top_limb_buffer2[top_gpu],
+   312	                                                    cc.GPUid[top_gpu], cc.N * sizeof(uint64_t), stream[1]->ptr());
+   313	                            }
+   314	                        }
+   315	                    }
+   316	                    CudaCheckErrorModNoSync;
+   317	                }
+   318	
+   319	                cudaSetDevice(device);
+   320	            }
+   321	        } else {
+   322	#ifdef NCCL
+   323	            {
+   324	                NCCLCHECK(ncclGroupStart());
+   325	                if (id == cc.limbGPUid[*level].x) {
+   326	                    for (int i = 0; i < cc.GPUid.size(); ++i) {
+   327	                        if (i != id) {
+   328	                            ncclSend(buffer[0], cc.N, ncclUint64, i, rank, stream[0]->ptr());
+   329	                            ncclSend(buffer[1], cc.N, ncclUint64, i, rank, stream[1]->ptr());
+   330	                        }
+   331	                    }
+   332	                } else {
+   333	                    ncclRecv(buffer[0], cc.N, ncclUint64, cc.limbGPUid[*part[0]->level].x, rank, stream[0]->ptr());
+   334	                    ncclRecv(buffer[1], cc.N, ncclUint64, cc.limbGPUid[*part[1]->level].x, rank, stream[1]->ptr());
+   335	                }
+   336	                NCCLCHECK(ncclGroupEnd());
+   337	            }
+   338	#else
+   339	            assert(false);
+   340	#endif
+
+============================================================
+LimbPartitionMGPU.cu around late cudaMemcpyPeerAsync
+============================================================
+  2370	            if constexpr (PRINT)
+  2371	                std::cout << "/** communicate */" << std::endl;
+  2372	
+  2373	            if (cc.GPUid.size() > 1) {
+  2374	                if (MEMCPY_PEER) {
+  2375	                    for (int j = 0; j < cc.GPUid.size(); ++j) {
+  2376	                        cc.digitStreamForMemcpyPeer[0].at(j).at(id).wait(
+  2377	                            s);  // to pass dependency up to the communication
+  2378	                    }
+  2379	                    CudaCheckErrorModNoSync;
+  2380	                    openmp_synchronize();
+  2381	
+  2382	                    for (size_t i = 0; i < cc.splitSpecialMeta.size(); ++i) {
+  2383	                        //Limb<uint64_t>& l = std::get<U64>(
+  2384	                        //    this->SPECIALlimb.at(cc.splitSpecialMeta.at(i).at(0).id - cc.specialMeta.at(id).at(0).id));
+  2385	                        const uint32_t num_limbs = cc.splitSpecialMeta.at(i).size();
+  2386	                        //uint64_t* ptr2 = l.v.data;
+  2387	
+  2388	                        if (id == i) {
+  2389	                            if (num_limbs > 0) {
+  2390	                                uint64_t* ptr = auxLimbs.bufferSPECIAL +
+  2391	                                                (cc.splitSpecialMeta.at(i).at(0).id - SPECIALmeta.at(0).id) * cc.N;
+  2392	
+  2393	                                for (int j = 0; j < cc.GPUid.size(); ++j) {
+  2394	                                    if (j != i) {
+  2395	                                        Stream& stream_ = cc.digitStreamForMemcpyPeer.at(0).at(i).at(j);
+  2396	                                        stream_.wait(stream);
+  2397	
+  2398	                                        CudaCheckErrorModNoSync;
+  2399	                                        cudaMemcpyPeerAsync(
+  2400	                                            bufferSpecial_[j] +
+  2401	                                                (cc.splitSpecialMeta.at(i).at(0).id - SPECIALmeta.at(0).id) * cc.N,
+  2402	                                            cc.GPUid[j], ptr, cc.GPUid[i], sizeof(uint64_t) * cc.N * num_limbs,
+  2403	                                            stream_.ptr());
+  2404	                                        CudaCheckErrorModNoSync;
+  2405	                                    }
+  2406	                                }
+  2407	
+  2408	                                for (int j = 0; j < cc.GPUid.size(); ++j) {
+  2409	                                    if (j != i) {
+  2410	                                        Stream& stream_ = cc.digitStreamForMemcpyPeer.at(0).at(id).at(j);
+  2411	                                        //stream.wait(stream_);
+  2412	                                    }
+  2413	                                }
+  2414	                            }
+  2415	                        }
+  2416	                    }
+  2417	                    openmp_synchronize();
+  2418	
+  2419	                    for (size_t i = 0; i < cc.splitSpecialMeta.size(); ++i) {
+  2420	                        //Limb<uint64_t>& l = std::get<U64>(
+
+============================================================
+PeerUtils.cu around cudaMemcpyPeerAsync
+============================================================
+   730	    // Vectorized path: copy 4 floats (16B) at a time
+   731	    size_t n4 = n / 4;  // number of float4 chunks
+   732	    for (size_t i = idx; i < n4; i += stride) {
+   733	        reinterpret_cast<float4*>(dst)[i] = reinterpret_cast<const float4*>(src)[i];
+   734	    }
+   735	
+   736	    // Remainder path: handle last 0–3 elements
+   737	    size_t base = n4 * 4;
+   738	    for (size_t i = base + idx; i < n; i += stride) {
+   739	        dst[i] = src[i];
+   740	    }
+   741	}
+   742	void transferKernel(float* src, float* dst, size_t elems, cudaStream_t s, size_t involved_sm) {
+   743	    //return;
+   744	    if (is_stream_being_captured(s)) {
+   745	
+   746	        cudaGraph_t _capturing_graph;
+   747	        cudaStreamCaptureStatus _capture_status;
+   748	        const cudaGraphNode_t* _deps;
+   749	        size_t _dep_count;
+   750	        cudaStreamGetCaptureInfo(s, &_capture_status, nullptr, &_capturing_graph, &_deps, &_dep_count);
+   751	
+   752	        cudaGraphNode_t copy_0to1;
+   753	        cudaMemcpy3DParms memcpyParams = {0};
+   754	
+   755	        memset(&memcpyParams, 0, sizeof(memcpyParams));
+   756	        memcpyParams.srcArray = NULL;
+   757	        memcpyParams.srcPos = make_cudaPos(0, 0, 0);
+   758	        memcpyParams.srcPtr = make_cudaPitchedPtr(src, elems * sizeof(float), elems * sizeof(float), 1);
+   759	
+   760	        memcpyParams.dstArray = NULL;
+   761	        memcpyParams.dstPos = make_cudaPos(0, 0, 0);
+   762	        memcpyParams.dstPtr = make_cudaPitchedPtr(dst, elems * sizeof(float), elems * sizeof(float), 1);
+   763	        memcpyParams.extent = make_cudaExtent(elems * sizeof(float), 1, 1);
+   764	        memcpyParams.kind = cudaMemcpyDefault;
+   765	
+   766	        cudaGraphAddMemcpyNode(&copy_0to1, _capturing_graph, _deps, _dep_count, &memcpyParams);
+   767	
+   768	        cudaStreamUpdateCaptureDependencies(s, &copy_0to1, 1, 1);
+   769	
+   770	    } else if (!is_stream_being_captured(s)) {
+   771	        // p2p_transfer_1d<<<involved_sm, 128, 0, s>>>(src, dst, elems);
+   772	
+   773	        cudaPointerAttributes attr_src, attr_dst;
+   774	        cudaPointerGetAttributes(&attr_src, src);
+   775	        cudaPointerGetAttributes(&attr_dst, dst);
+   776	        cudaMemcpyPeerAsync(dst, attr_dst.device, src, attr_src.device, elems * sizeof(float), s);
+   777	    } else if (1) {
+   778	
+   779	        CudaCheckErrorModNoSync;
+   780	        void* args[] = {&src, &dst, &elems};
+   781	
+   782	        cudaFunction_t kernel;
+   783	        CudaCheckErrorModNoSync;
+   784	        cudaGetFuncBySymbol(&kernel, (const void*)&p2p_transfer_1d);
+   785	        CudaCheckErrorModNoSync;
+   786	
+   787	        launch(kernel, involved_sm, 128, args, 3, s);
+   788	        CudaCheckErrorModNoSync;
+   789	    } else {
+   790	        // Get the current capturing graph context
+   791	        cudaStreamCaptureStatus capture_status;
+   792	        cudaGraph_t capturing_graph;
+   793	        const cudaGraphNode_t* deps;
+   794	        size_t dep_count;
+   795	
+   796	        cudaStreamGetCaptureInfo(s, &capture_status, nullptr, &capturing_graph, &deps, &dep_count);
+   797	
+   798	        // ========================================================================
+   799	        // Create peer access kernel node with V2 parameters (supports attributes)
+   800	        // ========================================================================
+   801	
+   802	        // Setup kernel parameters with launch attributes
+   803	        cudaKernelNodeParams kernel_params = {0};
+   804	        kernel_params.func = (void*)p2p_transfer_1d;
+   805	        kernel_params.gridDim = {(uint32_t)involved_sm, 1, 1};

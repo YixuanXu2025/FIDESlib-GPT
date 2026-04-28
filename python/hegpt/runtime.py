@@ -77,6 +77,40 @@ class FidesContext:
     def decrypt(self, ciphertext, logical_length: int = 0):
         return self._ctx.decrypt(ciphertext, int(logical_length))
 
+
+    def inspect_rlwe_components_cpu(self, ciphertext, coeff_sample: int = 8):
+        return self._ctx.inspect_rlwe_components_cpu(ciphertext, int(coeff_sample))
+
+
+    def roundtrip_rlwe_components_cpu(self, ciphertext):
+        return self._ctx.roundtrip_rlwe_components_cpu(ciphertext)
+
+
+    def component_int_linear_combination_cpu(self, rows, weights):
+        return self._ctx.component_int_linear_combination_cpu(rows, weights)
+
+
+
+    def ciphertext_storage_state(self, ciphertext):
+        return self._ctx.ciphertext_storage_state(ciphertext)
+
+    def component_linear_wsum_gpu(self, rows, weights):
+        return self._ctx.component_linear_wsum_gpu(rows, [float(v) for v in weights])
+
+
+    def component_linear_wsum_gpu_fused_raw(self, rows, weights):
+        return self._ctx.component_linear_wsum_gpu_fused_raw(rows, [float(v) for v in weights])
+
+
+    def component_linear_matmul_gpu_fused_raw(self, rows, U, copyback: bool = True):
+        U2 = [[float(v) for v in row] for row in U]
+        return self._ctx.component_linear_matmul_gpu_fused_raw(rows, U2, bool(copyback))
+
+
+    def gpu_copyback_cpu_debug(self, ciphertext, rev: int = 0):
+        return self._ctx.gpu_copyback_cpu_debug(ciphertext, int(rev))
+
+
     def add_ct(self, a, b):
         return self._ctx.eval_add_ct(a, b)
 
@@ -167,6 +201,39 @@ class HERuntime:
     def decrypt(self, ciphertext, logical_length: int = 0):
         return self.require_context().decrypt(ciphertext, logical_length=logical_length)
 
+
+    def inspect_rlwe_components_cpu(self, ciphertext, coeff_sample: int = 8):
+        return self.require_context().inspect_rlwe_components_cpu(ciphertext, coeff_sample=coeff_sample)
+
+
+    def roundtrip_rlwe_components_cpu(self, ciphertext):
+        return self.require_context().roundtrip_rlwe_components_cpu(ciphertext)
+
+
+    def component_int_linear_combination_cpu(self, rows, weights):
+        return self.require_context().component_int_linear_combination_cpu(rows, weights)
+
+
+
+    def ciphertext_storage_state(self, ciphertext):
+        return self.require_context().ciphertext_storage_state(ciphertext)
+
+    def component_linear_wsum_gpu(self, rows, weights):
+        return self.require_context().component_linear_wsum_gpu(rows, weights)
+
+
+    def component_linear_wsum_gpu_fused_raw(self, rows, weights):
+        return self.require_context().component_linear_wsum_gpu_fused_raw(rows, weights)
+
+
+    def component_linear_matmul_gpu_fused_raw(self, rows, U, copyback: bool = True):
+        return self.require_context().component_linear_matmul_gpu_fused_raw(rows, U, copyback=copyback)
+
+
+    def gpu_copyback_cpu_debug(self, ciphertext, rev: int = 0):
+        return self.require_context().gpu_copyback_cpu_debug(ciphertext, rev=rev)
+
+
     def add_ct(self, a, b):
         return self.require_context().add_ct(a, b)
 
@@ -194,3 +261,7 @@ class HERuntime:
 
     def __exit__(self, exc_type, exc, tb):
         self.close()
+
+
+
+

@@ -1,0 +1,59 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+WP4-H2 matrix-level fused raw API performance breakdown
+====================================================================================================
+n_in=4, n_out=4, slots=8
+U=
+[[ 1  0 -1  2]
+ [ 0  1  1 -1]
+ [ 2 -1  0  1]
+ [-1  2  0  1]]
+----------------------------------------------------------------------------------------------------
+encrypt_rows: 60880.907 us
+matrix_fused_raw_gpu_only_copyback_false: 1914.381 us
+matrix_fused_raw_with_copyback: 49672.370 us
+perrow_fused_raw_with_copyback: 50111.635 us
+repeated_addsub_with_copyback: 47763.087 us
+cpu_component: 178866.140 us
+decrypt_all_outputs: 188713.275 us
+----------------------------------------------------------------------------------------------------
+input: 1.374456e-13
+matrix_to_ref: 1.173783e-13
+perrow_to_ref: 1.673661e-13
+repeated_to_ref: 2.699230e-13
+cpu_to_ref: 1.430522e-13
+matrix_to_perrow: 1.736389e-13
+matrix_to_repeated: 1.592892e-13
+matrix_to_cpu: 1.839362e-13
+----------------------------------------------------------------------------------------------------
+input0 state:
+{'valid': True, 'loaded': True, 'gpu': 2, 'has_cpu': True, 'level': 4294967295, 'noise_scale_deg': 2, 'original_level': 18446744069414584323}
+matrix nocpu output0 state:
+{'valid': True, 'loaded': True, 'gpu': 10, 'has_cpu': False, 'level': 4294967295, 'noise_scale_deg': 2, 'original_level': 3}
+matrix copyback output0 state:
+{'valid': True, 'loaded': True, 'gpu': 18, 'has_cpu': True, 'level': 4294967295, 'noise_scale_deg': 2, 'original_level': 3}
+perrow fused output0 state:
+{'valid': True, 'loaded': True, 'gpu': 26, 'has_cpu': True, 'level': 4294967295, 'noise_scale_deg': 2, 'original_level': 3}
+repeated output0 state:
+{'valid': True, 'loaded': True, 'gpu': 33, 'has_cpu': True, 'level': 4294967295, 'noise_scale_deg': 2, 'original_level': 3}
+cpu output0 state:
+{'valid': True, 'loaded': False, 'gpu': 0, 'has_cpu': True, 'level': 4294967295, 'noise_scale_deg': 2, 'original_level': 18446744069414584323}
+====================================================================================================
+报告已保存
+JSON路径: /workspace/FIDESlib-GPT/reports/wp4h2_matrix_api_perf_breakdown_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

@@ -1,0 +1,43 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+WP4-D component PCMM vs high-level HE add PCMM CPU debug
+====================================================================================================
+n_in=4, n_out=3, slots=8
+U=
+[[1 0 1 2]
+ [0 1 1 1]
+ [2 1 0 1]]
+----------------------------------------------------------------------------------------------------
+encrypt_rows_us=33657.523
+component_pcmm_core_us=128696.697
+highlevel_add_core_us=16263.215
+decrypt_outputs_us=49817.867
+----------------------------------------------------------------------------------------------------
+err_input=1.905004e-13
+err_component_to_ref=1.187939e-13
+err_highlevel_to_ref=1.115219e-13
+err_component_to_highlevel=2.102207e-13
+----------------------------------------------------------------------------------------------------
+component output0:
+  loaded=False gpu=0 parts=2 level=0 noise_deg=2 slots=8
+high-level output0:
+  loaded=True gpu=6 parts=2 level=0 noise_deg=2 slots=8
+====================================================================================================
+报告已保存
+JSON路径: /workspace/FIDESlib-GPT/reports/wp4d_component_vs_highlevel_add_pcmm_cpu_debug_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

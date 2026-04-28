@@ -1,0 +1,1790 @@
+============================================================
+WP4 exact FIDESlib raw/component API probe
+Generated at: Tue Apr 28 06:14:26 UTC 2026
+============================================================
+
+============================================================
+1) /root/fideslib/api/Ciphertext.hpp
+============================================================
+     1	#ifndef API_CIPHERTEXT_HPP
+     2	#define API_CIPHERTEXT_HPP
+     3	
+     4	#include <any>
+     5	#include <memory>
+     6	
+     7	#include "Definitions.hpp"
+     8	#include "CryptoContext.hpp"
+     9	
+    10	namespace fideslib {
+    11	
+    12	/// @brief Specialization of Ciphertext for the DCRTPoly representation.
+    13	template <> class CiphertextImpl<DCRTPoly> {
+    14	  public:
+    15		CiphertextImpl()  = delete;
+    16		~CiphertextImpl();
+    17	
+    18		CiphertextImpl(const CryptoContext<DCRTPoly>&& context);
+    19	
+    20		// ---- Copy ----
+    21	
+    22		CiphertextImpl(const CiphertextImpl<DCRTPoly>&);
+    23		CiphertextImpl(const Ciphertext<DCRTPoly>&);
+    24		CiphertextImpl& operator=(const CiphertextImpl<DCRTPoly>&) = delete;
+    25		CiphertextImpl& operator=(const Ciphertext<DCRTPoly>&)	   = delete;
+    26	
+    27		// ---- Move ----
+    28	
+    29		CiphertextImpl(CiphertextImpl<DCRTPoly>&&)			  = delete;
+    30		CiphertextImpl(Ciphertext<DCRTPoly>&&)				  = delete;
+    31		CiphertextImpl& operator=(CiphertextImpl<DCRTPoly>&&) = delete;
+    32		CiphertextImpl& operator=(Ciphertext<DCRTPoly>&&)	  = delete;
+    33	
+    34		// ---- Clone ----
+    35		Ciphertext<DCRTPoly> Clone() const;
+    36	
+    37		// ---- Getters ----
+    38	
+    39	    size_t GetLevel() const;
+    40		size_t GetNoiseScaleDeg() const;
+    41	
+    42		// ---- Setters ----
+    43		void SetSlots(size_t slots);
+    44		void SetLevel(size_t level);
+    45	
+    46		// ---- Internal State ----
+    47	
+    48		std::any cpu;
+    49		uint32_t gpu = 0;
+    50		/// @brief Flag indicating whether the ciphertext is loaded to the devices.
+    51		bool loaded = false;
+    52		/// @brief Parent context.
+    53		CryptoContext<DCRTPoly> parent_context;
+    54		/// @brief Original level of the ciphertext when loaded.
+    55		size_t original_level = 0;
+    56	};
+    57	
+    58	// ---- Override Operators ----
+    59	Ciphertext<DCRTPoly> operator+(const Ciphertext<DCRTPoly>& lhs, const Ciphertext<DCRTPoly>& rhs);
+    60	
+    61	} // namespace fideslib
+    62	
+    63	#endif // API_CIPHERTEXT_HPP
+
+============================================================
+2) /root/fideslib/api/CryptoContext.hpp
+============================================================
+     1	#ifndef API_CRYPTOCONTEXT_HPP
+     2	#define API_CRYPTOCONTEXT_HPP
+     3	
+     4	#include <any>
+     5	#include <complex>
+     6	#include <cstdint>
+     7	#include <functional>
+     8	#include <memory>
+     9	#include <shared_mutex>
+    10	#include <unordered_map>
+    11	#include <vector>
+    12	
+    13	#include "CCParams.hpp"
+    14	#include "Ciphertext.hpp"
+    15	#include "Definitions.hpp"
+    16	#include "KeyPair.hpp"
+    17	#include "Plaintext.hpp"
+    18	#include "PublicKey.hpp"
+    19	#include "Serialize.hpp"
+    20	
+    21	namespace fideslib {
+    22	
+    23	/// @brief Specialization of CryptoContext for the DCRTPoly representation.
+    24	template <> class CryptoContextImpl<DCRTPoly> {
+    25	
+    26	  public:
+    27		CryptoContextImpl() = default;
+    28		~CryptoContextImpl();
+    29	
+    30		// ---- Copy ----
+    31	
+    32		CryptoContextImpl(const CryptoContextImpl&)			   = delete;
+    33		CryptoContextImpl& operator=(const CryptoContextImpl&) = delete;
+    34	
+    35		// ---- Move ----
+    36	
+    37		CryptoContextImpl(CryptoContextImpl&&)			  = default;
+    38		CryptoContextImpl& operator=(CryptoContextImpl&&) = delete;
+    39	
+    40		// ---- Context Setup ----
+    41	
+    42		/// @brief Enable a particular feature in the context.
+    43		void Enable(PKESchemeFeature feature);
+    44		void Enable(uint32_t featureMask);
+    45	
+    46		// ---- Getters ----
+    47	
+    48		uint32_t GetCyclotomicOrder() const;
+    49		uint32_t GetRingDimension() const;
+    50		double GetPreScaleFactor(uint32_t slots);
+    51	
+    52		// ---- Setters ----
+    53		void SetAutoLoadPlaintexts(bool autoload);
+    54		void SetAutoLoadCiphertexts(bool autoload);
+    55		void SetDevices(const std::vector<int>& devices);
+    56	
+    57		// ---- Load to devices ----
+    58	
+    59		/// @brief Load the context to the devices.
+    60		void LoadContext(const PublicKey<DCRTPoly>& publicKey);
+    61		/// @brief Load a plaintext to the devices.
+    62		/// @param pt Plaintext to load.
+    63		void LoadPlaintext(Plaintext& pt);
+    64		/// @brief Load a ciphertext to the devices.
+    65		/// @param ct Ciphertext to load.
+    66		void LoadCiphertext(Ciphertext<DCRTPoly>& ct);
+    67	
+    68		// ---- Key Generation ----
+    69	
+    70		/// @brief Generate a public/private key pair.
+    71		KeyPair<DCRTPoly> KeyGen();
+    72		/// @brief Generate the evaluation multiplication keys.
+    73		void EvalMultKeyGen(const PrivateKey<DCRTPoly>& sk);
+    74		/// @brief Generate the evaluation rotation keys for the given steps.
+    75		void EvalRotateKeyGen(const PrivateKey<DCRTPoly>& sk, const std::vector<int32_t>& steps);
+    76	
+    77		// ---- Bootstrapping ----
+    78	
+    79		/// @brief Generate bootstrap precomputation data.
+    80		void EvalBootstrapSetup(const std::vector<uint32_t>& levelBudget, std::vector<uint32_t> dim1, uint32_t slots, uint32_t correctionFactor);
+    81		/// @brief Generate the evaluation bootstrap keys.
+    82		void EvalBootstrapKeyGen(const PrivateKey<DCRTPoly>& sk, uint32_t slots);
+    83	
+    84		// ---- Serialization ----
+    85		static bool SerializeEvalMultKey(std::ostream& ser, const SerType& sertype, const std::string& keyTag = "");
+    86		static bool SerializeEvalAutomorphismKey(std::ostream& ser, const SerType& sertype, const std::string& keyTag = "");
+    87	
+    88		// ---- Deserialization ----
+    89		bool DeserializeEvalMultKey(std::istream& ser, const SerType& sertype) const;
+    90		bool DeserializeEvalAutomorphismKey(std::istream& ser, const SerType& sertype) const;
+    91	
+    92		// ---- Encoding ----
+    93	
+    94		Plaintext
+    95		MakeCKKSPackedPlaintext(const std::vector<std::complex<double>>& value, size_t noiseScaleDeg = 1, uint32_t level = 0, std::shared_ptr<void> params = nullptr, uint32_t slots = 0);
+    96		Plaintext
+    97		MakeCKKSPackedPlaintext(const std::vector<double>& value, size_t noiseScaleDeg = 1, uint32_t level = 0, std::shared_ptr<void> params = nullptr, uint32_t slots = 0);
+    98	
+    99		// ---- Encryption ----
+   100	
+   101		Ciphertext<DCRTPoly> Encrypt(Plaintext& pt, const PublicKey<DCRTPoly>& pk);
+   102		Ciphertext<DCRTPoly> Encrypt(const PublicKey<DCRTPoly>& pk, Plaintext& pt);
+   103		Ciphertext<DCRTPoly> Encrypt(Plaintext& pt, const PrivateKey<DCRTPoly>& sk);
+   104		Ciphertext<DCRTPoly> Encrypt(const PrivateKey<DCRTPoly>& sk, Plaintext& pt);
+   105		DecryptResult Decrypt(Ciphertext<DCRTPoly>& ct, const PrivateKey<DCRTPoly>& sk, Plaintext* pt);
+   106		DecryptResult Decrypt(const PrivateKey<DCRTPoly>& sk, Ciphertext<DCRTPoly>& ct, Plaintext* pt);
+   107	
+   108		// ---- Operations ----
+   109	
+   110		Ciphertext<DCRTPoly> EvalNegate(const Ciphertext<DCRTPoly>& ct);
+   111		void EvalNegateInPlace(Ciphertext<DCRTPoly>& ct);
+   112	
+   113		Ciphertext<DCRTPoly> EvalAdd(const Ciphertext<DCRTPoly>& ct1, const Ciphertext<DCRTPoly>& ct2);
+   114		Ciphertext<DCRTPoly> EvalAdd(const Ciphertext<DCRTPoly>& ct, Plaintext& pt);
+   115		Ciphertext<DCRTPoly> EvalAdd(Plaintext& pt, const Ciphertext<DCRTPoly>& ct);
+   116		Ciphertext<DCRTPoly> EvalAdd(const Ciphertext<DCRTPoly>& ct, double scalar);
+   117		Ciphertext<DCRTPoly> EvalAdd(double scalar, const Ciphertext<DCRTPoly>& ct);
+   118		void EvalAddInPlace(Ciphertext<DCRTPoly>& ct1, const Ciphertext<DCRTPoly>& ct2);
+   119		void EvalAddInPlace(Ciphertext<DCRTPoly>& ct1, Plaintext& pt);
+   120		void EvalAddInPlace(Plaintext& pt, Ciphertext<DCRTPoly>& ct1);
+   121		void EvalAddInPlace(Ciphertext<DCRTPoly>& ct1, double scalar);
+   122		void EvalAddInPlace(double scalar, Ciphertext<DCRTPoly>& ct1);
+   123		Ciphertext<DCRTPoly> EvalAddMutable(Ciphertext<DCRTPoly>& ct1, Ciphertext<DCRTPoly>& ct2);
+   124		Ciphertext<DCRTPoly> EvalAddMutable(Ciphertext<DCRTPoly>& ct, Plaintext& pt);
+   125		Ciphertext<DCRTPoly> EvalAddMutable(Plaintext& pt, Ciphertext<DCRTPoly>& ct);
+   126		void EvalAddMutableInPlace(Ciphertext<DCRTPoly>& ct1, Ciphertext<DCRTPoly>& ct2);
+   127	
+   128		Ciphertext<DCRTPoly> EvalAddMany(const std::vector<Ciphertext<DCRTPoly>>& ciphertexts);
+   129		void EvalAddManyInPlace(std::vector<Ciphertext<DCRTPoly>>& ciphertexts);
+   130	
+   131		Ciphertext<DCRTPoly> EvalSub(const Ciphertext<DCRTPoly>& ct1, const Ciphertext<DCRTPoly>& ct2);
+   132		Ciphertext<DCRTPoly> EvalSub(const Ciphertext<DCRTPoly>& ct, Plaintext& pt);
+   133		Ciphertext<DCRTPoly> EvalSub(Plaintext& pt, const Ciphertext<DCRTPoly>& ct);
+   134		Ciphertext<DCRTPoly> EvalSub(const Ciphertext<DCRTPoly>& ct, double scalar);
+   135		Ciphertext<DCRTPoly> EvalSub(double scalar, const Ciphertext<DCRTPoly>& ct);
+   136		void EvalSubInPlace(Ciphertext<DCRTPoly>& ct1, const Ciphertext<DCRTPoly>& ct2);
+   137		void EvalSubInPlace(Ciphertext<DCRTPoly>& ct1, double scalar);
+   138		void EvalSubInPlace(double scalar, Ciphertext<DCRTPoly>& ct1);
+   139		Ciphertext<DCRTPoly> EvalSubMutable(Ciphertext<DCRTPoly>& ct1, Ciphertext<DCRTPoly>& ct2);
+   140		Ciphertext<DCRTPoly> EvalSubMutable(Ciphertext<DCRTPoly>& ct, Plaintext& pt);
+   141		Ciphertext<DCRTPoly> EvalSubMutable(Plaintext& pt, Ciphertext<DCRTPoly>& ct);
+   142		void EvalSubMutableInPlace(Ciphertext<DCRTPoly>& ct1, Ciphertext<DCRTPoly>& ct2);
+   143	
+   144		Ciphertext<DCRTPoly> EvalMult(const Ciphertext<DCRTPoly>& ct1, const Ciphertext<DCRTPoly>& ct2);
+   145		Ciphertext<DCRTPoly> EvalMult(const Ciphertext<DCRTPoly>& ct1, Plaintext& pt);
+   146		Ciphertext<DCRTPoly> EvalMult(Plaintext& pt, const Ciphertext<DCRTPoly>& ct1);
+   147		Ciphertext<DCRTPoly> EvalMult(const Ciphertext<DCRTPoly>& ct1, double scalar);
+   148		Ciphertext<DCRTPoly> EvalMult(double scalar, const Ciphertext<DCRTPoly>& ct1);
+   149		void EvalMultInPlace(Ciphertext<DCRTPoly>& ct1, Plaintext& pt);
+   150		void EvalMultInPlace(Ciphertext<DCRTPoly>& ct1, double scalar);
+   151		void EvalMultInPlace(double scalar, Ciphertext<DCRTPoly>& ct1);
+   152		Ciphertext<DCRTPoly> EvalMultMutable(Ciphertext<DCRTPoly>& ct1, Ciphertext<DCRTPoly>& ct2);
+   153		Ciphertext<DCRTPoly> EvalMultMutable(Ciphertext<DCRTPoly>& ct1, Plaintext& pt);
+   154		Ciphertext<DCRTPoly> EvalMultMutable(Plaintext& pt, Ciphertext<DCRTPoly>& ct1);
+   155		void EvalMultMutableInPlace(Ciphertext<DCRTPoly>& ct1, Ciphertext<DCRTPoly>& ct2);
+   156	
+   157		Ciphertext<DCRTPoly> EvalSquare(const Ciphertext<DCRTPoly>& ct);
+   158		void EvalSquareInPlace(Ciphertext<DCRTPoly>& ct);
+   159		Ciphertext<DCRTPoly> EvalSquareMutable(Ciphertext<DCRTPoly>& ct);
+   160	
+   161		Ciphertext<DCRTPoly> EvalRotate(const Ciphertext<DCRTPoly>& ciphertext, int32_t index);
+   162		void EvalRotateInPlace(Ciphertext<DCRTPoly>& ciphertext, int32_t index);
+   163	
+   164		std::shared_ptr<void> EvalFastRotationPrecompute(const Ciphertext<DCRTPoly>& ct);
+   165		Ciphertext<DCRTPoly> EvalFastRotation(const Ciphertext<DCRTPoly>& ct, int32_t index, uint32_t m, const std::shared_ptr<void>& precomp);
+   166		Ciphertext<DCRTPoly> EvalFastRotationExt(const Ciphertext<DCRTPoly>& ct, int32_t index, const std::shared_ptr<void>& digits, bool addFirst);
+   167		std::vector<Ciphertext<DCRTPoly>> EvalFastRotation(const Ciphertext<DCRTPoly>& ct, const std::vector<int32_t>& indices, uint32_t m, const std::shared_ptr<void>& precomp);
+   168		std::vector<Ciphertext<DCRTPoly>>
+   169		EvalFastRotationExt(const Ciphertext<DCRTPoly>& ct, const std::vector<int32_t>& indices, const std::shared_ptr<void>& digits, bool addFirst);
+   170	
+   171		Ciphertext<DCRTPoly> EvalChebyshevSeries(const Ciphertext<DCRTPoly>& ct, std::vector<double>& coeffs, double a, double b);
+   172		void EvalChebyshevSeriesInPlace(Ciphertext<DCRTPoly>& ct, std::vector<double>& coeffs, double a, double b);
+   173		static std::vector<double> GetChebyshevCoefficients(std::function<double(double)>& func, double a, double b, size_t degree);
+   174	
+   175		Ciphertext<DCRTPoly> Rescale(const Ciphertext<DCRTPoly>& ciphertext);
+   176		void RescaleInPlace(Ciphertext<DCRTPoly>& ciphertext);
+   177	
+   178		static void SetLevel(Ciphertext<DCRTPoly>& ct, size_t level);
+   179	
+   180		Ciphertext<DCRTPoly> EvalBootstrap(const Ciphertext<DCRTPoly>& ciphertext, uint32_t numIterations = 1, uint32_t precision = 0, bool prescaled = false);
+   181		void EvalBootstrapInPlace(Ciphertext<DCRTPoly>& ciphertext, uint32_t numIterations = 1, uint32_t precision = 0, bool prescaled = false);
+   182	
+   183		Ciphertext<DCRTPoly> AccumulateSum(const Ciphertext<DCRTPoly>& ct, int slots, int stride = 1);
+   184		void AccumulateSumInPlace(Ciphertext<DCRTPoly>& ct, int slots, int stride = 1);
+   185	
+   186		void ConvolutionTransformInPlace(Ciphertext<DCRTPoly>& ct, int gStep, int bStep, const std::vector<Plaintext>& pts, const std::vector<int>& indexes, int stride = 1, int rowSize = 0);
+   187	
+   188		void SpecialConvolutionTransformInPlace(Ciphertext<DCRTPoly>& ct,
+   189		  int gStep,
+   190		  int bStep,
+   191		  const std::vector<Plaintext>& pts,
+   192		  Plaintext& mask,
+   193		  const std::vector<int>& indexes,
+   194		  int stride			 = 1,
+   195		  int maskRotationStride = 1,
+   196		  int rowSize			 = 0);
+   197	
+   198	  public:
+   199		// ---- Internal State ----
+   200	
+   201		std::any cpu;
+   202		std::any gpu;
+   203		/// @brief Whether the context has been loaded to the devices.
+   204		bool loaded = false;
+   205		/// @brief List of devices the context is loaded on.
+   206		std::vector<int> devices = { 0 };
+   207		/// @brief Whether plaintexts should be automatically loaded to the device upon encryption.
+   208		bool auto_load_plaintexts = false;
+   209		/// @brief Whether ciphertexts should be automatically loaded to the device upon creation.
+   210		bool auto_load_ciphertexts = true;
+   211		/// @brief Self reference to enable shared_from_this-like behavior.
+   212		std::weak_ptr<CryptoContextImpl<DCRTPoly>> self_reference;
+   213		/// @brief Multiplicative depth of the context.
+   214		uint32_t multiplicative_depth = 0;
+   215		/// @brief Rotation indexes for which rotation keys are available.
+   216		std::vector<int32_t> rotation_indexes;
+   217		/// @brief Secret key distribution.
+   218		SecretKeyDist keyDist = UNIFORM_TERNARY;
+   219	
+   220		// ---- Copy helpers ----
+   221	
+   222		uint32_t CopyDeviceCiphertext(const CiphertextImpl<DCRTPoly>& ct);
+   223	
+   224		// --- Map Handling ----
+   225	
+   226		/// @brief  Registry of plaintexts stored on the GPU (opaque types).
+   227		std::unordered_map<uint32_t, std::shared_ptr<void>> device_plaintexts;
+   228		std::unique_ptr<std::shared_mutex> device_plaintexts_mutex;
+   229		/// @brief  Registry of ciphertexts stored on the GPU (opaque types).
+   230		std::unordered_map<uint32_t, std::shared_ptr<void>> device_ciphertexts;
+   231		std::unique_ptr<std::shared_mutex> device_ciphertexts_mutex;
+   232		/// @brief Next available handle for GPU objects. Zero is reserved as a null handle.
+   233		uint32_t next_gpu_handle = 1;
+   234	
+   235		uint32_t RegisterDevicePlaintext(std::shared_ptr<void>&& p);
+   236		uint32_t RegisterDeviceCiphertext(std::shared_ptr<void>&& c);
+   237		std::shared_ptr<void>& GetDevicePlaintext(uint32_t handle);
+   238		std::shared_ptr<void>& GetDeviceCiphertext(uint32_t handle);
+   239		bool EvictDevicePlaintext(uint32_t handle);
+   240		bool EvictDeviceCiphertext(uint32_t handle);
+   241	
+   242		void Synchronize() const;
+   243	
+   244		static std::vector<int> GetConvolutionTransformRotationIndices(int rowSize, int bStep, int stride, uint32_t gStep);
+   245	};
+   246	
+   247	} // namespace fideslib
+   248	
+   249	#endif // API_CRYPTOCONTEXT_HPP
+
+============================================================
+3) /root/fideslib/api/Plaintext.hpp
+============================================================
+     1	#ifndef API_PLAINTEXT_HPP
+     2	#define API_PLAINTEXT_HPP
+     3	
+     4	#include <any>
+     5	#include <complex>
+     6	#include <iostream>
+     7	#include <memory>
+     8	#include <vector>
+     9	
+    10	#include "Definitions.hpp"
+    11	
+    12	namespace fideslib {
+    13	
+    14	/// @brief Plaintext representation for the CKKS-RNS scheme.
+    15	class PlaintextImpl {
+    16	  public:
+    17		PlaintextImpl()	 = default;
+    18		~PlaintextImpl();
+    19	
+    20		PlaintextImpl(const CryptoContext<DCRTPoly>&& context);
+    21	
+    22		// ---- Copy ----
+    23	
+    24		PlaintextImpl(const PlaintextImpl&);
+    25		PlaintextImpl(const Plaintext&);
+    26		PlaintextImpl& operator=(const PlaintextImpl&) = delete;
+    27		PlaintextImpl& operator=(const Plaintext&)	   = delete;
+    28	
+    29		// ---- Move ----
+    30	
+    31		PlaintextImpl(PlaintextImpl&&)			  = delete;
+    32		PlaintextImpl(Plaintext&&)				  = delete;
+    33		PlaintextImpl& operator=(PlaintextImpl&&) = delete;
+    34		PlaintextImpl& operator=(Plaintext&&)	  = delete;
+    35	
+    36		// ---- Functions ----
+    37	
+    38		void SetLength(size_t length);
+    39		void SetSlots(uint32_t slots);
+    40	
+    41		double GetLogPrecision() const;
+    42		uint32_t GetLevel() const;
+    43		std::vector<std::complex<double>> GetCKKSPackedValue() const;
+    44		std::vector<double> GetRealPackedValue() const;
+    45	
+    46		// ---- Friend Operators ----
+    47	
+    48		friend std::ostream& operator<<(std::ostream& os, const PlaintextImpl& pt);
+    49	
+    50		// ---- Internal State ----
+    51	
+    52		std::any cpu;
+    53		uint32_t gpu = 0;
+    54		/// @brief Flag indicating whether the plaintext is loaded to the devices.
+    55		bool loaded = false;
+    56		/// @brief Parent context for device management.
+    57		CryptoContext<DCRTPoly> parent_context;
+    58	};
+    59	
+    60	// ---- Override Operators ----
+    61	
+    62	std::ostream& operator<<(std::ostream& os, const Plaintext& pt);
+    63	} // namespace fideslib
+    64	
+    65	#endif // API_PLAINTEXT_HPP
+
+============================================================
+4) /root/fideslib/api/Definitions.hpp
+============================================================
+     1	#ifndef API_DEFINITIONS_HPP
+     2	#define API_DEFINITIONS_HPP
+     3	
+     4	#include <cinttypes>
+     5	#include <memory>
+     6	
+     7	namespace fideslib {
+     8	
+     9	/// @brief Phantom type for the CKKS-RNS scheme.
+    10	typedef uint32_t CryptoContextCKKSRNS;
+    11	
+    12	/// @brief Phantom type for the DCRTPoly representation.
+    13	typedef uint32_t DCRTPoly;
+    14	
+    15	/// @brief Ciphertext representation for the CKKS-RNS scheme.
+    16	/// @tparam T Underlying representation type.
+    17	template <typename T> class CiphertextImpl;
+    18	
+    19	/// @brief Shared pointer alias for CiphertextImpl.
+    20	/// @tparam T Underlying representation type.
+    21	template <typename T> using Ciphertext = std::shared_ptr<CiphertextImpl<T>>;
+    22	
+    23	/// @brief Class for managing a cryptographic context.
+    24	/// @tparam T Underlying representation type.
+    25	template <typename T> class CryptoContextImpl;
+    26	
+    27	/// @brief Shared pointer alias for CryptoContextImpl.
+    28	/// @tparam T Underlying representation type.
+    29	template <typename T> using CryptoContext = std::shared_ptr<CryptoContextImpl<T>>;
+    30	
+    31	/// @brief Plaintext representation for the CKKS-RNS scheme.
+    32	class PlaintextImpl;
+    33	
+    34	/// @brief Shared pointer alias for PlaintextImpl.
+    35	using Plaintext = std::shared_ptr<PlaintextImpl>;
+    36	
+    37	/// @brief Enumeration of supported PKE scheme features.
+    38	enum PKESchemeFeature {
+    39		PKE			 = 0x01,
+    40		KEYSWITCH	 = 0x02,
+    41		PRE			 = 0x04,
+    42		LEVELEDSHE	 = 0x08,
+    43		ADVANCEDSHE	 = 0x10,
+    44		MULTIPARTY	 = 0x20,
+    45		FHE			 = 0x40,
+    46		SCHEMESWITCH = 0x80,
+    47	};
+    48	
+    49	/// @brief Result structure for decryption operations.
+    50	struct DecryptResult {
+    51		bool isValid;
+    52		uint32_t messageLength;
+    53	};
+    54	
+    55	/// @brief Enumeration of supported scaling techniques.
+    56	enum ScalingTechnique {
+    57	    FIXEDMANUAL = 0,
+    58	    FIXEDAUTO,
+    59	    FLEXIBLEAUTO,
+    60	    FLEXIBLEAUTOEXT,
+    61	};
+    62	
+    63	/// @brief Enumeration of supported key switching techniques.
+    64	enum KeySwitchTechnique {
+    65	    INVALID_KS_TECH = 0,
+    66	    //BV,
+    67	    HYBRID = 2,
+    68	};
+    69	
+    70	/// @brief Enumeration of supported secret key distributions.
+    71	enum SecretKeyDist {
+    72	    GAUSSIAN            = 0,
+    73	    UNIFORM_TERNARY     = 1,
+    74	    SPARSE_TERNARY      = 2,
+    75	    SPARSE_ENCAPSULATED = 3,  
+    76	};
+    77	
+    78	/// @brief Enumeration of supported security levels.
+    79	enum SecurityLevel {
+    80	    HEStd_128_classic,
+    81	    HEStd_192_classic,
+    82	    HEStd_256_classic,
+    83	    HEStd_128_quantum,
+    84	    HEStd_192_quantum,
+    85	    HEStd_256_quantum,
+    86	    HEStd_NotSet,
+    87	};
+    88	
+    89	} // namespace fideslib
+    90	
+    91	#endif
+
+============================================================
+5) RawCipherText declarations
+============================================================
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:48:FIDESlib::CKKS::RawCipherText FIDESlib::CKKS::GetRawCipherText(lbcrypto::CryptoContext<lbcrypto::DCRTPoly>& cc,
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:50:    RawCipherText result;  //{ .cc = cc };
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:79:void FIDESlib::CKKS::GetOpenFHECipherText(lbcrypto::Ciphertext<DCRTPoly> result, RawCipherText raw, int REV) {
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cuh:19:struct RawCipherText {
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cuh:97:RawCipherText GetRawCipherText(lbcrypto::CryptoContext<lbcrypto::DCRTPoly>& cc,
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cuh:100:void GetOpenFHECipherText(lbcrypto::Ciphertext<lbcrypto::DCRTPoly> result, RawCipherText raw, int REV = 1);
+/root/fideslib/src/CKKS/Ciphertext.cuh:74:     * @brief Constructs a Ciphertext from a serialized RawCipherText.
+/root/fideslib/src/CKKS/Ciphertext.cuh:81:    Ciphertext(Context& cc, const RawCipherText& rawct);
+/root/fideslib/src/CKKS/Ciphertext.cuh:142:     * @brief Loads ciphertext data from a RawCipherText representation.
+/root/fideslib/src/CKKS/Ciphertext.cuh:146:    void load(const RawCipherText& rawct);
+/root/fideslib/src/CKKS/Ciphertext.cuh:149:     * @brief Stores the current ciphertext into a RawCipherText representation.
+/root/fideslib/src/CKKS/Ciphertext.cuh:153:    void store(RawCipherText& rawct);
+
+============================================================
+6) RawCiphertext headers / source exact excerpts
+============================================================
+
+---- /root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cuh ----
+     1	
+     2	#ifndef __RAW_CIPHER_TEXT__
+     3	#define __RAW_CIPHER_TEXT__
+     4	
+     5	#include <cinttypes>
+     6	#include <vector>
+     7	#include "CKKS/forwardDefs.cuh"
+     8	//#include "CKKS/BootstrapPrecomputation.cuh"
+     9	#include "pke/openfhe.h"
+    10	
+    11	namespace FIDESlib::CKKS {
+    12	
+    13	constexpr bool REVERSE = false;
+    14	
+    15	/*
+    16	* The rawCipherText Class contains the basic information needed to hold a ciphertext, with pointers to data that can be contained on the GPU or main memory
+    17	* This is stored in RNS/DCRT format
+    18	*/
+    19	struct RawCipherText {
+    20	    // lbcrypto::CryptoContext<lbcrypto::DCRTPoly> & cc; // Original CryptoContext object from OpenFHE;
+    21	    lbcrypto::Ciphertext<lbcrypto::DCRTPoly> originalCipherText;  // Original Ciphertext object from OpenFHE;
+    22	    std::vector<std::vector<uint64_t>> sub_0;
+    23	    //uint64_t* sub_0; // pointer to sub-ciphertext 0
+    24	    std::vector<std::vector<uint64_t>> sub_1;  // pointer to sub-ciphertext 1
+    25	    uint64_t* sub_2;                           // pointer to sub-ciphertext 1
+    26	    std::vector<uint64_t> moduli;              // moduli for each limb
+    27	    int numRes;     // number of residues of ciphertext, length of moduli array and first dimension of sub-ciphertexts
+    28	    int N;          // length of each polynomial
+    29	    Format format;  // current format of ciphertext, either coefficient or evaluation
+    30	    double Noise;
+    31	    int NoiseLevel;
+    32	    int slots;
+    33	    std::string keyid;
+    34	    //GPUCKKS::Event e;
+    35	};
+    36	
+    37	struct RawPlainText {
+    38	    //  lbcrypto::CryptoContext<lbcrypto::DCRTPoly> & cc; // Original CryptoContext object from OpenFHE;
+    39	    lbcrypto::Plaintext originalPlainText;  // Original Ciphertext object from OpenFHE;
+    40	    std::vector<std::vector<uint64_t>> sub_0;
+    41	    std::vector<uint64_t> moduli;  // moduli for each limb
+    42	    int numRes;     // number of residues of ciphertext, length of moduli array and first dimension of sub-ciphertexts
+    43	    int N;          // length of each polynomial
+    44	    Format format;  // current format of ciphertext, either coefficient or evaluation
+    45	    double Noise;
+    46	    int slots;
+    47	    int NoiseLevel;
+    48	};
+    49	
+    50	struct RawParams {
+    51	    int N;
+    52	    int L;
+    53	    int K;
+    54	    int logN;
+    55	    lbcrypto::ScalingTechnique scalingTechnique;
+    56	    std::vector<uint64_t> moduli;
+    57	    std::vector<uint64_t> root_of_unity;
+    58	    std::vector<uint64_t> cyclotomic_order;
+    59	    std::vector<uint64_t> SPECIALmoduli;
+    60	    std::vector<uint64_t> SPECIALroot_of_unity;
+    61	    std::vector<uint64_t> SPECIALcyclotomic_order;
+    62	    std::map<int, std::vector<uint64_t>> psi;
+    63	    std::map<int, std::vector<uint64_t>> psi_inv;
+    64	    std::vector<uint64_t> N_inv;
+    65	    std::vector<double> ModReduceFactor;
+    66	    std::vector<std::vector<uint64_t>> m_QlQlInvModqlDivqlModq;
+    67	
+    68	    int dnum;
+    69	    std::vector<std::vector<uint64_t>> PARTITIONmoduli;
+    70	    std::vector<std::vector<std::vector<uint64_t>>> PartQlHatInvModq;
+    71	    std::vector<std::vector<std::vector<std::vector<uint64_t>>>> PartQlHatModp;
+    72	    std::vector<uint64_t> PHatInvModp;
+    73	    std::vector<std::vector<uint64_t>> PHatModq;
+    74	    std::vector<uint64_t> PInvModq;
+    75	
+    76	    std::vector<double> ScalingFactorReal;
+    77	    std::vector<double> ScalingFactorRealBig;
+    78	
+    79	    /** Bootstrapping */
+    80	    std::vector<double> coefficientsCheby;
+    81	    int doubleAngleIts{0};
+    82	    uint32_t bootK;
+    83	    uint32_t correctionFactor;
+    84	    bool sparse_encaps{false};
+    85	    int p;
+    86	};
+    87	
+    88	struct RawKeySwitchKey {
+    89	    std::vector<std::vector<std::vector<uint64_t>>> r_key_moduli;
+    90	    std::vector<std::vector<std::vector<std::vector<uint64_t>>>> r_key;
+    91	    std::vector<std::vector<std::vector<uint64_t>>> dcrt_keys;
+    92	    std::string keyid;
+    93	};
+    94	
+    95	std::vector<std::vector<uint64_t>> GetRawArray(std::vector<lbcrypto::PolyImpl<lbcrypto::NativeVector>> polys);
+    96	
+    97	RawCipherText GetRawCipherText(lbcrypto::CryptoContext<lbcrypto::DCRTPoly>& cc,
+    98	                               lbcrypto::Ciphertext<lbcrypto::DCRTPoly> ct, int REV = 1);
+    99	
+   100	void GetOpenFHECipherText(lbcrypto::Ciphertext<lbcrypto::DCRTPoly> result, RawCipherText raw, int REV = 1);
+   101	
+   102	RawPlainText GetRawPlainText(lbcrypto::CryptoContext<lbcrypto::DCRTPoly>& cc, lbcrypto::Plaintext pt);
+   103	RawPlainText GetRawPlainText(lbcrypto::CryptoContext<lbcrypto::DCRTPoly>& cc, lbcrypto::ReadOnlyPlaintext pt);
+   104	
+   105	void GetOpenFHEPlaintext(lbcrypto::Plaintext result, RawPlainText raw, int REV = 1);
+   106	
+   107	// RawParams GetRawParams(lbcrypto::CryptoContext<lbcrypto::DCRTPoly> cc);
+   108	RawParams GetRawParams(lbcrypto::CryptoContext<lbcrypto::DCRTPoly> cc, FIDESlib::BOOT_CONFIG boot_conf = UNIFORM);
+   109	
+   110	RawKeySwitchKey GetKeySwitchKey(std::shared_ptr<lbcrypto::EvalKeyRelinImpl<lbcrypto::DCRTPoly>> ksk);
+   111	
+   112	RawKeySwitchKey GetEvalKeySwitchKey(const lbcrypto::KeyPair<lbcrypto::DCRTPoly>& keys);
+   113	
+   114	RawKeySwitchKey GetEvalKeySwitchKey(const lbcrypto::PublicKey<lbcrypto::DCRTPoly>& publicKey);
+   115	
+   116	RawKeySwitchKey GetRotationKeySwitchKey(const lbcrypto::KeyPair<lbcrypto::DCRTPoly>& keys, int index,
+   117	                                        lbcrypto::CryptoContext<lbcrypto::DCRTPoly> cc);
+   118	
+   119	RawKeySwitchKey GetRotationKeySwitchKey(const lbcrypto::PublicKey<lbcrypto::DCRTPoly>& publicKey, int index);
+   120	
+   121	RawKeySwitchKey GetConjugateKeySwitchKey(const lbcrypto::PublicKey<lbcrypto::DCRTPoly>& publicKey);
+   122	
+   123	void GenAndAddRotationKeys(lbcrypto::CryptoContext<lbcrypto::DCRTPoly>& cc,
+   124	                           const lbcrypto::KeyPair<lbcrypto::DCRTPoly>& keys, FIDESlib::CKKS::Context& GPUcc,
+   125	                           std::vector<int> indexes);
+   126	
+   127	std::shared_ptr<std::map<uint32_t, lbcrypto::EvalKey<lbcrypto::DCRTPoly>>> GenRotationKeys(
+   128	    const lbcrypto::KeyPair<lbcrypto::DCRTPoly>& keys, std::vector<int> indexes);
+   129	
+   130	std::shared_ptr<std::map<uint32_t, lbcrypto::EvalKey<lbcrypto::DCRTPoly>>> GenRotationKeys(
+   131	    const lbcrypto::PrivateKey<lbcrypto::DCRTPoly>& keys, std::vector<int> indexes);
+   132	
+   133	void AddRotationKeys(const lbcrypto::PublicKey<lbcrypto::DCRTPoly>& publicKey, FIDESlib::CKKS::Context& GPUcc,
+   134	                     std::vector<int> indexes);
+   135	
+   136	/** Used in AddBootstrapPrecomputation */
+   137	void AddBootstrapPlaintexts(lbcrypto::CryptoContext<lbcrypto::DCRTPoly> cc, int slots, FIDESlib::CKKS::Context& GPUcc_,
+   138	                            FIDESlib::CKKS::BootstrapPrecomputation& result);
+   139	
+   140	/** Used in GenBootstrapKeys and AddBootstrapKeys */
+   141	std::vector<int> GetBootstrapIndexes(lbcrypto::CryptoContext<lbcrypto::DCRTPoly> cc, int slots,
+   142	                                     FIDESlib::CKKS::BootstrapPrecomputation* result_);
+   143	
+   144	/** Server-side bootstrap setup */
+   145	void AddBootstrapPrecomputation(const lbcrypto::PublicKey<lbcrypto::DCRTPoly>& publicKey, int slots,
+   146	                                FIDESlib::CKKS::Context& GPUcc_);
+   147	
+   148	/** DEPRECATED: split into GenBootstrapKeys and AddBootstrapPrecomputation overload with public key*/
+   149	void AddBootstrapPrecomputation(lbcrypto::CryptoContext<lbcrypto::DCRTPoly> cc,
+   150	                                const lbcrypto::KeyPair<lbcrypto::DCRTPoly>& keys, int slots,
+   151	                                FIDESlib::CKKS::Context& GPUcc);
+   152	
+   153	/**
+   154	 * Used in AddBootstrapPrecomputation
+   155	 */
+   156	void AddBootstrapKeys(const lbcrypto::PublicKey<lbcrypto::DCRTPoly>& publicKey, int slots,
+   157	                      FIDESlib::CKKS::Context& GPUcc_);
+   158	
+   159	/**
+   160	 * Client-side bootstrap setup: Keys for FIDESlib Bootstrap do not match OpenFHE's, be careful if you intend to run Bootstrap on CPU
+   161	 *
+   162	 * The code can be used to implement SSE and regular Boot on a regular non-FIDESlib OpenFHE installation with server-side FIDESlib.
+   163	 */
+   164	void GenBootstrapKeys(const lbcrypto::KeyPair<lbcrypto::DCRTPoly>& keys, int slots);
+   165	void GenBootstrapKeys(const lbcrypto::PrivateKey<lbcrypto::DCRTPoly>& keys, int slots);
+   166	}  // namespace FIDESlib::CKKS
+   167	
+   168	#endif  //__RAW_CIPHER_TEXT__
+
+---- /root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu ----
+     1	//
+     2	// Created by carlosad on 24/04/24.
+     3	//
+     4	#include <bit>
+     5	#include <cassert>
+     6	#include "CKKS/AccumulateBroadcast.cuh"
+     7	#include "CKKS/Context.cuh"
+     8	#include "CKKS/openfhe-interface/ParameterSwitch.cuh"
+     9	#include "CKKS/openfhe-interface/RawCiphertext.cuh"
+    10	#include "Math.cuh"
+    11	using namespace lbcrypto;
+    12	
+    13	/**
+    14	* Converts a vector of polynomial limbs to a single flattened array
+    15	*/
+    16	std::vector<std::vector<uint64_t>> FIDESlib::CKKS::GetRawArray(
+    17	    std::vector<lbcrypto::PolyImpl<lbcrypto::NativeVector>> polys) {
+    18	    // total size is r * N
+    19	    int numRes = polys.size();
+    20	    int numElements = (polys[0].GetValues() /*.m_values*/).GetLength();
+    21	
+    22	    std::vector<std::vector<uint64_t>> flattened(numRes, std::vector<uint64_t>(numElements));
+    23	
+    24	    // Fill the array
+    25	    for (int r = 0; r < numRes; ++r) {
+    26	        for (int i = 0; i < numElements; i++) {
+    27	            flattened[r][i] = (polys[r].GetValues() /*.m_values*/)[i].ConvertToInt();
+    28	        }
+    29	    }
+    30	    return flattened;
+    31	};
+    32	
+    33	/**
+    34	* Gets the moduli from a vector of polynomial limbs and returns a single array
+    35	*/
+    36	static std::vector<uint64_t> GetModuli(std::vector<lbcrypto::PolyImpl<lbcrypto::NativeVector>> polys) {
+    37	    int numRes = polys.size();
+    38	    std::vector<uint64_t> moduli(numRes);
+    39	    for (int r = 0; r < numRes; r++) {
+    40	        moduli[r] = polys[r].GetModulus().ConvertToInt();
+    41	    }
+    42	    return moduli;
+    43	};
+    44	
+    45	/**
+    46	* Converts a ciphertext from openFHE into the RawCiphertext format
+    47	*/
+    48	FIDESlib::CKKS::RawCipherText FIDESlib::CKKS::GetRawCipherText(lbcrypto::CryptoContext<lbcrypto::DCRTPoly>& cc,
+    49	                                                               lbcrypto::Ciphertext<DCRTPoly> ct, int REV) {
+    50	    RawCipherText result;  //{ .cc = cc };
+    51	    //result.originalCipherText=ct;
+    52	    result.numRes = ct->GetElements()[0].GetAllElements().size();
+    53	    result.N = ((ct->GetElements()[0].GetAllElements())[0].GetValues() /*.m_values*/).GetLength();
+    54	    result.sub_0 = GetRawArray(ct->GetElements()[0].GetAllElements());
+    55	    result.sub_1 = GetRawArray(ct->GetElements()[1].GetAllElements());
+    56	
+    57	    // We read (hopefully) in eval form, and OpenFHE should be bit_reversed, so REVERSE == 0.
+    58	    // Changed the REV variable to an argument to the function.
+    59	    // purpose: profiling Automorph kernel with both bit-reversed and normal order ciphertexts.
+    60	    if (!REV) {
+    61	        for (auto& i : result.sub_0)
+    62	            bit_reverse_vector(i);
+    63	        for (auto& i : result.sub_1)
+    64	            bit_reverse_vector(i);
+    65	    }
+    66	    result.moduli = GetModuli(ct->GetElements()[0].GetAllElements());
+    67	    result.format = ct->GetElements()[0].GetFormat();
+    68	
+    69	    result.Noise = ct->GetScalingFactor();       // m_scalingFactor;
+    70	    result.NoiseLevel = ct->GetNoiseScaleDeg();  // m_noiseScaleDeg;
+    71	    result.keyid = ct->GetKeyTag();              // keyTag;
+    72	    result.slots = ct->GetSlots();
+    73	
+    74	    return result;
+    75	};
+    76	
+    77	/**
+    78	* Converts a ciphertext from the RawCiphertext format back to the OpenFHE ciphertext format*/
+    79	void FIDESlib::CKKS::GetOpenFHECipherText(lbcrypto::Ciphertext<DCRTPoly> result, RawCipherText raw, int REV) {
+    80	
+    81	    int size = result->GetElements()[0].GetAllElements().size();
+    82	    if (size < raw.numRes) {
+    83	        raw.numRes = size;
+    84	        raw.sub_0.resize(size);
+    85	        raw.sub_1.resize(size);
+    86	    }
+    87	    assert(result->GetElements()[0].GetAllElements().size() >= raw.numRes);
+    88	    // Changed the REV variable to an argument to the function.
+    89	    // purpose: profiling Automorph kernel with both bit-reversed and normal order ciphertexts.
+    90	    if (!REV) {
+    91	        for (auto& i : raw.sub_0)
+    92	            bit_reverse_vector(i);
+    93	        for (auto& i : raw.sub_1)
+    94	            bit_reverse_vector(i);
+    95	    }
+    96	    DCRTPoly sub_0 = result->GetElements().at(0);
+    97	    DCRTPoly sub_1 = result->GetElements().at(1);
+    98	    auto& dcrt_0 = sub_0.GetAllElements();
+    99	    auto& dcrt_1 = sub_1.GetAllElements();
+   100	    result->SetLevel(result->GetLevel() + result->GetElements().at(0).GetNumOfElements() - raw.numRes);
+   101	    dcrt_0.resize(raw.numRes);
+   102	    dcrt_1.resize(raw.numRes);
+   103	    for (int r = 0; r < raw.numRes; r++) {
+   104	        for (int i = 0; i < raw.N; i++) {
+   105	            (*dcrt_0.at(r).m_values).at(i).SetValue(raw.sub_0.at(r).at(i));
+   106	            (*dcrt_1.at(r).m_values).at(i).SetValue(raw.sub_1.at(r).at(i));
+   107	        }
+   108	    }
+   109	
+   110	    //sub_0.m_vectors=dcrt_0;
+   111	    //sub_1.m_vectors=dcrt_1;
+   112	    for (size_t i = sub_0.GetParams()->GetParams() /*m_params->m_params*/.size();
+   113	         i > sub_0.GetAllElements() /*.m_vectors*/.size(); --i) {
+   114	        DCRTPoly::Params* newP = new DCRTPoly::Params(*sub_0.GetParams() /*.m_params*/);
+   115	        newP->PopLastParam();
+   116	        sub_0.m_params.reset(newP);
+   117	    }
+   118	
+   119	    for (size_t i = sub_1.GetParams()->GetParams().size(); i > sub_1.GetAllElements().size(); --i) {
+   120	        DCRTPoly::Params* newP = new DCRTPoly::Params(*sub_1.GetParams());
+   121	        newP->PopLastParam();
+   122	        sub_1.m_params.reset(newP);
+   123	    }
+   124	
+   125	    std::vector<lbcrypto::DCRTPoly> ct_new = {sub_0, sub_1};
+   126	    result->SetElements(ct_new);
+   127	
+   128	    result->SetScalingFactor(raw.Noise);       // Getm_scalingFactor*/ = raw.Noise;
+   129	    result->SetNoiseScaleDeg(raw.NoiseLevel);  // /*m_noiseScaleDeg*/ = raw.NoiseLevel;
+   130	    result->SetKeyTag(raw.keyid);
+   131	    result->SetSlots(raw.slots);
+   132	}
+   133	
+   134	void FIDESlib::CKKS::GetOpenFHEPlaintext(lbcrypto::Plaintext result, RawPlainText raw, int REV) {
+   135	
+   136	    assert(result->GetElement<DCRTPoly>().GetAllElements().size() >= raw.numRes);
+   137	    // Changed the REV variable to an argument to the function.
+   138	    // purpose: profiling Automorph kernel with both bit-reversed and normal order ciphertexts.
+   139	    if (!REV) {
+   140	        for (auto& i : raw.sub_0)
+   141	            bit_reverse_vector(i);
+   142	    }
+   143	    DCRTPoly sub_0 = result->GetElement<DCRTPoly>();
+   144	    auto& dcrt_0 = sub_0.GetAllElements();
+   145	    result->SetLevel(result->GetLevel() + result->GetElement<DCRTPoly>().GetNumOfElements() - raw.numRes);
+   146	    dcrt_0.resize(raw.numRes);
+   147	    for (int r = 0; r < raw.numRes; r++) {
+   148	        for (int i = 0; i < raw.N; i++) {
+   149	            (*dcrt_0.at(r).m_values).at(i).SetValue(raw.sub_0.at(r).at(i));
+   150	        }
+   151	    }
+   152	
+   153	    //sub_0.m_vectors=dcrt_0;
+   154	    //sub_1.m_vectors=dcrt_1;
+   155	    for (size_t i = sub_0.GetParams()->GetParams().size(); i > sub_0.GetAllElements().size(); --i) {
+   156	        DCRTPoly::Params* newP = new DCRTPoly::Params(*sub_0.GetParams());
+   157	        newP->PopLastParam();
+   158	        sub_0.m_params.reset(newP);
+   159	    }
+   160	
+   161	    result->GetElement<DCRTPoly>() /*encodedVectorDCRT*/ = sub_0;
+   162	    result->SetScalingFactor(raw.Noise);       //scalingFactor = raw.Noise;
+   163	    result->SetNoiseScaleDeg(raw.NoiseLevel);  // noiseScaleDeg = raw.NoiseLevel;
+   164	    result->SetSlots(raw.slots);
+   165	    /*
+   166	    std::cout << result << std::endl;
+   167	bool ok = result->Decode();
+   168	    std::cout << ok << " " << result << std::endl;
+   169	    */
+   170	}
+   171	
+   172	FIDESlib::CKKS::RawPlainText FIDESlib::CKKS::GetRawPlainText(lbcrypto::CryptoContext<lbcrypto::DCRTPoly>& cc,
+   173	                                                             lbcrypto::Plaintext pt) {
+   174	    RawPlainText result;  //{.cc = cc};
+   175	    result.originalPlainText = pt;
+   176	    result.numRes = pt->GetElement<DCRTPoly>().GetAllElements().size();
+   177	    result.N = ((pt->GetElement<DCRTPoly>().GetAllElements())[0].GetValues() /*.m_values*/).GetLength();
+   178	    result.sub_0 = GetRawArray(pt->GetElement<DCRTPoly>().GetAllElements());
+   179	    result.moduli = GetModuli(pt->GetElement<DCRTPoly>().GetAllElements());
+   180	
+   181	
+   182	    result.format = pt->GetElement<DCRTPoly>().GetFormat();
+   183	
+   184	    if constexpr (REVERSE) {
+   185	        for (auto& i : result.sub_0)
+   186	            bit_reverse_vector(i);
+   187	    }
+   188	
+   189	    result.Noise = pt->GetScalingFactor();
+   190	    result.NoiseLevel = pt->GetNoiseScaleDeg();
+   191	    result.slots = pt->GetSlots();
+   192	
+   193	    return result;
+   194	}
+   195	
+   196	FIDESlib::CKKS::RawPlainText FIDESlib::CKKS::GetRawPlainText(lbcrypto::CryptoContext<lbcrypto::DCRTPoly>& cc,
+   197	                                                             ReadOnlyPlaintext pt) {
+   198	    RawPlainText result;  //{.cc = cc};
+   199	    //result.originalPlainText = pt;
+   200	    result.numRes = pt->GetElement<DCRTPoly>().GetAllElements().size();
+   201	    result.N = ((pt->GetElement<DCRTPoly>().GetAllElements())[0].GetValues() /*.m_values*/).GetLength();
+   202	    result.sub_0 = GetRawArray(pt->GetElement<DCRTPoly>().GetAllElements());
+   203	    result.moduli = GetModuli(pt->GetElement<DCRTPoly>().GetAllElements());
+   204	
+   205	
+   206	    result.format = pt->GetElement<DCRTPoly>().GetFormat();
+   207	
+   208	    if constexpr (REVERSE) {
+   209	        for (auto& i : result.sub_0)
+   210	            bit_reverse_vector(i);
+   211	    }
+   212	
+   213	    result.Noise = pt->GetScalingFactor();
+   214	    result.NoiseLevel = pt->GetNoiseScaleDeg();
+   215	    result.slots = pt->GetSlots();
+   216	
+   217	    return result;
+   218	}
+   219	FIDESlib::CKKS::RawParams FIDESlib::CKKS::GetRawParams(lbcrypto::CryptoContext<lbcrypto::DCRTPoly> cc,
+   220	                                                       FIDESlib::BOOT_CONFIG boot_conf) {
+   221	    RawParams result;
+   222	    result.N = cc->GetRingDimension();
+   223	    result.logN = std::bit_width((uint32_t)result.N) - 1;
+   224	    //cc->GetCryptoParameters()
+   225	    result.L = cc->GetCryptoParameters()->GetElementParams()->GetParams().size() - 1;
+   226	    //result.L = cc->params->m_params->m_params.size() - 1;
+   227	    const auto cryptoParams = std::dynamic_pointer_cast<CryptoParametersCKKSRNS>(cc->GetCryptoParameters());
+   228	    result.scalingTechnique = cryptoParams->GetScalingTechnique();
+   229	    //result.qbit = cc->params->m_params->m_params->;
+   230	    //auto aux = cc->GetCryptoParameters()->GetParamsPK()->GetParamPartition();
+   231	
+   232	    for (auto& i : /*cc->params->m_params->m_params*/
+   233	         cc->GetCryptoParameters()->GetElementParams()->GetParams()) {
+   234	        result.moduli.push_back(i->GetModulus().ConvertToInt<uint64_t>() /*m_ciphertextModulus.m_value*/);
+   235	        result.root_of_unity.push_back(i->GetRootOfUnity().ConvertToInt<uint64_t>() /*m_rootOfUnity.m_value*/);
+   236	        result.cyclotomic_order.push_back(i->GetCyclotomicOrder() /*m_cyclotomicOrder*/);
+   237	    }
+   238	
+   239	    // intnat::ChineseRemainderTransformFTTNat<intnat::NativeVector>::m_rootOfUnityReverseTableByModulus
+   240	    for (size_t i = 0; i < result.moduli.size(); ++i) {
+   241	        using namespace intnat;
+   242	        //  NumberTheoreticTransformNat<NativeVector>().PreCompute
+   243	        using FFT = ChineseRemainderTransformFTTNat<NativeVector>;
+   244	        auto mapSearch = FFT::m_rootOfUnityReverseTableByModulus.find(result.moduli[i]);
+   245	        if (mapSearch == FFT::m_rootOfUnityReverseTableByModulus.end() ||
+   246	            mapSearch->second.GetLength() != (size_t)result.N /*CycloOrderHf*/) {
+   247	            FFT().PreCompute(result.root_of_unity[i], result.N << 1, result.moduli[i]);
+   248	        }
+   249	
+   250	        if (mapSearch == FFT::m_rootOfUnityReverseTableByModulus.end() ||
+   251	            mapSearch->second.GetLength() != (size_t)result.N /*CycloOrderHf*/) {
+   252	            assert("OpenFHE has not generated the NTT tables we want yet :(" == nullptr);
+   253	        }
+   254	
+   255	        {
+   256	            int size = FFT::m_rootOfUnityReverseTableByModulus[result.moduli[i]].GetLength();
+   257	
+   258	            for (int k = 0; k < size; ++k) {
+   259	                result.psi[i].push_back(FFT::m_rootOfUnityReverseTableByModulus[result.moduli[i]].at(k).ConvertToInt<uint64_t>() /*.m_value*/);
+   260	                result.psi_inv[i].push_back(
+
+============================================================
+7) FIDESlib CKKS Ciphertext class/header exact excerpts
+============================================================
+
+---- /root/fideslib/src/CKKS/Ciphertext.cuh ----
+     1	//
+     2	// Created by carlosad on 24/04/24.
+     3	//
+     4	
+     5	#ifndef FIDESLIB_CKKS_CIPHERTEXT_CUH
+     6	#define FIDESLIB_CKKS_CIPHERTEXT_CUH
+     7	
+     8	#include <source_location>
+     9	#include "RNSPoly.cuh"
+    10	#include "forwardDefs.cuh"
+    11	#include "openfhe-interface/RawCiphertext.cuh"
+    12	
+    13	namespace FIDESlib::CKKS {
+    14	
+    15	/**
+    16	 * @brief Global flag controlling whether hoisted rotation optimisation is enabled.
+    17	 *
+    18	 * This can be toggled at runtime to switch between the standard hoisted-rotation
+    19	 * implementation and the fused hoisted‑rotation variant.
+    20	 */
+    21	extern bool hoistRotateFused;
+    22	
+    23	/**
+    24	 * @class Ciphertext
+    25	 * @brief Represents a ciphertext in the CKKS scheme.
+    26	 *
+    27	 * The ciphertext holds two RNSPoly components (c0 and c1) together with
+    28	 * associated metadata (key identifier, noise level, scaling factor, etc.).
+    29	 * It provides arithmetic operations, key‑switching, rotations and
+    30	 * rescaling.  Most operations maintain the level information and may
+    31	 * automatically perform rescaling or modulus‑down conversion as required
+    32	 * by the CKKS protocol.
+    33	 */
+    34	class Ciphertext {
+    35	    /** @brief Identifier string for NVTX profiling. */
+    36	    static constexpr const char* loc{"Ciphertext"};
+    37	    /** @brief NVTX range object for profiling this class' methods. */
+    38	    CudaNvtxRange my_range;
+    39	
+    40	   public:
+    41	    /** @brief Identifier for the key associated with this ciphertext. */
+    42	    KeyHash keyID{""};
+    43	    /** @brief Reference to the CKKS context owning this ciphertext. */
+    44	    Context& cc_;
+    45	    /** @brief Reference to the context data (metadata) for this ciphertext. */
+    46	    ContextData& cc;
+    47	    /** @brief The two polynomial components of the ciphertext (c0 and c1). */
+    48	    RNSPoly c0, c1;
+    49	    /** @brief Accumulated noise factor for this ciphertext. */
+    50	    double NoiseFactor = 0;
+    51	    /** @brief Discrete noise level indicator. */
+    52	    int NoiseLevel = {1};
+    53	    /** @brief Number of slots (vector length) encoded in the ciphertext. */
+    54	    int slots = 0;
+    55	
+    56	    /**
+    57	     * @brief Move constructor. Transfers ownership of the internal resources
+    58	     *        from another Ciphertext instance.
+    59	     *
+    60	     * @param ct_moved Rvalue reference to the source Ciphertext.
+    61	     */
+    62	    Ciphertext(Ciphertext&& ct_moved) noexcept;
+    63	
+    64	    /**
+    65	     * @brief Constructs an empty Ciphertext bound to a given context.
+    66	     *
+    67	     * The created ciphertext has uninitialised polynomial components and zero noise.
+    68	     *
+    69	     * @param cc Reference to the CKKS Context the ciphertext belongs to.
+    70	     */
+    71	    explicit Ciphertext(Context& cc);
+    72	
+    73	    /**
+    74	     * @brief Constructs a Ciphertext from a serialized RawCipherText.
+    75	     *
+    76	     * This loads polynomial data and metadata from the raw representation.
+    77	     *
+    78	     * @param cc   Reference to the CKKS Context.
+    79	     * @param rawct Serialized representation of a ciphertext.
+    80	     */
+    81	    Ciphertext(Context& cc, const RawCipherText& rawct);
+    82	
+    83	    /** @brief Destructor. Releases any allocated resources. */
+    84	    ~Ciphertext();
+    85	
+    86	    /**
+    87	     * @brief Copies only the metadata fields from another ciphertext.
+    88	     *
+    89	     * This does **not** copy polynomial data.
+    90	     *
+    91	     * @param a Source ciphertext to copy metadata from.
+    92	     */
+    93	    void copyMetadata(const Ciphertext& a);
+    94	
+    95	    /**
+    96	     * @brief Merges metadata from two ciphertexts into *this*.
+    97	     *
+    98	     * Used after operations that combine two ciphertexts.
+    99	     *
+   100	     * @param a First operand.
+   101	     * @param b Second operand.
+   102	     */
+   103	    void addMetadata(const Ciphertext& a, const Ciphertext& b);
+   104	
+   105	    /**
+   106	     * @brief Merges metadata from a ciphertext and a plaintext into *this*.
+   107	     *
+   108	     * @param a Ciphertext operand.
+   109	     * @param b Plaintext operand.
+   110	     */
+   111	    void addMetadata(const Ciphertext& a, const Plaintext& b);
+   112	
+   113	    /**
+   114	     * @brief Merges metadata appropriate for multiplication of two ciphertexts.
+   115	     *
+   116	     * @param a First operand.
+   117	     * @param b Second operand.
+   118	     */
+   119	    void multMetadata(const Ciphertext& a, const Ciphertext& b);
+   120	
+   121	    /**
+   122	     * @brief Merges metadata for multiplication of a ciphertext with a plaintext.
+   123	     *
+   124	     * @param a Ciphertext operand.
+   125	     * @param b Plaintext operand.
+   126	     */
+   127	    void multMetadata(const Ciphertext& a, const Plaintext& b);
+   128	
+   129	    /**
+   130	     * @brief Normalises a rotation index to the valid range for the current slot count.
+   131	     *
+   132	     * The function makes the index positive, maps it into `[0, slots)` and, if the
+   133	     * index exceeds half the slot count, adds `N/2 - slots` to map it into the
+   134	     * underlying NTT domain.
+   135	     *
+   136	     * @param index Desired rotation index (may be negative).
+   137	     * @return Normalized index within `[0, slots)`.
+   138	     */
+   139	    int normalyzeIndex(int index) const;
+   140	
+   141	    /**
+   142	     * @brief Loads ciphertext data from a RawCipherText representation.
+   143	     *
+   144	     * @param rawct Serialized ciphertext to load.
+   145	     */
+   146	    void load(const RawCipherText& rawct);
+   147	
+   148	    /**
+   149	     * @brief Stores the current ciphertext into a RawCipherText representation.
+   150	     *
+   151	     * @param rawct Destination object that will receive the serialized data.
+   152	     */
+   153	    void store(RawCipherText& rawct);
+   154	
+   155	    /**
+   156	     * @brief Adds another ciphertext to *this* (in‑place).
+   157	     *
+   158	     * The method ensures both ciphertexts are on the same level, performing
+   159	     * rescaling or level adjustments when required by the current
+   160	     * `rescaleTechnique`.  It may invoke `adjustForAddOrSub` and, if that
+   161	     * fails, create a temporary copy of `b` with aligned scaling before
+   162	     * retrying.  After the polynomial addition, metadata is merged via
+   163	     * `addMetadata`.  The operation count for `ADD` is incremented.
+   164	     *
+   165	     * @param b Ciphertext to add.
+   166	     */
+   167	    void add(const Ciphertext& b);
+   168	
+   169	    /**
+   170	     * @brief Subtracts another ciphertext from *this* (in‑place).
+   171	     *
+   172	     * Mirrors the behaviour of `add` but uses subtraction on the polynomial
+   173	     * components.  Rescaling, level alignment and metadata handling follow the
+   174	     * same logic as in `add`.
+   175	     *
+   176	     * @param b Ciphertext to subtract.
+   177	     */
+   178	    void sub(const Ciphertext& b);
+   179	
+   180	    /**
+   181	     * @brief Adds a plaintext to *this* ciphertext (in‑place).
+   182	     *
+   183	     * Handles automatic rescaling when the plaintext and ciphertext have
+   184	     * mismatched levels or noise.  For flexible rescaling techniques it may
+   185	     * create a temporary adjusted plaintext before performing the addition.
+   186	     * After the operation, metadata is merged via `addMetadata`.
+   187	     *
+   188	     * @param b Plaintext operand.
+   189	     */
+   190	    void addPt(const Plaintext& b);
+   191	
+   192	    /**
+   193	     * @brief Subtracts a plaintext from *this* ciphertext (in‑place).
+   194	     *
+   195	     * The semantics are analogous to `addPt` but perform subtraction on `c0`.
+   196	     *
+   197	     * @param pt Plaintext operand.
+   198	     */
+   199	    void subPt(const Plaintext& pt);
+   200	
+   201	    /**
+   202	     * @brief Adds a scalar (double) to both polynomial components.
+   203	     *
+   204	     * The scalar is first converted to the appropriate modulus representation
+   205	     * via `ElemForEvalAddOrSub`.  The sign of the scalar is handled by
+   206	     * converting the element to its complement when `c < 0`.  No metadata
+   207	     * updates are performed.
+   208	     *
+   209	     * @param c Scalar value to add.
+   210	     */
+   211	    void addScalar(const double c);
+   212	
+   213	    /**
+   214	     * @brief Multiplies *this* ciphertext by a plaintext.
+   215	     *
+   216	     * If the current rescaling technique requires matching noise levels,
+   217	     * the method may rescale the ciphertext or adjust the plaintext
+   218	     * (creating a temporary copy) before multiplication.  After the
+   219	     * component‑wise multiplication, metadata is merged via `multMetadata`.
+   220	     * If `rescale` is true and the technique is `FIXEDMANUAL`, the
+   221	     * ciphertext is rescaled and the noise factor/level are updated.
+   222	     *
+   223	     * @param b Plaintext operand.
+   224	     * @param rescale If true, performs rescaling after multiplication.
+   225	     */
+   226	    void multPt(const Plaintext& b, bool rescale = false);
+   227	
+   228	    /**
+   229	     * @brief Multiplies a ciphertext `c` by a plaintext and stores the result in *this*.
+   230	     *
+   231	     * Equivalent to copying `c` into *this* and then invoking `multPt(b, rescale)`.
+   232	     *
+   233	     * @param c Ciphertext operand.
+   234	     * @param b Plaintext operand.
+   235	     * @param rescale Perform rescaling after multiplication if true.
+   236	     */
+   237	    void multPt(const Ciphertext& c, const Plaintext& b, bool rescale = false);
+   238	
+   239	    /**
+   240	     * @brief Computes `*this + (c * b)` in a single fused operation.
+   241	     *
+   242	     * The method adds ciphertext `c * b` to *this* and optionally rescales.  
+   243	     * Metadata is merged via `multMetadata`.
+   244	     *
+   245	     * @param c Ciphertext to add.
+   246	     * @param b Plaintext to multiply.
+   247	     * @param rescale Perform rescaling after multiplication if true.
+   248	     */
+   249	    void addMultPt(const Ciphertext& c, const Plaintext& b, bool rescale = false);
+   250	
+   251	    /**
+   252	     * @brief Multiplies *this* by another ciphertext.
+   253	     *
+   254	     * Handles level alignment and possible rescaling according to the current
+   255	     * `rescaleTechnique`.  If necessary, the method calls `adjustForMult`
+   256	     * (creating a temporary copy of `b` when alignment fails).  The actual
+   257	     * multiplication is performed before a key‑switch operation.  Metadata is
+   258	     * merged via `multMetadata`.  The operation count for `MULT` is incremented.
+   259	     *
+   260	     * @param b Ciphertext multiplier.
+   261	     * @param rescale Perform rescaling after multiplication if true.
+   262	     * @param moddown Perform modulus down‑conversion if true.
+   263	     */
+   264	    void mult(const Ciphertext& b, bool rescale = false, bool moddown = true);
+   265	
+   266	    /**
+   267	     * @brief Multiplies two ciphertexts and stores the result in *this*.
+   268	     *
+   269	     * This overload forwards to the two‑argument version, using `b` and `c`
+   270	     * as the two multiplicands.  It exists for convenience when the two
+   271	     * operands are already separate objects.
+   272	     *
+   273	     * @param b First operand.
+   274	     * @param c Second operand.
+   275	     * @param rescale Perform rescaling after multiplication if true.
+   276	     */
+   277	    void mult(const Ciphertext& b, const Ciphertext& c, bool rescale = false);
+   278	
+   279	    /**
+   280	     * @brief Multiplies both polynomial components by a scalar without pre‑checks.
+   281	     *
+   282	     * The scalar is converted to the appropriate modulus element via
+   283	     * `ElemForEvalMult`.  If `rescale` is true and the technique is
+   284	     * `FIXEDMANUAL`, the ciphertext is rescaled after multiplication.
+   285	     *
+   286	     * @param c Scalar multiplier.
+   287	     * @param rescale Perform rescaling after multiplication if true.
+   288	     */
+   289	    void multScalarNoPrecheck(const double c, bool rescale = false);
+   290	
+   291	    /**
+   292	     * @brief Multiplies both polynomial components by a scalar, performing necessary checks.
+   293	     *
+   294	     * For flexible rescaling techniques the method may rescale the ciphertext
+   295	     * when the noise level is 2.  The scalar is converted using
+   296	     * `ElemForEvalMult` and the multiplication is applied to both components.
+   297	     * Metadata (noise level/factor) is updated accordingly; if `rescale`
+   298	     * is true and the technique is `FIXEDMANUAL`, a rescaling step follows.
+   299	     *
+   300	     * @param c Scalar multiplier.
+   301	     * @param rescale Perform rescaling after multiplication if true.
+   302	     */
+   303	    void multScalar(const double c, bool rescale = false);
+   304	
+   305	    /**
+   306	     * @brief Multiplies a ciphertext `b` by a scalar and stores the result in *this*.
+   307	     *
+   308	     * The method copies `b` into *this* and then calls `multScalar(c,
+   309	     * rescale)`.  It is useful when the caller wishes to keep `b` unchanged.
+   310	     *
+   311	     * @param b Ciphertext operand.
+   312	     * @param c Scalar multiplier.
+   313	     * @param rescale Perform rescaling after multiplication if true.
+   314	     */
+   315	    void multScalar(const Ciphertext& b, const double c, bool rescale = false);
+   316	
+   317	    /**
+   318	     * @brief Squares the ciphertext (i.e., multiplies it by itself).
+   319	     *
+   320	     * After the multiplication the metadata (noise level/factor) is updated.
+   321	     * If `rescale` is true and the technique is `FIXEDMANUAL`, a rescaling
+   322	     * step follows.
+   323	     *
+   324	     * @param rescale Perform rescaling after squaring if true.
+   325	     */
+   326	    void square(bool rescale = false);
+   327	
+   328	    /**
+   329	     * @brief Squares the source ciphertext `src` and stores the result in *this*.
+   330	     *
+   331	     * Equivalent to copying `src` into *this* and then calling `square(rescale)`.
+   332	     *
+   333	     * @param src Source ciphertext to square.
+   334	     * @param rescale Perform rescaling after squaring if true.
+   335	     */
+   336	    void square(const Ciphertext& src, bool rescale = false);
+   337	
+   338	    /**
+   339	     * @brief Rotates the slots of the ciphertext by `index` positions.
+   340	     *
+
+============================================================
+8) Search for load/save/export/copy methods on ciphertext
+============================================================
+/root/fideslib/api/CryptoContext.hpp:53:	void SetAutoLoadPlaintexts(bool autoload);
+/root/fideslib/api/CryptoContext.hpp:54:	void SetAutoLoadCiphertexts(bool autoload);
+/root/fideslib/api/CCParams.hpp:50:	void SetPlaintextAutoload(bool autoload);
+/root/fideslib/api/CCParams.hpp:51:	void SetCiphertextAutoload(bool autoload);
+/root/fideslib/api/CCParams.cpp:114:void CCParams<CryptoContextCKKSRNS>::SetPlaintextAutoload(bool autoload) {
+/root/fideslib/api/CCParams.cpp:118:void CCParams<CryptoContextCKKSRNS>::SetCiphertextAutoload(bool autoload) {
+/root/fideslib/api/CryptoContext.cpp:158:void CryptoContextImpl<DCRTPoly>::SetAutoLoadPlaintexts(bool autoload) {
+/root/fideslib/api/CryptoContext.cpp:162:void CryptoContextImpl<DCRTPoly>::SetAutoLoadCiphertexts(bool autoload) {
+/root/fideslib/api/CryptoContext.cpp:193:	FIDESlib::CKKS::RawParams rawParams = FIDESlib::CKKS::GetRawParams(context, bootConfig);
+/root/fideslib/api/CryptoContext.cpp:241:	FIDESlib::CKKS::RawPlainText raw_pt				  = FIDESlib::CKKS::GetRawPlainText(context, ptImpl);
+/root/fideslib/api/CryptoContext.cpp:259:	FIDESlib::CKKS::RawCipherText raw_ct			   = FIDESlib::CKKS::GetRawCipherText(context, ctImpl);
+/root/fideslib/api/CryptoContext.cpp:576:		FIDESlib::CKKS::RawCipherText raw_ct;
+/root/fideslib/src/CKKS/RNSPoly.cpp:116:void RNSPoly::loadDecompDigit(const std::vector<std::vector<std::vector<uint64_t>>>& data,
+/root/fideslib/src/CKKS/RNSPoly.cpp:148:void RNSPoly::multNoModdownEnd(RNSPoly& c0, const RNSPoly& bc0, const RNSPoly& bc1, const RNSPoly& in,
+/root/fideslib/src/CKKS/RNSPoly.cpp:155:        GPU.at(i).multNoModdownEnd(c0.GPU.at(i), bc0.GPU.at(i), bc1.GPU.at(i), in.GPU.at(i), aux.GPU.at(i));
+/root/fideslib/src/CKKS/RNSPoly.cpp:158:    c0.SetModUp(true);
+/root/fideslib/src/CKKS/RNSPoly.cpp:161:void RNSPoly::binomialMult(RNSPoly& c1, RNSPoly& in, const RNSPoly& d0, const RNSPoly& d1, bool moddown, bool square) {
+/root/fideslib/src/CKKS/RNSPoly.cpp:162:    assert(!this->isModUp() && !c1.isModUp() && !d0.isModUp() && !d1.isModUp());
+/root/fideslib/src/CKKS/RNSPoly.cpp:167:        c1.generateSpecialLimbs(true, false);
+/root/fideslib/src/CKKS/RNSPoly.cpp:173:        GPU.at(i).binomialMult(c1.GPU.at(i), in.GPU.at(i), d0.GPU.at(i), d1.GPU.at(i), !moddown, square);
+/root/fideslib/src/CKKS/RNSPoly.cpp:176:    c1.SetModUp(!moddown);
+/root/fideslib/src/CKKS/RNSPoly.cpp:477:void RNSPoly::multModupDotKSK(RNSPoly& c1, const RNSPoly& c1tilde, RNSPoly& c0, const RNSPoly& c0tilde,
+/root/fideslib/src/CKKS/RNSPoly.cpp:480:    assert(c1.level <= c1tilde.level);
+/root/fideslib/src/CKKS/RNSPoly.cpp:482:        assert(level == c1.level);
+/root/fideslib/src/CKKS/RNSPoly.cpp:483:        assert(level == c1tilde.level);
+/root/fideslib/src/CKKS/RNSPoly.cpp:484:        assert(level == c0.level);
+/root/fideslib/src/CKKS/RNSPoly.cpp:485:        assert(level == c0tilde.level);
+/root/fideslib/src/CKKS/RNSPoly.cpp:488:    c0.generateSpecialLimbs(false, false);
+/root/fideslib/src/CKKS/RNSPoly.cpp:489:    c1.generateSpecialLimbs(false, false);
+/root/fideslib/src/CKKS/RNSPoly.cpp:491:        GPU.at(i).multModupDotKSK(c1.GPU.at(i), c1tilde.GPU.at(i), c0.GPU.at(i), c0tilde.GPU.at(i), key.a.GPU.at(i),
+/root/fideslib/src/CKKS/RNSPoly.cpp:494:    c0.SetModUp(true);
+/root/fideslib/src/CKKS/RNSPoly.cpp:495:    c1.SetModUp(true);
+/root/fideslib/src/CKKS/RNSPoly.cpp:498:void RNSPoly::rotateModupDotKSK(RNSPoly& c0, RNSPoly& c1, const KeySwitchingKey& key) {
+/root/fideslib/src/CKKS/RNSPoly.cpp:501:    c0.generateSpecialLimbs(false, false);
+/root/fideslib/src/CKKS/RNSPoly.cpp:502:    c1.generateSpecialLimbs(false, false);
+/root/fideslib/src/CKKS/RNSPoly.cpp:504:        GPU.at(i).rotateModupDotKSK(c1.GPU.at(i), c0.GPU.at(i), key.a.GPU.at(i), key.b.GPU.at(i));
+/root/fideslib/src/CKKS/RNSPoly.cpp:506:    c1.SetModUp(true);
+/root/fideslib/src/CKKS/RNSPoly.cpp:507:    c0.SetModUp(true);
+/root/fideslib/src/CKKS/RNSPoly.cpp:711:void RNSPoly::binomialSquareFold(RNSPoly& c0_res, const RNSPoly& c2_key_switched_0, const RNSPoly& c2_key_switched_1) {
+/root/fideslib/src/CKKS/RNSPoly.cpp:715:        GPU.at(i).binomialSquareFold(c0_res.GPU.at(i), c2_key_switched_0.GPU.at(i), c2_key_switched_1.GPU.at(i));
+/root/fideslib/src/CKKS/RNSPoly.cpp:779:void RNSPoly::load(const std::vector<std::vector<uint64_t>>& data, const std::vector<uint64_t>& moduli) {
+/root/fideslib/src/CKKS/RNSPoly.cpp:815:void RNSPoly::loadConstant(const std::vector<std::vector<uint64_t>>& data, const std::vector<uint64_t>& moduli) {
+/root/fideslib/src/CKKS/RNSPoly.cpp:880:void RNSPoly::squareModupDotKSK(RNSPoly& c0, RNSPoly& c1, const KeySwitchingKey& key) {
+/root/fideslib/src/CKKS/RNSPoly.cpp:883:    c0.generateSpecialLimbs(false, false);
+/root/fideslib/src/CKKS/RNSPoly.cpp:884:    c1.generateSpecialLimbs(false, false);
+/root/fideslib/src/CKKS/RNSPoly.cpp:888:        GPU.at(i).squareModupDotKSK(c1.GPU.at(i), c0.GPU.at(i), key.a.GPU.at(i), key.b.GPU.at(i));
+/root/fideslib/src/CKKS/RNSPoly.cpp:890:    c0.SetModUp(true);
+/root/fideslib/src/CKKS/RNSPoly.cpp:891:    c1.SetModUp(true);
+/root/fideslib/src/CKKS/RNSPoly.cpp:917:void RNSPoly::dotProductPt(RNSPoly& c1_, const std::vector<const RNSPoly*>& c0s_,
+/root/fideslib/src/CKKS/RNSPoly.cpp:918:                           const std::vector<const RNSPoly*>& c1s_, const std::vector<const RNSPoly*>& pts_,
+/root/fideslib/src/CKKS/RNSPoly.cpp:923:        c1_.generateSpecialLimbs(false, false);
+/root/fideslib/src/CKKS/RNSPoly.cpp:929:        std::vector<const LimbPartition*> c0s(n, nullptr), c1s(n, nullptr), pts(n, nullptr);
+/root/fideslib/src/CKKS/RNSPoly.cpp:931:            c0s[i] = &(c0s_[i]->GPU[j]);
+/root/fideslib/src/CKKS/RNSPoly.cpp:932:            c1s[i] = &(c1s_[i]->GPU[j]);
+/root/fideslib/src/CKKS/RNSPoly.cpp:935:        GPU[j].dotProductPt(c1_.GPU[j], c0s, c1s, pts, ext);
+/root/fideslib/src/CKKS/RNSPoly.cpp:937:    c1_.SetModUp(ext);
+/root/fideslib/src/CKKS/RNSPoly.cpp:941:void RNSPoly::dotProduct(RNSPoly& c1, const RNSPoly& kskb, const RNSPoly& kska, const std::vector<const RNSPoly*>& c0in,
+/root/fideslib/src/CKKS/RNSPoly.cpp:942:                         const std::vector<const RNSPoly*>& c1in, const std::vector<const RNSPoly*>& d0in,
+/root/fideslib/src/CKKS/RNSPoly.cpp:949:        c1.generateSpecialLimbs(false, false);
+/root/fideslib/src/CKKS/RNSPoly.cpp:951:    c2.setLevel(c1.getLevel());
+/root/fideslib/src/CKKS/RNSPoly.cpp:953:    int n = c0in.size();
+/root/fideslib/src/CKKS/RNSPoly.cpp:957:        std::vector<const LimbPartition*> c0s(n, nullptr), c1s(n, nullptr), d0s(n, nullptr), d1s(n, nullptr);
+/root/fideslib/src/CKKS/RNSPoly.cpp:959:            c0s[i] = &(c0in[i]->GPU[j]);
+/root/fideslib/src/CKKS/RNSPoly.cpp:960:            c1s[i] = &(c1in[i]->GPU[j]);
+/root/fideslib/src/CKKS/RNSPoly.cpp:964:        GPU[j].binomialDotProduct(c1.GPU[j], c2.GPU[j], c0s, c1s, d0s, d1s, ext_in);
+/root/fideslib/src/CKKS/RNSPoly.cpp:973:        c1.generateSpecialLimbs(false, false);
+/root/fideslib/src/CKKS/RNSPoly.cpp:977:        c1.add(c2);
+/root/fideslib/src/CKKS/RNSPoly.cpp:980:        c1.add(c2);
+/root/fideslib/src/CKKS/RNSPoly.cpp:985:    c1.SetModUp(ext_in);
+/root/fideslib/src/CKKS/RNSPoly.cpp:989:void RNSPoly::hoistedRotationFused(std::vector<int> indexes, std::vector<RNSPoly*>& c0, std::vector<RNSPoly*>& c1,
+/root/fideslib/src/CKKS/RNSPoly.cpp:991:                                   const RNSPoly& src_c0, const RNSPoly& src_c1) {
+/root/fideslib/src/CKKS/RNSPoly.cpp:994:        c0[j]->generateSpecialLimbs(false, false);
+/root/fideslib/src/CKKS/RNSPoly.cpp:995:        c1[j]->generateSpecialLimbs(false, false);
+/root/fideslib/src/CKKS/RNSPoly.cpp:998:    //    assert(src_c0.isModUp() == false);
+/root/fideslib/src/CKKS/RNSPoly.cpp:1003:        std::vector<LimbPartition*> c0s(n, nullptr), c1s(n, nullptr), ksk_as(n, nullptr), ksk_bs(n, nullptr);
+/root/fideslib/src/CKKS/RNSPoly.cpp:1005:            c0s[i] = &(c0[i]->GPU[j]);
+/root/fideslib/src/CKKS/RNSPoly.cpp:1006:            c1s[i] = &(c1[i]->GPU[j]);
+/root/fideslib/src/CKKS/RNSPoly.cpp:1010:        GPU[j].fusedHoistRotate(n, indexes, c0s, c1s, ksk_as, ksk_bs, src_c0.GPU[j], src_c1.GPU[j], src_c0.isModUp());
+/root/fideslib/src/CKKS/RNSPoly.cpp:1014:        c0[j]->SetModUp(true);
+/root/fideslib/src/CKKS/RNSPoly.cpp:1015:        c1[j]->SetModUp(true);
+/root/fideslib/src/CKKS/RNSPoly.cpp:1081:        std::vector<uint64_t*> bufferSpecial_c0;
+/root/fideslib/src/CKKS/RNSPoly.cpp:1082:        std::vector<uint64_t*> bufferSpecial_c1;
+/root/fideslib/src/CKKS/RNSPoly.cpp:1086:            bufferSpecial_c0.push_back(aux_limbs2.GPU[i].bufferSPECIAL);
+/root/fideslib/src/CKKS/RNSPoly.cpp:1087:            bufferSpecial_c1.push_back(aux_limbs1.GPU[i].bufferSPECIAL);
+/root/fideslib/src/CKKS/RNSPoly.cpp:1101:                                              aux_limbs2.GPU[j], moddown, bufferGather, bufferSpecial_c0,
+/root/fideslib/src/CKKS/RNSPoly.cpp:1102:                                              bufferSpecial_c1, external_s, signals, thread_stop);
+/root/fideslib/src/CKKS/RNSPoly.cpp:1116:                                              aux_limbs2.GPU[j], moddown, bufferGather, bufferSpecial_c0,
+/root/fideslib/src/CKKS/RNSPoly.cpp:1117:                                              bufferSpecial_c1, external_s, signals, thread_stop);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:35:__global__ void multnomoddownend_(const __grid_constant__ int primeid_init, void** c1, void** c0, void** bc0,
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:36:                                  void** bc1, void** in, void** aux) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:44:        T res = modmult<ALGO_SHOUP>(modmult<algo>(((T*)c1[blockIdx.y])[idx], ((T*)bc0[blockIdx.y])[idx], primeid),
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:48:                     modmult<ALGO_SHOUP>(modmult<algo>(((T*)c0[blockIdx.y])[idx], ((T*)bc1[blockIdx.y])[idx], primeid),
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:51:        ((T*)c1[blockIdx.y])[idx] = res;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:53:        res = modmult<ALGO_SHOUP>(modmult<algo>(((T*)c0[blockIdx.y])[idx], ((T*)bc0[blockIdx.y])[idx], primeid),
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:57:        ((T*)c0[blockIdx.y])[idx] = res;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:134:__global__ void binomial_square_fold_(void** c0_res, void** c2_key_switched_0, void** c1, void** c2_key_switched_1,
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:142:        uint64_t in0 = ((uint64_t*)c0_res[blockIdx.y])[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:144:        ((uint64_t*)c0_res[blockIdx.y])[idx] = ok;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:145:        uint64_t in1 = ((uint64_t*)c1[blockIdx.y])[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:149:        ((uint64_t*)c1[blockIdx.y])[idx] = ok;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:299:__global__ void hoistedRotateDotKSK_2_(void*** din1, void** c0, void*** out1, void*** sout1, void*** out2,
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:301:                                       int id, int num_special, int init, void** sc0, bool c0_modup) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:326:    if (c0_modup || primeid < C_.L) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:327:        in2 = primeid < C_.L ? ((uint64_t*)c0[pos_dec])[idx] : ((uint64_t*)sc0[primeid - C_.L])[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:328:        if (!c0_modup && primeid < C_.L)
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:333:        printf("In c0: %lu\n", in2);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:366:                if (c0_modup || primeid < C_.L) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:398:__global__ void hoistedRotateDotKSKBatched___(void*** c1, void*** din1, void*** c0, void*** sc0, void*** out1,
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:401:                                              int init_, bool c0_modup) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:438:                ((uint64_t*)(decomp ? c1[z] : din1[num_d * z + i])[decomp ? pos_dec : pos]) + blockIdx.x * blockDim.x,
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:450:                ((uint64_t*)(decomp ? c1[threadIdx.z] : din1[num_d * threadIdx.z + i])[decomp ? pos_dec : pos]) +
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:462:            ((uint64_t*)(decomp ? c1[threadIdx.z] : din1[num_d * threadIdx.z + i])[decomp ? pos_dec : pos])[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:469:    if ((c0_modup && threadIdx.y == 1) || primeid < C_.L) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:470:        in2 = threadIdx.y == 1 ? ((primeid < C_.L) ? ((uint64_t*)c0[threadIdx.z][pos_dec])[idx]
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:471:                                                   : ((uint64_t*)sc0[threadIdx.z][primeid - C_.L])[idx])
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:473:        if (!c0_modup || threadIdx.y == 0)
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:478:        printf("In c0: %lu\n", in2);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:517:                    if ((c0_modup || primeid < C_.L) && threadIdx.y == 1) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:559:__global__ void hoistedRotateDotKSKBatched___(void*** c1, void*** din1, void*** c0, void*** sc0, void*** out1,
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:562:                                              int init, bool c0_modup) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:586:            ((uint64_t*)(decomp ? c1[threadIdx.z] : din1[num_d * threadIdx.z + i])[decomp ? pos_dec : pos])[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:593:    if ((c0_modup || primeid < C_.L) && threadIdx.y == 1) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:594:        in2 = ((uint64_t*)(primeid < C_.L ? c0 : sc0)[threadIdx.z][pos_dec])[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:595:        if (!c0_modup)
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:600:        printf("In c0: %lu\n", in2);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:624:                if ((c0_modup || primeid < C_.L) && threadIdx.y == 1) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:651:__global__ void dotProductPt_(void** c0, void** c1, void*** data, const size_t ptroffset, const int primeidInit,
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:664:        printf("LT: %d, b: %d, in c0: %lu \n", -1, 0, ((uint64_t*)data[0][ptroffset + blockIdx.y])[idx]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:669:        printf("LT: %d, b: %d, in c1: %lu \n", -1, 0, ((uint64_t*)data[n][ptroffset + blockIdx.y])[idx]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:680:            printf("LT: %d, b: %d, in c0: %lu \n", -1, i, ((uint64_t*)data[i][ptroffset + blockIdx.y])[idx]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:685:            printf("LT: %d, b: %d, in c1: %lu \n", -1, i, ((uint64_t*)data[n + i][ptroffset + blockIdx.y])[idx]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:693:    ((uint64_t*)c0[ptroffset + blockIdx.y])[idx] = out0;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:694:    ((uint64_t*)c1[ptroffset + blockIdx.y])[idx] = out1;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:698:__global__ void dotProductLtBatchedPt___(void*** c0_out, void*** c1_out, void*** c0_in, void*** c1_in, void*** pts,
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:715:    const bool im_c0 = threadIdx.y == 0;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:718:    if (PRINT && idx == 0 && blockIdx.y == 0 && im_c0 && b_idx == 0 && blockIdx.z == 0) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:722:    void*** inputs = im_c0 ? c0_in : c1_in;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:723:    void*** outputs = im_c0 ? c0_out : c1_out;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:728:            if (PRINT && idx == 0 && blockIdx.y == 0 && im_c0)
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:729:                printf("LT: %d, b: %d, in c0: %lu %lu %p %p\n", k, b_idx, in[in_stride * i],
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:732:            if (PRINT && idx == 0 && blockIdx.y == 0 && !im_c0)
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:733:                printf("LT: %d, b: %d, in c1: %lu %lu %p %p\n", k, b_idx, in[in_stride * i],
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:741:                if (!im_c0) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:801:__global__ void dotProductLtBatchedPt2___(void*** c0_out, void*** c1_out, void*** c0_in, void*** c1_in, void*** pts,
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:821:    bool im_c0 = threadIdx.y == 0;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:826:    void*** inputs = im_c0 ? c0_in : c1_in;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:827:    void*** outputs = im_c0 ? c0_out : c1_out;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:853:__global__ void dotProductLtBatchedPt3___(void*** c0_out, void*** c1_out, void*** c0_in, void*** c1_in, void*** pts,
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:873:    bool im_c0 = threadIdx.y == 0;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:878:    void*** inputs = im_c0 ? c0_in : c1_in;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:879:    void*** outputs = im_c0 ? c0_out : c1_out;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:908:__global__ void dotProductLtBatchedPt___(void*** c0_out, void*** c1_out, void*** c0_in, void*** c1_in, void*** pts,
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:928:    bool im_c0 = threadIdx.y == 0;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:931:    if (PRINT && idx == 0 && blockIdx.y == 0 && im_c0 && b_idx == 0 && blockIdx.z == 0) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:935:    if (PRINT && idx == 0 && blockIdx.y == 0 && im_c0 && b_idx == 0 && blockIdx.z == 0)
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:938:    void*** inputs = im_c0 ? c0_in : c1_in;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:939:    void*** outputs = im_c0 ? c0_out : c1_out;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:944:            if (PRINT && idx == 0 && blockIdx.y == 0 && im_c0)
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:945:                printf("LT: %d, b: %d, in c0: %lu %lu %p %p\n", k, b_idx, in[/*in_stride * */ i],
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:948:            if (PRINT && idx == 0 && blockIdx.y == 0 && !im_c0)
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:949:                printf("LT: %d, b: %d, in c1: %lu %lu %p %p\n", k, b_idx, in[/*in_stride * */ i],
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:957:                if (im_c0) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1023:__global__ void dotProductLtBatchedPt___(void*** c0_out, void*** c1_out, void*** c0_in, void*** c1_in, void*** pts,
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1042:    bool im_c0 = threadIdx.y == 0;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1045:    if (PRINT && idx == 0 && blockIdx.y == 0 && im_c0 && b_idx == 0 && blockIdx.z == 0) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1049:    if (PRINT && idx == 0 && blockIdx.y == 0 && im_c0 && b_idx == 0 && blockIdx.z == 0)
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1052:    void*** inputs = im_c0 ? c0_in : c1_in;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1053:    void*** outputs = im_c0 ? c0_out : c1_out;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1058:            if (PRINT && idx == 0 && blockIdx.y == 0 && im_c0)
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1059:                printf("LT: %d, b: %d, in c0: %lu %lu %p %p\n", k, b_idx, in[in_stride * i],
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1062:            if (PRINT && idx == 0 && blockIdx.y == 0 && !im_c0)
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1063:                printf("LT: %d, b: %d, in c1: %lu %lu %p %p\n", k, b_idx, in[in_stride * i],
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1071:                if (im_c0) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1398:__global__ void binomialMult_(const __grid_constant__ int primeid_init, void** c0, void** c1, void** c2, void** d0,
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1408:        T c0in = ((T*)(c0[blockIdx.y]))[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1409:        T c1in = ((T*)(c1[blockIdx.y]))[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1411:        T aux0 = modmult<ALGO_BARRETT>(c0in, d0in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1412:        ((T*)(c0[blockIdx.y]))[idx] = aux0;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1415:            modadd(modmult<ALGO_BARRETT>(c0in, d1in, primeid), modmult<ALGO_BARRETT>(c1in, d0in, primeid), primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1416:        ((T*)(c1[blockIdx.y]))[idx] = aux1;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1418:        T aux2 = modmult<ALGO_BARRETT>(c1in, d1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1425:        T c0in = ((T*)(c0[blockIdx.y]))[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1426:        T c1in = ((T*)(c1[blockIdx.y]))[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1428:        T aux0 = modmult<ALGO_BARRETT>(c0in, d0in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1429:        ((T*)(c0[blockIdx.y]))[idx] = aux0;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1432:            modadd(modmult<ALGO_BARRETT>(c0in, d1in, primeid), modmult<ALGO_BARRETT>(c1in, d0in, primeid), primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1433:        ((T*)(c1[blockIdx.y]))[idx] = aux1;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1435:        T aux2 = modmult<ALGO_BARRETT>(c1in, d1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1440:__global__ void binomialMultExtend_(const __grid_constant__ int primeid_init, void** c0, void** c1, void** c2,
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1450:        T c0in = ((T*)(c0[blockIdx.y]))[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1451:        T c1in = ((T*)(c1[blockIdx.y]))[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1453:        T aux0 = modmult<ALGO_BARRETT>(c0in, d0in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1454:        ((T*)(c0[blockIdx.y]))[idx] = modmult<ALGO_SHOUP>(aux0, (T)C_.P[primeid], primeid, (T)C_.P_shoup[primeid]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1457:            modadd(modmult<ALGO_BARRETT>(c0in, d1in, primeid), modmult<ALGO_BARRETT>(c1in, d0in, primeid), primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1458:        ((T*)(c1[blockIdx.y]))[idx] = modmult<ALGO_SHOUP>(aux1, (T)C_.P[primeid], primeid, (T)C_.P_shoup[primeid]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1460:        T aux2 = modmult<ALGO_BARRETT>(c1in, d1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1467:        T c0in = ((T*)(c0[blockIdx.y]))[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1468:        T c1in = ((T*)(c1[blockIdx.y]))[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1470:        T aux0 = modmult<ALGO_BARRETT>(c0in, d0in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1471:        ((T*)(c0[blockIdx.y]))[idx] = modmult<ALGO_SHOUP>(aux0, (T)C_.P[primeid], primeid, (T)C_.P_shoup[primeid]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1474:            modadd(modmult<ALGO_BARRETT>(c0in, d1in, primeid), modmult<ALGO_BARRETT>(c1in, d0in, primeid), primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1475:        ((T*)(c1[blockIdx.y]))[idx] = modmult<ALGO_SHOUP>(aux1, (T)C_.P[primeid], primeid, (T)C_.P_shoup[primeid]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1477:        T aux2 = modmult<ALGO_BARRETT>(c1in, d1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1482:__global__ void binomialSquare_(const __grid_constant__ int primeid_init, void** c0, void** c1, void** c2) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1489:        T c0in = ((T*)(c0[blockIdx.y]))[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1490:        T c1in = ((T*)(c1[blockIdx.y]))[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1492:        T aux0 = modmult<ALGO_BARRETT>(c0in, c0in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1493:        ((T*)(c0[blockIdx.y]))[idx] = aux0;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1495:        T aux1 = modmult<ALGO_BARRETT>(c0in, c1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1496:        ((T*)(c1[blockIdx.y]))[idx] = modadd(aux1, aux1, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1498:        T aux2 = modmult<ALGO_BARRETT>(c1in, c1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1503:        T c0in = ((T*)(c0[blockIdx.y]))[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1504:        T c1in = ((T*)(c1[blockIdx.y]))[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1506:        T aux0 = modmult<ALGO_BARRETT>(c0in, c0in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1507:        ((T*)(c0[blockIdx.y]))[idx] = aux0;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1509:        T aux1 = modmult<ALGO_BARRETT>(c0in, c1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1510:        ((T*)(c1[blockIdx.y]))[idx] = modadd(aux1, aux1, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1512:        T aux2 = modmult<ALGO_BARRETT>(c1in, c1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1517:__global__ void binomialSquareExtend_(const __grid_constant__ int primeid_init, void** c0, void** c1, void** c2) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1524:        T c0in = ((T*)(c0[blockIdx.y]))[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1525:        T c1in = ((T*)(c1[blockIdx.y]))[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1527:        T aux0 = modmult<ALGO_BARRETT>(c0in, c0in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1528:        ((T*)(c0[blockIdx.y]))[idx] = modmult<ALGO_SHOUP>(aux0, C_.P[primeid], primeid, C_.P_shoup[primeid]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1530:        T aux1 = modmult<ALGO_BARRETT>(c0in, c1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1531:        ((T*)(c1[blockIdx.y]))[idx] =
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1534:        T aux2 = modmult<ALGO_BARRETT>(c1in, c1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1539:        T c0in = ((T*)(c0[blockIdx.y]))[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1540:        T c1in = ((T*)(c1[blockIdx.y]))[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1542:        T aux0 = modmult<ALGO_BARRETT>(c0in, c0in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1543:        ((T*)(c0[blockIdx.y]))[idx] = aux0;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1545:        T aux1 = modmult<ALGO_BARRETT>(c0in, c1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1546:        ((T*)(c1[blockIdx.y]))[idx] = modadd(aux1, aux1, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1548:        T aux2 = modmult<ALGO_BARRETT>(c1in, c1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1553:__global__ void binomialDotProdBatched___(const __grid_constant__ int primeid_init, void*** c0, void*** c1, void*** d0,
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1554:                                          void*** d1, void*** c0_out, void*** c1_out, void*** c2_out, int its, int n) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1564:            T acc0, acc1, acc2;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1565:            for (int j = 0; j < its && c0[i * its + j] != nullptr; ++j) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1566:                T c0in = ((T*)(c0[i * its + j][blockIdx.y]))[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1567:                T c1in = ((T*)(c1[i * its + j][blockIdx.y]))[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1569:                T aux0 = modmult<ALGO_BARRETT>(c0in, d0in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1571:                T aux1 = modadd(modmult<ALGO_BARRETT>(c0in, d1in, primeid), modmult<ALGO_BARRETT>(c1in, d0in, primeid),
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1574:                T aux2 = modmult<ALGO_BARRETT>(c1in, d1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1577:                    acc0 = aux0;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1578:                    acc1 = aux1;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1581:                    acc0 = modadd(acc0, aux0, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1582:                    acc1 = modadd(acc1, aux1, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1587:            ((T*)(c0_out[i][blockIdx.y]))[idx] = acc0;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1588:            ((T*)(c1_out[i][blockIdx.y]))[idx] = acc1;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1596:            T acc0, acc1, acc2;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1597:            for (int j = 0; j < its && c0[i * its + j] != nullptr; ++j) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1598:                T c0in = ((T*)(c0[i * its + j][blockIdx.y]))[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1599:                T c1in = ((T*)(c1[i * its + j][blockIdx.y]))[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1601:                T aux0 = modmult<ALGO_BARRETT>(c0in, d0in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1603:                T aux1 = modadd(modmult<ALGO_BARRETT>(c0in, d1in, primeid), modmult<ALGO_BARRETT>(c1in, d0in, primeid),
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1606:                T aux2 = modmult<ALGO_BARRETT>(c1in, d1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1609:                    acc0 = aux0;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1610:                    acc1 = aux1;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1613:                    acc0 = modadd(acc0, aux0, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1614:                    acc1 = modadd(acc1, aux1, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1619:            ((T*)(c0_out[i][blockIdx.y]))[idx] = acc0;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1620:            ((T*)(c1_out[i][blockIdx.y]))[idx] = acc1;
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:351:    int offset_out_c0 = 0;
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:352:    int offset_out_c1 = out.size() / 2;
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:353:    int offset_in_c0 = out.size();
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:354:    int offset_in_c1 = out.size() + in.size() / 2;
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:356:    int soffset_out_c0 = size / 2 + 0;
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:357:    int soffset_out_c1 = size / 2 + out.size() / 2;
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:358:    int soffset_in_c0 = size / 2 + out.size();
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:359:    int soffset_in_c1 = size / 2 + out.size() + in.size() / 2;
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:366:                data_ptrs[offset_out_c0 + i * stride * gStep + j * gStep + k] =
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:373:                data_ptrs[offset_out_c1 + i * stride * gStep + j * gStep + k] =
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:380:                data_ptrs[offset_in_c0 + i * stride * bStep + j * bStep + k] =
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:387:                data_ptrs[offset_in_c1 + i * stride * bStep + j * bStep + k] =
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:403:                    data_ptrs[soffset_out_c0 + i * stride * gStep + j * gStep + k] =
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:410:                    data_ptrs[soffset_out_c1 + i * stride * gStep + j * gStep + k] =
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:417:                    data_ptrs[soffset_in_c0 + i * stride * bStep + j * bStep + k] =
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:424:                    data_ptrs[soffset_in_c1 + i * stride * bStep + j * bStep + k] =
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:452:                data_ptrs_d + offset_out_c0, data_ptrs_d + offset_out_c1, data_ptrs_d + offset_in_c0,
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:453:                data_ptrs_d + offset_in_c1, data_ptrs_d + offset_pt, stride, gStep, PARTITION(out[0]->id, 0), num_LT);
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:457:                data_ptrs_d + soffset_out_c0, data_ptrs_d + soffset_out_c1, data_ptrs_d + soffset_in_c0,
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:458:                data_ptrs_d + soffset_in_c1, data_ptrs_d + soffset_pt, stride, gStep,
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:465:                    data_ptrs_d + offset_out_c0, data_ptrs_d + offset_out_c1, data_ptrs_d + offset_in_c0,
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:466:                    data_ptrs_d + offset_in_c1, data_ptrs_d + offset_pt, bStep, gStep, PARTITION(out[0]->id, 0),
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:471:                    data_ptrs_d + soffset_out_c0, data_ptrs_d + soffset_out_c1, data_ptrs_d + soffset_in_c0,
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:472:                    data_ptrs_d + soffset_in_c1, data_ptrs_d + soffset_pt, bStep, gStep,
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:478:                    data_ptrs_d + offset_out_c0, data_ptrs_d + offset_out_c1, data_ptrs_d + offset_in_c0,
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:479:                    data_ptrs_d + offset_in_c1, data_ptrs_d + offset_pt, bStep, gStep, PARTITION(out[0]->id, 0),
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:484:                    data_ptrs_d + soffset_out_c0, data_ptrs_d + soffset_out_c1, data_ptrs_d + soffset_in_c0,
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:485:                    data_ptrs_d + soffset_in_c1, data_ptrs_d + soffset_pt, bStep, gStep,
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:498:                                            int n, int stride, double usage, bool c0_modup) {
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:545:    int offset_out_c0 = 0;
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:546:    int offset_out_sc0 = out.size() / 2;
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:547:    int offset_out_c1 = out.size();
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:548:    int offset_out_sc1 = 3 * out.size() / 2;
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:549:    int offset_in_c0 = 2 * out.size();
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:550:    int offset_in_sc0 = 2 * out.size() + in.size() / 2;
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:551:    int offset_in_c1 = 2 * out.size() + 2 * in.size() / 2;
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:552:    int offset_in_dc1 = 2 * out.size() + 3 * in.size() / 2;
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:559:        data_ptrs[offset_out_c0 + j] = out[2 * j]->limbptr.data;
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:560:        data_ptrs[offset_out_sc0 + j] = out[2 * j]->SPECIALlimbptr.data;
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:561:        data_ptrs[offset_out_c1 + j] = out[2 * j + 1]->limbptr.data;
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:562:        data_ptrs[offset_out_sc1 + j] = out[2 * j + 1]->SPECIALlimbptr.data;
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:566:        data_ptrs[offset_in_c0 + j] = in[2 * j]->limbptr.data;
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:567:        data_ptrs[offset_in_sc0 + j] = in[2 * j]->SPECIALlimbptr.data;
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:568:        data_ptrs[offset_in_c1 + j] = in[2 * j + 1]->limbptr.data;
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:570:            data_ptrs[offset_in_dc1 + num_d * j + k] = in[2 * j + 1]->DIGITlimbptr[k].data;
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:595:            data_ptrs_d + offset_in_c1, data_ptrs_d + offset_in_dc1, data_ptrs_d + offset_in_c0,
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:596:            data_ptrs_d + offset_in_sc0, data_ptrs_d + offset_out_c1, data_ptrs_d + offset_out_sc1,
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:597:            data_ptrs_d + offset_out_c0, data_ptrs_d + offset_out_sc0, n, (int*)(data_ptrs_d + offset_index),
+/root/fideslib/src/CKKS/LimbPartitionBatch.cu:598:            data_ptrs_d + offset_ksk, num_d, out[0]->id, slimbsize, 0, c0_modup);
+/root/fideslib/src/CKKS/LimbPartition.cuh:89:    void binomialDotProduct(LimbPartition& c1, LimbPartition& c2, const std::vector<const LimbPartition*>& c0s,
+/root/fideslib/src/CKKS/LimbPartition.cuh:90:                            const std::vector<const LimbPartition*>& c1s, const std::vector<const LimbPartition*>& d0s,
+/root/fideslib/src/CKKS/LimbPartition.cuh:92:    void binomialMult(LimbPartition& c1, LimbPartition& c2, const LimbPartition& d0, const LimbPartition& d1,
+/root/fideslib/src/CKKS/LimbPartition.cuh:148:        OptConstReference c0;
+/root/fideslib/src/CKKS/LimbPartition.cuh:149:        OptConstReference c0tilde;
+/root/fideslib/src/CKKS/LimbPartition.cuh:150:        OptConstReference c1;
+/root/fideslib/src/CKKS/LimbPartition.cuh:151:        OptConstReference c1tilde;
+/root/fideslib/src/CKKS/LimbPartition.cuh:183:    void loadDecompDigit(const std::vector<std::vector<std::vector<uint64_t>>>& data,
+/root/fideslib/src/CKKS/LimbPartition.cuh:191:    void multModupDotKSK(LimbPartition& c1, const LimbPartition& c1tilde, LimbPartition& c0,
+/root/fideslib/src/CKKS/LimbPartition.cuh:192:                         const LimbPartition& c0tilde, const LimbPartition& ksk_a, const LimbPartition& ksk_b);
+/root/fideslib/src/CKKS/LimbPartition.cuh:200:    void binomialSquareFold(LimbPartition& c0_res, const LimbPartition& c2_key_switched_0,
+/root/fideslib/src/CKKS/LimbPartition.cuh:208:    void rotateModupDotKSK(LimbPartition& c1, LimbPartition& c0, const LimbPartition& ksk_a,
+/root/fideslib/src/CKKS/LimbPartition.cuh:210:    void squareModupDotKSK(LimbPartition& c1, LimbPartition& c0, const LimbPartition& ksk_a,
+/root/fideslib/src/CKKS/LimbPartition.cuh:216:    void dotProductPt(LimbPartition& c1, const std::vector<const LimbPartition*>& c0s,
+/root/fideslib/src/CKKS/LimbPartition.cuh:217:                      const std::vector<const LimbPartition*>& c1s, const std::vector<const LimbPartition*>& pts,
+/root/fideslib/src/CKKS/LimbPartition.cuh:223:    void fusedHoistRotate(int n, std::vector<int> indexes, std::vector<LimbPartition*>& c0,
+/root/fideslib/src/CKKS/LimbPartition.cuh:224:                          std::vector<LimbPartition*>& c1, const std::vector<LimbPartition*>& ksk_a,
+/root/fideslib/src/CKKS/LimbPartition.cuh:225:                          const std::vector<LimbPartition*>& ksk_b, const LimbPartition& src_c0,
+/root/fideslib/src/CKKS/LimbPartition.cuh:226:                          const LimbPartition& src_c1, bool c0_modup);
+/root/fideslib/src/CKKS/LimbPartition.cuh:228:    void modup_ksk_moddown_mgpu(LimbPartition& c0, const LimbPartition& ksk_a, const LimbPartition& ksk_b,
+/root/fideslib/src/CKKS/LimbPartition.cuh:231:                                const std::vector<uint64_t*>& bufferSpecial_c0,
+/root/fideslib/src/CKKS/LimbPartition.cuh:232:                                const std::vector<uint64_t*>& bufferSpecial_c1, const std::vector<Stream*>& external_s,
+/root/fideslib/src/CKKS/LimbPartition.cuh:242:    void multNoModdownEnd(LimbPartition& c0, const LimbPartition& bc0, const LimbPartition& bc1,
+/root/fideslib/src/CKKS/LimbPartition.cuh:266:                                        int n, int stride, double usage, bool c0_modup);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:16:std::vector<std::vector<uint64_t>> FIDESlib::CKKS::GetRawArray(
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:48:FIDESlib::CKKS::RawCipherText FIDESlib::CKKS::GetRawCipherText(lbcrypto::CryptoContext<lbcrypto::DCRTPoly>& cc,
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:54:    result.sub_0 = GetRawArray(ct->GetElements()[0].GetAllElements());
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:55:    result.sub_1 = GetRawArray(ct->GetElements()[1].GetAllElements());
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:79:void FIDESlib::CKKS::GetOpenFHECipherText(lbcrypto::Ciphertext<DCRTPoly> result, RawCipherText raw, int REV) {
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:172:FIDESlib::CKKS::RawPlainText FIDESlib::CKKS::GetRawPlainText(lbcrypto::CryptoContext<lbcrypto::DCRTPoly>& cc,
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:178:    result.sub_0 = GetRawArray(pt->GetElement<DCRTPoly>().GetAllElements());
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:196:FIDESlib::CKKS::RawPlainText FIDESlib::CKKS::GetRawPlainText(lbcrypto::CryptoContext<lbcrypto::DCRTPoly>& cc,
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:202:    result.sub_0 = GetRawArray(pt->GetElement<DCRTPoly>().GetAllElements());
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:219:FIDESlib::CKKS::RawParams FIDESlib::CKKS::GetRawParams(lbcrypto::CryptoContext<lbcrypto::DCRTPoly> cc,
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:481:            auto v = GetRawArray(j.GetAllElements() /*.m_vectors*/);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:1029:        FIDESlib::CKKS::RawParams raw_param2 = FIDESlib::CKKS::GetRawParams(cc_switch);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:1080:                    RawPlainText raw = GetRawPlainText(cc, auxA.at(i));
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:1083:                        result.LT.A.back().c0.freeSpecialLimbs();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:1088:                    RawPlainText raw = GetRawPlainText(cc, auxInvA.at(i));
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:1091:                        result.LT.invA.back().c0.freeSpecialLimbs();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:1106:                    RawPlainText raw = GetRawPlainText(cc, A.at(A.size() - 1 - i).at(j));
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:1109:                        result.CtS.at(i).A.back().c0.freeSpecialLimbs();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:1115:                    RawPlainText raw = GetRawPlainText(cc, invA.at(i).at(j));
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:1118:                        result.StC.at(i).A.back().c0.freeSpecialLimbs();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cuh:16:* The rawCipherText Class contains the basic information needed to hold a ciphertext, with pointers to data that can be contained on the GPU or main memory
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cuh:95:std::vector<std::vector<uint64_t>> GetRawArray(std::vector<lbcrypto::PolyImpl<lbcrypto::NativeVector>> polys);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cuh:97:RawCipherText GetRawCipherText(lbcrypto::CryptoContext<lbcrypto::DCRTPoly>& cc,
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cuh:100:void GetOpenFHECipherText(lbcrypto::Ciphertext<lbcrypto::DCRTPoly> result, RawCipherText raw, int REV = 1);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cuh:102:RawPlainText GetRawPlainText(lbcrypto::CryptoContext<lbcrypto::DCRTPoly>& cc, lbcrypto::Plaintext pt);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cuh:103:RawPlainText GetRawPlainText(lbcrypto::CryptoContext<lbcrypto::DCRTPoly>& cc, lbcrypto::ReadOnlyPlaintext pt);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cuh:107:// RawParams GetRawParams(lbcrypto::CryptoContext<lbcrypto::DCRTPoly> cc);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cuh:108:RawParams GetRawParams(lbcrypto::CryptoContext<lbcrypto::DCRTPoly> cc, FIDESlib::BOOT_CONFIG boot_conf = UNIFORM);
+/root/fideslib/src/CKKS/ApproxModEval.cu:39:		for (auto& i : ctxtEnc.c0.GPU.at(0).limb) {
+/root/fideslib/src/CKKS/ApproxModEval.cu:40:			cudaSetDevice(ctxtEnc.c0.GPU.at(0).device);
+/root/fideslib/src/CKKS/ApproxModEval.cu:46:		for (auto& i : ctxtEncI.c0.GPU.at(0).limb) {
+/root/fideslib/src/CKKS/ApproxModEval.cu:47:			cudaSetDevice(ctxtEncI.c0.GPU.at(0).device);
+/root/fideslib/src/CKKS/ApproxModEval.cu:58:		for (auto& i : ctxtEnc.c0.GPU.at(0).limb) {
+/root/fideslib/src/CKKS/ApproxModEval.cu:59:			cudaSetDevice(ctxtEnc.c0.GPU.at(0).device);
+/root/fideslib/src/CKKS/ApproxModEval.cu:65:		for (auto& i : ctxtEncI.c0.GPU.at(0).limb) {
+/root/fideslib/src/CKKS/ApproxModEval.cu:66:			cudaSetDevice(ctxtEncI.c0.GPU.at(0).device);
+/root/fideslib/src/CKKS/ApproxModEval.cu:86:		for (auto& i : ctxtEnc.c0.GPU.at(0).limb) {
+/root/fideslib/src/CKKS/ApproxModEval.cu:87:			cudaSetDevice(ctxtEnc.c0.GPU.at(0).device);
+/root/fideslib/src/CKKS/ApproxModEval.cu:104:		for (auto& i : ctxtEnc.c0.GPU.at(0).limb) {
+/root/fideslib/src/CKKS/ApproxModEval.cu:105:			cudaSetDevice(ctxtEnc.c0.GPU.at(0).device);
+/root/fideslib/src/CKKS/ApproxModEval.cu:113:		for (auto& i : ctxtEnc.c0.GPU.at(0).limb) {
+/root/fideslib/src/CKKS/ApproxModEval.cu:114:			cudaSetDevice(ctxtEnc.c0.GPU.at(0).device);
+/root/fideslib/src/CKKS/ApproxModEval.cu:122:		for (auto& i : ctxtEnc.c0.GPU.at(0).limb) {
+/root/fideslib/src/CKKS/ApproxModEval.cu:123:			cudaSetDevice(ctxtEnc.c0.GPU.at(0).device);
+/root/fideslib/src/CKKS/ApproxModEval.cu:134:	ctxt.c0.multScalar(op_);
+/root/fideslib/src/CKKS/ApproxModEval.cu:135:	ctxt.c1.multScalar(op_);
+/root/fideslib/src/CKKS/ApproxModEval.cu:502:			for (auto& i : T[j]->c0.GPU.at(0).limb) {
+/root/fideslib/src/CKKS/ApproxModEval.cu:503:				cudaSetDevice(T[j]->c0.GPU.at(0).device);
+/root/fideslib/src/CKKS/ApproxModEval.cu:607:			for (auto& i : T2[j]->c0.GPU.at(0).limb) {
+/root/fideslib/src/CKKS/ApproxModEval.cu:608:				cudaSetDevice(T2[j]->c0.GPU.at(0).device);
+/root/fideslib/src/CKKS/ApproxModEval.cu:659:		for (auto& i : T2km1.c0.GPU.at(0).limb) {
+/root/fideslib/src/CKKS/ApproxModEval.cu:660:			cudaSetDevice(T2km1.c0.GPU.at(0).device);
+/root/fideslib/src/CKKS/Context.cu:654:                          ? (precomp.LT.A.size() * (precomp.LT.A.at(0).c0.getLevel() +
+/root/fideslib/src/CKKS/Context.cu:655:                                                    precomp.LT.A.at(0).c0.isModUp() * specialMeta[0].size()) +
+/root/fideslib/src/CKKS/Context.cu:656:                             precomp.LT.invA.size() * (precomp.LT.invA.at(0).c0.getLevel() +
+/root/fideslib/src/CKKS/Context.cu:657:                                                       precomp.LT.invA.at(0).c0.isModUp() * specialMeta[0].size()))
+/root/fideslib/src/CKKS/Context.cu:659:                                 (1 + precomp.StC.at(0).A.at(0).c0.getLevel() +
+/root/fideslib/src/CKKS/Context.cu:660:                                  precomp.StC.at(0).A.at(0).c0.isModUp() * specialMeta[0].size()) +
+/root/fideslib/src/CKKS/Context.cu:662:                                 (1 + precomp.CtS.at(0).A.at(0).c0.getLevel() +
+/root/fideslib/src/CKKS/Context.cu:663:                                  precomp.CtS.at(0).A.at(0).c0.isModUp() * specialMeta[0].size()))) *
+/root/fideslib/src/CKKS/RNSPoly.cuh:30:    void load(const std::vector<std::vector<uint64_t>>& data, const std::vector<uint64_t>& moduli);
+/root/fideslib/src/CKKS/RNSPoly.cuh:78:    void loadDecompDigit(const std::vector<std::vector<std::vector<uint64_t>>>& data,
+/root/fideslib/src/CKKS/RNSPoly.cuh:85:    void multModupDotKSK(RNSPoly& c1, const RNSPoly& c1tilde, RNSPoly& c0, const RNSPoly& c0tilde,
+/root/fideslib/src/CKKS/RNSPoly.cuh:92:    void hoistedRotationFused(std::vector<int> indexes, std::vector<RNSPoly*>& c0, std::vector<RNSPoly*>& c1,
+/root/fideslib/src/CKKS/RNSPoly.cuh:94:                              const RNSPoly& src_c0, const RNSPoly& src_c1);
+/root/fideslib/src/CKKS/RNSPoly.cuh:104:    void binomialSquareFold(RNSPoly& c0_res, const RNSPoly& c2_key_switched_0, const RNSPoly& c2_key_switched_1);
+/root/fideslib/src/CKKS/RNSPoly.cuh:112:    void loadConstant(const std::vector<std::vector<uint64_t>>& vector1, const std::vector<uint64_t>& vector2);
+/root/fideslib/src/CKKS/RNSPoly.cuh:114:    void squareModupDotKSK(RNSPoly& c0, RNSPoly& c1, const KeySwitchingKey& key);
+/root/fideslib/src/CKKS/RNSPoly.cuh:118:    void dotProductPt(RNSPoly& c1, const std::vector<const RNSPoly*>& c0s, const std::vector<const RNSPoly*>& c1s,
+/root/fideslib/src/CKKS/RNSPoly.cuh:120:    void dotProduct(RNSPoly& c1, const RNSPoly& kskb, const RNSPoly& kska, const std::vector<const RNSPoly*>& c0in,
+/root/fideslib/src/CKKS/RNSPoly.cuh:121:                    const std::vector<const RNSPoly*>& c1in, const std::vector<const RNSPoly*>& d0in,
+/root/fideslib/src/CKKS/RNSPoly.cuh:129:    void multNoModdownEnd(RNSPoly& c0, const RNSPoly& bc0, const RNSPoly& bc1, const RNSPoly& in, const RNSPoly& aux);
+/root/fideslib/src/CKKS/RNSPoly.cuh:131:    void binomialMult(RNSPoly& c1, RNSPoly& in, const RNSPoly& d0, const RNSPoly& d1, bool moddown, bool square);
+/root/fideslib/src/CKKS/RNSPoly.cuh:150:                                        const std::vector<int>& indexes, int stride, double usage, bool c0_modup);
+/root/fideslib/src/CKKS/Ciphertext.cpp:68:: my_range(std::move(ct_moved.my_range)), keyID(std::move(ct_moved.keyID)), cc_(ct_moved.cc_), cc(*cc_), c0(std::move(ct_moved.c0)), c1(std::move(ct_moved.c1)),
+/root/fideslib/src/CKKS/Ciphertext.cpp:74:  c0(cc->getAuxilarPoly()), c1(cc->getAuxilarPoly()) {
+/root/fideslib/src/CKKS/Ciphertext.cpp:75:	c0.dropToLevel(-1);
+/root/fideslib/src/CKKS/Ciphertext.cpp:76:	c1.dropToLevel(-1);
+/root/fideslib/src/CKKS/Ciphertext.cpp:77:	c0.SetModUp(false);
+/root/fideslib/src/CKKS/Ciphertext.cpp:78:	c1.SetModUp(false);
+/root/fideslib/src/CKKS/Ciphertext.cpp:82:Ciphertext::Ciphertext(Context& cc, const RawCipherText& rawct) : Ciphertext(cc) {
+/root/fideslib/src/CKKS/Ciphertext.cpp:87:	if (!c1.GPU.empty())
+/root/fideslib/src/CKKS/Ciphertext.cpp:88:		cc.returnAuxilarPoly(std::move(c1));
+/root/fideslib/src/CKKS/Ciphertext.cpp:89:	if (!c0.GPU.empty())
+/root/fideslib/src/CKKS/Ciphertext.cpp:90:		cc.returnAuxilarPoly(std::move(c0));
+/root/fideslib/src/CKKS/Ciphertext.cpp:93:void Ciphertext::copyMetadata(const Ciphertext& a) {
+/root/fideslib/src/CKKS/Ciphertext.cpp:119:		assert(a.getLevel() == b.c0.getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:146:		assert(a.getLevel() == b.c0.getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:185:		c0.dropToLevel(b.getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:186:		c1.dropToLevel(b.getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:190:	c0.add(b.c0);
+/root/fideslib/src/CKKS/Ciphertext.cpp:191:	c1.add(b.c1);
+/root/fideslib/src/CKKS/Ciphertext.cpp:215:		c0.dropToLevel(b.getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:216:		c1.dropToLevel(b.getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:220:	c0.sub(b.c0);
+/root/fideslib/src/CKKS/Ciphertext.cpp:221:	c1.sub(b.c1);
+/root/fideslib/src/CKKS/Ciphertext.cpp:230:		if (b.NoiseLevel == 1 && NoiseLevel == 2 && b.c0.getLevel() == getLevel() - 1) {
+/root/fideslib/src/CKKS/Ciphertext.cpp:234:		if (b.c0.getLevel() != this->getLevel()) {
+/root/fideslib/src/CKKS/Ciphertext.cpp:247:	c0.add(b.c0);
+/root/fideslib/src/CKKS/Ciphertext.cpp:256:		if (b.NoiseLevel == 1 && NoiseLevel == 2 && b.c0.getLevel() == getLevel() - 1) {
+/root/fideslib/src/CKKS/Ciphertext.cpp:260:		if (b.c0.getLevel() != this->getLevel()) {
+/root/fideslib/src/CKKS/Ciphertext.cpp:273:	c0.sub(b.c0);
+/root/fideslib/src/CKKS/Ciphertext.cpp:278:void Ciphertext::load(const RawCipherText& rawct) {
+/root/fideslib/src/CKKS/Ciphertext.cpp:282:	c0.load(rawct.sub_0, rawct.moduli);
+/root/fideslib/src/CKKS/Ciphertext.cpp:283:	c1.load(rawct.sub_1, rawct.moduli);
+/root/fideslib/src/CKKS/Ciphertext.cpp:290:void Ciphertext::store(RawCipherText& rawct) {
+/root/fideslib/src/CKKS/Ciphertext.cpp:295:	rawct.numRes = c0.getLevel() + 1;
+/root/fideslib/src/CKKS/Ciphertext.cpp:298:	c0.store(rawct.sub_0);
+/root/fideslib/src/CKKS/Ciphertext.cpp:299:	c1.store(rawct.sub_1);
+/root/fideslib/src/CKKS/Ciphertext.cpp:301:	c0.sync();
+/root/fideslib/src/CKKS/Ciphertext.cpp:302:	c1.sync();
+/root/fideslib/src/CKKS/Ciphertext.cpp:314:	c0.moddown(true, false, 0);
+/root/fideslib/src/CKKS/Ciphertext.cpp:315:	c1.moddown(true, false, 1);
+/root/fideslib/src/CKKS/Ciphertext.cpp:317:		c0.freeSpecialLimbs();
+/root/fideslib/src/CKKS/Ciphertext.cpp:318:		c1.freeSpecialLimbs();
+/root/fideslib/src/CKKS/Ciphertext.cpp:325:	// c0.modup();
+/root/fideslib/src/CKKS/Ciphertext.cpp:326:	c1.modup();
+/root/fideslib/src/CKKS/Ciphertext.cpp:341:		if (b.c0.getLevel() != this->getLevel() || b.NoiseLevel == 2 /*!hasSameScalingFactor(b)*/) {
+/root/fideslib/src/CKKS/Ciphertext.cpp:369:	c0.multPt(b.c0, rescale && cc.rescaleTechnique == CKKS::FIXEDMANUAL);
+/root/fideslib/src/CKKS/Ciphertext.cpp:370:	c1.multPt(b.c0, rescale && cc.rescaleTechnique == CKKS::FIXEDMANUAL);
+/root/fideslib/src/CKKS/Ciphertext.cpp:374:		NoiseFactor /= cc.param.ModReduceFactor.at(c0.getLevel() + 1);
+/root/fideslib/src/CKKS/Ciphertext.cpp:389:		c0.rescaleDouble(c1);
+/root/fideslib/src/CKKS/Ciphertext.cpp:391:		c0.rescale();
+/root/fideslib/src/CKKS/Ciphertext.cpp:392:		c1.rescale();
+/root/fideslib/src/CKKS/Ciphertext.cpp:396:	NoiseFactor /= cc.param.ModReduceFactor.at(c0.getLevel() + 1);
+/root/fideslib/src/CKKS/Ciphertext.cpp:429:		this->c0.dropToLevel(b.getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:430:		this->c1.dropToLevel(b.getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:433:	// assert(c0.getLevel() <= b.c0.getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:434:	// assert(c1.getLevel() <= b.c1.getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:446:			cc.getKeySwitchAux().setLevel(c1.getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:447:			cc.getKeySwitchAux().multElement(c1, b.c1);
+/root/fideslib/src/CKKS/Ciphertext.cpp:517:			c1.mult1AddMult23Add4(b.c0, c0, b.c1, cc.getKeySwitchAux());
+/root/fideslib/src/CKKS/Ciphertext.cpp:518:			c0.mult1Add2(b.c0, aux0);
+/root/fideslib/src/CKKS/Ciphertext.cpp:519:			// c1.binomialSquareFold(c0, aux0, cc.getKeySwitchAux());
+/root/fideslib/src/CKKS/Ciphertext.cpp:525:			cc.getKeySwitchAux().setLevel(c1.getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:527:			cc.getKeySwitchAux().multElement(c1, b.c1);
+/root/fideslib/src/CKKS/Ciphertext.cpp:531:			auto& aux0 = cc.getKeySwitchAux().dotKSKInPlace(kskEval, c0.getLevel(), nullptr);
+/root/fideslib/src/CKKS/Ciphertext.cpp:535:			c1.mult1AddMult23Add4(b.c0, c0, b.c1, cc.getKeySwitchAux());  // Read 4 first for better cache locality.
+/root/fideslib/src/CKKS/Ciphertext.cpp:539:			c0.mult1Add2(b.c0, aux0);
+/root/fideslib/src/CKKS/Ciphertext.cpp:547:			cc.getKeySwitchAux().setLevel(c1.getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:548:			cc.getKeySwitchAux().multModupDotKSK(c1, b.c1, c0, b.c0, kskEval);
+/root/fideslib/src/CKKS/Ciphertext.cpp:552:				c1.moddown(true, false);
+/root/fideslib/src/CKKS/Ciphertext.cpp:554:				c0.moddown(true, false);
+/root/fideslib/src/CKKS/Ciphertext.cpp:563:			in.setLevel(c1.getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:564:			in.multElement(c1, b.c1);
+/root/fideslib/src/CKKS/Ciphertext.cpp:569:				c1.mult1AddMult23Add4(b.c0, c0, b.c1, in); // Read 4 first for better cache locality.
+/root/fideslib/src/CKKS/Ciphertext.cpp:570:				c0.mult1Add2(b.c0, aux);
+/root/fideslib/src/CKKS/Ciphertext.cpp:572:				c1.multNoModdownEnd(c0, b.c0, b.c1, in, aux);
+/root/fideslib/src/CKKS/Ciphertext.cpp:582:			in.setLevel(c1.getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:584:			c0.binomialMult(c1, in, b.c0, b.c1, moddown, &b == this);
+/root/fideslib/src/CKKS/Ciphertext.cpp:588:			c0.add(aux);
+/root/fideslib/src/CKKS/Ciphertext.cpp:589:			c1.add(in);
+/root/fideslib/src/CKKS/Ciphertext.cpp:603:		in.setLevel(c1.getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:604:		c0.binomialMult(c1, in, b.c0, b.c1, moddown, &b == this);
+/root/fideslib/src/CKKS/Ciphertext.cpp:607:		c0.add(aux);
+/root/fideslib/src/CKKS/Ciphertext.cpp:608:		c1.add(in);
+/root/fideslib/src/CKKS/Ciphertext.cpp:640:			cc.getKeySwitchAux().setLevel(c1.getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:641:			cc.getKeySwitchAux().squareElement(c1);
+/root/fideslib/src/CKKS/Ciphertext.cpp:646:			// c1.mult1AddMult23Add4(c0, c0, c1, cc.getKeySwitchAux());
+/root/fideslib/src/CKKS/Ciphertext.cpp:647:			c1.binomialSquareFold(c0, aux0, cc.getKeySwitchAux());
+/root/fideslib/src/CKKS/Ciphertext.cpp:653:			cc.getKeySwitchAux().setLevel(c1.getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:654:			cc.getKeySwitchAux().squareModupDotKSK(c0, c1, kskEval);
+/root/fideslib/src/CKKS/Ciphertext.cpp:656:			c1.moddown(true, false);
+/root/fideslib/src/CKKS/Ciphertext.cpp:658:			c0.moddown(true, false);
+/root/fideslib/src/CKKS/Ciphertext.cpp:669:			in.setLevel(c1.getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:670:			in.squareElement(c1);

@@ -83,3 +83,27 @@ message(STATUS "FIDESLIB_ROOT = ${FIDESLIB_ROOT}")
 message(STATUS "OPENFHE_ROOT = ${OPENFHE_ROOT}")
 message(STATUS "PYBIND11_CMAKE_DIR = ${PYBIND11_CMAKE_DIR}")
 message(STATUS "BUILD_NATIVE_SMOKE = ${BUILD_NATIVE_SMOKE}")
+
+
+# FIDESLIB_GPT_OPENFHE_COMPONENT_INCLUDE_PATCH
+if(TARGET _fideslib)
+  target_include_directories(_fideslib PRIVATE
+    "/root/fideslib/deps/openfhe-install/include"
+    "/root/fideslib/deps/openfhe-install/include/openfhe"
+    "/root/fideslib/deps/openfhe-install/include/openfhe/binfhe"
+    "/root/fideslib/deps/openfhe-install/include/openfhe/core"
+    "/root/fideslib/deps/openfhe-install/include/openfhe/pke"
+    "/root/fideslib/deps/openfhe-src/src/binfhe/include"
+    "/root/fideslib/deps/openfhe-src/src/core/include"
+    "/root/fideslib/deps/openfhe-src/src/pke/include"
+  )
+endif()
+
+
+# FIDESLIB_GPT_FIDES_INTERNAL_COMPONENT_INCLUDE_PATCH
+if(TARGET _fideslib)
+  target_include_directories(_fideslib PRIVATE
+    "/root/fideslib/src"
+    "/root/fideslib/src/CKKS"
+  )
+endif()

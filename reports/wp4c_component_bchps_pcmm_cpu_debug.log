@@ -1,0 +1,43 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+WP4-C BCHPS-style component PCMM CPU debug
+====================================================================================================
+n_in=4, n_out=3, slots=8
+U=
+[[ 1  0 -1  2]
+ [ 0  1  1 -1]
+ [ 2 -1  0  1]]
+----------------------------------------------------------------------------------------------------
+encrypt_rows_us=36522.853
+component_pcmm_core_us=129019.885
+decrypt_outputs_us=11795.217
+----------------------------------------------------------------------------------------------------
+err_input=1.302014e-13
+err_output_to_ref=1.358913e-13
+err_output_to_dec_ref=3.671508e-13
+----------------------------------------------------------------------------------------------------
+input0:
+  loaded=False gpu=0 parts=2
+  level=0 noise_deg=2 slots=8
+output0:
+  loaded=False gpu=0 parts=2
+  level=0 noise_deg=2 slots=8
+====================================================================================================
+报告已保存
+JSON路径: /workspace/FIDESlib-GPT/reports/wp4c_component_bchps_pcmm_cpu_debug_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

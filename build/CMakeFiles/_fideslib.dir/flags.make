@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -D_fideslib_EXPORTS
 
-CXX_INCLUDES = -I/root/fideslib/api -I/workspace/FIDESlib-GPT -I/workspace/FIDESlib-GPT/cpp -isystem /usr/local/lib/python3.10/dist-packages/pybind11/include -isystem /usr/include/python3.10 -isystem /usr/local/cuda/targets/x86_64-linux/include
+CXX_INCLUDES = -I/root/fideslib/api -I/workspace/FIDESlib-GPT -I/workspace/FIDESlib-GPT/cpp -I/root/fideslib/deps/openfhe-install/include -I/root/fideslib/deps/openfhe-install/include/openfhe -I/root/fideslib/deps/openfhe-install/include/openfhe/binfhe -I/root/fideslib/deps/openfhe-install/include/openfhe/core -I/root/fideslib/deps/openfhe-install/include/openfhe/pke -I/root/fideslib/deps/openfhe-src/src/binfhe/include -I/root/fideslib/deps/openfhe-src/src/core/include -I/root/fideslib/deps/openfhe-src/src/pke/include -I/root/fideslib/src -I/root/fideslib/src/CKKS -isystem /usr/local/lib/python3.10/dist-packages/pybind11/include -isystem /usr/include/python3.10 -isystem /usr/local/cuda/targets/x86_64-linux/include
 
 CXX_FLAGS = -std=gnu++20 -fPIC -fvisibility=hidden -flto=auto -fno-fat-lto-objects -fopenmp
 

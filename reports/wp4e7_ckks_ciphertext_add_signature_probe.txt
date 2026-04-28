@@ -1,0 +1,675 @@
+====================================================================================================
+WP4-E7 CKKS::Ciphertext add/sub/copy exact signature probe
+====================================================================================================
+
+----------------------------------------------------------------------------------------------------
+Search exact methods
+----------------------------------------------------------------------------------------------------
+/root/fideslib/src/CKKS/RNSPoly.cpp:24:void RNSPoly::grow(int new_level, bool single_malloc, bool constant) {
+/root/fideslib/src/CKKS/RNSPoly.cpp:66:    grow(level, single_malloc);
+/root/fideslib/src/CKKS/RNSPoly.cpp:735:    this->grow(poly.level);
+/root/fideslib/src/CKKS/RNSPoly.cpp:793:        grow(limbsize - 1, false);
+/root/fideslib/src/CKKS/RNSPoly.cpp:828:        grow(limbsize - 1, false, true);
+/root/fideslib/src/CKKS/RNSPoly.cuh:28:    void grow(int level, bool single_malloc = false, bool constant = false);
+/root/fideslib/src/CKKS/Parameters.cuh:98:    bool operator==(const Parameters& b) const { return !(*this < b) && !(b < *this); }
+/root/fideslib/src/CKKS/Ciphertext.cpp:93:void Ciphertext::copyMetadata(const Ciphertext& a) {
+/root/fideslib/src/CKKS/Ciphertext.cpp:981:			c0.grow(c.c0.getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:982:			c1.grow(c.c1.getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:990:			this->copyMetadata(c);
+/root/fideslib/src/CKKS/Ciphertext.cpp:1040:		c0.grow(c.c0.getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:1041:		c1.grow(c.c1.getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:1049:		this->copyMetadata(c);
+/root/fideslib/src/CKKS/Ciphertext.cpp:1162:					results[i]->copyMetadata(*this);
+/root/fideslib/src/CKKS/Ciphertext.cpp:1212:				results[i]->copyMetadata(*this);
+/root/fideslib/src/CKKS/Ciphertext.cpp:1282:			this->c0.grow(ctxs[0]->getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:1283:			this->c1.grow(ctxs[0]->getLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:1318:		// this->copyMetadata(*ctxs[0]);
+/root/fideslib/src/CKKS/Ciphertext.cpp:1387:	c0.grow(level);
+/root/fideslib/src/CKKS/Ciphertext.cpp:1388:	c1.grow(level);
+/root/fideslib/src/CKKS/Ciphertext.cpp:1395:void Ciphertext::copy(const Ciphertext& ciphertext) {
+/root/fideslib/src/CKKS/Ciphertext.cpp:1402:	this->copyMetadata(ciphertext);
+/root/fideslib/src/CKKS/Ciphertext.cpp:1716:		monomial.grow(c0.getLevel());
+/root/fideslib/src/CKKS/Plaintext.cuh:48:    void copyMetadata(const Plaintext& a);
+/root/fideslib/src/CKKS/LinearTransform.cu:214:                        inner.c0.grow(fastRotation.at(0).getLevel(), false);
+/root/fideslib/src/CKKS/LinearTransform.cu:215:                        inner.c1.grow(fastRotation.at(0).getLevel(), false);
+/root/fideslib/src/CKKS/Bootstrap.cu:614:    ctxt.c0.grow(cc.L - (cc.rescaleTechnique == FLEXIBLEAUTOEXT));
+/root/fideslib/src/CKKS/Bootstrap.cu:663:    ctxt.c1.grow(cc.L - (cc.rescaleTechnique == FLEXIBLEAUTOEXT));
+/root/fideslib/src/CKKS/KeySwitchingKey.cu:28:        a.grow(cc->L, false, true);
+/root/fideslib/src/CKKS/KeySwitchingKey.cu:29:        b.grow(cc->L, false, true);
+/root/fideslib/src/CKKS/Plaintext.cu:20:void Plaintext::copyMetadata(const Plaintext& a) {
+/root/fideslib/src/CKKS/Plaintext.cu:237:    this->copyMetadata(p);
+/root/fideslib/src/CKKS/Ciphertext.cuh:93:    void copyMetadata(const Ciphertext& a);
+/root/fideslib/api/PublicKey.hpp:27:	PublicKeyImpl& operator=(const PublicKeyImpl&) = delete;
+/root/fideslib/api/PublicKey.hpp:32:	PublicKeyImpl& operator=(PublicKeyImpl&&) = delete;
+/root/fideslib/api/Ciphertext.hpp:24:	CiphertextImpl& operator=(const CiphertextImpl<DCRTPoly>&) = delete;
+/root/fideslib/api/Ciphertext.hpp:25:	CiphertextImpl& operator=(const Ciphertext<DCRTPoly>&)	   = delete;
+/root/fideslib/api/Ciphertext.hpp:31:	CiphertextImpl& operator=(CiphertextImpl<DCRTPoly>&&) = delete;
+/root/fideslib/api/Ciphertext.hpp:32:	CiphertextImpl& operator=(Ciphertext<DCRTPoly>&&)	  = delete;
+/root/fideslib/api/PrivateKey.hpp:25:	PrivateKeyImpl& operator=(const PrivateKeyImpl&) = delete;
+/root/fideslib/api/PrivateKey.hpp:30:	PrivateKeyImpl& operator=(PrivateKeyImpl&&) = delete;
+/root/fideslib/api/CryptoContext.hpp:33:	CryptoContextImpl& operator=(const CryptoContextImpl&) = delete;
+/root/fideslib/api/CryptoContext.hpp:38:	CryptoContextImpl& operator=(CryptoContextImpl&&) = delete;
+/root/fideslib/api/CCParams.hpp:26:	CCParams& operator=(const CCParams&) = delete;
+/root/fideslib/api/CCParams.hpp:31:	CCParams& operator=(CCParams&&) = delete;
+/root/fideslib/api/KeyPair.hpp:23:	KeyPair& operator=(const KeyPair&) = default;
+/root/fideslib/api/KeyPair.hpp:28:	KeyPair& operator=(KeyPair&&) = default;
+/root/fideslib/api/Plaintext.hpp:26:	PlaintextImpl& operator=(const PlaintextImpl&) = delete;
+/root/fideslib/api/Plaintext.hpp:27:	PlaintextImpl& operator=(const Plaintext&)	   = delete;
+/root/fideslib/api/Plaintext.hpp:33:	PlaintextImpl& operator=(PlaintextImpl&&) = delete;
+/root/fideslib/api/Plaintext.hpp:34:	PlaintextImpl& operator=(Plaintext&&)	  = delete;
+
+----------------------------------------------------------------------------------------------------
+CKKS Ciphertext source around evalAdd/evalSub/copy
+----------------------------------------------------------------------------------------------------
+
+==== /root/fideslib/src/CKKS/Ciphertext.cuh ====
+68-    68	     *
+69-    69	     * @param cc Reference to the CKKS Context the ciphertext belongs to.
+70-    70	     */
+71-    71	    explicit Ciphertext(Context& cc);
+72-    72	
+73-    73	    /**
+74-    74	     * @brief Constructs a Ciphertext from a serialized RawCipherText.
+75-    75	     *
+76-    76	     * This loads polynomial data and metadata from the raw representation.
+77-    77	     *
+78-    78	     * @param cc   Reference to the CKKS Context.
+79-    79	     * @param rawct Serialized representation of a ciphertext.
+80-    80	     */
+81-    81	    Ciphertext(Context& cc, const RawCipherText& rawct);
+82-    82	
+83-    83	    /** @brief Destructor. Releases any allocated resources. */
+84-    84	    ~Ciphertext();
+85-    85	
+86-    86	    /**
+87-    87	     * @brief Copies only the metadata fields from another ciphertext.
+88-    88	     *
+89-    89	     * This does **not** copy polynomial data.
+90-    90	     *
+91-    91	     * @param a Source ciphertext to copy metadata from.
+92-    92	     */
+93:    93	    void copyMetadata(const Ciphertext& a);
+94-    94	
+95-    95	    /**
+96-    96	     * @brief Merges metadata from two ciphertexts into *this*.
+97-    97	     *
+98-    98	     * Used after operations that combine two ciphertexts.
+99-    99	     *
+100-   100	     * @param a First operand.
+101-   101	     * @param b Second operand.
+102-   102	     */
+103-   103	    void addMetadata(const Ciphertext& a, const Ciphertext& b);
+104-   104	
+105-   105	    /**
+106-   106	     * @brief Merges metadata from a ciphertext and a plaintext into *this*.
+107-   107	     *
+108-   108	     * @param a Ciphertext operand.
+109-   109	     * @param b Plaintext operand.
+110-   110	     */
+111-   111	    void addMetadata(const Ciphertext& a, const Plaintext& b);
+112-   112	
+113-   113	    /**
+114-   114	     * @brief Merges metadata appropriate for multiplication of two ciphertexts.
+115-   115	     *
+116-   116	     * @param a First operand.
+117-   117	     * @param b Second operand.
+118-   118	     */
+119-   119	    void multMetadata(const Ciphertext& a, const Ciphertext& b);
+120-   120	
+121-   121	    /**
+122-   122	     * @brief Merges metadata for multiplication of a ciphertext with a plaintext.
+123-   123	     *
+124-   124	     * @param a Ciphertext operand.
+125-   125	     * @param b Plaintext operand.
+126-   126	     */
+127-   127	    void multMetadata(const Ciphertext& a, const Plaintext& b);
+128-   128	
+129-   129	    /**
+130-   130	     * @brief Normalises a rotation index to the valid range for the current slot count.
+131-   131	     *
+132-   132	     * The function makes the index positive, maps it into `[0, slots)` and, if the
+133-   133	     * index exceeds half the slot count, adds `N/2 - slots` to map it into the
+134-   134	     * underlying NTT domain.
+135-   135	     *
+136-   136	     * @param index Desired rotation index (may be negative).
+137-   137	     * @return Normalized index within `[0, slots)`.
+138-   138	     */
+139-   139	    int normalyzeIndex(int index) const;
+140-   140	
+141-   141	    /**
+142-   142	     * @brief Loads ciphertext data from a RawCipherText representation.
+143-   143	     *
+144-   144	     * @param rawct Serialized ciphertext to load.
+145-   145	     */
+146-   146	    void load(const RawCipherText& rawct);
+147-   147	
+148-   148	    /**
+149-   149	     * @brief Stores the current ciphertext into a RawCipherText representation.
+150-   150	     *
+151-   151	     * @param rawct Destination object that will receive the serialized data.
+152-   152	     */
+153-   153	    void store(RawCipherText& rawct);
+154-   154	
+155-   155	    /**
+156-   156	     * @brief Adds another ciphertext to *this* (in‑place).
+157-   157	     *
+158-   158	     * The method ensures both ciphertexts are on the same level, performing
+159-   159	     * rescaling or level adjustments when required by the current
+160-   160	     * `rescaleTechnique`.  It may invoke `adjustForAddOrSub` and, if that
+161-   161	     * fails, create a temporary copy of `b` with aligned scaling before
+162-   162	     * retrying.  After the polynomial addition, metadata is merged via
+163-   163	     * `addMetadata`.  The operation count for `ADD` is incremented.
+164-   164	     *
+165-   165	     * @param b Ciphertext to add.
+166-   166	     */
+167-   167	    void add(const Ciphertext& b);
+168-   168	
+169-   169	    /**
+170-   170	     * @brief Subtracts another ciphertext from *this* (in‑place).
+171-   171	     *
+172-   172	     * Mirrors the behaviour of `add` but uses subtraction on the polynomial
+173-   173	     * components.  Rescaling, level alignment and metadata handling follow the
+
+----------------------------------------------------------------------------------------------------
+API CryptoContext high-level add/sub implementation
+----------------------------------------------------------------------------------------------------
+634-   634			auto& context					= std::any_cast<const lbcrypto::CryptoContext<lbcrypto::DCRTPoly>&>(this->cpu);
+635-   635			auto& ctImpl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+636-   636			auto ct							= context->EvalNegate(ctImpl);
+637-   637			Ciphertext<DCRTPoly> ciphertext = std::make_shared<CiphertextImpl<DCRTPoly>>(this->self_reference.lock());
+638-   638			ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+639-   639			return ciphertext;
+640-   640		}
+641-   641	
+642-   642		// GPU path.
+643-   643		this->LoadCiphertext(const_cast<Ciphertext<DCRTPoly>&>(ct));
+644-   644	
+645-   645		Ciphertext<DCRTPoly> result = std::make_shared<CiphertextImpl<DCRTPoly>>(*ct);
+646-   646		auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+647-   647		res_gpu->multScalar(-1.0);
+648-   648		return result;
+649-   649	}
+650-   650	
+651-   651	void CryptoContextImpl<DCRTPoly>::EvalNegateInPlace(Ciphertext<DCRTPoly>& ct) {
+652-   652	
+653-   653		// Fall back to CPU.
+654-   654		if (this->devices.empty()) {
+655-   655	
+656-   656			auto& context = std::any_cast<const lbcrypto::CryptoContext<lbcrypto::DCRTPoly>&>(this->cpu);
+657-   657			auto& ctImpl  = std::any_cast<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+658-   658			context->EvalNegateInPlace(ctImpl);
+659-   659			return;
+660-   660		}
+661-   661	
+662-   662		// GPU path.
+663-   663		this->LoadCiphertext(ct);
+664-   664	
+665-   665		auto ct_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct->gpu));
+666-   666		ct_gpu->multScalar(-1.0);
+667-   667	}
+668-   668	
+669:   669	Ciphertext<DCRTPoly> CryptoContextImpl<DCRTPoly>::EvalAdd(const Ciphertext<DCRTPoly>& ct1, const Ciphertext<DCRTPoly>& ct2) {
+670-   670	
+671-   671		// Fall back to CPU.
+672-   672		if (this->devices.empty()) {
+673-   673	
+674-   674			auto& context					= std::any_cast<const lbcrypto::CryptoContext<lbcrypto::DCRTPoly>&>(this->cpu);
+675-   675			auto& ct1Impl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct1->cpu);
+676-   676			auto& ct2Impl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct2->cpu);
+677:   677			auto ct							= context->EvalAdd(ct1Impl, ct2Impl);
+678-   678			Ciphertext<DCRTPoly> ciphertext = std::make_shared<CiphertextImpl<DCRTPoly>>(this->self_reference.lock());
+679-   679			ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+680-   680			return ciphertext;
+681-   681		}
+682-   682	
+683-   683		// GPU path.
+684-   684		this->LoadCiphertext(const_cast<Ciphertext<DCRTPoly>&>(ct1));
+685-   685		this->LoadCiphertext(const_cast<Ciphertext<DCRTPoly>&>(ct2));
+686-   686	
+687-   687		Ciphertext<DCRTPoly> result = std::make_shared<CiphertextImpl<DCRTPoly>>(*ct1);
+688-   688		auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+689-   689		auto ct2_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct2->gpu));
+690-   690		res_gpu->add(*ct2_gpu);
+691-   691	
+692-   692		return result;
+693-   693	}
+694-   694	
+695:   695	Ciphertext<DCRTPoly> CryptoContextImpl<DCRTPoly>::EvalAdd(const Ciphertext<DCRTPoly>& ct, Plaintext& pt) {
+696-   696	
+697-   697		// Fall back to CPU.
+698-   698		if (this->devices.empty()) {
+699-   699			auto& context					= std::any_cast<const lbcrypto::CryptoContext<lbcrypto::DCRTPoly>&>(this->cpu);
+700-   700			auto& ctImpl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+701-   701			auto& ptImpl					= std::any_cast<lbcrypto::Plaintext&>(pt->cpu);
+702:   702			auto ct							= context->EvalAdd(ctImpl, ptImpl);
+703-   703			Ciphertext<DCRTPoly> ciphertext = std::make_shared<CiphertextImpl<DCRTPoly>>(this->self_reference.lock());
+704-   704			ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+705-   705			return ciphertext;
+706-   706		}
+707-   707	
+708-   708		// GPU path.
+709-   709		this->LoadCiphertext(const_cast<Ciphertext<DCRTPoly>&>(ct));
+710-   710		this->LoadPlaintext(pt);
+711-   711	
+712-   712		Ciphertext<DCRTPoly> result = std::make_shared<CiphertextImpl<DCRTPoly>>(*ct);
+713-   713		auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+714-   714		auto pt_gpu					= std::static_pointer_cast<FIDESlib::CKKS::Plaintext>(this->GetDevicePlaintext(pt->gpu));
+715-   715		res_gpu->addPt(*pt_gpu);
+716-   716	
+717-   717		return result;
+718-   718	}
+719-   719	
+720:   720	Ciphertext<DCRTPoly> CryptoContextImpl<DCRTPoly>::EvalAdd(Plaintext& pt, const Ciphertext<DCRTPoly>& ct) {
+721:   721		return EvalAdd(ct, pt);
+722-   722	}
+723-   723	
+724:   724	Ciphertext<DCRTPoly> CryptoContextImpl<DCRTPoly>::EvalAdd(const Ciphertext<DCRTPoly>& ct, double scalar) {
+725-   725	
+726-   726		// Fall back to CPU.
+727-   727		if (this->devices.empty()) {
+728-   728			auto& context					= std::any_cast<const lbcrypto::CryptoContext<lbcrypto::DCRTPoly>&>(this->cpu);
+729-   729			auto& ctImpl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+730:   730			auto ct							= context->EvalAdd(ctImpl, scalar);
+731-   731			Ciphertext<DCRTPoly> ciphertext = std::make_shared<CiphertextImpl<DCRTPoly>>(this->self_reference.lock());
+732-   732			ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+733-   733			return ciphertext;
+734-   734		}
+735-   735	
+736-   736		// GPU path.
+737-   737		this->LoadCiphertext(const_cast<Ciphertext<DCRTPoly>&>(ct));
+738-   738	
+739-   739		Ciphertext<DCRTPoly> result = std::make_shared<CiphertextImpl<DCRTPoly>>(*ct);
+740-   740		auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+741-   741		res_gpu->addScalar(scalar);
+742-   742	
+743-   743		return result;
+744-   744	}
+745-   745	
+746:   746	Ciphertext<DCRTPoly> CryptoContextImpl<DCRTPoly>::EvalAdd(double scalar, const Ciphertext<DCRTPoly>& ct) {
+747:   747		return EvalAdd(ct, scalar);
+748-   748	}
+749-   749	
+750:   750	void CryptoContextImpl<DCRTPoly>::EvalAddInPlace(Ciphertext<DCRTPoly>& ct1, const Ciphertext<DCRTPoly>& ct2) {
+751-   751	
+752-   752		// Fall back to CPU.
+753-   753		if (this->devices.empty()) {
+754-   754	
+755-   755			auto& context = std::any_cast<const lbcrypto::CryptoContext<lbcrypto::DCRTPoly>&>(this->cpu);
+756-   756			auto& ct1Impl = std::any_cast<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct1->cpu);
+757-   757			auto& ct2Impl = std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct2->cpu);
+758:   758			context->EvalAddInPlace(ct1Impl, ct2Impl);
+759-   759			return;
+760-   760		}
+761-   761	
+762-   762		// GPU path.
+763-   763		this->LoadCiphertext(ct1);
+764-   764		this->LoadCiphertext(const_cast<Ciphertext<DCRTPoly>&>(ct2));
+765-   765	
+766-   766		auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+767-   767		auto ct2_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct2->gpu));
+768-   768		res_gpu->add(*ct2_gpu);
+769-   769	}
+770-   770	
+771:   771	void CryptoContextImpl<DCRTPoly>::EvalAddInPlace(Ciphertext<DCRTPoly>& ct1, Plaintext& pt) {
+772-   772	
+773-   773		// Fall back to CPU.
+774-   774		if (this->devices.empty()) {
+775-   775	
+776-   776			auto& context = std::any_cast<const lbcrypto::CryptoContext<lbcrypto::DCRTPoly>&>(this->cpu);
+777-   777			auto& ct1Impl = std::any_cast<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct1->cpu);
+778-   778			auto& ptImpl  = std::any_cast<lbcrypto::Plaintext&>(pt->cpu);
+779:   779			context->EvalAddInPlace(ct1Impl, ptImpl);
+780-   780			return;
+781-   781		}
+782-   782	
+783-   783		// GPU path.
+784-   784		this->LoadCiphertext(ct1);
+785-   785		this->LoadPlaintext(pt);
+786-   786	
+787-   787		auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+788-   788		auto pt_gpu	 = std::static_pointer_cast<FIDESlib::CKKS::Plaintext>(this->GetDevicePlaintext(pt->gpu));
+789-   789		res_gpu->addPt(*pt_gpu);
+790-   790	}
+791-   791	
+792:   792	void CryptoContextImpl<DCRTPoly>::EvalAddInPlace(Plaintext& pt, Ciphertext<DCRTPoly>& ct1) {
+793:   793		EvalAddInPlace(ct1, pt);
+794-   794	}
+795-   795	
+796:   796	void CryptoContextImpl<DCRTPoly>::EvalAddInPlace(Ciphertext<DCRTPoly>& ct1, double scalar) {
+797-   797	
+798-   798		// Fall back to CPU.
+799-   799		if (this->devices.empty()) {
+800-   800	
+801-   801			auto& context = std::any_cast<const lbcrypto::CryptoContext<lbcrypto::DCRTPoly>&>(this->cpu);
+802-   802			auto& ct1Impl = std::any_cast<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct1->cpu);
+803:   803			context->EvalAddInPlace(ct1Impl, scalar);
+804-   804			return;
+805-   805		}
+806-   806	
+807-   807		// GPU path.
+808-   808		this->LoadCiphertext(ct1);
+809-   809	
+810-   810		auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+811-   811		res_gpu->addScalar(scalar);
+812-   812	}
+813-   813	
+814:   814	void CryptoContextImpl<DCRTPoly>::EvalAddInPlace(double scalar, Ciphertext<DCRTPoly>& ct1) {
+815:   815		EvalAddInPlace(ct1, scalar);
+816-   816	}
+817-   817	
+818:   818	Ciphertext<DCRTPoly> CryptoContextImpl<DCRTPoly>::EvalAddMutable(Ciphertext<DCRTPoly>& ct1, Ciphertext<DCRTPoly>& ct2) {
+819:   819		return EvalAdd(ct1, ct2);
+820-   820	}
+821-   821	
+822:   822	Ciphertext<DCRTPoly> CryptoContextImpl<DCRTPoly>::EvalAddMutable(Ciphertext<DCRTPoly>& ct, Plaintext& pt) {
+823:   823		return EvalAdd(ct, pt);
+824-   824	}
+825-   825	
+826:   826	Ciphertext<DCRTPoly> CryptoContextImpl<DCRTPoly>::EvalAddMutable(Plaintext& pt, Ciphertext<DCRTPoly>& ct) {
+827:   827		return EvalAdd(ct, pt);
+828-   828	}
+829-   829	
+830:   830	void CryptoContextImpl<DCRTPoly>::EvalAddMutableInPlace(Ciphertext<DCRTPoly>& ct1, Ciphertext<DCRTPoly>& ct2) {
+831:   831		EvalAddInPlace(ct1, ct2);
+832-   832	}
+833-   833	
+834:   834	Ciphertext<DCRTPoly> CryptoContextImpl<DCRTPoly>::EvalAddMany(const std::vector<Ciphertext<DCRTPoly>>& ciphertexts) {
+835-   835	
+836-   836		if (ciphertexts.empty()) {
+837:   837			OPENFHE_THROW("EvalAddMany: input ciphertext vector is empty");
+838-   838		}
+839-   839	
+840-   840		if (this->devices.empty()) {
+841-   841	
+842-   842			auto& context = std::any_cast<const lbcrypto::CryptoContext<lbcrypto::DCRTPoly>&>(this->cpu);
+843-   843			std::vector<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>> ctImpls;
+844-   844			ctImpls.reserve(ciphertexts.size());
+845-   845			for (const auto& ct : ciphertexts) {
+846-   846				ctImpls.push_back(std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu));
+847-   847			}
+848:   848			auto ct							= context->EvalAddMany(ctImpls);
+849-   849			Ciphertext<DCRTPoly> ciphertext = std::make_shared<CiphertextImpl<DCRTPoly>>(this->self_reference.lock());
+850-   850			ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+851-   851			return ciphertext;
+852-   852		}
+853-   853	
+854-   854		// GPU path.
+855-   855	
+856-   856		for (const auto& ct : ciphertexts) {
+857-   857			this->LoadCiphertext(const_cast<Ciphertext<DCRTPoly>&>(ct));
+858-   858		}
+859-   859	
+860-   860		// Initialize result with the first ciphertext.
+861-   861		Ciphertext<DCRTPoly> result = std::make_shared<CiphertextImpl<DCRTPoly>>(*ciphertexts[0]);
+862-   862		auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+863-   863	
+864-   864		const size_t inSize = ciphertexts.size();
+865-   865		const size_t lim	= inSize * 2 - 2;
+866-   866		std::vector<Ciphertext<DCRTPoly>> ciphertextSumVec;
+867-   867		ciphertextSumVec.resize(inSize - 1);
+868-   868		size_t ctrIndex = 0;
+869-   869	
+870-   870		for (size_t i = 0; i < lim; i = i + 2) {
+871-   871			ciphertextSumVec[ctrIndex++] =
+872:   872			  this->EvalAdd(i < inSize ? ciphertexts[i] : ciphertextSumVec[i - inSize], i + 1 < inSize ? ciphertexts[i + 1] : ciphertextSumVec[i + 1 - inSize]);
+873-   873		}
+874-   874	
+875-   875		return ciphertextSumVec.back();
+876-   876	}
+877-   877	
+878:   878	void CryptoContextImpl<DCRTPoly>::EvalAddManyInPlace(std::vector<Ciphertext<DCRTPoly>>& ciphertexts) {
+879-   879	
+880-   880		if (ciphertexts.empty()) {
+881:   881			OPENFHE_THROW("EvalAddManyInPlace: input ciphertext vector is empty");
+882-   882		}
+883-   883	
+884-   884		if (this->devices.empty()) {
+885-   885	
+886-   886			auto& context = std::any_cast<const lbcrypto::CryptoContext<lbcrypto::DCRTPoly>&>(this->cpu);
+887-   887			std::vector<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>> ctImpls;
+888-   888			ctImpls.reserve(ciphertexts.size());
+889-   889			for (const auto& ct : ciphertexts) {
+890-   890				ctImpls.push_back(std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu));
+891-   891			}
+892:   892			context->EvalAddManyInPlace(ctImpls);
+893-   893			ciphertexts[0]->cpu = std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ctImpls[0]);
+894-   894			return;
+895-   895		}
+896-   896	
+897-   897		// GPU path.
+898-   898	
+899-   899		for (const auto& ct : ciphertexts) {
+900-   900			this->LoadCiphertext(const_cast<Ciphertext<DCRTPoly>&>(ct));
+901-   901		}
+902-   902	
+903-   903		for (size_t j = 1; j < ciphertexts.size(); j = j * 2) {
+904-   904			for (size_t i = 0; i < ciphertexts.size(); i = i + 2 * j) {
+905-   905				if ((i + j) < ciphertexts.size()) {
+906-   906					if (ciphertexts[i] != nullptr && ciphertexts[i + j] != nullptr) {
+907:   907						this->EvalAddInPlace(ciphertexts[i], ciphertexts[i + j]);
+908-   908					} else if (ciphertexts[i] == nullptr && ciphertexts[i + j] != nullptr) {
+909-   909						ciphertexts[i] = ciphertexts[i + j];
+910-   910					}
+911-   911				}
+912-   912			}
+913-   913		}
+914-   914	}
+915-   915	
+916:   916	Ciphertext<DCRTPoly> CryptoContextImpl<DCRTPoly>::EvalSub(const Ciphertext<DCRTPoly>& ct1, const Ciphertext<DCRTPoly>& ct2) {
+917-   917	
+918-   918		// Fall back to CPU.
+919-   919		if (this->devices.empty()) {
+920-   920	
+921-   921			auto& context					= std::any_cast<const lbcrypto::CryptoContext<lbcrypto::DCRTPoly>&>(this->cpu);
+922-   922			auto& ct1Impl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct1->cpu);
+923-   923			auto& ct2Impl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct2->cpu);
+924:   924			auto ct							= context->EvalSub(ct1Impl, ct2Impl);
+925-   925			Ciphertext<DCRTPoly> ciphertext = std::make_shared<CiphertextImpl<DCRTPoly>>(this->self_reference.lock());
+926-   926			ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+927-   927			return ciphertext;
+928-   928		}
+929-   929	
+930-   930		// GPU path.
+931-   931		this->LoadCiphertext(const_cast<Ciphertext<DCRTPoly>&>(ct1));
+932-   932		this->LoadCiphertext(const_cast<Ciphertext<DCRTPoly>&>(ct2));
+933-   933	
+934-   934		Ciphertext<DCRTPoly> result = std::make_shared<CiphertextImpl<DCRTPoly>>(*ct1);
+935-   935		auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+936-   936		auto ct2_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct2->gpu));
+937-   937		res_gpu->sub(*ct2_gpu);
+938-   938	
+939-   939		return result;
+940-   940	}
+941-   941	
+942:   942	Ciphertext<DCRTPoly> CryptoContextImpl<DCRTPoly>::EvalSub(const Ciphertext<DCRTPoly>& ct, Plaintext& pt) {
+943-   943	
+944-   944		// Fall back to CPU.
+945-   945		if (this->devices.empty()) {
+946-   946	
+947-   947			auto& context					= std::any_cast<const lbcrypto::CryptoContext<lbcrypto::DCRTPoly>&>(this->cpu);
+948-   948			auto& ctImpl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+949-   949			auto& ptImpl					= std::any_cast<lbcrypto::Plaintext&>(pt->cpu);
+950:   950			auto ct							= context->EvalSub(ctImpl, ptImpl);
+951-   951			Ciphertext<DCRTPoly> ciphertext = std::make_shared<CiphertextImpl<DCRTPoly>>(this->self_reference.lock());
+952-   952			ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+953-   953			return ciphertext;
+954-   954		}
+955-   955	
+956-   956		// GPU path.
+957-   957		this->LoadCiphertext(const_cast<Ciphertext<DCRTPoly>&>(ct));
+958-   958		this->LoadPlaintext(pt);
+959-   959	
+960-   960		Ciphertext<DCRTPoly> result = std::make_shared<CiphertextImpl<DCRTPoly>>(*ct);
+961-   961		auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+962-   962		auto pt_gpu					= std::static_pointer_cast<FIDESlib::CKKS::Plaintext>(this->GetDevicePlaintext(pt->gpu));
+963-   963		res_gpu->subPt(*pt_gpu);
+964-   964	
+965-   965		return result;
+966-   966	}
+967-   967	
+968:   968	Ciphertext<DCRTPoly> CryptoContextImpl<DCRTPoly>::EvalSub(Plaintext& pt, const Ciphertext<DCRTPoly>& ct) {
+969-   969	
+970-   970		// Fall back to CPU.
+971-   971		if (this->devices.empty()) {
+972-   972	
+973-   973			auto& context					= std::any_cast<const lbcrypto::CryptoContext<lbcrypto::DCRTPoly>&>(this->cpu);
+974-   974			auto& ctImpl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+975-   975			auto& ptImpl					= std::any_cast<lbcrypto::Plaintext&>(pt->cpu);
+976:   976			auto ct							= context->EvalSub(ptImpl, ctImpl);
+977-   977			Ciphertext<DCRTPoly> ciphertext = std::make_shared<CiphertextImpl<DCRTPoly>>(this->self_reference.lock());
+978-   978			ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+979-   979			return ciphertext;
+980-   980		}
+981-   981	
+982-   982		// GPU path.
+983-   983		this->LoadCiphertext(const_cast<Ciphertext<DCRTPoly>&>(ct));
+984-   984		this->LoadPlaintext(pt);
+985-   985	
+986-   986		Ciphertext<DCRTPoly> result = std::make_shared<CiphertextImpl<DCRTPoly>>(*ct);
+987-   987		auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+988-   988		auto pt_gpu					= std::static_pointer_cast<FIDESlib::CKKS::Plaintext>(this->GetDevicePlaintext(pt->gpu));
+989-   989		res_gpu->multScalar(-1.0);
+990-   990		res_gpu->addPt(*pt_gpu);
+991-   991	
+992-   992		return result;
+993-   993	}
+994-   994	
+995:   995	Ciphertext<DCRTPoly> CryptoContextImpl<DCRTPoly>::EvalSub(const Ciphertext<DCRTPoly>& ct, double scalar) {
+996-   996	
+997-   997		// Fall back to CPU.
+998-   998		if (this->devices.empty()) {
+999-   999	
+1000-  1000			auto& context					= std::any_cast<const lbcrypto::CryptoContext<lbcrypto::DCRTPoly>&>(this->cpu);
+1001-  1001			auto& ctImpl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+1002:  1002			auto ct							= context->EvalSub(ctImpl, scalar);
+1003-  1003			Ciphertext<DCRTPoly> ciphertext = std::make_shared<CiphertextImpl<DCRTPoly>>(this->self_reference.lock());
+1004-  1004			ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+1005-  1005			return ciphertext;
+1006-  1006		}
+1007-  1007	
+1008-  1008		// GPU path.
+1009-  1009		this->LoadCiphertext(const_cast<Ciphertext<DCRTPoly>&>(ct));
+1010-  1010	
+1011-  1011		Ciphertext<DCRTPoly> result = std::make_shared<CiphertextImpl<DCRTPoly>>(*ct);
+1012-  1012		auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+1013-  1013		res_gpu->addScalar(-scalar);
+1014-  1014	
+1015-  1015		return result;
+1016-  1016	}
+1017-  1017	
+1018:  1018	Ciphertext<DCRTPoly> CryptoContextImpl<DCRTPoly>::EvalSub(double scalar, const Ciphertext<DCRTPoly>& ct) {
+1019-  1019	
+1020-  1020		// Fall back to CPU.
+1021-  1021		if (this->devices.empty()) {
+1022-  1022	
+1023-  1023			auto& context					= std::any_cast<const lbcrypto::CryptoContext<lbcrypto::DCRTPoly>&>(this->cpu);
+1024-  1024			auto& ctImpl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+1025:  1025			auto ct							= context->EvalSub(scalar, ctImpl);
+1026-  1026			Ciphertext<DCRTPoly> ciphertext = std::make_shared<CiphertextImpl<DCRTPoly>>(this->self_reference.lock());
+1027-  1027			ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+1028-  1028			return ciphertext;
+1029-  1029		}
+1030-  1030	
+1031-  1031		// GPU path.
+1032-  1032		this->LoadCiphertext(const_cast<Ciphertext<DCRTPoly>&>(ct));
+1033-  1033	
+1034-  1034		Ciphertext<DCRTPoly> result = std::make_shared<CiphertextImpl<DCRTPoly>>(*ct);
+1035-  1035		auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+1036-  1036		res_gpu->multScalar(-1.0);
+1037-  1037		res_gpu->addScalar(scalar);
+1038-  1038		res_gpu->multScalar(-1.0);
+1039-  1039	
+1040-  1040		return result;
+1041-  1041	}
+1042-  1042	
+1043:  1043	void CryptoContextImpl<DCRTPoly>::EvalSubInPlace(Ciphertext<DCRTPoly>& ct1, const Ciphertext<DCRTPoly>& ct2) {
+1044-  1044	
+1045-  1045		// Fall back to CPU.
+1046-  1046		if (this->devices.empty()) {
+1047-  1047	
+1048-  1048			auto& context = std::any_cast<const lbcrypto::CryptoContext<lbcrypto::DCRTPoly>&>(this->cpu);
+1049-  1049			auto& ct1Impl = std::any_cast<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct1->cpu);
+1050-  1050			auto& ct2Impl = std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct2->cpu);
+1051:  1051			context->EvalSubInPlace(ct1Impl, ct2Impl);
+1052-  1052			return;
+1053-  1053		}
+1054-  1054	
+1055-  1055		// GPU path.
+1056-  1056		this->LoadCiphertext(ct1);
+1057-  1057		this->LoadCiphertext(const_cast<Ciphertext<DCRTPoly>&>(ct2));
+1058-  1058	
+1059-  1059		auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+1060-  1060		auto ct2_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct2->gpu));
+1061-  1061		res_gpu->sub(*ct2_gpu);
+1062-  1062	}
+1063-  1063	
+1064:  1064	void CryptoContextImpl<DCRTPoly>::EvalSubInPlace(Ciphertext<DCRTPoly>& ct1, double scalar) {
+1065-  1065	
+1066-  1066		// Fall back to CPU.
+1067-  1067		if (this->devices.empty()) {
+1068-  1068	
+1069-  1069			auto& context = std::any_cast<const lbcrypto::CryptoContext<lbcrypto::DCRTPoly>&>(this->cpu);
+1070-  1070			auto& ct1Impl = std::any_cast<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct1->cpu);
+1071:  1071			context->EvalSubInPlace(ct1Impl, scalar);
+1072-  1072			return;
+1073-  1073		}
+1074-  1074	
+1075-  1075		// GPU path.
+1076-  1076		this->LoadCiphertext(ct1);
+1077-  1077	
+1078-  1078		auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+1079-  1079		res_gpu->addScalar(-scalar);
+1080-  1080	}
+1081-  1081	
+1082:  1082	void CryptoContextImpl<DCRTPoly>::EvalSubInPlace(double scalar, Ciphertext<DCRTPoly>& ct1) {
+1083-  1083	
+1084-  1084		// Fall back to CPU.
+1085-  1085		if (this->devices.empty()) {
+1086-  1086	
+1087-  1087			auto& context = std::any_cast<const lbcrypto::CryptoContext<lbcrypto::DCRTPoly>&>(this->cpu);
+1088-  1088			auto& ct1Impl = std::any_cast<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct1->cpu);
+1089:  1089			context->EvalSubInPlace(scalar, ct1Impl);
+1090-  1090			return;
+1091-  1091		}
+1092-  1092	
+1093-  1093		// GPU path.
+1094-  1094		this->LoadCiphertext(ct1);
+1095-  1095	
+1096-  1096		auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+1097-  1097		res_gpu->multScalar(-1.0);
+1098-  1098		res_gpu->addScalar(scalar);
+1099-  1099		res_gpu->multScalar(-1.0);
+1100-  1100	}
+1101-  1101	
+1102:  1102	Ciphertext<DCRTPoly> CryptoContextImpl<DCRTPoly>::EvalSubMutable(Ciphertext<DCRTPoly>& ct1, Ciphertext<DCRTPoly>& ct2) {
+1103:  1103		return EvalSub(ct1, ct2);
+1104-  1104	}
+1105-  1105	
+1106:  1106	Ciphertext<DCRTPoly> CryptoContextImpl<DCRTPoly>::EvalSubMutable(Ciphertext<DCRTPoly>& ct, Plaintext& pt) {
+1107:  1107		return EvalSub(ct, pt);
+1108-  1108	}
+1109-  1109	
+1110:  1110	Ciphertext<DCRTPoly> CryptoContextImpl<DCRTPoly>::EvalSubMutable(Plaintext& pt, Ciphertext<DCRTPoly>& ct) {
+1111:  1111		return EvalSub(pt, ct);
+1112-  1112	}
+1113-  1113	
+1114:  1114	void CryptoContextImpl<DCRTPoly>::EvalSubMutableInPlace(Ciphertext<DCRTPoly>& ct1, Ciphertext<DCRTPoly>& ct2) {
+1115:  1115		EvalSubInPlace(ct1, ct2);
+1116-  1116	}
+1117-  1117	
+1118-  1118	Ciphertext<DCRTPoly> CryptoContextImpl<DCRTPoly>::EvalMult(const Ciphertext<DCRTPoly>& ct1, const Ciphertext<DCRTPoly>& ct2) {
+1119-  1119	
+1120-  1120		// Fall back to CPU.
+1121-  1121		if (this->devices.empty()) {
+1122-  1122	
+1123-  1123			auto& context					= std::any_cast<const lbcrypto::CryptoContext<lbcrypto::DCRTPoly>&>(this->cpu);
+1124-  1124			auto& ct1Impl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct1->cpu);
+1125-  1125			auto& ct2Impl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct2->cpu);
+1126-  1126			auto ct							= context->EvalMult(ct1Impl, ct2Impl);
+1127-  1127			Ciphertext<DCRTPoly> ciphertext = std::make_shared<CiphertextImpl<DCRTPoly>>(this->self_reference.lock());
+1128-  1128			ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+1129-  1129			return ciphertext;
+1130-  1130		}
+1131-  1131	
+1132-  1132		// GPU path.
+1133-  1133		this->LoadCiphertext(const_cast<Ciphertext<DCRTPoly>&>(ct1));

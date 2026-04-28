@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/workspace/FIDESlib-GPT/scripts/report_wp4a_component_inspect_ab.py", line 78, in <module>
+    main()
+  File "/workspace/FIDESlib-GPT/scripts/report_wp4a_component_inspect_ab.py", line 25, in main
+    with HERuntime(cfg, rotation_steps=[]) as rt:
+  File "/workspace/FIDESlib-GPT/python/hegpt/runtime.py", line 198, in __enter__
+    self.initialize()
+  File "/workspace/FIDESlib-GPT/python/hegpt/runtime.py", line 124, in initialize
+    self.ctx = FidesContext(
+  File "/workspace/FIDESlib-GPT/python/hegpt/runtime.py", line 34, in __init__
+    self._ctx.init(
+RuntimeError: /root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-cryptoparameters.cpp:l.415:EstimateLogP(): HYBRID key switching parameters: Can't appropriately distribute 4 towers into 3 digits. Please select different number of digits.

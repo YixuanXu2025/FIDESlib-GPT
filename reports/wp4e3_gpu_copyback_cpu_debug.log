@@ -1,0 +1,26 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+Traceback (most recent call last):
+  File "/workspace/FIDESlib-GPT/scripts/report_wp4e3_gpu_copyback_cpu_debug.py", line 109, in <module>
+    main()
+  File "/workspace/FIDESlib-GPT/scripts/report_wp4e3_gpu_copyback_cpu_debug.py", line 53, in main
+    state = rt.ciphertext_storage_state(ct_copy)
+  File "/workspace/FIDESlib-GPT/python/hegpt/runtime.py", line 210, in ciphertext_storage_state
+    return self.require_context().ciphertext_storage_state(ciphertext)
+  File "/workspace/FIDESlib-GPT/python/hegpt/runtime.py", line 95, in ciphertext_storage_state
+    return self._ctx.ciphertext_storage_state(ciphertext)
+IndexError: _Map_base::at

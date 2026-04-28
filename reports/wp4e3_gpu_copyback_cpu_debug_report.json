@@ -1,0 +1,77 @@
+{
+  "experiment": "wp4e3_gpu_copyback_cpu_debug",
+  "slots": 8,
+  "seed": 205403,
+  "x": [
+    -0.020638725541459253,
+    0.06552975612021456,
+    0.09377287151772627,
+    0.16985949518473914,
+    0.14481242782371814,
+    0.10442347675566242,
+    -0.23347193967444374,
+    -0.1578182621989705
+  ],
+  "input_state": {
+    "valid": true,
+    "loaded": true,
+    "gpu": 2,
+    "has_cpu": true,
+    "level": 4294967295,
+    "noise_scale_deg": 2,
+    "original_level": 18446744069414584323
+  },
+  "original_decrypt_error": null,
+  "original_decrypt": [
+    -0.020638725541425214,
+    0.06552975612024306,
+    0.0937728715176265,
+    0.1698594951847089,
+    0.14481242782368747,
+    0.10442347675556732,
+    -0.23347193967444954,
+    -0.1578182621990078
+  ],
+  "original_err_to_input": 9.976741655037813e-14,
+  "copyback_results": [
+    {
+      "rev": 0,
+      "state": {
+        "valid": true,
+        "loaded": false,
+        "gpu": 0,
+        "has_cpu": true,
+        "level": 4294967295,
+        "noise_scale_deg": 2,
+        "original_level": 3
+      },
+      "decrypt_error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/ckkspackedencoding.cpp:l.453:Decode(): The decryption failed because the approximation error is too high. Check the parameters. ')",
+      "decrypt": null
+    },
+    {
+      "rev": 1,
+      "state": {
+        "valid": true,
+        "loaded": false,
+        "gpu": 0,
+        "has_cpu": true,
+        "level": 4294967295,
+        "noise_scale_deg": 2,
+        "original_level": 3
+      },
+      "decrypt_error": null,
+      "decrypt": [
+        -0.020638725541543397,
+        0.06552975612030267,
+        0.0937728715177994,
+        0.16985949518485213,
+        0.14481242782363532,
+        0.10442347675566958,
+        -0.2334719396744414,
+        -0.15781826219900105
+      ],
+      "err_to_input": 1.1299294833122531e-13,
+      "err_to_original_decrypt": 1.728894805097525e-13
+    }
+  ]
+}

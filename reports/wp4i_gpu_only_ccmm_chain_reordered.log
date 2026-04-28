@@ -1,0 +1,38 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+[phase] encrypt rows for copyback baseline
+[phase] copyback=True every layer baseline
+[copyback baseline] layer=0 copyback=True
+[copyback baseline] layer=1 copyback=True
+[copyback baseline] layer=2 copyback=True
+[copyback baseline] layer=3 copyback=True
+[phase] decrypt copyback baseline
+[phase] encrypt rows for gpu-only chain
+[phase] gpu-only chain: intermediate copyback=False, final copyback=True
+[gpu-only chain] layer=0 copyback=False
+[gpu-only chain] layer=1 copyback=False
+Traceback (most recent call last):
+  File "/workspace/FIDESlib-GPT/scripts/report_wp4i_gpu_only_ccmm_chain.py", line 170, in <module>
+    main()
+  File "/workspace/FIDESlib-GPT/scripts/report_wp4i_gpu_only_ccmm_chain.py", line 115, in main
+    ct_gpu = rt.component_linear_matmul_gpu_fused_raw(
+  File "/workspace/FIDESlib-GPT/python/hegpt/runtime.py", line 230, in component_linear_matmul_gpu_fused_raw
+    return self.require_context().component_linear_matmul_gpu_fused_raw(rows, U, copyback=copyback)
+  File "/workspace/FIDESlib-GPT/python/hegpt/runtime.py", line 107, in component_linear_matmul_gpu_fused_raw
+    return self._ctx.component_linear_matmul_gpu_fused_raw(rows, U2, bool(copyback))
+RuntimeError: bad any_cast
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

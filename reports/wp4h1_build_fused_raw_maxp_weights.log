@@ -1,0 +1,18 @@
+[ 50%] Built target fideslib_gpt_minimal
+[ 66%] Building CXX object CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘CiphertextHandle FidesCKKSContext::component_linear_wsum_gpu_fused_raw(const std::vector<CiphertextHandle>&, const std::vector<double>&)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:821:55: error: ‘MAXP’ was not declared in this scope; did you mean ‘FIDESlib::MAXP’?
+  821 |         std::vector<std::uint64_t> elem(rows.size() * MAXP, 0);
+      |                                                       ^~~~
+      |                                                       FIDESlib::MAXP
+In file included from /root/fideslib/src/CKKS/Limb.cuh:10,
+                 from /root/fideslib/src/CKKS/LimbPartition.cuh:9,
+                 from /root/fideslib/src/CKKS/RNSPoly.cuh:9,
+                 from /root/fideslib/src/CKKS/Ciphertext.cuh:9,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:21:
+/root/fideslib/src/ConstantsGPU.cuh:12:15: note: ‘FIDESlib::MAXP’ declared here
+   12 | constexpr int MAXP = 64;
+      |               ^~~~
+gmake[2]: *** [CMakeFiles/_fideslib.dir/build.make:79: CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:90: CMakeFiles/_fideslib.dir/all] Error 2
+gmake: *** [Makefile:91: all] Error 2

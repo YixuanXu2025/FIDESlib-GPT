@@ -425,7 +425,7 @@ def main():
         first_mod_size=60,
         num_large_digits=3,
         batch_size=4096,
-        devices=(0, 1),
+        devices=(0, 1, 2, 3, 4, 5, 6, 7),
         plaintext_autoload=True,
         ciphertext_autoload=True,
         with_mult_key=True,

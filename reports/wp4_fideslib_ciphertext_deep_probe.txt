@@ -1,0 +1,1707 @@
+============================================================
+WP4 FIDESlib ciphertext deep probe
+Generated at: Tue Apr 28 06:12:54 UTC 2026
+============================================================
+
+============================================================
+1) Current bindings.cpp top area
+============================================================
+     1	#include "fideslib.hpp"
+     2	#include <cuda_runtime.h>
+     3	
+     4	#include <pybind11/pybind11.h>
+     5	#include <pybind11/stl.h>
+     6	
+     7	#include <cstdint>
+     8	#include <stdexcept>
+     9	#include <utility>
+    10	#include <vector>
+    11	
+    12	namespace py = pybind11;
+    13	using namespace fideslib;
+    14	
+    15	class CiphertextHandle {
+    16	public:
+    17	    CiphertextHandle() = default;
+    18	    explicit CiphertextHandle(Ciphertext<DCRTPoly> ct) : ct_(std::move(ct)) {}
+    19	
+    20	    bool valid() const {
+    21	        return static_cast<bool>(ct_);
+    22	    }
+    23	
+    24	    std::size_t level() const {
+    25	        require_valid();
+    26	        return ct_->GetLevel();
+    27	    }
+    28	
+    29	    std::size_t noise_scale_deg() const {
+    30	        require_valid();
+    31	        return ct_->GetNoiseScaleDeg();
+    32	    }
+    33	
+    34	private:
+    35	    friend class FidesCKKSContext;
+    36	
+    37	    void require_valid() const {
+    38	        if (!ct_) {
+    39	            throw std::runtime_error("CiphertextHandle is empty");
+    40	        }
+    41	    }
+    42	
+    43	    Ciphertext<DCRTPoly> ct_;
+    44	};
+    45	
+    46	class FidesCKKSContext {
+    47	public:
+    48	    FidesCKKSContext() = default;
+    49	
+    50	    ~FidesCKKSContext() {
+    51	        try {
+    52	            close();
+    53	        } catch (...) {
+    54	        }
+    55	    }
+    56	
+    57	    void init(
+    58	        std::uint32_t multiplicative_depth = 2,
+    59	        std::uint32_t scaling_mod_size = 50,
+    60	        std::uint32_t batch_size = 8,
+    61	        std::uint32_t ring_dim = (1u << 14),
+    62	        std::int32_t first_mod_size = -1,
+    63	        std::int32_t num_large_digits = -1,
+    64	        std::vector<int> devices = {0},
+    65	        bool plaintext_autoload = true,
+    66	        bool ciphertext_autoload = true,
+    67	        bool with_mult_key = true,
+    68	        std::vector<int> rotation_steps = {}
+    69	    ) {
+    70	        close();
+    71	
+    72	        CCParams<CryptoContextCKKSRNS> params;
+    73	        params.SetMultiplicativeDepth(multiplicative_depth);
+    74	        params.SetScalingModSize(scaling_mod_size);
+    75	        params.SetBatchSize(batch_size);
+    76	        params.SetRingDim(ring_dim);
+    77	        params.SetPlaintextAutoload(plaintext_autoload);
+    78	        params.SetCiphertextAutoload(ciphertext_autoload);
+    79	        params.SetDevices(std::move(devices));
+    80	
+    81	        if (first_mod_size > 0) {
+    82	            params.SetFirstModSize(static_cast<std::uint32_t>(first_mod_size));
+    83	        }
+    84	        if (num_large_digits > 0) {
+    85	            params.SetNumLargeDigits(static_cast<std::uint32_t>(num_large_digits));
+    86	        }
+    87	
+    88	        cc_ = GenCryptoContext(params);
+    89	        cc_->Enable(PKE);
+    90	        cc_->Enable(KEYSWITCH);
+    91	        cc_->Enable(LEVELEDSHE);
+    92	
+    93	        auto kp = cc_->KeyGen();
+    94	        if (!kp.publicKey || !kp.secretKey) {
+    95	            throw std::runtime_error("KeyGen failed");
+    96	        }
+    97	
+    98	        pk_ = kp.publicKey;
+    99	        sk_ = kp.secretKey;
+   100	
+   101	        if (with_mult_key) {
+   102	            cc_->EvalMultKeyGen(sk_);
+   103	        }
+   104	
+   105	        if (!rotation_steps.empty()) {
+   106	            cc_->EvalRotateKeyGen(sk_, rotation_steps);
+   107	        }
+   108	
+   109	        cc_->LoadContext(pk_);
+   110	    }
+   111	
+   112	    py::dict info() const {
+   113	        require_ready();
+   114	        py::dict d;
+   115	        d["ring_dim"] = cc_->GetRingDimension();
+   116	        d["cyclotomic_order"] = cc_->GetCyclotomicOrder();
+   117	        return d;
+   118	    }
+   119	
+   120	    CiphertextHandle encrypt(const std::vector<double>& x) {
+   121	        require_ready();
+   122	        auto pt = cc_->MakeCKKSPackedPlaintext(x);
+   123	        auto ct = cc_->Encrypt(pt, pk_);
+   124	        pt.reset();
+   125	        return CiphertextHandle(ct);
+   126	    }
+   127	
+   128	    std::vector<double> decrypt(CiphertextHandle& h, std::size_t logical_length = 0) {
+   129	        require_ready();
+   130	        h.require_valid();
+   131	
+   132	        Plaintext pt_dec;
+   133	        auto dec_res = cc_->Decrypt(h.ct_, sk_, &pt_dec);
+   134	        if (!dec_res.isValid) {
+   135	            throw std::runtime_error("Decrypt failed");
+   136	        }
+   137	
+   138	        if (logical_length > 0) {
+   139	            pt_dec->SetLength(logical_length);
+   140	        }
+   141	
+   142	        auto out = pt_dec->GetRealPackedValue();
+   143	        pt_dec.reset();
+   144	        return out;
+   145	    }
+   146	
+   147	    CiphertextHandle eval_add_ct(const CiphertextHandle& a, const CiphertextHandle& b) {
+   148	        require_ready();
+   149	        a.require_valid();
+   150	        b.require_valid();
+   151	
+   152	        auto ct_out = cc_->EvalAdd(a.ct_, b.ct_);
+   153	        return CiphertextHandle(ct_out);
+   154	    }
+   155	
+   156	    CiphertextHandle eval_add_plain_ct(const CiphertextHandle& a, const std::vector<double>& plain) {
+   157	        require_ready();
+   158	        a.require_valid();
+   159	
+   160	        auto pt = cc_->MakeCKKSPackedPlaintext(plain);
+   161	        auto ct_out = cc_->EvalAdd(a.ct_, pt);
+   162	        pt.reset();
+   163	        return CiphertextHandle(ct_out);
+   164	    }
+   165	
+   166	    CiphertextHandle eval_mult_scalar_ct(const CiphertextHandle& a, double scalar) {
+   167	        require_ready();
+   168	        a.require_valid();
+   169	
+   170	        auto ct_out = cc_->EvalMult(a.ct_, scalar);
+   171	        return CiphertextHandle(ct_out);
+   172	    }
+   173	
+   174	    CiphertextHandle eval_mult_plain_ct(const CiphertextHandle& a, const std::vector<double>& plain) {
+   175	        require_ready();
+   176	        a.require_valid();
+   177	
+   178	        auto pt = cc_->MakeCKKSPackedPlaintext(plain);
+   179	        auto ct_out = cc_->EvalMult(a.ct_, pt);
+   180	        pt.reset();
+   181	        return CiphertextHandle(ct_out);
+   182	    }
+   183	
+   184	    CiphertextHandle eval_rotate_ct(const CiphertextHandle& a, int steps) {
+   185	        require_ready();
+   186	        a.require_valid();
+   187	
+   188	        auto ct_out = cc_->EvalRotate(a.ct_, steps);
+   189	        return CiphertextHandle(ct_out);
+   190	    }
+   191	
+   192	
+   193	    std::vector<double> roundtrip(const std::vector<double>& x) {
+   194	        auto ct = encrypt(x);
+   195	        return decrypt(ct, x.size());
+   196	    }
+   197	
+   198	    std::vector<double> eval_add(const std::vector<double>& x, const std::vector<double>& y) {
+   199	        require_ready();
+   200	
+   201	        if (x.size() != y.size()) {
+   202	            throw std::runtime_error("eval_add(): x and y must have the same length");
+   203	        }
+   204	
+   205	        auto ct_x = encrypt(x);
+   206	        auto ct_y = encrypt(y);
+   207	        auto ct_sum = eval_add_ct(ct_x, ct_y);
+   208	        return decrypt(ct_sum, x.size());
+   209	    }
+   210	
+   211	    std::vector<double> eval_mult_scalar(const std::vector<double>& x, double scalar) {
+   212	        require_ready();
+   213	
+   214	        auto ct_x = encrypt(x);
+   215	        auto ct_mul = eval_mult_scalar_ct(ct_x, scalar);
+   216	        return decrypt(ct_mul, x.size());
+   217	    }
+   218	
+   219	    void close() {
+   220	        if (sk_) sk_.reset();
+   221	        if (pk_) pk_.reset();
+   222	        if (cc_) cc_.reset();
+   223	        (void)cudaDeviceSynchronize();
+   224	    }
+   225	
+   226	private:
+   227	    void require_ready() const {
+   228	        if (!cc_ || !pk_ || !sk_) {
+   229	            throw std::runtime_error("FidesCKKSContext is not initialized");
+   230	        }
+   231	    }
+   232	
+   233	    CryptoContext<DCRTPoly> cc_;
+   234	    PublicKey<DCRTPoly> pk_;
+   235	    PrivateKey<DCRTPoly> sk_;
+   236	};
+   237	
+   238	PYBIND11_MODULE(_fideslib, m) {
+   239	    m.doc() = "pybind11 bindings for FIDESlib";
+   240	
+   241	    py::class_<CiphertextHandle>(m, "CiphertextHandle")
+   242	        .def(py::init<>())
+   243	        .def("valid", &CiphertextHandle::valid)
+   244	        .def("level", &CiphertextHandle::level)
+   245	        .def("noise_scale_deg", &CiphertextHandle::noise_scale_deg);
+   246	
+   247	    py::class_<FidesCKKSContext>(m, "FidesCKKSContext")
+   248	        .def(py::init<>())
+   249	
+   250	        .def(
+   251	            "init",
+   252	            &FidesCKKSContext::init,
+   253	            py::arg("multiplicative_depth") = 2,
+   254	            py::arg("scaling_mod_size") = 50,
+   255	            py::arg("batch_size") = 8,
+   256	            py::arg("ring_dim") = (1u << 14),
+   257	            py::arg("first_mod_size") = -1,
+   258	            py::arg("num_large_digits") = -1,
+   259	            py::arg("devices") = std::vector<int>{0},
+   260	            py::arg("plaintext_autoload") = true,
+   261	            py::arg("ciphertext_autoload") = true,
+   262	            py::arg("with_mult_key") = true,
+   263	            py::arg("rotation_steps") = std::vector<int>{}
+   264	        )
+   265	
+   266	        .def("info", &FidesCKKSContext::info)
+   267	
+   268	        .def("encrypt", &FidesCKKSContext::encrypt, py::arg("x"))
+   269	        .def("decrypt", &FidesCKKSContext::decrypt,
+   270	             py::arg("ciphertext"),
+   271	             py::arg("logical_length") = 0)
+   272	        .def("eval_add_ct", &FidesCKKSContext::eval_add_ct,
+   273	             py::arg("a"), py::arg("b"))
+   274	        .def("eval_add_plain_ct", &FidesCKKSContext::eval_add_plain_ct,
+   275	             py::arg("a"), py::arg("plain"))
+   276	        .def("eval_mult_scalar_ct", &FidesCKKSContext::eval_mult_scalar_ct,
+   277	             py::arg("a"), py::arg("scalar"))
+   278	        .def("eval_mult_plain_ct", &FidesCKKSContext::eval_mult_plain_ct,
+   279	             py::arg("a"), py::arg("plain"))
+   280	        .def("eval_rotate_ct", &FidesCKKSContext::eval_rotate_ct,
+   281	             py::arg("a"), py::arg("steps"))
+   282	
+   283	        .def("roundtrip", &FidesCKKSContext::roundtrip)
+   284	        .def("eval_add", &FidesCKKSContext::eval_add)
+   285	        .def("eval_mult_scalar", &FidesCKKSContext::eval_mult_scalar)
+   286	
+   287	        .def("close", &FidesCKKSContext::close);
+   288	}
+
+============================================================
+2) Find fideslib CiphertextImpl declarations
+============================================================
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext-ser.h:42:extern template class lbcrypto::CiphertextImpl<lbcrypto::Poly>;
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext-ser.h:43:extern template class lbcrypto::CiphertextImpl<lbcrypto::NativePoly>;
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext-ser.h:44:extern template class lbcrypto::CiphertextImpl<lbcrypto::DCRTPoly>;
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext.h:60:class CiphertextImpl : public CryptoObject<Element> {
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext-fwd.h:44:class CiphertextImpl;
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext-fwd.h:47:using Ciphertext = std::shared_ptr<CiphertextImpl<Element>>;
+/root/fideslib/deps/openfhe-src/src/pke/lib/ciphertext-impl.cpp:56:template class CiphertextImpl<Poly>;
+/root/fideslib/deps/openfhe-src/src/pke/lib/ciphertext-impl.cpp:57:template class CiphertextImpl<NativePoly>;
+/root/fideslib/deps/openfhe-src/src/pke/lib/ciphertext-impl.cpp:58:template class CiphertextImpl<DCRTPoly>;
+/root/fideslib/deps/openfhe-src/src/core/include/lattice/hal/lat-backend.h:60:using DCRTPoly       = DCRTPolyImpl<BigVector>;
+/root/fideslib/deps/openfhe-src/src/core/include/lattice/hal/default/dcrtpoly.h:66:    using DCRTPolyType          = DCRTPolyImpl<VecType>;
+/root/fideslib/deps/openfhe-src/src/core/include/lattice/hal/default/dcrtpoly.h:67:    using DCRTPolyInterfaceType = DCRTPolyInterface<DCRTPolyImpl<VecType>, VecType, NativeVector, PolyImpl>;
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/ciphertext-ser.h:42:extern template class lbcrypto::CiphertextImpl<lbcrypto::Poly>;
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/ciphertext-ser.h:43:extern template class lbcrypto::CiphertextImpl<lbcrypto::NativePoly>;
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/ciphertext-ser.h:44:extern template class lbcrypto::CiphertextImpl<lbcrypto::DCRTPoly>;
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/ciphertext.h:60:class CiphertextImpl : public CryptoObject<Element> {
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/ciphertext-fwd.h:44:class CiphertextImpl;
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/ciphertext-fwd.h:47:using Ciphertext = std::shared_ptr<CiphertextImpl<Element>>;
+/root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/lat-backend.h:60:using DCRTPoly       = DCRTPolyImpl<BigVector>;
+/root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/default/dcrtpoly.h:66:    using DCRTPolyType          = DCRTPolyImpl<VecType>;
+/root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/default/dcrtpoly.h:67:    using DCRTPolyInterfaceType = DCRTPolyInterface<DCRTPolyImpl<VecType>, VecType, NativeVector, PolyImpl>;
+/root/fideslib/api/Ciphertext.hpp:13:template <> class CiphertextImpl<DCRTPoly> {
+/root/fideslib/api/Definitions.hpp:13:typedef uint32_t DCRTPoly;
+/root/fideslib/api/Definitions.hpp:17:template <typename T> class CiphertextImpl;
+/root/fideslib/api/Definitions.hpp:21:template <typename T> using Ciphertext = std::shared_ptr<CiphertextImpl<T>>;
+
+============================================================
+3) Find public methods around FIDESlib CiphertextImpl
+============================================================
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:49:                                                               lbcrypto::Ciphertext<DCRTPoly> ct, int REV) {
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:52:    result.numRes = ct->GetElements()[0].GetAllElements().size();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:53:    result.N = ((ct->GetElements()[0].GetAllElements())[0].GetValues() /*.m_values*/).GetLength();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:54:    result.sub_0 = GetRawArray(ct->GetElements()[0].GetAllElements());
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:55:    result.sub_1 = GetRawArray(ct->GetElements()[1].GetAllElements());
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:57:    // We read (hopefully) in eval form, and OpenFHE should be bit_reversed, so REVERSE == 0.
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:66:    result.moduli = GetModuli(ct->GetElements()[0].GetAllElements());
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:67:    result.format = ct->GetElements()[0].GetFormat();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:70:    result.NoiseLevel = ct->GetNoiseScaleDeg();  // m_noiseScaleDeg;
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:72:    result.slots = ct->GetSlots();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:78:* Converts a ciphertext from the RawCiphertext format back to the OpenFHE ciphertext format*/
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:79:void FIDESlib::CKKS::GetOpenFHECipherText(lbcrypto::Ciphertext<DCRTPoly> result, RawCipherText raw, int REV) {
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:81:    int size = result->GetElements()[0].GetAllElements().size();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:87:    assert(result->GetElements()[0].GetAllElements().size() >= raw.numRes);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:96:    DCRTPoly sub_0 = result->GetElements().at(0);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:97:    DCRTPoly sub_1 = result->GetElements().at(1);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:100:    result->SetLevel(result->GetLevel() + result->GetElements().at(0).GetNumOfElements() - raw.numRes);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:126:    result->SetElements(ct_new);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:129:    result->SetNoiseScaleDeg(raw.NoiseLevel);  // /*m_noiseScaleDeg*/ = raw.NoiseLevel;
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:131:    result->SetSlots(raw.slots);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:134:void FIDESlib::CKKS::GetOpenFHEPlaintext(lbcrypto::Plaintext result, RawPlainText raw, int REV) {
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:145:    result->SetLevel(result->GetLevel() + result->GetElement<DCRTPoly>().GetNumOfElements() - raw.numRes);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:163:    result->SetNoiseScaleDeg(raw.NoiseLevel);  // noiseScaleDeg = raw.NoiseLevel;
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:164:    result->SetSlots(raw.slots);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:190:    result.NoiseLevel = pt->GetNoiseScaleDeg();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:191:    result.slots = pt->GetSlots();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:214:    result.NoiseLevel = pt->GetNoiseScaleDeg();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:215:    result.slots = pt->GetSlots();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:252:            assert("OpenFHE has not generated the NTT tables we want yet :(" == nullptr);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:430:            // } else if (cryptoParams->GetSecretKeyDist() == SPARSE_ENCAPSULATED) {    // Switch to this with OpenFHE v1.4, remove the flag
+/root/fideslib/src/CKKS/ApproxModEval.cu:368: * Adaptation of OpenFHE's implementation.
+/root/fideslib/src/CKKS/ApproxModEval.cu:579:			usint levelDiff = T[k - 1]->GetLevel() - T[i - 1]->GetLevel();
+/root/fideslib/src/CKKS/Context.cu:482:            param.ScalingFactorRealBig.at(level);  // cryptoParams->GetScalingFactorRealBig(ciphertext->GetLevel());
+/root/fideslib/src/CKKS/Context.cu:484:        scFactor = param.ScalingFactorReal.at(level);  //cryptoParams->GetScalingFactorReal(ciphertext->GetLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:384:		// this wouldn't do anything in OpenFHE
+/root/fideslib/src/CKKS/Ciphertext.cpp:1773:	/* Based on this (OpenFHE):
+/root/fideslib/src/CKKS/Ciphertext.cpp:1774:std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/src/CKKS/Ciphertext.cpp:1790:	for (usint i = 0; i < ciphertext->NumberCiphertextElements(); i++) {
+/root/fideslib/src/CKKS/Bootstrap.cu:224:        // TO-DO: The 1/32 scale will be pre-applied with OpenFHE v1.4, so remove it from here
+/root/fideslib/src/CKKS/Bootstrap.cu:355:        double sourceSF = cc.param.ScalingFactorReal[1];  // ciphertext->GetScalingFactor();
+/root/fideslib/src/CKKS/Bootstrap.cu:356:        uint32_t numTowers = 2;                           // ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/src/CKKS/Bootstrap.cu:431:        double sourceSF = ctxt.NoiseFactor;        // ciphertext->GetScalingFactor();
+/root/fideslib/src/CKKS/Bootstrap.cu:432:        uint32_t numTowers = ctxt.getLevel() + 1;  // ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/src/CKKS/Bootstrap.cu:587:    // auto ctxtDCRT = raised->GetElements();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:49:                                                               lbcrypto::Ciphertext<DCRTPoly> ct, int REV) {
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:52:    result.numRes = ct->GetElements()[0].GetAllElements().size();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:53:    result.N = ((ct->GetElements()[0].GetAllElements())[0].GetValues() /*.m_values*/).GetLength();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:54:    result.sub_0 = GetRawArray(ct->GetElements()[0].GetAllElements());
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:55:    result.sub_1 = GetRawArray(ct->GetElements()[1].GetAllElements());
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:57:    // We read (hopefully) in eval form, and OpenFHE should be bit_reversed, so REVERSE == 0.
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:66:    result.moduli = GetModuli(ct->GetElements()[0].GetAllElements());
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:67:    result.format = ct->GetElements()[0].GetFormat();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:70:    result.NoiseLevel = ct->GetNoiseScaleDeg();  // m_noiseScaleDeg;
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:72:    result.slots = ct->GetSlots();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:78:* Converts a ciphertext from the RawCiphertext format back to the OpenFHE ciphertext format*/
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:79:void FIDESlib::CKKS::GetOpenFHECipherText(lbcrypto::Ciphertext<DCRTPoly> result, RawCipherText raw, int REV) {
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:81:    int size = result->GetElements()[0].GetAllElements().size();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:87:    assert(result->GetElements()[0].GetAllElements().size() >= raw.numRes);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:96:    DCRTPoly sub_0 = result->GetElements().at(0);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:97:    DCRTPoly sub_1 = result->GetElements().at(1);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:100:    result->SetLevel(result->GetLevel() + result->GetElements().at(0).GetNumOfElements() - raw.numRes);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:126:    result->SetElements(ct_new);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:129:    result->SetNoiseScaleDeg(raw.NoiseLevel);  // /*m_noiseScaleDeg*/ = raw.NoiseLevel;
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:131:    result->SetSlots(raw.slots);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:134:void FIDESlib::CKKS::GetOpenFHEPlaintext(lbcrypto::Plaintext result, RawPlainText raw, int REV) {
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:145:    result->SetLevel(result->GetLevel() + result->GetElement<DCRTPoly>().GetNumOfElements() - raw.numRes);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:163:    result->SetNoiseScaleDeg(raw.NoiseLevel);  // noiseScaleDeg = raw.NoiseLevel;
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:164:    result->SetSlots(raw.slots);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:190:    result.NoiseLevel = pt->GetNoiseScaleDeg();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:191:    result.slots = pt->GetSlots();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:214:    result.NoiseLevel = pt->GetNoiseScaleDeg();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:215:    result.slots = pt->GetSlots();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:252:            assert("OpenFHE has not generated the NTT tables we want yet :(" == nullptr);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:430:            // } else if (cryptoParams->GetSecretKeyDist() == SPARSE_ENCAPSULATED) {    // Switch to this with OpenFHE v1.4, remove the flag
+/root/fideslib/src/CKKS/ApproxModEval.cu:368: * Adaptation of OpenFHE's implementation.
+/root/fideslib/src/CKKS/ApproxModEval.cu:579:			usint levelDiff = T[k - 1]->GetLevel() - T[i - 1]->GetLevel();
+/root/fideslib/src/CKKS/Context.cu:482:            param.ScalingFactorRealBig.at(level);  // cryptoParams->GetScalingFactorRealBig(ciphertext->GetLevel());
+/root/fideslib/src/CKKS/Context.cu:484:        scFactor = param.ScalingFactorReal.at(level);  //cryptoParams->GetScalingFactorReal(ciphertext->GetLevel());
+/root/fideslib/src/CKKS/Ciphertext.cpp:384:		// this wouldn't do anything in OpenFHE
+/root/fideslib/src/CKKS/Ciphertext.cpp:1773:	/* Based on this (OpenFHE):
+/root/fideslib/src/CKKS/Ciphertext.cpp:1774:std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/src/CKKS/Ciphertext.cpp:1790:	for (usint i = 0; i < ciphertext->NumberCiphertextElements(); i++) {
+/root/fideslib/src/CKKS/Bootstrap.cu:224:        // TO-DO: The 1/32 scale will be pre-applied with OpenFHE v1.4, so remove it from here
+/root/fideslib/src/CKKS/Bootstrap.cu:355:        double sourceSF = cc.param.ScalingFactorReal[1];  // ciphertext->GetScalingFactor();
+/root/fideslib/src/CKKS/Bootstrap.cu:356:        uint32_t numTowers = 2;                           // ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/src/CKKS/Bootstrap.cu:431:        double sourceSF = ctxt.NoiseFactor;        // ciphertext->GetScalingFactor();
+/root/fideslib/src/CKKS/Bootstrap.cu:432:        uint32_t numTowers = ctxt.getLevel() + 1;  // ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/src/CKKS/Bootstrap.cu:587:    // auto ctxtDCRT = raised->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestInteractiveBootstrap.cpp:229:            c1->GetElements().erase(c1->GetElements().begin());
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestInteractiveBootstrap.cpp:337:            c1->GetElements().erase(c1->GetElements().begin());
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestInteractiveBootstrap.cpp:444:            auto cPolyRNS = outCtxt->GetElements()[0];
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestInteractiveBootstrap.cpp:447:            auto c = inCtxt->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestInteractiveBootstrap.cpp:496:            inCtxt2->SetElements({inCtxt2->GetElements()[1]});
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestInteractiveBootstrap.cpp:586:            ciphertext2->SetElements({ciphertext2->GetElements()[1]});
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestCKKSrnsCompositeScaling.cpp:1226:            size_t towersLeft = ctCompressed->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestBootstrap.cpp:514:            auto firstCurrent = ciphertext->GetElements()[0];
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestBootstrap.cpp:517:            auto elements     = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestBootstrap.cpp:519:            ciphertext->SetElements(elements);
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestBootstrap.cpp:528:            firstCurrent = ciphertext->GetElements()[0];
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestBootstrap.cpp:537:            elements     = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestBootstrap.cpp:539:            ciphertext->SetElements(elements);
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestBootstrap.cpp:651:            auto initNumTowers          = ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestBootstrap.cpp:652:            auto bootstrappingNumTowers = ciphertextAfter->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestBootstrap.cpp:663:            auto bootstrappingNumTowersTwoIterations = ciphertextTwoIterations->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestCKKSrns.cpp:1424:            size_t towersLeft = ctCompressed->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestCKKSrnsCompositeScalingBootstrap.cpp:342:            auto firstCurrent = ciphertext->GetElements()[0];
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestCKKSrnsCompositeScalingBootstrap.cpp:345:            auto elements     = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestCKKSrnsCompositeScalingBootstrap.cpp:347:            ciphertext->SetElements(elements);
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestCKKSrnsCompositeScalingBootstrap.cpp:356:            firstCurrent = ciphertext->GetElements()[0];
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestCKKSrnsCompositeScalingBootstrap.cpp:365:            elements     = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestCKKSrnsCompositeScalingBootstrap.cpp:367:            ciphertext->SetElements(elements);
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestCKKSrnsCompositeScalingBootstrap.cpp:476:            auto initNumTowers          = ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestCKKSrnsCompositeScalingBootstrap.cpp:477:            auto bootstrappingNumTowers = ciphertextAfter->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestCKKSrnsCompositeScalingBootstrap.cpp:488:            auto bootstrappingNumTowersTwoIterations = ciphertextTwoIterations->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utbgvrns/UnitTestBGVrns.cpp:896:            size_t towersLeft = ctCompressed->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utbgvrns/UnitTestBGVrns.cpp:1102:        catch (OpenFHEException& e) {
+/root/fideslib/deps/openfhe-src/src/pke/unittest/UnitTestEncoding.cpp:33:  This code exercises the encoding libraries of the OpenFHE lattice encryption library.
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utils/UnitTestMetadataTest.h:143:        auto it = ciphertext->FindMetadataByKey("test");
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utils/UnitTestMetadataTest.h:145:        if (ciphertext->MetadataFound(it)) {
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utils/UnitTestMetadataTest.h:146:            return std::dynamic_pointer_cast<MetadataTest>(ciphertext->GetMetadata(it)->Clone());
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utils/UnitTestMetadataTest.h:164:        auto it = ciphertext->FindMetadataByKey("test");
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utils/UnitTestMetadataTest.h:166:        if (ciphertext->MetadataFound(it)) {
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utils/UnitTestMetadataTest.h:167:            return std::dynamic_pointer_cast<MetadataTest>(ciphertext->GetMetadata(it));
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utils/UnitTestMetadataTest.h:192:        ciphertext->SetMetadataByKey("test", mdata);
+/root/fideslib/deps/openfhe-src/src/pke/examples/simple-complex-numbers.cpp:437:    std::cout << "Initial number of levels remaining: " << depth - ciph->GetLevel() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/examples/simple-complex-numbers.cpp:444:              << depth - ciphertextAfter->GetLevel() - (ciphertextAfter->GetNoiseScaleDeg() - 1) << std::endl
+/root/fideslib/deps/openfhe-src/src/pke/examples/simple-ckks-bootstrapping.cpp:139:    std::cout << "Initial number of levels remaining: " << depth - ciph->GetLevel() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/examples/simple-ckks-bootstrapping.cpp:146:              << depth - ciphertextAfter->GetLevel() - (ciphertextAfter->GetNoiseScaleDeg() - 1) << std::endl
+/root/fideslib/deps/openfhe-src/src/pke/examples/pre-buffer.cpp:207:    // note that OpenFHE assumes that plaintext is in the range of -p/2..p/2
+/root/fideslib/deps/openfhe-src/src/pke/examples/advanced-real-numbers.cpp:249:    // std::cout << "\t scaling factor degree: " << c->GetNoiseScaleDeg() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/examples/advanced-real-numbers.cpp:250:    // std::cout << "\t level: " << c->GetLevel() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/examples/advanced-real-numbers.cpp:259:    // std::cout << "\t scaling factor degree: " << c2->GetNoiseScaleDeg() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/examples/advanced-real-numbers.cpp:260:    // std::cout << "\t level: " << c2->GetLevel() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/examples/advanced-real-numbers.cpp:268:    // std::cout << "\t scaling factor degree: " << c4->GetNoiseScaleDeg() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/examples/advanced-real-numbers.cpp:269:    // std::cout << "\t level: " << c4->GetLevel() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/examples/advanced-real-numbers.cpp:274:    // std::cout << "\t scaling factor degree: " << c8->GetNoiseScaleDeg() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/examples/advanced-real-numbers.cpp:275:    // std::cout << "\t level: " << c8->GetLevel() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/examples/advanced-real-numbers.cpp:280:    // std::cout << "\t scaling factor degree: " << c16->GetNoiseScaleDeg() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/examples/advanced-real-numbers.cpp:281:    // std::cout << "\t level: " << c16->GetLevel() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/examples/advanced-real-numbers.cpp:290:    // std::cout << "\t scaling factor degree: " << c9->GetNoiseScaleDeg() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/examples/advanced-real-numbers.cpp:291:    // std::cout << "\t level: " << c9->GetLevel() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/examples/advanced-real-numbers.cpp:296:    // std::cout << "\t scaling factor degree: " << c18->GetNoiseScaleDeg() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/examples/advanced-real-numbers.cpp:297:    // std::cout << "\t level: " << c18->GetLevel() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/examples/advanced-real-numbers.cpp:304:    // std::cout << "\t scaling factor degree: " << cRes->GetNoiseScaleDeg() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/examples/advanced-real-numbers.cpp:305:    // std::cout << "\t level: " << cRes->GetLevel() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/examples/advanced-real-numbers.cpp:690:   * HYBRID) in OpenFHE.
+/root/fideslib/deps/openfhe-src/src/pke/examples/iterative-ckks-bootstrapping.cpp:188:              << depth - ciphertextTwoIterations->GetLevel() - (ciphertextTwoIterations->GetNoiseScaleDeg() - 1)
+/root/fideslib/deps/openfhe-src/src/pke/examples/scheme-switching-serial.cpp:239:        clientCC->EvalMinSchemeSwitching(clientC, clientPublicKey, clientC->GetSlots(), clientC->GetSlots(), 0, 1);
+/root/fideslib/deps/openfhe-src/src/pke/examples/simple-integers-serial.cpp:189:    // OpenFHE maintains an internal map of CryptoContext objects which are
+/root/fideslib/deps/openfhe-src/src/pke/examples/simple-integers-serial.cpp:191:    // of the keys. When deserializing a context, OpenFHE checks for the tag and
+/root/fideslib/deps/openfhe-src/src/pke/examples/simple-ckks-bootstrapping-composite-scaling.cpp:173:    std::cout << "Initial number of levels remaining: " << depth - ciph->GetLevel() / compositeDegree << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/examples/simple-ckks-bootstrapping-composite-scaling.cpp:180:              << depth - ciphertextAfter->GetLevel() / compositeDegree - (ciphertextAfter->GetNoiseScaleDeg() - 1)
+/root/fideslib/deps/openfhe-src/src/pke/examples/interactive-bootstrapping.cpp:123:    ciphertext2->SetElements({ciphertext2->GetElements()[1]});
+/root/fideslib/deps/openfhe-src/src/pke/examples/interactive-bootstrapping.cpp:272:    ciphertext2->SetElements({ciphertext2->GetElements()[1]});
+/root/fideslib/deps/openfhe-src/src/pke/examples/advanced-real-numbers-128.cpp:593:   * HYBRID) in OpenFHE.
+/root/fideslib/deps/openfhe-src/src/pke/examples/simple-integers-serial-bgvrns.cpp:189:    // OpenFHE maintains an internal map of CryptoContext objects which are
+/root/fideslib/deps/openfhe-src/src/pke/examples/simple-integers-serial-bgvrns.cpp:191:    // of the keys. When deserializing a context, OpenFHE checks for the tag and
+/root/fideslib/deps/openfhe-src/src/pke/examples/simple-composite-scaling-manual.cpp:333:    std::cout << "c1 noise degree = " << c1->GetNoiseScaleDeg() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/examples/iterative-ckks-bootstrapping-composite-scaling.cpp:197:              << depth - ciphertextTwoIterations->GetLevel() / compositeDegree -
+/root/fideslib/deps/openfhe-src/src/pke/examples/iterative-ckks-bootstrapping-composite-scaling.cpp:198:                     (ciphertextTwoIterations->GetNoiseScaleDeg() - 1)
+/root/fideslib/deps/openfhe-src/src/pke/examples/simple-real-numbers-composite-scaling.cpp:310:    std::cout << "c1 noise degree = " << c1->GetNoiseScaleDeg() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/examples/tckks-interactive-mp-bootstrapping-Chebyshev.cpp:278:    c1->GetElements().erase(c1->GetElements().begin());
+/root/fideslib/deps/openfhe-src/src/pke/examples/advanced-ckks-bootstrapping.cpp:119:    * or an exact divisor of the number of slots. Setting it to have the default value of {0, 0} allows OpenFHE to choose
+/root/fideslib/deps/openfhe-src/src/pke/examples/advanced-ckks-bootstrapping.cpp:181:    std::cout << "Initial number of levels remaining: " << depth - ciph->GetLevel() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/examples/advanced-ckks-bootstrapping.cpp:187:    std::cout << "Number of levels remaining after bootstrapping: " << depth - ciphertextAfter->GetLevel() << std::endl
+/root/fideslib/deps/openfhe-src/src/pke/examples/pre-hra-secure.cpp:236:        // note that OpenFHE assumes that plaintext is in the range of -p/2..p/2
+/root/fideslib/deps/openfhe-src/src/pke/examples/tckks-interactive-mp-bootstrapping.cpp:241:    c1->GetElements().erase(c1->GetElements().begin());
+/root/fideslib/deps/openfhe-src/src/pke/extras/bfv-mult-bug.cpp:115:    const std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/extras/ckks-bootstrap.cpp:204:        std::cerr << "ciphertext number of slots: " << ciphertext->GetSlots() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/extras/ckks-bootstrap.cpp:206:        std::cerr << "\nNumber of levels before bootstrapping: " << ciphertext->GetElements()[0].GetNumOfElements() - 1
+/root/fideslib/deps/openfhe-src/src/pke/extras/ckks-bootstrap.cpp:214:                  << depth - ciphertextAfter->GetElements()[0].GetNumOfElements() + ciphertextAfter->GetNoiseScaleDeg()
+/root/fideslib/deps/openfhe-src/src/pke/extras/ckks-bootstrap.cpp:217:                  << ciphertextAfter->GetElements()[0].GetNumOfElements() - ciphertextAfter->GetNoiseScaleDeg()
+/root/fideslib/deps/openfhe-src/src/pke/extras/ckks-bootstrap.cpp:221:        std::cerr << "ciphertextAfter level        : " << ciphertextAfter->GetLevel() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/extras/ckks-bootstrap.cpp:222:        std::cerr << "ciphertextAfter noiseScaleDeg: " << ciphertextAfter->GetNoiseScaleDeg() << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext-ser.h:42:extern template class lbcrypto::CiphertextImpl<lbcrypto::Poly>;
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext-ser.h:43:extern template class lbcrypto::CiphertextImpl<lbcrypto::NativePoly>;
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext-ser.h:44:extern template class lbcrypto::CiphertextImpl<lbcrypto::DCRTPoly>;
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext-ser.h:46:CEREAL_CLASS_VERSION(lbcrypto::CiphertextImpl<lbcrypto::Poly>,
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext-ser.h:47:                     lbcrypto::CiphertextImpl<lbcrypto::Poly>::SerializedVersion());
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext-ser.h:48:CEREAL_CLASS_VERSION(lbcrypto::CiphertextImpl<lbcrypto::NativePoly>,
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext-ser.h:49:                     lbcrypto::CiphertextImpl<lbcrypto::NativePoly>::SerializedVersion());
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext-ser.h:50:CEREAL_CLASS_VERSION(lbcrypto::CiphertextImpl<lbcrypto::DCRTPoly>,
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext-ser.h:51:                     lbcrypto::CiphertextImpl<lbcrypto::DCRTPoly>::SerializedVersion());
+/root/fideslib/deps/openfhe-src/src/pke/include/schemebase/base-scheme.h:248:        return m_PKE->DecryptCore(ciphertext->GetElements(), privateKey);
+/root/fideslib/deps/openfhe-src/src/pke/include/schemebase/base-scheme.h:767:        result->SetKeyTag(ciphertext->GetKeyTag());
+/root/fideslib/deps/openfhe-src/src/pke/include/schemebase/base-scheme.h:1558:        if (ciphertext->NumberCiphertextElements() > 2) {
+/root/fideslib/deps/openfhe-src/src/pke/include/schemebase/base-scheme.h:1560:                                 std::to_string(ciphertext->NumberCiphertextElements()) +
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext.h:33:  Operations for the representation of ciphertext in OpenFHE
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext.h:54: * The CiphertextImpl object is used to contain encrypted text in the OpenFHE
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext.h:168:   * GetElements: get all of the ring elements in the CiphertextImpl
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext.h:171:    const std::vector<Element>& GetElements() const {
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext.h:176:   * GetElements: get all of the ring elements in the CiphertextImpl
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext.h:179:    std::vector<Element>& GetElements() {
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext.h:209:    void SetElements(const std::vector<Element>& elements) {
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext.h:218:    void SetElements(std::vector<Element>&& elements) noexcept {
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext.h:225:    size_t GetNoiseScaleDeg() const {
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext.h:232:    void SetNoiseScaleDeg(size_t noiseScaleDeg) {
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext.h:239:    size_t GetLevel() const {
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext.h:246:    // Generic case: no multiplicativeDepth validation. SetLevel() has a specialization for DCRTPoly
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext.h:247:    void SetLevel(size_t level) {
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext.h:296:    uint32_t GetSlots() const {
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext.h:303:    void SetSlots(uint32_t slots) {
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext.h:528:void CiphertextImpl<DCRTPoly>::SetLevel(size_t level);
+/root/fideslib/deps/openfhe-src/src/pke/include/scheme/scheme-swch-params.h:131:    void SetLevelLTrCKKStoFHEW(uint32_t levelLTrCKKStoFHEW0) {
+/root/fideslib/deps/openfhe-src/src/pke/include/scheme/scheme-swch-params.h:134:    void SetLevelLTrFHEWtoCKKS(uint32_t levelLTrFHEWtoCKKS0) {
+/root/fideslib/deps/openfhe-src/src/pke/include/scheme/scheme-swch-params.h:205:    uint32_t GetLevelLTrCKKStoFHEW() const {
+/root/fideslib/deps/openfhe-src/src/pke/include/scheme/scheme-swch-params.h:209:    uint32_t GetLevelLTrFHEWtoCKKS() const {
+/root/fideslib/deps/openfhe-src/src/pke/include/encoding/packedencoding.h:33:  Represents and defines plaintext encodings in OpenFHE with packing capabilities
+/root/fideslib/deps/openfhe-src/src/pke/include/encoding/stringencoding.h:33:  Represents and defines string-encoded plaintext objects in OpenFHE
+/root/fideslib/deps/openfhe-src/src/pke/include/encoding/encodings.h:33:  all supported encodings of plaintext objects in OpenFHE
+/root/fideslib/deps/openfhe-src/src/pke/include/encoding/coefpackedencoding.h:33:  Represents and defines packing integers of plaintext objects into polynomial coefficients in OpenFHE
+/root/fideslib/deps/openfhe-src/src/pke/include/encoding/plaintextfactory.h:33:  Manufactures plaintext objects in OpenFHE
+/root/fideslib/deps/openfhe-src/src/pke/include/encoding/plaintextfactory.h:97:        pt->SetNoiseScaleDeg(noiseScaleDeg);
+/root/fideslib/deps/openfhe-src/src/pke/include/encoding/plaintextfactory.h:98:        pt->SetLevel(level);
+/root/fideslib/deps/openfhe-src/src/pke/include/encoding/plaintextfactory.h:126:        pt->SetNoiseScaleDeg(noiseScaleDeg);
+/root/fideslib/deps/openfhe-src/src/pke/include/encoding/plaintextfactory.h:127:        pt->SetLevel(level);
+/root/fideslib/deps/openfhe-src/src/pke/include/encoding/plaintext.h:33:  Represents and defines plaintext objects in OpenFHE
+/root/fideslib/deps/openfhe-src/src/pke/include/encoding/plaintext.h:56: * @brief This class represents plaintext in the OpenFHE library.
+/root/fideslib/deps/openfhe-src/src/pke/include/encoding/plaintext.h:311:    size_t GetNoiseScaleDeg() const {
+/root/fideslib/deps/openfhe-src/src/pke/include/encoding/plaintext.h:318:    void SetNoiseScaleDeg(size_t d) {
+/root/fideslib/deps/openfhe-src/src/pke/include/encoding/plaintext.h:327:    size_t GetLevel() const {
+/root/fideslib/deps/openfhe-src/src/pke/include/encoding/plaintext.h:334:    void SetLevel(size_t l) {
+/root/fideslib/deps/openfhe-src/src/pke/include/encoding/plaintext.h:343:    uint32_t GetSlots() const {
+/root/fideslib/deps/openfhe-src/src/pke/include/encoding/plaintext.h:350:    void SetSlots(uint32_t l) {
+/root/fideslib/deps/openfhe-src/src/pke/include/constants.h:33:// the Rust wrapper for OpenFHE.
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext-ser.h:60: * CryptoContextImpl OpenFHE doesn't want multiple copies of the same crypto
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext-ser.h:129: * CryptoContextImpl OpenFHE doesn't want multiple copies of the same crypto
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:74: * @brief A class to simplify access to OpenFHE's PKE functionality.
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:79: * OpenFHE methods are accessed through CryptoContextImpl methods. Guards are implemented to make certain that
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:208:            p->SetNoiseScaleDeg(2);
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:357:        if (Mismatched(ciphertext->GetCryptoContext())) {
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:460:            p->SetNoiseScaleDeg(2);
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1270:            ciphertext->SetSlots(plaintext->GetSlots());
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1271:            ciphertext->SetLevel(plaintext->GetLevel());
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1272:            ciphertext->SetNoiseScaleDeg(plaintext->GetNoiseScaleDeg());
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1273:            ciphertext->SetScalingFactor(plaintext->GetScalingFactor());
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1274:            ciphertext->SetScalingFactorInt(plaintext->GetScalingFactorInt());
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1275:            ciphertext->SetEncodingType(plaintext->GetEncodingType());
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1307:            ciphertext->SetSlots(plaintext->GetSlots());
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1308:            ciphertext->SetLevel(plaintext->GetLevel());
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1309:            ciphertext->SetNoiseScaleDeg(plaintext->GetNoiseScaleDeg());
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1310:            ciphertext->SetScalingFactor(plaintext->GetScalingFactor());
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1311:            ciphertext->SetScalingFactorInt(plaintext->GetScalingFactorInt());
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1312:            ciphertext->SetEncodingType(plaintext->GetEncodingType());
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1449:        auto& cv1  = ctxt1->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1450:        auto& cv2  = ctxt2->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1859:    * @brief Creates a relinearization key (for s^2) that can be used with the OpenFHE EvalMult operator
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1867:    * @brief Creates a vector evalmult keys that can be used with the OpenFHE EvalMult operator
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1935:        const auto& evalKeyVec = CryptoContextImpl<Element>::GetEvalMultKeyVector(ciphertext->GetKeyTag());
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1951:        const auto& evalKeyVec = CryptoContextImpl<Element>::GetEvalMultKeyVector(ciphertext->GetKeyTag());
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1966:        const auto& evalKeyVec = CryptoContextImpl<Element>::GetEvalMultKeyVector(ciphertext->GetKeyTag());
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1987:        auto& cv1 = ctxt1->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1988:        auto& cv2 = ctxt2->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:2019:        result->SetElements(std::move(cvr));
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:2020:        result->SetNoiseScaleDeg(ctxt1->GetNoiseScaleDeg() + ctxt2->GetNoiseScaleDeg());
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:2038:        const auto& evalKeyVec = CryptoContextImpl<Element>::GetEvalMultKeyVector(ciphertext->GetKeyTag());
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:2040:        if (evalKeyVec.size() < (ciphertext->NumberCiphertextElements() - 2))
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:2056:        const auto& evalKeyVec = CryptoContextImpl<Element>::GetEvalMultKeyVector(ciphertext->GetKeyTag());
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:2057:        if (evalKeyVec.size() < (ciphertext->NumberCiphertextElements() - 2))
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:2087:        auto& cv    = result->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:2335:        auto evalKeyMap = CryptoContextImpl<Element>::GetEvalAutomorphismKeyMap(ciphertext->GetKeyTag());
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:2441:        auto evalKeyMap = CryptoContextImpl<Element>::GetEvalAutomorphismKeyMap(ciphertext->GetKeyTag());
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:3122:    * @brief Produces an Eval Key that OpenFHE can use for Proxy Re-Encryption
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:3127:    * @attention This functionality has been completely removed from OpenFHE
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:3131:        __attribute__((deprecated("functionality removed from OpenFHE")));
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:4048:        // "CryptoContext". OpenFHE relies on the notion that identical
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:368:    auto&& evalSumKeys = CryptoContextImpl<Element>::GetEvalAutomorphismKeyMap(ciphertext->GetKeyTag());
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:385:    auto&& evalSumKeys = CryptoContextImpl<Element>::GetEvalAutomorphismKeyMap(ciphertext->GetKeyTag());
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:395:        return ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:396:    auto&& evalAutomorphismKeys = CryptoContextImpl<Element>::GetEvalAutomorphismKeyMap(ciphertext->GetKeyTag());
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:452:    // CryptoContextImpl<Element>::GetPlaintextForDecrypt(ciphertext->GetEncodingType(),
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:455:        ciphertext->GetEncodingType(), ciphertext->GetElements()[0].GetParams(), this->GetEncodingParams(),
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:460:    if ((ciphertext->GetEncodingType() == CKKS_PACKED_ENCODING) && (typeid(Element) != typeid(NativePoly))) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:472:    if (ciphertext->GetEncodingType() == CKKS_PACKED_ENCODING) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:474:        decryptedCKKS->SetNoiseScaleDeg(ciphertext->GetNoiseScaleDeg());
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:475:        decryptedCKKS->SetLevel(ciphertext->GetLevel());
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:476:        decryptedCKKS->SetScalingFactor(ciphertext->GetScalingFactor());
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:477:        decryptedCKKS->SetSlots(ciphertext->GetSlots());
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:481:        decryptedCKKS->Decode(ciphertext->GetNoiseScaleDeg(), ciphertext->GetScalingFactor(),
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:582:    // CryptoContextImpl<Element>::GetPlaintextForDecrypt(ciphertext->GetEncodingType(),
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:585:        ciphertext->GetEncodingType(), ciphertext->GetElements()[0].GetParams(), this->GetEncodingParams(),
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:590:    if ((ciphertext->GetEncodingType() == CKKS_PACKED_ENCODING) &&
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:591:        (ciphertext->GetElements()[0].GetParams()->GetParams().size() > 1))  // more than one tower in DCRTPoly
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:601:    if (ciphertext->GetEncodingType() == CKKS_PACKED_ENCODING) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:603:        decryptedCKKS->SetNoiseScaleDeg(ciphertext->GetNoiseScaleDeg());
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:604:        decryptedCKKS->SetLevel(ciphertext->GetLevel());
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:605:        decryptedCKKS->SetScalingFactor(ciphertext->GetScalingFactor());
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:606:        decryptedCKKS->SetSlots(ciphertext->GetSlots());
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:610:        decryptedCKKS->Decode(ciphertext->GetNoiseScaleDeg(), ciphertext->GetScalingFactor(),
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:639:        partialCiphertextVec[0]->GetEncodingType(), partialCiphertextVec[0]->GetElements()[0].GetParams(),
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:643:        (partialCiphertextVec[0]->GetElements()[0].GetParams()->GetParams().size() > 1))
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:655:        decryptedCKKS->SetSlots(partialCiphertextVec[0]->GetSlots());
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:657:        decryptedCKKS->Decode(partialCiphertextVec[0]->GetNoiseScaleDeg(), partialCiphertextVec[0]->GetScalingFactor(),
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-pke.cpp:106:    ctxt->SetElements(std::move(*ba));
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-pke.cpp:107:    ctxt->SetNoiseScaleDeg(1);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-pke.cpp:117:    ctxt->SetElements(std::move(*ba));
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-pke.cpp:118:    ctxt->SetNoiseScaleDeg(1);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:128:    std::string kID           = ciphertext->GetKeyTag();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:129:    const auto cryptoParams   = ciphertext->GetCryptoParameters();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:135:    auto cc = ciphertext->GetCryptoContext();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:139:    if (ciphertext->GetEncodingType() == CKKS_PACKED_ENCODING) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:149:        plaintext = cc->MakeCKKSPackedPlaintext(randomIntVector, ciphertext->GetNoiseScaleDeg(), 0, nullptr,
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:150:                                                ciphertext->GetSlots());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:243:    const auto cryptoParams   = ciphertext->GetCryptoParameters();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:253:    Ciphertext<Element> newCiphertext = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:256:        if (ciphertext->GetEncodingType() == CKKS_PACKED_ENCODING)
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:269:            auto algo = ciphertext->GetCryptoContext()->GetScheme();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:287:    if (ciphertext->GetEncodingType() != CKKS_PACKED_ENCODING)
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:290:    const auto cryptoParams   = ciphertext->GetCryptoParameters();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:300:    return EvalSum2nComplexRows(ciphertext->Clone(), numRows, m, evalSumKeys);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:313:    if (ciphertext->GetEncodingType() != CKKS_PACKED_ENCODING)
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:316:    const uint32_t slots = ciphertext->GetSlots();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:320:    const auto cryptoParams   = ciphertext->GetCryptoParameters();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:337:    Ciphertext<Element> newCiphertext = EvalSum2nComplex(ciphertext->Clone(), numCols, m, evalSumKeyMap);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:338:    auto cc                           = ciphertext->GetCryptoContext();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:368:    auto algo = ciphertext->GetCryptoContext()->GetScheme();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:395:        plaintext = cc->MakeCKKSPackedPlaintext(mask, 1, 0, nullptr, ciphertextVec[0]->GetSlots());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:510:    auto algo = ciphertext->GetCryptoContext()->GetScheme();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:534:    auto algo  = ciphertext->GetCryptoContext()->GetScheme();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:552:    auto algo        = ciphertext->GetCryptoContext()->GetScheme();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-advancedshe.cpp:569:    auto algo  = ciphertext->GetCryptoContext()->GetScheme();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-pre.cpp:51:    auto algo               = ciphertext->GetCryptoContext()->GetScheme();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-pre.cpp:52:    const auto cryptoParams = std::dynamic_pointer_cast<CryptoParametersRNS>(ciphertext->GetCryptoParameters());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-pre.cpp:54:    Ciphertext<Element> result = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-pre.cpp:55:    std::vector<Element>& cv   = result->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:52:    auto result = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:59:    for (auto& c : ciphertext->GetElements())
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:84:    auto result = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:91:    auto& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:118:    auto result = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:125:    auto& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:168:    auto result = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:177:    for (auto& c : ciphertext->GetElements())
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:187:    auto& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:191:    auto ab = ciphertext->GetCryptoContext()->GetScheme()->KeySwitchCore(cv[2], evalKey);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:206:    auto& cv = ciphertext1->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:224:    auto& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:228:    auto ab = ciphertext->GetCryptoContext()->GetScheme()->KeySwitchCore(cv[2], evalKey);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:243:    auto& cv = csquare->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:261:    auto& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:265:    auto ab = ciphertext->GetCryptoContext()->GetScheme()->KeySwitchCore(cv[2], evalKey);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:278:    auto& cv = csquare->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:297:    auto& cv = ciphertext1->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:321:    auto result = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:329:    auto& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:333:    auto algo = ciphertext->GetCryptoContext()->GetScheme();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:393:    if (ciphertext->NumberCiphertextElements() != 2)
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:409:    uint32_t N = ciphertext->GetElements()[0].GetRingDimension();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:419:    auto result = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:420:    ciphertext->GetCryptoContext()->GetScheme()->KeySwitchInPlace(result, evalKeyIterator->second);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:425:    auto& rcv = result->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:434:    const auto& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:435:    auto& algo     = ciphertext->GetCryptoContext()->GetScheme();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:436:    return algo->EvalKeySwitchPrecomputeCore(cv[1], ciphertext->GetCryptoParameters());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:444:        return ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:447:    const auto cc        = ciphertext->GetCryptoContext();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:448:    auto evalKeyMap      = cc->GetEvalAutomorphismKeyMap(ciphertext->GetKeyTag());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:454:    const auto cryptoParams = ciphertext->GetCryptoParameters();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:460:    const auto& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:467:    auto result = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:468:    result->SetElements({std::move((*ba)[0]), std::move((*ba)[1])});
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:486:    uint32_t M = ciphertext->GetCryptoParameters()->GetElementParams()->GetCyclotomicOrder();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:499:    ciphertext->GetCryptoContext()->GetScheme()->KeySwitchInPlace(ciphertext, evalKey);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:511:    auto result = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:522:    auto result = ciphertext->CloneEmpty();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:524:    result->SetSlots(plaintext->GetSlots());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:525:    result->SetLevel(plaintext->GetLevel());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:526:    result->SetNoiseScaleDeg(plaintext->GetNoiseScaleDeg());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:539:    uint32_t numTowers1 = ciphertext1->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:540:    uint32_t numTowers2 = ciphertext2->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:551:    uint32_t numTowersCtxt = ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:573:    auto& cv1 = ciphertext1->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:574:    auto& cv2 = ciphertext2->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:600:    auto& cv1 = ciphertext1->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:601:    auto& cv2 = ciphertext2->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:619:    auto& cv1 = ctxt1->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:620:    auto& cv2 = ctxt2->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:650:    result->SetElements(std::move(cvr));
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:651:    result->SetNoiseScaleDeg(ctxt1->GetNoiseScaleDeg() + ctxt2->GetNoiseScaleDeg());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:660:    const auto& cv = ctxt->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:704:    result->SetElements(std::move(cvr));
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:705:    result->SetNoiseScaleDeg(2 * ctxt->GetNoiseScaleDeg());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:715:    auto result = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:723:    ciphertext->GetElements()[0] += pt;
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:729:    auto result = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:737:    ciphertext->GetElements()[0] -= pt;
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:743:    auto result = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:751:    for (auto& c : ciphertext->GetElements())
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-scheme.cpp:99:    result->SetKeyTag(ciphertext->GetKeyTag());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-multiparty.cpp:232:    const std::vector<Element>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-multiparty.cpp:242:    auto result = ciphertext->CloneEmpty();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-multiparty.cpp:256:    const std::vector<Element>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-multiparty.cpp:265:    auto result = ciphertext->CloneEmpty();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-multiparty.cpp:276:    const std::vector<Element>& cv0 = ciphertextVec[0]->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-multiparty.cpp:280:        const std::vector<Element>& cvi = ciphertextVec[i]->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-pke.cpp:49:    ciphertext->SetElements({std::move((*ba)[0]), std::move((*ba)[1])});
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-pke.cpp:50:    ciphertext->SetNoiseScaleDeg(1);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-pke.cpp:65:    ciphertext->SetElements({std::move((*ba)[0]), std::move((*ba)[1])});
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-pke.cpp:66:    ciphertext->SetNoiseScaleDeg(1);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-pke.cpp:73:    const std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-pke.cpp:94:    const std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:81:    auto result = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:87:    auto st = std::dynamic_pointer_cast<CryptoParametersRNS>(ciphertext->GetCryptoParameters())->GetScalingTechnique();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:94:        EvalAddCoreInPlace(ciphertext, ctmorphed->GetElements()[0]);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:101:    return EvalAddCore(ciphertext, ctmorphed->GetElements()[0]);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:107:    EvalAddCoreInPlace(ciphertext, ctmorphed->GetElements()[0]);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:149:    auto result = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:155:    auto st = std::dynamic_pointer_cast<CryptoParametersRNS>(ciphertext->GetCryptoParameters())->GetScalingTechnique();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:162:        EvalSubCoreInPlace(ciphertext, ctmorphed->GetElements()[0]);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:169:    return EvalSubCore(ciphertext, ctmorphed->GetElements()[0]);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:175:    EvalSubCoreInPlace(ciphertext, ctmorphed->GetElements()[0]);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:201:    const auto cryptoParams = std::dynamic_pointer_cast<CryptoParametersRNS>(ciphertext->GetCryptoParameters());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:204:    if (st == NORESCALE || st == FIXEDMANUAL || ciphertext->GetNoiseScaleDeg() == 1)
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:213:    const auto cryptoParams = std::dynamic_pointer_cast<CryptoParametersRNS>(ciphertext->GetCryptoParameters());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:216:    if (st != NORESCALE && st != FIXEDMANUAL && ciphertext->GetNoiseScaleDeg() == 2) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:227:    auto result = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:233:    auto st = std::dynamic_pointer_cast<CryptoParametersRNS>(ciphertext->GetCryptoParameters())->GetScalingTechnique();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:240:        EvalMultCoreInPlace(ciphertext, ctmorphed->GetElements()[0]);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:241:        ciphertext->SetNoiseScaleDeg(ciphertext->GetNoiseScaleDeg() + ctmorphed->GetNoiseScaleDeg());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:248:    auto result = EvalMultCore(ciphertext, ctmorphed->GetElements()[0]);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:250:    result->SetNoiseScaleDeg(ciphertext->GetNoiseScaleDeg() + ctmorphed->GetNoiseScaleDeg());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:252:    result->SetScalingFactor(ciphertext->GetScalingFactor() * ctmorphed->GetScalingFactor());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:254:    auto st = std::dynamic_pointer_cast<CryptoParametersRNS>(ciphertext->GetCryptoParameters())->GetScalingTechnique();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:256:        result->SetScalingFactorInt(ciphertext->GetScalingFactorInt().ModMul(
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:257:            ctmorphed->GetScalingFactorInt(), ciphertext->GetCryptoParameters()->GetPlaintextModulus()));
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:265:    EvalMultCoreInPlace(ciphertext, ctmorphed->GetElements()[0]);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:267:    ciphertext->SetNoiseScaleDeg(ciphertext->GetNoiseScaleDeg() + ctmorphed->GetNoiseScaleDeg());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:269:    ciphertext->SetScalingFactor(ciphertext->GetScalingFactor() * ctmorphed->GetScalingFactor());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:271:    auto st = std::dynamic_pointer_cast<CryptoParametersRNS>(ciphertext->GetCryptoParameters())->GetScalingTechnique();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:273:        ciphertext->SetScalingFactorInt(ciphertext->GetScalingFactorInt().ModMul(
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:274:            ctmorphed->GetScalingFactorInt(), ciphertext->GetCryptoParameters()->GetPlaintextModulus()));
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:278:    auto result = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:284:    auto& cv          = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:299:    for (uint32_t i = 0; i < ciphertext->NumberCiphertextElements(); ++i)
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:312:    auto result = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:318:    auto st = std::dynamic_pointer_cast<CryptoParametersRNS>(ciphertext->GetCryptoParameters())->GetScalingTechnique();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:330:    auto result = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:338:    auto st = std::dynamic_pointer_cast<CryptoParametersRNS>(ciphertext->GetCryptoParameters())->GetScalingTechnique();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:355:    const auto cryptoParams = std::dynamic_pointer_cast<CryptoParametersRNS>(ciphertext->GetCryptoParameters());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:367:    while (result->GetNoiseScaleDeg() > noiseScaleDeg)
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:370:    size_t sizeQl = result->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:382:    auto result = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:388:    auto result = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:394:    auto sizeQl1 = ciphertext1->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:395:    auto sizeQl2 = ciphertext2->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:425:            ptxt      = ciphertext1->GetElements()[0];
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:426:            ptxtDepth = ciphertext1->GetNoiseScaleDeg();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:427:            ctxtDepth = ciphertext2->GetNoiseScaleDeg();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:428:            sizeQl    = ciphertext2->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:431:                moduli[i] = ciphertext2->GetElements()[0].GetElementAtIndex(i).GetModulus();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:436:            ptxt      = ciphertext2->GetElements()[0];
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:437:            ptxtDepth = ciphertext2->GetNoiseScaleDeg();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:438:            ctxtDepth = ciphertext1->GetNoiseScaleDeg();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:439:            sizeQl    = ciphertext1->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:442:                moduli[i] = ciphertext1->GetElements()[0].GetElementAtIndex(i).GetModulus();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:462:                ciphertext1->SetElements(std::vector<DCRTPoly>{ptxt.Times(crtPowSF)});
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:463:                ciphertext1->SetNoiseScaleDeg(ctxtDepth);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:466:                ciphertext2->SetElements(std::vector<DCRTPoly>{ptxt.Times(crtPowSF)});
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:467:                ciphertext2->SetNoiseScaleDeg(ctxtDepth);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:497:    ciphertext->GetCryptoContext()->GetScheme()->KeySwitchInPlace(ciphertext, evalKey);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:49:    const std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:106:    auto result = ciphertext->CloneEmpty();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:116:    const std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:167:    auto result = ciphertext->CloneEmpty();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:375:    const size_t NUM_POLYNOMIALS = ciphertext->NumberCiphertextElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:382:    std::vector<DCRTPoly> c = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:399:    Ciphertext<DCRTPoly> result = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:400:    result->SetElements({cs});
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:407:    if (ctxt->GetElements().empty()) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:418:    DCRTPoly ptxt = ctxt->GetElements()[0];
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:468:    ciphertext->SetElements(std::move(cv));
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:473:    ciphertext->SetEncodingType(ctxt->GetEncodingType());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:474:    ciphertext->SetScalingFactor(ctxt->GetScalingFactor());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:475:    ciphertext->SetNoiseScaleDeg(ctxt->GetNoiseScaleDeg());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:476:    ciphertext->SetLevel(0);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:477:    ciphertext->SetMetadataMap(ctxt->GetMetadataMap());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:478:    ciphertext->SetSlots(ctxt->GetSlots());
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:485:    if (ciphertext1->GetElements().empty()) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:488:    if (ciphertext2->GetElements().empty()) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:492:    auto elements1 = ciphertext1->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:493:    auto elements2 = ciphertext2->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:504:    result->SetElements(elements1);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemelet/rlwe-mp.cpp:275:    ctxt->SetElements(elementsCKKS);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemelet/rlwe-mp.cpp:280:    auto b = ctxt->GetElements()[0];
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemelet/rlwe-mp.cpp:284:    auto a = ctxt->GetElements()[1];
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemelet/rlwe-mp.cpp:288:    BigInteger QPrime = ctxt->GetElements()[0].GetModulus();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-parametergeneration.cpp:270:                    catch (const OpenFHEException& ex) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-parametergeneration.cpp:292:                    catch (const OpenFHEException& ex) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-parametergeneration.cpp:313:                        catch (const OpenFHEException& ex) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-parametergeneration.cpp:355:                        catch (const OpenFHEException& ex) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-parametergeneration.cpp:408:        catch (const OpenFHEException& ex) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:248:    const auto cryptoParams = std::dynamic_pointer_cast<CryptoParametersCKKSRNS>(ciphertext->GetCryptoParameters());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:267:    auto cc        = ciphertext->GetCryptoContext();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:270:    auto initSizeQ = ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:278:        Ciphertext<DCRTPoly> ctScaledUp = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:281:        ctScaledUp->SetLevel(L0 - ctScaledUp->GetElements()[0].GetNumOfElements());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:293:        auto bootstrappingSizeQ       = ctBootstrappedScaledDown->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:297:            return ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:299:        for (auto& cv : ctBootstrappedScaledDown->GetElements()) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:302:        ctBootstrappedScaledDown->SetLevel(L0 - ctBootstrappedScaledDown->GetElements()[0].GetNumOfElements());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:319:    uint32_t slots = ciphertext->GetSlots();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:379:    Ciphertext<DCRTPoly> raised = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:381:    algo->ModReduceInternalInPlace(raised, raised->GetNoiseScaleDeg() - 1);
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:384:    auto ctxtDCRT = raised->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:396:    raised->SetElements(ctxtDCRT);
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:397:    raised->SetLevel(L0 - ctxtDCRT[0].GetNumOfElements());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:401:              << raised->GetElements()[0].GetNumOfElements() - 1 << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:462:            while (ctxtEnc->GetNoiseScaleDeg() > 1) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:468:            if (ctxtEnc->GetNoiseScaleDeg() == 2) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:562:            while (ctxtEnc->GetNoiseScaleDeg() > 1) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:567:            if (ctxtEnc->GetNoiseScaleDeg() == 2) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:646:    auto bootstrappingNumTowers = ctxtDec->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:650:        return ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:658:    const auto cryptoParams = std::dynamic_pointer_cast<CryptoParametersCKKSRNS>(ciphertext->GetCryptoParameters());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:677:    auto cc        = ciphertext->GetCryptoContext();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:680:    auto initSizeQ = ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:688:        Ciphertext<DCRTPoly> ctScaledUp = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:691:        ctScaledUp->SetLevel(L0 - ctScaledUp->GetElements()[0].GetNumOfElements());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:703:        auto bootstrappingSizeQ       = ctBootstrappedScaledDown->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:707:            //return ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:709:        for (auto& cv : ctBootstrappedScaledDown->GetElements()) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:712:        ctBootstrappedScaledDown->SetLevel(L0 - ctBootstrappedScaledDown->GetElements()[0].GetNumOfElements());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:729:    uint32_t slots = ciphertext->GetSlots();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:789:    Ciphertext<DCRTPoly> raised = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:791:    algo->ModReduceInternalInPlace(raised, raised->GetNoiseScaleDeg() - 1);
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:794:    auto ctxtDCRT = raised->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:806:    raised->SetElements(ctxtDCRT);
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:807:    raised->SetLevel(L0 - ctxtDCRT[0].GetNumOfElements());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:811:              << raised->GetElements()[0].GetNumOfElements() - 1 << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:874:            while (ctxtEnc->GetNoiseScaleDeg() > 1) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:880:            if (ctxtEnc->GetNoiseScaleDeg() == 2) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:894:    const auto cryptoParams = std::dynamic_pointer_cast<CryptoParametersCKKSRNS>(ciphertext->GetCryptoParameters());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:913:    auto cc        = ciphertext->GetCryptoContext();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:916:    auto initSizeQ = ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:924:        Ciphertext<DCRTPoly> ctScaledUp = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:927:        ctScaledUp->SetLevel(L0 - ctScaledUp->GetElements()[0].GetNumOfElements());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:939:        auto bootstrappingSizeQ       = ctBootstrappedScaledDown->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:943:            return ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:945:        for (auto& cv : ctBootstrappedScaledDown->GetElements()) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:948:        ctBootstrappedScaledDown->SetLevel(L0 - ctBootstrappedScaledDown->GetElements()[0].GetNumOfElements());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:965:    uint32_t slots = ciphertext->GetSlots();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1025:    Ciphertext<DCRTPoly> raised = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1027:    algo->ModReduceInternalInPlace(raised, raised->GetNoiseScaleDeg() - 1);
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1030:    auto ctxtDCRT = raised->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1042:    raised->SetElements(ctxtDCRT);
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1043:    raised->SetLevel(L0 - ctxtDCRT[0].GetNumOfElements());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1047:              << raised->GetElements()[0].GetNumOfElements() - 1 << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1107:            while (ctxtEnc->GetNoiseScaleDeg() > 1) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1113:            if (ctxtEnc->GetNoiseScaleDeg() == 2) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1207:            while (ctxtEnc->GetNoiseScaleDeg() > 1) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1212:            if (ctxtEnc->GetNoiseScaleDeg() == 2) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1291:    auto bootstrappingNumTowers = ctxtDec->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1295:        return ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1458:    const auto cryptoParams = std::dynamic_pointer_cast<CryptoParametersCKKSRNS>(ciphertext->GetCryptoParameters());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1477:    auto cc                  = ciphertext->GetCryptoContext();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1479:    auto initSizeQ           = ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1490:        ctScaledUp->SetLevel(L0 - ctScaledUp->GetElements()[0].GetNumOfElements());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1502:        auto bootstrappingSizeQ       = ctBootstrappedScaledDown->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1506:            return ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1511:            for (auto& cv : ctBootstrappedScaledDown->GetElements())
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1513:            ctBootstrappedScaledDown->SetLevel(L0 - ctBootstrappedScaledDown->GetElements()[0].GetNumOfElements());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1531:    uint32_t slots = ciphertext->GetSlots();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1576:    auto raised = ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1578:    algo->ModReduceInternalInPlace(raised, compositeDegree * (raised->GetNoiseScaleDeg() - 1));
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1584:        auto& ctxtDCRT = raised->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1586:        raised->SetLevel(L0 - ctxtDCRT[0].GetNumOfElements());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1596:            auto& ctxtDCRT = raised->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1604:            raised->SetLevel(L0 - ctxtDCRT[0].GetNumOfElements());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1611:            auto& ctxtDCRT = raised->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1619:            raised->SetLevel(L0 - ctxtDCRT[0].GetNumOfElements());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1625:              << raised->GetElements()[0].GetNumOfElements() - 1 << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1696:            while (ctxtEnc->GetNoiseScaleDeg() > 1) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1702:            if (ctxtEnc->GetNoiseScaleDeg() == 2) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1786:            while (ctxtEnc->GetNoiseScaleDeg() > 1) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1791:            if (ctxtEnc->GetNoiseScaleDeg() == 2) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1856:    if (ctxtDec->GetElements()[0].GetNumOfElements() <= initSizeQ)
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1857:        return ciphertext->Clone();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2595:            auto elements = inner->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2597:            inner->SetElements(std::move(elements));
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2606:            first += inner->GetElements()[0].AutomorphismTransform(autoIndex, map);
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2613:    result->GetElements()[0] += first;
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2619:    uint32_t slots = ctxt->GetSlots();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2706:                auto elements = inner->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2708:                inner->SetElements(std::move(elements));
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2718:                    first += inner->GetElements()[0].AutomorphismTransform(autoIndex, map);
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2724:                    auto elements = inner->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2726:                    inner->SetElements(std::move(elements));
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2732:        result->GetElements()[0] += first;
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2764:                auto elements = inner->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2766:                inner->SetElements(std::move(elements));
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2776:                    first += inner->GetElements()[0].AutomorphismTransform(autoIndex, map);
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2782:                    auto elements = inner->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2784:                    inner->SetElements(std::move(elements));
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2790:        result->GetElements()[0] += first;
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2797:    uint32_t slots = ctxt->GetSlots();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2879:                auto elements = inner->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2881:                inner->SetElements(std::move(elements));
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2891:                    first += inner->GetElements()[0].AutomorphismTransform(autoIndex, map);
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2897:                    auto elements = inner->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2899:                    inner->SetElements(std::move(elements));
+
+============================================================
+4) FIDESlib CKKS Ciphertext source excerpts
+============================================================
+
+---- /root/fideslib/src/CKKS/Ciphertext.cpp ----
+     1	//
+     2	// Created by carlosad on 24/04/24.
+     3	//
+     4	
+     5	#include "CKKS/Ciphertext.cuh"
+     6	#include "CKKS/Context.cuh"
+     7	#include "CKKS/KeySwitchingKey.cuh"
+     8	#include "CKKS/Plaintext.cuh"
+     9	#include <omp.h>
+    10	#if defined(__clang__)
+    11	#include <experimental/source_location>
+    12	using sc				  = std::experimental::source_location;
+    13	constexpr int PREFIX_SIZE = 0;
+    14	#else
+    15	#include <source_location>
+    16	using sc				  = std::source_location;
+    17	constexpr int PREFIX_SIZE = 23;
+    18	#endif
+    19	
+    20	namespace FIDESlib::CKKS {
+    21	
+    22	bool hoistRotateFused		  = true;
+    23	constexpr bool RESCALE_DOUBLE = true;
+    24	
+    25	enum OPS {
+    26		NOP,
+    27		ADD,
+    28		ADDPT,
+    29		MULT,
+    30		MULTPT,
+    31		RESCALE,
+    32		ROTATE,
+    33		COPY,
+    34		SQUARE,
+    35		ADDSCALAR,
+    36		MULTSCALAR,
+    37		ADDMULTPT,
+    38		ADDMULTPTINS,
+    39		WSUM,
+    40		WSUMINPUTS,
+    41		CONJUGATE,
+    42		HOISTEDROTATE,
+    43		HOISTEDROTATEOUTS,
+    44	};
+    45	
+    46	constexpr std::array<const char*, 18> opstr{ "                   Noop: ",
+    47		"                   HAdd: ",
+    48		"                  AddPt: ",
+    49		"                   Mult: ",
+    50		"                 MultPt: ", // 5
+    51		"                Rescale: ",
+    52		"                 Rotate: ",
+    53		"                   Copy: ",
+    54		"                 Square: ",
+    55		"              ScalarAdd: ", // 10
+    56		"             ScalarMult: ",
+    57		"              AddMultPt: ",
+    58		"     AddMultPt (inputs): ",
+    59		"                   WSum: ",
+    60		"          WSum (inputs): ", // 15
+    61		"              Conjugate: ",
+    62		"          HoistedRotate: ",
+    63		"HoistedRotate (outputs): " };
+    64	
+    65	std::map<OPS, int> op_count;
+    66	
+    67	Ciphertext::Ciphertext(Ciphertext&& ct_moved) noexcept
+    68	: my_range(std::move(ct_moved.my_range)), keyID(std::move(ct_moved.keyID)), cc_(ct_moved.cc_), cc(*cc_), c0(std::move(ct_moved.c0)), c1(std::move(ct_moved.c1)),
+    69	  NoiseFactor(ct_moved.NoiseFactor), NoiseLevel(ct_moved.NoiseLevel), slots(ct_moved.slots) {
+    70	}
+    71	
+    72	Ciphertext::Ciphertext(Context& cc)
+    73	: my_range(loc, LIFETIME), cc_((assert(cc != nullptr), CudaNvtxStart(std::string{ sc::current().function_name() }.substr()), cc)), cc(*cc_),
+    74	  c0(cc->getAuxilarPoly()), c1(cc->getAuxilarPoly()) {
+    75		c0.dropToLevel(-1);
+    76		c1.dropToLevel(-1);
+    77		c0.SetModUp(false);
+    78		c1.SetModUp(false);
+    79		CudaNvtxStop();
+    80	}
+    81	
+    82	Ciphertext::Ciphertext(Context& cc, const RawCipherText& rawct) : Ciphertext(cc) {
+    83		this->load(rawct);
+    84	}
+    85	
+    86	Ciphertext::~Ciphertext() {
+    87		if (!c1.GPU.empty())
+    88			cc.returnAuxilarPoly(std::move(c1));
+    89		if (!c0.GPU.empty())
+    90			cc.returnAuxilarPoly(std::move(c0));
+    91	}
+    92	
+    93	void Ciphertext::copyMetadata(const Ciphertext& a) {
+    94		assert(this->getLevel() == a.getLevel());
+    95		this->slots		  = a.slots;
+    96		this->keyID		  = a.keyID;
+    97		this->NoiseLevel  = a.NoiseLevel;
+    98		this->NoiseFactor = a.NoiseFactor;
+    99	}
+   100	
+   101	void Ciphertext::addMetadata(const Ciphertext& a, const Ciphertext& b) {
+   102		assert(this->getLevel() == a.getLevel());
+   103		if (RESCALE_TECHNIQUE::FLEXIBLEAUTO == cc.rescaleTechnique || RESCALE_TECHNIQUE::FLEXIBLEAUTOEXT == cc.rescaleTechnique) {
+   104			assert(a.getLevel() == b.getLevel());
+   105			// assert(abs(a.NoiseFactor - b.NoiseFactor) < a.NoiseFactor / 1e9);
+   106		}
+   107		this->slots = std::max(a.slots, b.slots);
+   108		assert(a.keyID == b.keyID);
+   109		this->keyID = a.keyID;
+   110		assert(a.NoiseLevel == b.NoiseLevel);
+   111		this->NoiseLevel = a.NoiseLevel;
+   112	
+   113		this->NoiseFactor = a.NoiseFactor;
+   114	}
+   115	
+   116	void Ciphertext::addMetadata(const Ciphertext& a, const Plaintext& b) {
+   117		assert(this->getLevel() == a.getLevel());
+   118		if (RESCALE_TECHNIQUE::FLEXIBLEAUTO == cc.rescaleTechnique || RESCALE_TECHNIQUE::FLEXIBLEAUTOEXT == cc.rescaleTechnique) {
+   119			assert(a.getLevel() == b.c0.getLevel());
+   120			// assert(a.NoiseFactor == b.NoiseFactor);
+   121		}
+   122		this->slots = std::max(a.slots, b.slots);
+   123		this->keyID = a.keyID;
+   124		assert(a.NoiseLevel == b.NoiseLevel);
+   125		this->NoiseLevel  = a.NoiseLevel;
+   126		this->NoiseFactor = a.NoiseFactor;
+   127	}
+   128	
+   129	void Ciphertext::multMetadata(const Ciphertext& a, const Ciphertext& b) {
+   130		assert(this->getLevel() == a.getLevel());
+   131		if (RESCALE_TECHNIQUE::FLEXIBLEAUTO == cc.rescaleTechnique || RESCALE_TECHNIQUE::FLEXIBLEAUTOEXT == cc.rescaleTechnique) {
+   132			assert(a.getLevel() == b.getLevel());
+   133			// assert(a.NoiseFactor == b.NoiseFactor);
+   134		}
+   135		this->slots = std::max(a.slots, b.slots);
+   136		assert(a.keyID == b.keyID);
+   137		this->keyID = a.keyID;
+   138		assert(a.NoiseLevel == b.NoiseLevel);
+   139		this->NoiseLevel  = a.NoiseLevel + b.NoiseLevel;
+   140		this->NoiseFactor = a.NoiseFactor * b.NoiseFactor;
+   141	}
+   142	
+   143	void Ciphertext::multMetadata(const Ciphertext& a, const Plaintext& b) {
+   144		assert(this->getLevel() == a.getLevel());
+   145		if (RESCALE_TECHNIQUE::FLEXIBLEAUTO == cc.rescaleTechnique || RESCALE_TECHNIQUE::FLEXIBLEAUTOEXT == cc.rescaleTechnique) {
+   146			assert(a.getLevel() == b.c0.getLevel());
+   147			// assert(a.NoiseFactor == b.NoiseFactor);
+   148		}
+   149		this->slots = std::max(a.slots, b.slots);
+   150		this->keyID = a.keyID;
+   151		assert(a.NoiseLevel == b.NoiseLevel);
+   152		this->NoiseLevel = a.NoiseLevel + b.NoiseLevel;
+   153	
+   154		this->NoiseFactor = a.NoiseFactor * b.NoiseFactor;
+   155	}
+   156	
+   157	int Ciphertext::normalyzeIndex(int index) const {
+   158		index = index % slots;
+   159		if (index < 0)
+   160			index += slots;
+   161		if (index > slots / 2)
+   162			index += cc.N / 2 - slots;
+   163		return index;
+   164	}
+   165	
+   166	void Ciphertext::add(const Ciphertext& b) {
+   167		CudaNvtxRange r(std::string{ sc::current().function_name() }.substr());
+   168		CKKS::SetCurrentContext(cc_);
+   169		assert(keyID == b.keyID);
+   170		if (cc.rescaleTechnique == FIXEDAUTO || cc.rescaleTechnique == FLEXIBLEAUTO || cc.rescaleTechnique == FLEXIBLEAUTOEXT) {
+   171			if (!adjustForAddOrSub(b)) {
+   172				Ciphertext b_(cc_);
+   173				b_.copy(b);
+   174				if (b_.adjustForAddOrSub(*this))
+   175					add(b_);
+   176				else
+   177					assert(false);
+   178				return;
+   179			}
+   180		}
+   181	
+   182		if (cc.rescaleTechnique == FLEXIBLEAUTO || cc.rescaleTechnique == FLEXIBLEAUTOEXT) {
+   183			assert(this->getLevel() == b.getLevel());
+   184		} else if (getLevel() > b.getLevel()) {
+   185			c0.dropToLevel(b.getLevel());
+   186			c1.dropToLevel(b.getLevel());
+   187		}
+   188		op_count[OPS::ADD]++;
+   189	
+   190		c0.add(b.c0);
+   191		c1.add(b.c1);
+   192	
+   193		this->addMetadata(*this, b);
+   194	}
+   195	
+   196	void Ciphertext::sub(const Ciphertext& b) {
+   197		CudaNvtxRange r(std::string{ sc::current().function_name() }.substr());
+   198		CKKS::SetCurrentContext(cc_);
+   199		assert(keyID == b.keyID);
+   200		if (cc.rescaleTechnique == FIXEDAUTO || cc.rescaleTechnique == FLEXIBLEAUTO || cc.rescaleTechnique == FLEXIBLEAUTOEXT) {
+   201			if (!adjustForAddOrSub(b)) {
+   202				Ciphertext b_(cc_);
+   203				b_.copy(b);
+   204				if (b_.adjustForAddOrSub(*this))
+   205					sub(b_);
+   206				else
+   207					assert(false);
+   208				return;
+   209			}
+   210		}
+   211	
+   212		if (cc.rescaleTechnique == FLEXIBLEAUTO || cc.rescaleTechnique == FLEXIBLEAUTOEXT) {
+   213			assert(this->getLevel() == b.getLevel());
+   214		} else if (getLevel() > b.getLevel()) {
+   215			c0.dropToLevel(b.getLevel());
+   216			c1.dropToLevel(b.getLevel());
+   217		}
+   218		op_count[OPS::ADD]++;
+   219	
+   220		c0.sub(b.c0);
+   221		c1.sub(b.c1);
+   222	
+   223		this->addMetadata(*this, b);
+   224	}
+   225	
+   226	void Ciphertext::addPt(const Plaintext& b) {
+   227		CudaNvtxRange r(std::string{ sc::current().function_name() }.substr());
+   228		CKKS::SetCurrentContext(cc_);
+   229		if (cc.rescaleTechnique == FLEXIBLEAUTO || cc.rescaleTechnique == FLEXIBLEAUTOEXT || cc.rescaleTechnique == FIXEDAUTO) {
+   230			if (b.NoiseLevel == 1 && NoiseLevel == 2 && b.c0.getLevel() == getLevel() - 1) {
+   231				this->rescale();
+   232			}
+   233	
+   234			if (b.c0.getLevel() != this->getLevel()) {
+   235				Plaintext b_(cc_);
+   236				if (!b_.adjustPlaintextToCiphertext(b, *this)) {
+   237					assert(false);
+   238				} else {
+   239					addPt(b_);
+   240				}
+   241				return;
+   242			}
+   243		}
+   244		assert(NoiseLevel == b.NoiseLevel);
+   245		op_count[OPS::ADDPT]++;
+   246	
+   247		c0.add(b.c0);
+   248	
+   249		this->addMetadata(*this, b);
+   250	}
+   251	
+   252	void Ciphertext::subPt(const Plaintext& b) {
+   253		CudaNvtxRange r(std::string{ sc::current().function_name() }.substr());
+   254		CKKS::SetCurrentContext(cc_);
+   255		if (cc.rescaleTechnique == FLEXIBLEAUTO || cc.rescaleTechnique == FLEXIBLEAUTOEXT || cc.rescaleTechnique == FIXEDAUTO) {
+   256			if (b.NoiseLevel == 1 && NoiseLevel == 2 && b.c0.getLevel() == getLevel() - 1) {
+   257				this->rescale();
+   258			}
+   259	
+   260			if (b.c0.getLevel() != this->getLevel()) {
+
+---- /root/fideslib/src/CKKS/Ciphertext.cpp around OpenFHE/GetElements/CopyDeviceCiphertext ----
+1774:std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+
+============================================================
+5) Full grep around CopyDeviceCiphertext / OpenFHE conversion
+============================================================
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:49:                                                               lbcrypto::Ciphertext<DCRTPoly> ct, int REV) {
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:52:    result.numRes = ct->GetElements()[0].GetAllElements().size();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:53:    result.N = ((ct->GetElements()[0].GetAllElements())[0].GetValues() /*.m_values*/).GetLength();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:54:    result.sub_0 = GetRawArray(ct->GetElements()[0].GetAllElements());
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:55:    result.sub_1 = GetRawArray(ct->GetElements()[1].GetAllElements());
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:66:    result.moduli = GetModuli(ct->GetElements()[0].GetAllElements());
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:67:    result.format = ct->GetElements()[0].GetFormat();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:79:void FIDESlib::CKKS::GetOpenFHECipherText(lbcrypto::Ciphertext<DCRTPoly> result, RawCipherText raw, int REV) {
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:81:    int size = result->GetElements()[0].GetAllElements().size();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:87:    assert(result->GetElements()[0].GetAllElements().size() >= raw.numRes);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:96:    DCRTPoly sub_0 = result->GetElements().at(0);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:97:    DCRTPoly sub_1 = result->GetElements().at(1);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:100:    result->SetLevel(result->GetLevel() + result->GetElements().at(0).GetNumOfElements() - raw.numRes);
+/root/fideslib/src/CKKS/Ciphertext.cpp:1774:std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/src/CKKS/Bootstrap.cu:356:        uint32_t numTowers = 2;                           // ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/src/CKKS/Bootstrap.cu:432:        uint32_t numTowers = ctxt.getLevel() + 1;  // ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/src/CKKS/Bootstrap.cu:587:    // auto ctxtDCRT = raised->GetElements();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:49:                                                               lbcrypto::Ciphertext<DCRTPoly> ct, int REV) {
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:52:    result.numRes = ct->GetElements()[0].GetAllElements().size();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:53:    result.N = ((ct->GetElements()[0].GetAllElements())[0].GetValues() /*.m_values*/).GetLength();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:54:    result.sub_0 = GetRawArray(ct->GetElements()[0].GetAllElements());
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:55:    result.sub_1 = GetRawArray(ct->GetElements()[1].GetAllElements());
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:66:    result.moduli = GetModuli(ct->GetElements()[0].GetAllElements());
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:67:    result.format = ct->GetElements()[0].GetFormat();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:79:void FIDESlib::CKKS::GetOpenFHECipherText(lbcrypto::Ciphertext<DCRTPoly> result, RawCipherText raw, int REV) {
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:81:    int size = result->GetElements()[0].GetAllElements().size();
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:87:    assert(result->GetElements()[0].GetAllElements().size() >= raw.numRes);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:96:    DCRTPoly sub_0 = result->GetElements().at(0);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:97:    DCRTPoly sub_1 = result->GetElements().at(1);
+/root/fideslib/src/CKKS/openfhe-interface/RawCiphertext.cu:100:    result->SetLevel(result->GetLevel() + result->GetElements().at(0).GetNumOfElements() - raw.numRes);
+/root/fideslib/src/CKKS/Ciphertext.cpp:1774:std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/src/CKKS/Bootstrap.cu:356:        uint32_t numTowers = 2;                           // ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/src/CKKS/Bootstrap.cu:432:        uint32_t numTowers = ctxt.getLevel() + 1;  // ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/src/CKKS/Bootstrap.cu:587:    // auto ctxtDCRT = raised->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestInteractiveBootstrap.cpp:229:            c1->GetElements().erase(c1->GetElements().begin());
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestInteractiveBootstrap.cpp:337:            c1->GetElements().erase(c1->GetElements().begin());
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestInteractiveBootstrap.cpp:444:            auto cPolyRNS = outCtxt->GetElements()[0];
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestInteractiveBootstrap.cpp:447:            auto c = inCtxt->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestInteractiveBootstrap.cpp:496:            inCtxt2->SetElements({inCtxt2->GetElements()[1]});
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestInteractiveBootstrap.cpp:586:            ciphertext2->SetElements({ciphertext2->GetElements()[1]});
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestCKKSrnsCompositeScaling.cpp:1226:            size_t towersLeft = ctCompressed->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestBootstrap.cpp:514:            auto firstCurrent = ciphertext->GetElements()[0];
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestBootstrap.cpp:517:            auto elements     = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestBootstrap.cpp:528:            firstCurrent = ciphertext->GetElements()[0];
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestBootstrap.cpp:537:            elements     = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestBootstrap.cpp:651:            auto initNumTowers          = ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestBootstrap.cpp:652:            auto bootstrappingNumTowers = ciphertextAfter->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestBootstrap.cpp:663:            auto bootstrappingNumTowersTwoIterations = ciphertextTwoIterations->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestCKKSrns.cpp:1424:            size_t towersLeft = ctCompressed->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestCKKSrnsCompositeScalingBootstrap.cpp:342:            auto firstCurrent = ciphertext->GetElements()[0];
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestCKKSrnsCompositeScalingBootstrap.cpp:345:            auto elements     = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestCKKSrnsCompositeScalingBootstrap.cpp:356:            firstCurrent = ciphertext->GetElements()[0];
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestCKKSrnsCompositeScalingBootstrap.cpp:365:            elements     = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestCKKSrnsCompositeScalingBootstrap.cpp:476:            auto initNumTowers          = ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestCKKSrnsCompositeScalingBootstrap.cpp:477:            auto bootstrappingNumTowers = ciphertextAfter->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utckksrns/UnitTestCKKSrnsCompositeScalingBootstrap.cpp:488:            auto bootstrappingNumTowersTwoIterations = ciphertextTwoIterations->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/unittest/utbgvrns/UnitTestBGVrns.cpp:896:            size_t towersLeft = ctCompressed->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/examples/interactive-bootstrapping.cpp:123:    ciphertext2->SetElements({ciphertext2->GetElements()[1]});
+/root/fideslib/deps/openfhe-src/src/pke/examples/interactive-bootstrapping.cpp:272:    ciphertext2->SetElements({ciphertext2->GetElements()[1]});
+/root/fideslib/deps/openfhe-src/src/pke/examples/tckks-interactive-mp-bootstrapping-Chebyshev.cpp:278:    c1->GetElements().erase(c1->GetElements().begin());
+/root/fideslib/deps/openfhe-src/src/pke/examples/tckks-interactive-mp-bootstrapping.cpp:241:    c1->GetElements().erase(c1->GetElements().begin());
+/root/fideslib/deps/openfhe-src/src/pke/extras/bfv-mult-bug.cpp:115:    const std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/extras/ckks-bootstrap.cpp:206:        std::cerr << "\nNumber of levels before bootstrapping: " << ciphertext->GetElements()[0].GetNumOfElements() - 1
+/root/fideslib/deps/openfhe-src/src/pke/extras/ckks-bootstrap.cpp:214:                  << depth - ciphertextAfter->GetElements()[0].GetNumOfElements() + ciphertextAfter->GetNoiseScaleDeg()
+/root/fideslib/deps/openfhe-src/src/pke/extras/ckks-bootstrap.cpp:217:                  << ciphertextAfter->GetElements()[0].GetNumOfElements() - ciphertextAfter->GetNoiseScaleDeg()
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext-ser.h:42:extern template class lbcrypto::CiphertextImpl<lbcrypto::Poly>;
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext-ser.h:43:extern template class lbcrypto::CiphertextImpl<lbcrypto::NativePoly>;
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext-ser.h:44:extern template class lbcrypto::CiphertextImpl<lbcrypto::DCRTPoly>;
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext-ser.h:46:CEREAL_CLASS_VERSION(lbcrypto::CiphertextImpl<lbcrypto::Poly>,
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext-ser.h:47:                     lbcrypto::CiphertextImpl<lbcrypto::Poly>::SerializedVersion());
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext-ser.h:48:CEREAL_CLASS_VERSION(lbcrypto::CiphertextImpl<lbcrypto::NativePoly>,
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext-ser.h:49:                     lbcrypto::CiphertextImpl<lbcrypto::NativePoly>::SerializedVersion());
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext-ser.h:50:CEREAL_CLASS_VERSION(lbcrypto::CiphertextImpl<lbcrypto::DCRTPoly>,
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext-ser.h:51:                     lbcrypto::CiphertextImpl<lbcrypto::DCRTPoly>::SerializedVersion());
+/root/fideslib/deps/openfhe-src/src/pke/include/schemebase/base-scheme.h:248:        return m_PKE->DecryptCore(ciphertext->GetElements(), privateKey);
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext.h:171:    const std::vector<Element>& GetElements() const {
+/root/fideslib/deps/openfhe-src/src/pke/include/ciphertext.h:179:    std::vector<Element>& GetElements() {
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1449:        auto& cv1  = ctxt1->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1450:        auto& cv2  = ctxt2->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1987:        auto& cv1 = ctxt1->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:1988:        auto& cv2 = ctxt2->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/include/cryptocontext.h:2087:        auto& cv    = result->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:455:        ciphertext->GetEncodingType(), ciphertext->GetElements()[0].GetParams(), this->GetEncodingParams(),
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:585:        ciphertext->GetEncodingType(), ciphertext->GetElements()[0].GetParams(), this->GetEncodingParams(),
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:591:        (ciphertext->GetElements()[0].GetParams()->GetParams().size() > 1))  // more than one tower in DCRTPoly
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:639:        partialCiphertextVec[0]->GetEncodingType(), partialCiphertextVec[0]->GetElements()[0].GetParams(),
+/root/fideslib/deps/openfhe-src/src/pke/lib/cryptocontext.cpp:643:        (partialCiphertextVec[0]->GetElements()[0].GetParams()->GetParams().size() > 1))
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-pre.cpp:55:    std::vector<Element>& cv   = result->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:59:    for (auto& c : ciphertext->GetElements())
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:91:    auto& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:125:    auto& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:177:    for (auto& c : ciphertext->GetElements())
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:187:    auto& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:206:    auto& cv = ciphertext1->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:224:    auto& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:243:    auto& cv = csquare->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:261:    auto& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:278:    auto& cv = csquare->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:297:    auto& cv = ciphertext1->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:329:    auto& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:409:    uint32_t N = ciphertext->GetElements()[0].GetRingDimension();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:425:    auto& rcv = result->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:434:    const auto& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:460:    const auto& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:539:    uint32_t numTowers1 = ciphertext1->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:540:    uint32_t numTowers2 = ciphertext2->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:551:    uint32_t numTowersCtxt = ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:573:    auto& cv1 = ciphertext1->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:574:    auto& cv2 = ciphertext2->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:600:    auto& cv1 = ciphertext1->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:601:    auto& cv2 = ciphertext2->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:619:    auto& cv1 = ctxt1->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:620:    auto& cv2 = ctxt2->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:660:    const auto& cv = ctxt->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:723:    ciphertext->GetElements()[0] += pt;
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:737:    ciphertext->GetElements()[0] -= pt;
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-leveledshe.cpp:751:    for (auto& c : ciphertext->GetElements())
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-multiparty.cpp:232:    const std::vector<Element>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-multiparty.cpp:256:    const std::vector<Element>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-multiparty.cpp:276:    const std::vector<Element>& cv0 = ciphertextVec[0]->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemebase/base-multiparty.cpp:280:        const std::vector<Element>& cvi = ciphertextVec[i]->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-pke.cpp:73:    const std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-pke.cpp:94:    const std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:94:        EvalAddCoreInPlace(ciphertext, ctmorphed->GetElements()[0]);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:101:    return EvalAddCore(ciphertext, ctmorphed->GetElements()[0]);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:107:    EvalAddCoreInPlace(ciphertext, ctmorphed->GetElements()[0]);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:162:        EvalSubCoreInPlace(ciphertext, ctmorphed->GetElements()[0]);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:169:    return EvalSubCore(ciphertext, ctmorphed->GetElements()[0]);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:175:    EvalSubCoreInPlace(ciphertext, ctmorphed->GetElements()[0]);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:240:        EvalMultCoreInPlace(ciphertext, ctmorphed->GetElements()[0]);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:248:    auto result = EvalMultCore(ciphertext, ctmorphed->GetElements()[0]);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:265:    EvalMultCoreInPlace(ciphertext, ctmorphed->GetElements()[0]);
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:284:    auto& cv          = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:370:    size_t sizeQl = result->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:394:    auto sizeQl1 = ciphertext1->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:395:    auto sizeQl2 = ciphertext2->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:425:            ptxt      = ciphertext1->GetElements()[0];
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:428:            sizeQl    = ciphertext2->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:431:                moduli[i] = ciphertext2->GetElements()[0].GetElementAtIndex(i).GetModulus();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:436:            ptxt      = ciphertext2->GetElements()[0];
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:439:            sizeQl    = ciphertext1->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-leveledshe.cpp:442:                moduli[i] = ciphertext1->GetElements()[0].GetElementAtIndex(i).GetModulus();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:49:    const std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:116:    const std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:382:    std::vector<DCRTPoly> c = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:407:    if (ctxt->GetElements().empty()) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:418:    DCRTPoly ptxt = ctxt->GetElements()[0];
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:485:    if (ciphertext1->GetElements().empty()) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:488:    if (ciphertext2->GetElements().empty()) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:492:    auto elements1 = ciphertext1->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemerns/rns-multiparty.cpp:493:    auto elements2 = ciphertext2->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemelet/rlwe-mp.cpp:280:    auto b = ctxt->GetElements()[0];
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemelet/rlwe-mp.cpp:284:    auto a = ctxt->GetElements()[1];
+/root/fideslib/deps/openfhe-src/src/pke/lib/schemelet/rlwe-mp.cpp:288:    BigInteger QPrime = ctxt->GetElements()[0].GetModulus();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:270:    auto initSizeQ = ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:281:        ctScaledUp->SetLevel(L0 - ctScaledUp->GetElements()[0].GetNumOfElements());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:293:        auto bootstrappingSizeQ       = ctBootstrappedScaledDown->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:299:        for (auto& cv : ctBootstrappedScaledDown->GetElements()) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:302:        ctBootstrappedScaledDown->SetLevel(L0 - ctBootstrappedScaledDown->GetElements()[0].GetNumOfElements());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:384:    auto ctxtDCRT = raised->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:401:              << raised->GetElements()[0].GetNumOfElements() - 1 << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:646:    auto bootstrappingNumTowers = ctxtDec->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:680:    auto initSizeQ = ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:691:        ctScaledUp->SetLevel(L0 - ctScaledUp->GetElements()[0].GetNumOfElements());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:703:        auto bootstrappingSizeQ       = ctBootstrappedScaledDown->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:709:        for (auto& cv : ctBootstrappedScaledDown->GetElements()) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:712:        ctBootstrappedScaledDown->SetLevel(L0 - ctBootstrappedScaledDown->GetElements()[0].GetNumOfElements());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:794:    auto ctxtDCRT = raised->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:811:              << raised->GetElements()[0].GetNumOfElements() - 1 << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:916:    auto initSizeQ = ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:927:        ctScaledUp->SetLevel(L0 - ctScaledUp->GetElements()[0].GetNumOfElements());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:939:        auto bootstrappingSizeQ       = ctBootstrappedScaledDown->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:945:        for (auto& cv : ctBootstrappedScaledDown->GetElements()) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:948:        ctBootstrappedScaledDown->SetLevel(L0 - ctBootstrappedScaledDown->GetElements()[0].GetNumOfElements());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1030:    auto ctxtDCRT = raised->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1047:              << raised->GetElements()[0].GetNumOfElements() - 1 << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1291:    auto bootstrappingNumTowers = ctxtDec->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1479:    auto initSizeQ           = ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1490:        ctScaledUp->SetLevel(L0 - ctScaledUp->GetElements()[0].GetNumOfElements());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1502:        auto bootstrappingSizeQ       = ctBootstrappedScaledDown->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1511:            for (auto& cv : ctBootstrappedScaledDown->GetElements())
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1513:            ctBootstrappedScaledDown->SetLevel(L0 - ctBootstrappedScaledDown->GetElements()[0].GetNumOfElements());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1584:        auto& ctxtDCRT = raised->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1596:            auto& ctxtDCRT = raised->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1611:            auto& ctxtDCRT = raised->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1625:              << raised->GetElements()[0].GetNumOfElements() - 1 << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:1856:    if (ctxtDec->GetElements()[0].GetNumOfElements() <= initSizeQ)
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2595:            auto elements = inner->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2606:            first += inner->GetElements()[0].AutomorphismTransform(autoIndex, map);
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2613:    result->GetElements()[0] += first;
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2706:                auto elements = inner->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2718:                    first += inner->GetElements()[0].AutomorphismTransform(autoIndex, map);
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2724:                    auto elements = inner->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2732:        result->GetElements()[0] += first;
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2764:                auto elements = inner->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2776:                    first += inner->GetElements()[0].AutomorphismTransform(autoIndex, map);
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2782:                    auto elements = inner->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2790:        result->GetElements()[0] += first;
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2879:                auto elements = inner->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2891:                    first += inner->GetElements()[0].AutomorphismTransform(autoIndex, map);
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2897:                    auto elements = inner->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2905:        result->GetElements()[0] += first;
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2937:                auto elements = inner->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2949:                    first += inner->GetElements()[0].AutomorphismTransform(autoIndex, map);
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2955:                    auto elements = inner->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:2963:        result->GetElements()[0] += first;
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:3008:        uint32_t numTowers = ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:3509:    for (auto& c : result->GetElements())
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:3517:    auto& cv1  = ciphertext1->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:3518:    auto& cv2  = ciphertext2->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:3546:    uint32_t N = ciphertext->GetElements()[0].GetRingDimension();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:3555:    auto& rcv = result->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:3845:        auto& ctxtDCRT = raised->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:3860:        auto& ctxtDCRT = raised->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:3873:              << raised->GetElements()[0].GetNumOfElements() - 1 << std::endl;
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp:4417:    auto& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-schemeswitching.cpp:479:    std::vector<DCRTPoly>& cv   = result->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-schemeswitching.cpp:493:    std::vector<DCRTPoly>& cv1       = ciphertext1->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-schemeswitching.cpp:494:    const std::vector<DCRTPoly>& cv2 = ciphertext2->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-schemeswitching.cpp:531:    const std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-schemeswitching.cpp:543:    std::vector<DCRTPoly>& rcv = result->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-schemeswitching.cpp:640:    if (ctxt->GetElements()[0].GetRingDimension() != ctxtKS->GetElements()[0].GetRingDimension()) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-schemeswitching.cpp:644:    const std::vector<DCRTPoly>& cv = ctxt->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-schemeswitching.cpp:646:    if (cv[0].GetNumOfElements() != 1 || ctxtKS->GetElements()[0].GetNumOfElements() != 1) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-schemeswitching.cpp:650:    const auto& paramsQlP = ctxtKS->GetElements()[0].GetParams();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-schemeswitching.cpp:749:    auto originalA{(ct->GetElements()[1]).GetElementAtIndex(0)};
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-schemeswitching.cpp:752:    auto originalB{(ct->GetElements()[0]).GetElementAtIndex(0)};
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-schemeswitching.cpp:1008:            auto elements = inner->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-schemeswitching.cpp:1019:            DCRTPoly firstCurrent = inner->GetElements()[0].AutomorphismTransform(autoIndex, map);
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-schemeswitching.cpp:1028:    auto elements = result->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-schemeswitching.cpp:1114:            auto elements = inner->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-schemeswitching.cpp:1125:            DCRTPoly firstCurrent = inner->GetElements()[0].AutomorphismTransform(autoIndex, map);
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-schemeswitching.cpp:1133:    auto elements = result->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-schemeswitching.cpp:1169:        uint32_t numTowers = ctxtToDecode->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-advancedshe.cpp:987:        // su = cc->LevelReduce(su, nullptr, su->GetElements()[0].GetNumOfElements() - Lm + 1) ;
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-leveledshe.cpp:61:    auto& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-leveledshe.cpp:73:    auto& cv       = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-leveledshe.cpp:108:    auto& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-leveledshe.cpp:165:    auto& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-leveledshe.cpp:192:    for (auto& element : ciphertext->GetElements())
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-leveledshe.cpp:213:    const std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-leveledshe.cpp:263:    const std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-leveledshe.cpp:423:    const std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-leveledshe.cpp:448:    const std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-leveledshe.cpp:563:    const std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-leveledshe.cpp:574:        auto cMult           = ciphertext->GetElements()[0].TimesNoCheck(cryptoParams->GetPModq());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-leveledshe.cpp:593:    const std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-leveledshe.cpp:606:    std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-leveledshe.cpp:619:    auto sizeQl1             = ciphertext1->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-leveledshe.cpp:620:    auto sizeQl2             = ciphertext2->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-leveledshe.cpp:771:    auto& cv     = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-leveledshe.cpp:789:    auto& cv       = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:47:    const std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:73:    const std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-multiparty.cpp:69:    const std::vector<DCRTPoly>& cv0 = ciphertextVec[0]->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-multiparty.cpp:73:        const std::vector<DCRTPoly>& cvi = ciphertextVec[i]->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-multiparty.cpp:98:    const std::vector<DCRTPoly>& cv0 = ciphertextVec[0]->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-multiparty.cpp:102:        const std::vector<DCRTPoly>& cvi = ciphertextVec[i]->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-multiparty.cpp:134:        std::ceil(std::log2(ciphertext->GetElements()[0].GetAllElements()[0].GetParams()->GetModulus().ConvertToInt()));
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-multiparty.cpp:137:    if (ciphertext->GetElements()[0].GetNumOfElements() < numTowersToKeep) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-multiparty.cpp:148:        uint32_t numTowers = ciphertextAdjusted->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-multiparty.cpp:333:    DCRTPoly reEncryptionShare = ComputeNoisyMult(cc, negsk, a->GetElements()[0], false);
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-multiparty.cpp:339:    PrecomputeRNSExtensionTables(cc, compressionLevel, a->GetElements()[0].GetAllElements().size(),
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-multiparty.cpp:365:    auto& c1    = ciphertext->GetElements()[0];      // input ctxt must only include one element which is c1
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-multiparty.cpp:399:        result[0]->GetElements()[0] = result[0]->GetElements()[0] + sharesPairVec[i][0]->GetElements()[0];
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-multiparty.cpp:401:        result[1]->GetElements()[0] = result[1]->GetElements()[0] + sharesPairVec[i][1]->GetElements()[0];
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-multiparty.cpp:418:    DCRTPoly c0Prime = ciphertext->GetElements()[0] + sharesPair[0]->GetElements()[0];
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-multiparty.cpp:422:    PrecomputeRNSExtensionTables(cc, c0Prime.GetAllElements().size(), a->GetElements()[0].GetAllElements().size(),
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-multiparty.cpp:430:    c0Prime = c0Prime + sharesPair[1]->GetElements()[0];
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-multiparty.cpp:434:    outCtxt->SetElements({std::move(c0Prime), std::move(a->GetElements()[0])});
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-multiparty.cpp:453:    if (ciphertext->GetElements().empty()) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-multiparty.cpp:464:        if (ciphertext->GetElements()[0].GetNumOfElements() < 3) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-multiparty.cpp:473:        uint32_t numTowers = ciphertextAdjusted->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-multiparty.cpp:488:        if (ciphertext->GetElements()[0].GetNumOfElements() < 2) {
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bfvrns/bfvrns-leveledshe.cpp:72:    ciphertext->GetElements()[0] += pt;
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bfvrns/bfvrns-leveledshe.cpp:93:    ciphertext->GetElements()[0] -= pt;
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bfvrns/bfvrns-leveledshe.cpp:206:    std::vector<DCRTPoly> cv1 = ciphertext1->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bfvrns/bfvrns-leveledshe.cpp:207:    std::vector<DCRTPoly> cv2 = ciphertext2->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bfvrns/bfvrns-leveledshe.cpp:445:    std::vector<DCRTPoly> cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bfvrns/bfvrns-leveledshe.cpp:762:    for (auto& cvi : ciphertext->GetElements())
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bfvrns/bfvrns-leveledshe.cpp:770:    uint32_t N = ciphertext->GetElements()[0].GetRingDimension();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bfvrns/bfvrns-leveledshe.cpp:776:    auto& rcv = result->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bfvrns/bfvrns-leveledshe.cpp:787:    size_t sizeQ             = ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bfvrns/bfvrns-leveledshe.cpp:796:        return algo->EvalKeySwitchPrecomputeCore(ciphertext->GetElements()[1], ciphertext->GetCryptoParameters());
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bfvrns/bfvrns-leveledshe.cpp:799:        DCRTPoly c1     = ciphertext->GetElements()[1];
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bfvrns/bfvrns-leveledshe.cpp:835:    const std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bfvrns/bfvrns-leveledshe.cpp:853:    size_t sizeQ             = ciphertext->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bfvrns/bfvrns-leveledshe.cpp:893:    std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bfvrns/bfvrns-leveledshe.cpp:956:    std::vector<DCRTPoly>& cv = result->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bfvrns/bfvrns-multiparty.cpp:144:    const std::vector<DCRTPoly>& cv0 = ciphertextVec[0]->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bfvrns/bfvrns-multiparty.cpp:148:        const std::vector<DCRTPoly>& cvi = ciphertextVec[i]->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bfvrns/bfvrns-pke.cpp:219:    const std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bgvrns/bgvrns-pke.cpp:47:    const std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bgvrns/bgvrns-leveledshe.cpp:49:    auto& cv      = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bgvrns/bgvrns-leveledshe.cpp:78:    for (auto& e : ciphertext->GetElements())
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bgvrns/bgvrns-leveledshe.cpp:93:    auto sizeQl1     = ciphertext1->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bgvrns/bgvrns-leveledshe.cpp:94:    auto sizeQl2     = ciphertext2->GetElements()[0].GetNumOfElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bgvrns/bgvrns-leveledshe.cpp:238:    auto& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bgvrns/bgvrns-multiparty.cpp:67:    const std::vector<DCRTPoly>& cv0 = ciphertextVec[0]->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bgvrns/bgvrns-multiparty.cpp:70:        const std::vector<DCRTPoly>& cvi = ciphertextVec[i]->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bgvrns/bgvrns-multiparty.cpp:104:    const std::vector<DCRTPoly>& cv0 = ciphertextVec[0]->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/bgvrns/bgvrns-multiparty.cpp:108:        const std::vector<DCRTPoly>& cvi = ciphertextVec[i]->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/keyswitch/keyswitch-hybrid.cpp:212:    std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/keyswitch/keyswitch-hybrid.cpp:232:    const std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/keyswitch/keyswitch-hybrid.cpp:260:    const auto paramsQlP = ciphertext->GetElements()[0].GetParams();
+/root/fideslib/deps/openfhe-src/src/pke/lib/keyswitch/keyswitch-hybrid.cpp:272:    auto cTilda = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/keyswitch/keyswitch-hybrid.cpp:296:    const std::vector<DCRTPoly>& cTilda = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/pke/lib/keyswitch/keyswitch-bv.cpp:280:    std::vector<DCRTPoly>& cv = ciphertext->GetElements();
+/root/fideslib/deps/openfhe-src/src/binfhe/include/rgsw-acckey.h:85:    const std::vector<std::vector<std::vector<RingGSWEvalKey>>>& GetElements() const {
+/root/fideslib/deps/openfhe-src/src/binfhe/include/rlwe-ciphertext.h:84:    const std::vector<NativePoly>& GetElements() const {
+/root/fideslib/deps/openfhe-src/src/binfhe/include/rlwe-ciphertext.h:88:    std::vector<NativePoly>& GetElements() {
+/root/fideslib/deps/openfhe-src/src/binfhe/include/rgsw-evalkey.h:85:    const std::vector<std::vector<NativePoly>>& GetElements() const {
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-dm.cpp:120:    std::vector<NativePoly> ct(acc->GetElements());
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-dm.cpp:136:    const std::vector<std::vector<NativePoly>>& ev = ek->GetElements();
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-dm.cpp:137:    acc->GetElements()[0]                          = (dct[0] * ev[0][0]);
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-dm.cpp:139:        acc->GetElements()[0] += (dct[l] * ev[l][0]);
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-dm.cpp:140:    acc->GetElements()[1] = (dct[0] *= ev[0][1]);
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-dm.cpp:142:        acc->GetElements()[1] += (dct[l] *= ev[l][1]);
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-cggi.cpp:104:    std::vector<NativePoly> ct(acc->GetElements());
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-cggi.cpp:132:    const std::vector<std::vector<NativePoly>>& ev1(ek1->GetElements());
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-cggi.cpp:136:    acc->GetElements()[0] += (tmp *= monomial);
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-cggi.cpp:140:    acc->GetElements()[1] += (tmp *= monomial);
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-cggi.cpp:142:    const std::vector<std::vector<NativePoly>>& ev2(ek2->GetElements());
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-cggi.cpp:146:    acc->GetElements()[0] += (tmp *= monomialNeg);
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-cggi.cpp:150:    acc->GetElements()[1] += (tmp *= monomialNeg);
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-lmkcdey.cpp:99:    acc->GetElements()[1] = (acc->GetElements()[1]).AutomorphismTransform(M - genInt);
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-lmkcdey.cpp:230:    std::vector<NativePoly> ct(acc->GetElements());
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-lmkcdey.cpp:247:    const std::vector<std::vector<NativePoly>>& ev = ek->GetElements();
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-lmkcdey.cpp:248:    acc->GetElements()[0]                          = (dct[0] * ev[0][0]);
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-lmkcdey.cpp:250:        acc->GetElements()[0] += (dct[d] * ev[d][0]);
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-lmkcdey.cpp:251:    acc->GetElements()[1] = (dct[0] *= ev[0][1]);
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-lmkcdey.cpp:253:        acc->GetElements()[1] += (dct[d] *= ev[d][1]);
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-lmkcdey.cpp:264:    acc->GetElements()[1] = acc->GetElements()[1].AutomorphismTransform(a.ConvertToInt<usint>(), vec);
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-lmkcdey.cpp:266:    NativePoly cta(acc->GetElements()[0]);
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-lmkcdey.cpp:267:    acc->GetElements()[0].SetValuesToZero();
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-lmkcdey.cpp:282:    const std::vector<std::vector<NativePoly>>& ev = ak->GetElements();
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-lmkcdey.cpp:284:        acc->GetElements()[0] += (dcta[d] * ev[d][0]);
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/rgsw-acc-lmkcdey.cpp:286:        acc->GetElements()[1] += (dcta[d] *= ev[d][1]);
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/binfhe-base-scheme.cpp:111:    auto accVec{BootstrapGateCore(params, gate, EK.BSkey, cct1)->GetElements()};
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/binfhe-base-scheme.cpp:160:        auto accVec{BootstrapGateCore(params, gate, EK.BSkey, ct)->GetElements()};
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/binfhe-base-scheme.cpp:205:    auto accVec{BootstrapGateCore(params, AND, EK.BSkey, cct)->GetElements()};
+/root/fideslib/deps/openfhe-src/src/binfhe/lib/binfhe-base-scheme.cpp:634:    auto accVec{BootstrapFuncCore(params, EK.BSkey, ct, f, fmod)->GetElements()};
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/ciphertext-ser.h:42:extern template class lbcrypto::CiphertextImpl<lbcrypto::Poly>;
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/ciphertext-ser.h:43:extern template class lbcrypto::CiphertextImpl<lbcrypto::NativePoly>;
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/ciphertext-ser.h:44:extern template class lbcrypto::CiphertextImpl<lbcrypto::DCRTPoly>;
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/ciphertext-ser.h:46:CEREAL_CLASS_VERSION(lbcrypto::CiphertextImpl<lbcrypto::Poly>,
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/ciphertext-ser.h:47:                     lbcrypto::CiphertextImpl<lbcrypto::Poly>::SerializedVersion());
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/ciphertext-ser.h:48:CEREAL_CLASS_VERSION(lbcrypto::CiphertextImpl<lbcrypto::NativePoly>,
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/ciphertext-ser.h:49:                     lbcrypto::CiphertextImpl<lbcrypto::NativePoly>::SerializedVersion());
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/ciphertext-ser.h:50:CEREAL_CLASS_VERSION(lbcrypto::CiphertextImpl<lbcrypto::DCRTPoly>,
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/ciphertext-ser.h:51:                     lbcrypto::CiphertextImpl<lbcrypto::DCRTPoly>::SerializedVersion());
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/schemebase/base-scheme.h:248:        return m_PKE->DecryptCore(ciphertext->GetElements(), privateKey);
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/ciphertext.h:171:    const std::vector<Element>& GetElements() const {
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/ciphertext.h:179:    std::vector<Element>& GetElements() {
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/cryptocontext.h:1449:        auto& cv1  = ctxt1->GetElements();
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/cryptocontext.h:1450:        auto& cv2  = ctxt2->GetElements();
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/cryptocontext.h:1987:        auto& cv1 = ctxt1->GetElements();
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/cryptocontext.h:1988:        auto& cv2 = ctxt2->GetElements();
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/cryptocontext.h:2087:        auto& cv    = result->GetElements();
+/root/fideslib/deps/openfhe-install/include/openfhe/binfhe/rgsw-acckey.h:85:    const std::vector<std::vector<std::vector<RingGSWEvalKey>>>& GetElements() const {
+/root/fideslib/deps/openfhe-install/include/openfhe/binfhe/rlwe-ciphertext.h:84:    const std::vector<NativePoly>& GetElements() const {
+/root/fideslib/deps/openfhe-install/include/openfhe/binfhe/rlwe-ciphertext.h:88:    std::vector<NativePoly>& GetElements() {
+/root/fideslib/deps/openfhe-install/include/openfhe/binfhe/rgsw-evalkey.h:85:    const std::vector<std::vector<NativePoly>>& GetElements() const {
+/root/fideslib/api/CryptoContext.hpp:222:	uint32_t CopyDeviceCiphertext(const CiphertextImpl<DCRTPoly>& ct);
+/root/fideslib/api/CryptoContext.hpp:236:	uint32_t RegisterDeviceCiphertext(std::shared_ptr<void>&& c);
+/root/fideslib/api/CryptoContext.hpp:238:	std::shared_ptr<void>& GetDeviceCiphertext(uint32_t handle);
+/root/fideslib/api/CryptoContext.hpp:240:	bool EvictDeviceCiphertext(uint32_t handle);
+/root/fideslib/api/Ciphertext.cpp:12:		this->parent_context->EvictDeviceCiphertext(this->gpu);
+/root/fideslib/api/Ciphertext.cpp:28:	auto const& other_cpu							  = std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(other.cpu);
+/root/fideslib/api/Ciphertext.cpp:29:	lbcrypto::Ciphertext<lbcrypto::DCRTPoly> cpu_copy = std::make_shared<lbcrypto::CiphertextImpl<lbcrypto::DCRTPoly>>(*other_cpu);
+/root/fideslib/api/Ciphertext.cpp:30:	this->cpu										  = std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(std::move(cpu_copy));
+/root/fideslib/api/Ciphertext.cpp:35:		this->gpu = other.parent_context->CopyDeviceCiphertext(other);
+/root/fideslib/api/Ciphertext.cpp:61:		auto& ct = std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(this->cpu);
+/root/fideslib/api/Ciphertext.cpp:66:	auto ct_gpu	  = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->parent_context->GetDeviceCiphertext(this->gpu));
+/root/fideslib/api/Ciphertext.cpp:75:		auto& ct = std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(this->cpu);
+/root/fideslib/api/Ciphertext.cpp:80:	auto ct_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->parent_context->GetDeviceCiphertext(this->gpu));
+/root/fideslib/api/Ciphertext.cpp:90:		auto& ct = std::any_cast<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(this->cpu);
+/root/fideslib/api/Ciphertext.cpp:95:	auto ct_gpu	  = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->parent_context->GetDeviceCiphertext(this->gpu));
+/root/fideslib/api/Ciphertext.cpp:103:		auto& ct = std::any_cast<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(this->cpu);
+/root/fideslib/api/Ciphertext.cpp:105:		size_t currentTowers = ct->GetElements()[0].GetNumOfElements();
+/root/fideslib/api/Ciphertext.cpp:115:			auto& elements = ct->GetElements();
+/root/fideslib/api/Ciphertext.cpp:127:	auto ct_gpu	  = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->parent_context->GetDeviceCiphertext(this->gpu));
+/root/fideslib/api/CryptoContext.cpp:258:	const auto& ctImpl								   = std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+/root/fideslib/api/CryptoContext.cpp:261:	uint32_t handle									   = this->RegisterDeviceCiphertext(std::move(gpu_ct));
+/root/fideslib/api/CryptoContext.cpp:526:	ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+/root/fideslib/api/CryptoContext.cpp:549:	ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+/root/fideslib/api/CryptoContext.cpp:571:	auto& ct_cpu  = std::any_cast<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+/root/fideslib/api/CryptoContext.cpp:575:		auto ct_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct->gpu));
+/root/fideslib/api/CryptoContext.cpp:580:		size_t cpu_levels = ct_cpu->GetElements()[0].GetAllElements().size();
+/root/fideslib/api/CryptoContext.cpp:635:		auto& ctImpl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+/root/fideslib/api/CryptoContext.cpp:638:		ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+/root/fideslib/api/CryptoContext.cpp:646:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:657:		auto& ctImpl  = std::any_cast<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+/root/fideslib/api/CryptoContext.cpp:665:	auto ct_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct->gpu));
+/root/fideslib/api/CryptoContext.cpp:675:		auto& ct1Impl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct1->cpu);
+/root/fideslib/api/CryptoContext.cpp:676:		auto& ct2Impl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct2->cpu);
+/root/fideslib/api/CryptoContext.cpp:679:		ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+/root/fideslib/api/CryptoContext.cpp:688:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:689:	auto ct2_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct2->gpu));
+/root/fideslib/api/CryptoContext.cpp:700:		auto& ctImpl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+/root/fideslib/api/CryptoContext.cpp:704:		ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+/root/fideslib/api/CryptoContext.cpp:713:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:729:		auto& ctImpl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+/root/fideslib/api/CryptoContext.cpp:732:		ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+/root/fideslib/api/CryptoContext.cpp:740:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:756:		auto& ct1Impl = std::any_cast<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct1->cpu);
+/root/fideslib/api/CryptoContext.cpp:757:		auto& ct2Impl = std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct2->cpu);
+/root/fideslib/api/CryptoContext.cpp:766:	auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+/root/fideslib/api/CryptoContext.cpp:767:	auto ct2_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct2->gpu));
+/root/fideslib/api/CryptoContext.cpp:777:		auto& ct1Impl = std::any_cast<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct1->cpu);
+/root/fideslib/api/CryptoContext.cpp:787:	auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+/root/fideslib/api/CryptoContext.cpp:802:		auto& ct1Impl = std::any_cast<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct1->cpu);
+/root/fideslib/api/CryptoContext.cpp:810:	auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+/root/fideslib/api/CryptoContext.cpp:843:		std::vector<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>> ctImpls;
+/root/fideslib/api/CryptoContext.cpp:846:			ctImpls.push_back(std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu));
+/root/fideslib/api/CryptoContext.cpp:850:		ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+/root/fideslib/api/CryptoContext.cpp:862:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:887:		std::vector<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>> ctImpls;
+/root/fideslib/api/CryptoContext.cpp:890:			ctImpls.push_back(std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu));
+/root/fideslib/api/CryptoContext.cpp:893:		ciphertexts[0]->cpu = std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ctImpls[0]);
+/root/fideslib/api/CryptoContext.cpp:922:		auto& ct1Impl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct1->cpu);
+/root/fideslib/api/CryptoContext.cpp:923:		auto& ct2Impl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct2->cpu);
+/root/fideslib/api/CryptoContext.cpp:926:		ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+/root/fideslib/api/CryptoContext.cpp:935:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:936:	auto ct2_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct2->gpu));
+/root/fideslib/api/CryptoContext.cpp:948:		auto& ctImpl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+/root/fideslib/api/CryptoContext.cpp:952:		ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+/root/fideslib/api/CryptoContext.cpp:961:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:974:		auto& ctImpl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+/root/fideslib/api/CryptoContext.cpp:978:		ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+/root/fideslib/api/CryptoContext.cpp:987:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1001:		auto& ctImpl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+/root/fideslib/api/CryptoContext.cpp:1004:		ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+/root/fideslib/api/CryptoContext.cpp:1012:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1024:		auto& ctImpl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+/root/fideslib/api/CryptoContext.cpp:1027:		ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+/root/fideslib/api/CryptoContext.cpp:1035:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1049:		auto& ct1Impl = std::any_cast<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct1->cpu);
+/root/fideslib/api/CryptoContext.cpp:1050:		auto& ct2Impl = std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct2->cpu);
+/root/fideslib/api/CryptoContext.cpp:1059:	auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+/root/fideslib/api/CryptoContext.cpp:1060:	auto ct2_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct2->gpu));
+/root/fideslib/api/CryptoContext.cpp:1070:		auto& ct1Impl = std::any_cast<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct1->cpu);
+/root/fideslib/api/CryptoContext.cpp:1078:	auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+/root/fideslib/api/CryptoContext.cpp:1088:		auto& ct1Impl = std::any_cast<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct1->cpu);
+/root/fideslib/api/CryptoContext.cpp:1096:	auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+/root/fideslib/api/CryptoContext.cpp:1124:		auto& ct1Impl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct1->cpu);
+/root/fideslib/api/CryptoContext.cpp:1125:		auto& ct2Impl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct2->cpu);
+/root/fideslib/api/CryptoContext.cpp:1128:		ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+/root/fideslib/api/CryptoContext.cpp:1137:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1138:	auto ct2_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct2->gpu));
+/root/fideslib/api/CryptoContext.cpp:1150:		auto& ct1Impl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct1->cpu);
+/root/fideslib/api/CryptoContext.cpp:1154:		ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+/root/fideslib/api/CryptoContext.cpp:1163:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1180:		auto& ct1Impl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct1->cpu);
+/root/fideslib/api/CryptoContext.cpp:1183:		ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+/root/fideslib/api/CryptoContext.cpp:1191:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1206:		auto& ct1Impl = std::any_cast<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct1->cpu);
+/root/fideslib/api/CryptoContext.cpp:1209:		ct1->cpu	  = std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(res);
+/root/fideslib/api/CryptoContext.cpp:1217:	auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+/root/fideslib/api/CryptoContext.cpp:1228:		auto& ct1Impl = std::any_cast<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct1->cpu);
+/root/fideslib/api/CryptoContext.cpp:1236:	auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+/root/fideslib/api/CryptoContext.cpp:1261:		auto& ct1Impl = std::any_cast<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct1->cpu);
+/root/fideslib/api/CryptoContext.cpp:1262:		auto& ct2Impl = std::any_cast<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct2->cpu);
+/root/fideslib/api/CryptoContext.cpp:1270:	auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+/root/fideslib/api/CryptoContext.cpp:1271:	auto ct2_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct2->gpu));
+/root/fideslib/api/CryptoContext.cpp:1280:		auto& ctImpl					= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+/root/fideslib/api/CryptoContext.cpp:1283:		ciphertext->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+/root/fideslib/api/CryptoContext.cpp:1291:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1303:		auto& ctImpl  = std::any_cast<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+/root/fideslib/api/CryptoContext.cpp:1311:	auto ct_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct->gpu));
+/root/fideslib/api/CryptoContext.cpp:1325:		auto& ctImpl				= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ciphertext->cpu);
+/root/fideslib/api/CryptoContext.cpp:1328:		result->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+/root/fideslib/api/CryptoContext.cpp:1336:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1347:		auto& ctImpl	= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ciphertext->cpu);
+/root/fideslib/api/CryptoContext.cpp:1349:		ciphertext->cpu = std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+/root/fideslib/api/CryptoContext.cpp:1356:	auto ct_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ciphertext->gpu));
+/root/fideslib/api/CryptoContext.cpp:1366:		auto& ctImpl  = std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+/root/fideslib/api/CryptoContext.cpp:1384:		auto& ctImpl  = std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+/root/fideslib/api/CryptoContext.cpp:1387:		result->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(context->EvalFastRotation(ctImpl, index, m, casted));
+/root/fideslib/api/CryptoContext.cpp:1396:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1397:	auto ct_gpu					= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct->gpu));
+/root/fideslib/api/CryptoContext.cpp:1409:		auto& ctImpl  = std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+/root/fideslib/api/CryptoContext.cpp:1412:		result->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(context->EvalFastRotationExt(ctImpl, index, casted, addFirst));
+/root/fideslib/api/CryptoContext.cpp:1421:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1422:	auto ct_gpu					= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct->gpu));
+/root/fideslib/api/CryptoContext.cpp:1436:		auto& ctImpl  = std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+/root/fideslib/api/CryptoContext.cpp:1441:			result->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(context->EvalFastRotation(ctImpl, index, m, casted));
+/root/fideslib/api/CryptoContext.cpp:1450:	auto ct_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct->gpu));
+/root/fideslib/api/CryptoContext.cpp:1460:			auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1478:		auto& ctImpl  = std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+/root/fideslib/api/CryptoContext.cpp:1483:			result->cpu = std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(context->EvalFastRotationExt(ctImpl, index, casted, addFirst));
+/root/fideslib/api/CryptoContext.cpp:1492:	auto ct_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct->gpu));
+/root/fideslib/api/CryptoContext.cpp:1501:			auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1517:		auto& ctImpl				= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+/root/fideslib/api/CryptoContext.cpp:1520:		result->cpu					= std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(ct);
+/root/fideslib/api/CryptoContext.cpp:1528:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1540:		auto& ctImpl  = std::any_cast<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ct->cpu);
+/root/fideslib/api/CryptoContext.cpp:1542:		ct->cpu		  = std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(res);
+/root/fideslib/api/CryptoContext.cpp:1549:	auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct->gpu));
+/root/fideslib/api/CryptoContext.cpp:1563:		auto& ctImpl				= std::any_cast<const lbcrypto::Ciphertext<lbcrypto::DCRTPoly>&>(ciphertext->cpu);
+
+============================================================
+6) Check build result
+============================================================
+-rwxr-xr-x 1 root root 77M Apr 28 06:12 /workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so

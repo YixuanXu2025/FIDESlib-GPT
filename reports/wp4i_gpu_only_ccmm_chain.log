@@ -1,0 +1,27 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+Traceback (most recent call last):
+  File "/workspace/FIDESlib-GPT/scripts/report_wp4i_gpu_only_ccmm_chain.py", line 168, in <module>
+    main()
+  File "/workspace/FIDESlib-GPT/scripts/report_wp4i_gpu_only_ccmm_chain.py", line 75, in main
+    ct = rt.component_linear_matmul_gpu_fused_raw(
+  File "/workspace/FIDESlib-GPT/python/hegpt/runtime.py", line 230, in component_linear_matmul_gpu_fused_raw
+    return self.require_context().component_linear_matmul_gpu_fused_raw(rows, U, copyback=copyback)
+  File "/workspace/FIDESlib-GPT/python/hegpt/runtime.py", line 107, in component_linear_matmul_gpu_fused_raw
+    return self._ctx.component_linear_matmul_gpu_fused_raw(rows, U2, bool(copyback))
+RuntimeError: bad any_cast
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

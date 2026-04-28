@@ -1,0 +1,27 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+Traceback (most recent call last):
+  File "/workspace/FIDESlib-GPT/scripts/report_wp4e2_component_linear_wsum_gpu_smoke.py", line 149, in <module>
+    main()
+  File "/workspace/FIDESlib-GPT/scripts/report_wp4e2_component_linear_wsum_gpu_smoke.py", line 87, in main
+    dec_gpu = np.array(rt.decrypt(ct_gpu, logical_length=slots), dtype=np.float64)
+  File "/workspace/FIDESlib-GPT/python/hegpt/runtime.py", line 193, in decrypt
+    return self.require_context().decrypt(ciphertext, logical_length=logical_length)
+  File "/workspace/FIDESlib-GPT/python/hegpt/runtime.py", line 78, in decrypt
+    return self._ctx.decrypt(ciphertext, int(logical_length))
+RuntimeError: /root/fideslib/deps/openfhe-src/src/pke/lib/encoding/ckkspackedencoding.cpp:l.453:Decode(): The decryption failed because the approximation error is too high. Check the parameters. 
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

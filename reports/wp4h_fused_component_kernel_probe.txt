@@ -1,0 +1,3494 @@
+====================================================================================================
+WP4-H fused raw component kernel probe
+Generated at: Tue Apr 28 07:46:04 UTC 2026
+====================================================================================================
+
+----------------------------------------------------------------------------------------------------
+1) RNSPoly class declaration
+----------------------------------------------------------------------------------------------------
+
+==== /root/fideslib/src/CKKS/RNSPoly.cuh ====
+     1	//
+     2	// Created by carlosad on 16/03/24.
+     3	//
+     4	
+     5	#ifndef FIDESLIB_CKKS_RNSPOLY_CUH
+     6	#define FIDESLIB_CKKS_RNSPOLY_CUH
+     7	
+     8	#include <vector>
+     9	#include "CKKS/LimbPartition.cuh"
+    10	#include "CudaUtils.cuh"
+    11	
+    12	namespace FIDESlib::CKKS {
+    13	class KeySwitchingKey;
+    14	
+    15	class RNSPoly {
+    16	    const uint64_t uid;
+    17	    ContextData& cc;
+    18	    int level;
+    19	    bool modUp = false;
+    20	
+    21	   public:
+    22	    std::vector<LimbPartition> GPU;
+    23	
+    24	    explicit RNSPoly(ContextData& context, int level = -1, bool single_malloc = false, bool def_stream = false);
+    25	    explicit RNSPoly(ContextData& context, const std::vector<std::vector<uint64_t>>& data);
+    26	    RNSPoly(RNSPoly&& src) noexcept;
+    27	
+    28	    void grow(int level, bool single_malloc = false, bool constant = false);
+    29	
+    30	    void load(const std::vector<std::vector<uint64_t>>& data, const std::vector<uint64_t>& moduli);
+    31	
+    32	    void store(std::vector<std::vector<uint64_t>>& data);
+    33	
+    34	    bool isModUp() const;
+    35	    void SetModUp(bool newValue);
+    36	
+    37	    void scaleByP();
+    38	
+    39	    int getLevel() const;
+    40	
+    41	    void add(const RNSPoly& p);
+    42	    void add(const RNSPoly& a, const RNSPoly& b);
+    43	
+    44	    void sub(const RNSPoly& p);
+    45	
+    46	    void multPt(const RNSPoly& p, bool rescale);
+    47	
+    48	    void modup();
+    49	
+    50	    template <ALGO algo = ALGO_SHOUP>
+    51	    void moddown(bool ntt = true, bool free = true, int aux_num = 0);
+    52	    int automorph_index_precomp(int idx) const;
+    53	
+    54	    void rescale();
+    55	
+    56	    void sync();
+    57	
+    58	    void freeSpecialLimbs();
+    59	
+    60	    template <ALGO algo = ALGO_SHOUP>
+    61	    void NTT(int batch, bool sync);
+    62	
+    63	    template <ALGO algo = ALGO_SHOUP>
+    64	    void INTT(int batch, bool sync);
+    65	
+    66	    // std::array<RNSPoly, 2> dotKSK(const KeySwitchingKey& ksk);
+    67	
+    68	    void generateSpecialLimbs(bool zero_out, bool for_communication);
+    69	
+    70	    void multElement(const RNSPoly& poly);
+    71	
+    72	    void generateDecompAndDigit(bool iskey);
+    73	
+    74	    void mult1AddMult23Add4(const RNSPoly& poly1, const RNSPoly& poly2, const RNSPoly& poly3, const RNSPoly& poly4);
+    75	
+    76	    void mult1Add2(const RNSPoly& poly1, const RNSPoly& poly2);
+    77	
+    78	    void loadDecompDigit(const std::vector<std::vector<std::vector<uint64_t>>>& data,
+    79	                         const std::vector<std::vector<uint64_t>>& moduli);
+    80	
+    81	    void dotKSKinto(RNSPoly& acc, const RNSPoly& ksk, const RNSPoly* limbsrc = nullptr);
+    82	
+    83	    void multElement(const RNSPoly& poly1, const RNSPoly& poly2);
+    84	
+    85	    void multModupDotKSK(RNSPoly& c1, const RNSPoly& c1tilde, RNSPoly& c0, const RNSPoly& c0tilde,
+    86	                         const KeySwitchingKey& key);
+    87	
+    88	    void automorph(const int idx, const int br = 1, RNSPoly* src = nullptr);
+    89	
+    90	    RNSPoly& dotKSKInPlace(const KeySwitchingKey& ksk, RNSPoly* limb_src);
+    91	
+    92	    void hoistedRotationFused(std::vector<int> indexes, std::vector<RNSPoly*>& c0, std::vector<RNSPoly*>& c1,
+    93	                              const std::vector<RNSPoly*>& ksk_a, const std::vector<RNSPoly*>& ksk_b,
+    94	                              const RNSPoly& src_c0, const RNSPoly& src_c1);
+    95	
+    96	    /** Change the polynomial level only superficially, be very careful as this should only be used for lower
+    97	     * level optimizations.
+    98	     */
+    99	    void setLevel(const int level);
+   100	    void modupInto(RNSPoly& poly);
+   101	    RNSPoly& dotKSKInPlaceFrom(RNSPoly& poly, const KeySwitchingKey& ksk, const RNSPoly* limbsrc = nullptr);
+   102	    void multScalar(std::vector<uint64_t>& vector1);
+   103	    void squareElement(const RNSPoly& poly);
+   104	    void binomialSquareFold(RNSPoly& c0_res, const RNSPoly& c2_key_switched_0, const RNSPoly& c2_key_switched_1);
+   105	    void addScalar(std::vector<uint64_t>& vector1);
+   106	    void subScalar(std::vector<uint64_t>& vector1);
+   107	    void copy(const RNSPoly& poly);
+   108	    void dropToLevel(int level);
+   109	    void addMult(const RNSPoly& poly, const RNSPoly& poly1);
+   110	    void broadcastLimb0();
+   111	    void evalLinearWSum(uint32_t i, std::vector<const RNSPoly*>& vector1, std::vector<uint64_t>& vector2);
+   112	    void loadConstant(const std::vector<std::vector<uint64_t>>& vector1, const std::vector<uint64_t>& vector2);
+   113	    void rotateModupDotKSK(RNSPoly& poly, RNSPoly& poly1, const KeySwitchingKey& key);
+   114	    void squareModupDotKSK(RNSPoly& c0, RNSPoly& c1, const KeySwitchingKey& key);
+   115	    void generatePartialSpecialLimbs();
+   116	    void dotKSKfused(RNSPoly& out2, const RNSPoly& digitSrc, const RNSPoly& ksk_a, const RNSPoly& ksk_b,
+   117	                     const RNSPoly* source);
+   118	    void dotProductPt(RNSPoly& c1, const std::vector<const RNSPoly*>& c0s, const std::vector<const RNSPoly*>& c1s,
+   119	                      const std::vector<const RNSPoly*>& pts, bool ext);
+   120	    void dotProduct(RNSPoly& c1, const RNSPoly& kskb, const RNSPoly& kska, const std::vector<const RNSPoly*>& c0in,
+   121	                    const std::vector<const RNSPoly*>& c1in, const std::vector<const RNSPoly*>& d0in,
+   122	                    const std::vector<const RNSPoly*>& d1in, bool ext_in, bool ext_out);
+   123	    void gatherAllLimbs();
+   124	    void generateGatherLimbs();
+   125	    void copyShallow(const RNSPoly& poly);
+   126	    RNSPoly& modup_ksk_moddown_mgpu(const KeySwitchingKey& key, bool moddown);
+   127	    void rescaleDouble(RNSPoly& poly);
+   128	
+   129	    void multNoModdownEnd(RNSPoly& c0, const RNSPoly& bc0, const RNSPoly& bc1, const RNSPoly& in, const RNSPoly& aux);
+   130	
+   131	    void binomialMult(RNSPoly& c1, RNSPoly& in, const RNSPoly& d0, const RNSPoly& d1, bool moddown, bool square);
+   132	
+   133	    static void multScalarBatchManyToOne(std::vector<RNSPoly*>& polya,
+   134	                                         const std::vector<std::vector<unsigned long int>>& vector,
+   135	                                         const std::vector<std::vector<unsigned long int>>& vectors, int stride,
+   136	                                         double usage);
+   137	    static void addScalarBatchManyToOne(std::vector<RNSPoly*>& polya,
+   138	                                        const std::vector<std::vector<unsigned long int>>& vector, int stride,
+   139	                                        double usage);
+   140	    static void multPtBatchManyToOne(std::vector<RNSPoly*>& polya, const std::vector<RNSPoly*>& polyb, int stride,
+   141	                                     double usage);
+   142	    static void addBatchManyToOne(std::vector<RNSPoly*>& polya, const std::vector<RNSPoly*>& polyb, int stride,
+   143	                                  double usage, bool sub, bool exta, bool extb);
+   144	
+   145	    static void LTdotProductPtBatch(std::vector<RNSPoly*>& out, const std::vector<RNSPoly*>& in,
+   146	                                    const std::vector<RNSPoly*>& pt, int bStep, int gStep, int stride, double usage,
+   147	                                    bool ext);
+   148	    static void fusedHoistedRotateBatch(std::vector<RNSPoly*>& out, const std::vector<RNSPoly*>& in,
+   149	                                        const std::vector<RNSPoly*>& ksk_a, const std::vector<RNSPoly*>& ksk_b,
+   150	                                        const std::vector<int>& indexes, int stride, double usage, bool c0_modup);
+   151	};
+   152	}  // namespace FIDESlib::CKKS
+   153	#endif  //FIDESLIB_CKKS_RNSPOLY_CUH
+
+----------------------------------------------------------------------------------------------------
+2) RNSPoly add/sub/evalLinearWSum exact implementation
+----------------------------------------------------------------------------------------------------
+
+==== /root/fideslib/src/CKKS/RNSPoly.cpp: add/sub/evalLinearWSum excerpts ====
+135-   135	    return modUp;
+136-   136	}
+137-   137	void RNSPoly::SetModUp(bool newValue) {
+138-   138	    modUp = newValue;
+139-   139	}
+140-   140	void RNSPoly::scaleByP() {
+141-   141	#pragma omp parallel for num_threads(cc.GPUid.size())
+142-   142	    for (size_t i = 0; i < cc.GPUid.size(); ++i) {
+143-   143	        assert(omp_get_num_threads() == (int)cc.GPUid.size());
+144-   144	        GPU.at(i).scaleByP();
+145-   145	    }
+146-   146	    this->SetModUp(true);
+147-   147	}
+148-   148	void RNSPoly::multNoModdownEnd(RNSPoly& c0, const RNSPoly& bc0, const RNSPoly& bc1, const RNSPoly& in,
+149-   149	                               const RNSPoly& aux) {
+150-   150	    assert(in.isModUp());
+151-   151	    assert(aux.isModUp());
+152-   152	#pragma omp parallel for num_threads(cc.GPUid.size())
+153-   153	    for (size_t i = 0; i < cc.GPUid.size(); ++i) {
+154-   154	        assert(omp_get_num_threads() == (int)cc.GPUid.size());
+155-   155	        GPU.at(i).multNoModdownEnd(c0.GPU.at(i), bc0.GPU.at(i), bc1.GPU.at(i), in.GPU.at(i), aux.GPU.at(i));
+156-   156	    }
+157-   157	    this->SetModUp(true);
+158-   158	    c0.SetModUp(true);
+159-   159	}
+160-   160	
+161-   161	void RNSPoly::binomialMult(RNSPoly& c1, RNSPoly& in, const RNSPoly& d0, const RNSPoly& d1, bool moddown, bool square) {
+162-   162	    assert(!this->isModUp() && !c1.isModUp() && !d0.isModUp() && !d1.isModUp());
+163-   163	
+164-   164	    if (!moddown) {
+165-   165	        this->generateSpecialLimbs(true, false);
+166-   166	        CudaCheckErrorMod;
+167-   167	        c1.generateSpecialLimbs(true, false);
+168-   168	    }
+169-   169	
+170-   170	#pragma omp parallel for num_threads(cc.GPUid.size())
+171-   171	    for (size_t i = 0; i < cc.GPUid.size(); ++i) {
+172-   172	        assert(omp_get_num_threads() == (int)cc.GPUid.size());
+173-   173	        GPU.at(i).binomialMult(c1.GPU.at(i), in.GPU.at(i), d0.GPU.at(i), d1.GPU.at(i), !moddown, square);
+174-   174	    }
+175-   175	    this->SetModUp(!moddown);
+176-   176	    c1.SetModUp(!moddown);
+177-   177	    in.SetModUp(!moddown);
+178-   178	}
+179-   179	
+180:   180	void RNSPoly::add(const RNSPoly& p) {
+181-   181	
+182-   182	    if (p.isModUp() && !this->isModUp()) {
+183-   183	        //std::cout << "Adapt non modup destination add" << std::endl;
+184-   184	        generateSpecialLimbs(true, false);
+185-   185	        scaleByP();
+186-   186	    }
+187-   187	    assert(p.isModUp() == this->isModUp());
+188-   188	    assert(level <= p.level);
+189-   189	#pragma omp parallel for num_threads(cc.GPUid.size())
+190-   190	    for (size_t i = 0; i < cc.GPUid.size(); ++i) {
+191-   191	        assert(omp_get_num_threads() == (int)cc.GPUid.size());
+192-   192	        GPU.at(i).add(p.GPU.at(i), this->isModUp() || p.isModUp());
+193-   193	    }
+194-   194	    this->SetModUp(this->isModUp() || p.isModUp());
+195-   195	}
+196-   196	
+197:   197	void RNSPoly::sub(const RNSPoly& p) {
+198-   198	    assert(level <= p.level);
+199-   199	#pragma omp parallel for num_threads(cc.GPUid.size())
+200-   200	    for (size_t i = 0; i < cc.GPUid.size(); ++i) {
+201-   201	        assert(omp_get_num_threads() == (int)cc.GPUid.size());
+202-   202	        GPU.at(i).sub(p.GPU.at(i));
+203-   203	    }
+204-   204	}
+205-   205	
+206-   206	void RNSPoly::modup() {
+207-   207	    //  assert(GPU.size() == 1 || 0 == "ModUp Multi-GPU not implemented.");
+208-   208	    RNSPoly& aux = cc.getKeySwitchAux2();
+209-   209	
+210-   210	    std::vector<std::atomic_uint64_t> thread_stop_buffer(cc.GPUid.size() * 8);
+211-   211	    std::vector<std::atomic_uint64_t*> thread_stop(cc.GPUid.size(), nullptr);
+212-   212	    for (int k = 0; k < cc.GPUid.size(); ++k) {
+213-   213	        thread_stop[k] = &thread_stop_buffer[8 * k];
+214-   214	        thread_stop_buffer[8 * k] = 0;
+215-   215	    }
+216-   216	
+217-   217	    std::vector<Stream*> external_s;
+218-   218	    for (int i = 0; i < GPU.size(); ++i) {
+219-   219	        external_s.push_back(&GPU[i].s);
+220-   220	    }
+221-   221	
+222-   222	    std::vector<uint64_t*> buffergather;
+223-   223	    for (int i = 0; i < cc.GPUid.size(); ++i) {
+224-   224	        buffergather.push_back(GPU.at(i).bufferGATHER);
+225-   225	    }
+226-   226	    if (cc.GPUid.size() == 1) {
+227-   227	        for (size_t i = 0; i < cc.GPUid.size(); ++i) {
+228-   228	            GPU.at(i).modupMGPU(aux.GPU.at(i), buffergather, thread_stop, external_s);
+229-   229	        }
+230-   230	    } else {
+231-   231	#pragma omp parallel num_threads(GPU.size())
+232-   232	        {
+233-   233	            int i = omp_get_thread_num();
+234-   234	
+235-   235	            if (omp_get_num_threads() != (int)GPU.size())
+236-   236	                throw std::invalid_argument("OMP didn't create enough threads");
+237-   237	            assert(omp_get_num_threads() == (int)GPU.size());
+238-   238	            assert(i < GPU.size());
+239-   239	            GPU.at(i).modupMGPU(aux.GPU.at(i), buffergather, thread_stop, external_s);
+240-   240	        }
+241-   241	    }
+242-   242	}
+243-   243	
+244-   244	void RNSPoly::sync() {
+245-   245	    for (auto& i : GPU) {
+246-   246	        for (auto& j : i.limb) {
+247-   247	            assert(STREAM(j).ptr() != nullptr);
+248-   248	            cudaStreamSynchronize(STREAM(j).ptr());
+249-   249	        }
+250-   250	        cudaStreamSynchronize(i.s.ptr());
+251-   251	    }
+252-   252	}
+253-   253	
+254-   254	void RNSPoly::rescale() {
+255-   255	    //    assert(GPU.size() == 1 && "Rescale Multi-GPU not implemented.");
+256-   256	    if (GPU.size() == 1) {
+257-   257	        for (auto& i : GPU) {
+258-   258	            i.rescale();
+259-   259	        }
+260-   260	        level -= 1;
+261-   261	    } else {
+262-   262	        int more_than_0 = 0;
+263-   263	        for (size_t i = 0; i < GPU.size(); ++i)
+264-   264	            if (GPU[i].getLimbSize(level) != 0)
+265-   265	                more_than_0++;
+266-   266	
+267-   267	        if (more_than_0 == 1) {
+268-   268	            for (auto& i : GPU) {
+269-   269	                if (i.getLimbSize(level) > 0)
+270-   270	                    i.rescale();
+271-   271	            }
+272-   272	        } else {
+273-   273	#pragma omp parallel num_threads(GPU.size())
+274-   274	            {
+275-   275	#pragma omp for
+276-   276	                for (size_t i = 0; i < GPU.size(); ++i) {
+277-   277	                    if (omp_get_num_threads() != (int)GPU.size())
+278-   278	                        throw std::invalid_argument("OMP didn't create enough threads");
+279-   279	                    assert(omp_get_num_threads() == (int)GPU.size());
+280-   280	                    GPU[i].rescaleMGPU();
+281-   281	                }
+282-   282	            }
+283-   283	        }
+284-   284	        level -= 1;
+285-   285	    }
+286-   286	}
+287-   287	
+288-   288	void RNSPoly::rescaleDouble(RNSPoly& poly) {
+289-   289	    //    assert(GPU.size() == 1 && "Rescale Multi-GPU not implemented.");
+290-   290	    if (0 && GPU.size() == 1) {
+291-   291	        for (auto& i : GPU) {
+292-   292	            i.rescale();
+293-   293	        }
+294-   294	        level -= 1;
+295-   295	        for (auto& i : poly.GPU) {
+296-   296	            i.rescale();
+297-   297	        }
+298-   298	        poly.level -= 1;
+299-   299	    } else {
+300-   300	
+301-   301	        int more_than_0 = 0;
+302-   302	        for (size_t i = 0; i < GPU.size(); ++i)
+303-   303	            if (GPU[i].getLimbSize(level) > 0)
+304-   304	                more_than_0++;
+305-   305	
+306-   306	        if (0 && more_than_0 == 1) {
+307-   307	            for (size_t i = 0; i < GPU.size(); ++i) {
+308-   308	                if (GPU[i].getLimbSize(level) > 0) {
+309-   309	                    GPU[i].rescale();
+310-   310	                    poly.GPU[i].rescale();
+311-   311	                }
+312-   312	            }
+313-   313	        } else {
+314-   314	
+315-   315	            if (0 && MEMCPY_PEER) {
+316-   316	
+317-   317	                int id = cc.limbGPUid[level].x;
+318-   318	                GPU[id].doubleRescaleMGPU(poly.GPU[id]);
+319-   319	                for (size_t i = 0; i < GPU.size(); ++i) {
+320-   320	
+321-   321	                    // if (omp_get_num_threads() != (int)GPU.size())
+322-   322	                    //     throw std::invalid_argument("OMP didn't create enough threads");
+323-   323	                    // assert(omp_get_num_threads() == (int)GPU.size());
+324-   324	                    //GPU[i].rescaleMGPU();
+325-   325	                    if (i != id)
+326-   326	                        GPU[i].doubleRescaleMGPU(poly.GPU[i]);
+327-   327	                }
+328-   328	            } else {
+329-   329	#pragma omp parallel num_threads(GPU.size())
+330-   330	                {
+331-   331	                    int i = omp_get_thread_num();
+332-   332	
+333-   333	                    if (omp_get_num_threads() != (int)GPU.size())
+334-   334	                        throw std::invalid_argument("OMP didn't create enough threads");
+335-   335	                    assert(omp_get_num_threads() == (int)GPU.size());
+336-   336	                    assert(i < GPU.size());
+337-   337	                    //GPU[i].rescaleMGPU();
+--
+648-   648	#pragma omp parallel for num_threads(cc.GPUid.size())
+649-   649	        for (size_t i = 0; i < cc.GPUid.size(); ++i) {
+650-   650	            assert(omp_get_num_threads() == (int)cc.GPUid.size());
+651-   651	            GPU.at(i).modupInto(poly.GPU.at(i), aux.GPU.at(i));
+652-   652	        }
+653-   653	    }
+654-   654	}
+655-   655	RNSPoly& RNSPoly::dotKSKInPlaceFrom(RNSPoly& poly, const KeySwitchingKey& ksk, const RNSPoly* limbsrc) {
+656-   656	    constexpr bool PRINT = false;
+657-   657	    Out(KEYSWITCH, "dotKSK in");
+658-   658	
+659-   659	    assert(level == poly.level);
+660-   660	    cc.getKeySwitchAux2().setLevel(level);
+661-   661	    cc.getKeySwitchAux2().generateSpecialLimbs(false, false);
+662-   662	    generateSpecialLimbs(false, false);
+663-   663	    if constexpr (PRINT)
+664-   664	        for (auto& i : ksk.b.GPU) {
+665-   665	            for (auto& j : i.DECOMPlimb) {
+666-   666	                for (auto& k : j) {
+667-   667	                    SWITCH(k, printThisLimb(1));
+668-   668	                }
+669-   669	            }
+670-   670	            for (auto& j : i.DIGITlimb) {
+671-   671	                for (auto& k : j) {
+672-   672	                    SWITCH(k, printThisLimb(1));
+673-   673	                }
+674-   674	            }
+675-   675	        }
+676-   676	    //poly.dotKSKinto(cc.getKeySwitchAux2(), ksk.b, level, limbsrc ? limbsrc : this);
+677-   677	    //poly.dotKSKinto(*this, ksk.a, level, limbsrc ? limbsrc : this);
+678-   678	
+679-   679	    this->dotKSKfused(cc.getKeySwitchAux2(), poly, ksk.a, ksk.b, limbsrc ? limbsrc : this);
+680-   680	
+681-   681	    cc.getKeySwitchAux2().SetModUp(true);
+682-   682	    this->SetModUp(true);
+683-   683	    Out(KEYSWITCH, "dotKSK out");
+684-   684	    return cc.getKeySwitchAux2();
+685-   685	}
+686-   686	void RNSPoly::multScalar(std::vector<uint64_t>& vector1) {
+687-   687	#pragma omp parallel for num_threads(cc.GPUid.size())
+688-   688	    for (size_t i = 0; i < cc.GPUid.size(); ++i) {
+689-   689	        assert(omp_get_num_threads() == (int)cc.GPUid.size());
+690-   690	        GPU[i].multScalar(vector1);
+691-   691	    }
+692-   692	}
+693:   693	void RNSPoly::add(const RNSPoly& a, const RNSPoly& b) {
+694-   694	    assert(level <= a.level);
+695-   695	    assert(level <= b.level);
+696-   696	#pragma omp parallel for num_threads(cc.GPUid.size())
+697-   697	    for (size_t i = 0; i < cc.GPUid.size(); ++i) {
+698-   698	        assert(omp_get_num_threads() == (int)cc.GPUid.size());
+699-   699	        GPU.at(i).add(a.GPU.at(i), b.GPU.at(i), a.isModUp(), b.isModUp());
+700-   700	    }
+701-   701	
+702-   702	    this->SetModUp(a.isModUp() || b.isModUp());
+703-   703	}
+704-   704	void RNSPoly::squareElement(const RNSPoly& poly) {
+705-   705	#pragma omp parallel for num_threads(cc.GPUid.size())
+706-   706	    for (size_t i = 0; i < cc.GPUid.size(); ++i) {
+707-   707	        assert(omp_get_num_threads() == (int)cc.GPUid.size());
+708-   708	        GPU.at(i).squareElement(poly.GPU.at(i));
+709-   709	    }
+710-   710	}
+711-   711	void RNSPoly::binomialSquareFold(RNSPoly& c0_res, const RNSPoly& c2_key_switched_0, const RNSPoly& c2_key_switched_1) {
+712-   712	#pragma omp parallel for num_threads(cc.GPUid.size())
+713-   713	    for (size_t i = 0; i < cc.GPUid.size(); ++i) {
+714-   714	        assert(omp_get_num_threads() == (int)cc.GPUid.size());
+715-   715	        GPU.at(i).binomialSquareFold(c0_res.GPU.at(i), c2_key_switched_0.GPU.at(i), c2_key_switched_1.GPU.at(i));
+716-   716	    }
+717-   717	}
+718:   718	void RNSPoly::addScalar(std::vector<uint64_t>& vector1) {
+719-   719	#pragma omp parallel for num_threads(cc.GPUid.size())
+720-   720	    for (size_t i = 0; i < cc.GPUid.size(); ++i) {
+721-   721	        assert(omp_get_num_threads() == (int)cc.GPUid.size());
+722-   722	        GPU[i].addScalar(vector1);
+723-   723	    }
+724-   724	}
+725:   725	void RNSPoly::subScalar(std::vector<uint64_t>& vector1) {
+726-   726	#pragma omp parallel for num_threads(cc.GPUid.size())
+727-   727	    for (size_t i = 0; i < cc.GPUid.size(); ++i) {
+728-   728	        assert(omp_get_num_threads() == (int)cc.GPUid.size());
+729-   729	        GPU[i].subScalar(vector1);
+730-   730	    }
+731-   731	}
+732-   732	void RNSPoly::copy(const RNSPoly& poly) {
+733-   733	    //std::cout << "Copy level: " << poly.level << std::endl;
+734-   734	    this->dropToLevel(poly.level);
+735-   735	    this->grow(poly.level);
+736-   736	#pragma omp parallel for num_threads(cc.GPUid.size())
+737-   737	    for (size_t i = 0; i < cc.GPUid.size(); ++i) {
+738-   738	        assert(omp_get_num_threads() == (int)cc.GPUid.size());
+739-   739	        GPU.at(i).copyLimb(poly.GPU.at(i));
+740-   740	        if (poly.isModUp())
+741-   741	            GPU.at(i).copySpecialLimb(poly.GPU.at(i));
+742-   742	    }
+743-   743	    this->SetModUp(poly.isModUp());
+744-   744	}
+745-   745	
+746-   746	/** Copy contents without extra checks or resizing */
+747-   747	void RNSPoly::copyShallow(const RNSPoly& poly) {
+748-   748	    this->level = poly.level;
+749-   749	#pragma omp parallel for num_threads(cc.GPUid.size())
+750-   750	    for (size_t i = 0; i < cc.GPUid.size(); ++i) {
+751-   751	        assert(omp_get_num_threads() == (int)cc.GPUid.size());
+752-   752	        GPU.at(i).copyLimb(poly.GPU.at(i));
+753-   753	    }
+754-   754	}
+755-   755	
+756-   756	void RNSPoly::dropToLevel(int level) {
+757-   757	
+758-   758	    if (0 && GPU.at(0).bufferLIMB == nullptr) {
+759-   759	        for (auto& g : GPU) {
+760-   760	            cudaSetDevice(g.device);
+761-   761	            int limbSize = g.getLimbSize(level);
+762-   762	            while ((int)g.limb.size() > limbSize) {
+763-   763	                g.dropLimb();
+764-   764	            }
+765-   765	        }
+766-   766	    }
+767-   767	    if (this->level > level)
+768-   768	        this->level = level;
+769-   769	}
+770:   770	void RNSPoly::addMult(const RNSPoly& poly, const RNSPoly& poly1) {
+771-   771	    assert(level <= poly1.level && level <= poly.level);
+772-   772	#pragma omp parallel for num_threads(cc.GPUid.size())
+773-   773	    for (size_t i = 0; i < cc.GPUid.size(); ++i) {
+774-   774	        assert(omp_get_num_threads() == (int)cc.GPUid.size());
+775-   775	        GPU.at(i).addMult(poly.GPU.at(i), poly1.GPU.at(i));
+776-   776	    }
+777-   777	}
+778-   778	
+779-   779	void RNSPoly::load(const std::vector<std::vector<uint64_t>>& data, const std::vector<uint64_t>& moduli) {
+780-   780	    int limbsize = 0;
+781-   781	    int Slimbsize = 0;
+782-   782	    for (int i = 0; i < (int)data.size(); ++i) {
+783-   783	        if (i <= cc.L && moduli[i] == cc.prime.at(i).p) {
+784-   784	            limbsize++;
+785-   785	        } else {
+786-   786	            Slimbsize++;
+787-   787	        }
+788-   788	    }
+789-   789	    //std::cout << "Load " << limbsize << " limbs" << std::endl;
+790-   790	
+791-   791	    assert(limbsize - 1 <= cc.L);
+792-   792	    if (level < limbsize - 1)
+793-   793	        grow(limbsize - 1, false);
+794-   794	    if (level > limbsize - 1)
+795-   795	        dropToLevel(limbsize - 1);
+796-   796	    assert(level == limbsize - 1);
+797-   797	    for (int i = 0; i < limbsize; ++i) {
+798-   798	        //std::cout << "Load limb" << i << " into gpu " << cc.limbGPUid[i].x << std::endl;
+799-   799	        assert(moduli[i] == cc.prime.at(i).p);
+800-   800	        cudaSetDevice(GPU[cc.limbGPUid[i].x].device);
+801-   801	        SWITCH(GPU[cc.limbGPUid[i].x].limb[cc.limbGPUid[i].y], load_convert(data[i]));
+802-   802	    }
+803-   803	
+804-   804	    if ((int)data.size() > limbsize)
+805-   805	        generateSpecialLimbs(false, false);
+806-   806	    for (int i = limbsize; i < (int)data.size(); ++i) {
+807-   807	        for (auto& j : GPU) {
+808-   808	            cudaSetDevice(j.device);
+809-   809	            assert(moduli[i] == cc.specialPrime.at(i - limbsize).p);
+810-   810	            SWITCH(j.SPECIALlimb[i - limbsize], load_convert(data[i]));
+811-   811	        }
+812-   812	    }
+813-   813	}
+814-   814	
+815-   815	void RNSPoly::loadConstant(const std::vector<std::vector<uint64_t>>& data, const std::vector<uint64_t>& moduli) {
+816-   816	    int limbsize = 0;
+817-   817	    int Slimbsize = 0;
+818-   818	    for (int i = 0; i < (int)data.size(); ++i) {
+819-   819	        if (i <= cc.L && moduli[i] == cc.prime.at(i).p) {
+820-   820	            limbsize++;
+821-   821	        } else {
+822-   822	            Slimbsize++;
+823-   823	        }
+824-   824	    }
+825-   825	
+826-   826	    assert(limbsize <= cc.L + 1);
+827-   827	    if (level < limbsize - 1) {
+828-   828	        grow(limbsize - 1, false, true);
+829-   829	    } else {
+830-   830	        dropToLevel(limbsize - 1);
+831-   831	    }
+832-   832	    assert(level == limbsize - 1);
+833-   833	    for (int i = 0; i < limbsize; ++i) {
+834-   834	        assert(moduli[i] == cc.prime.at(i).p);
+835-   835	        cudaSetDevice(GPU[cc.limbGPUid[i].x].device);
+836-   836	        SWITCH(GPU[cc.limbGPUid[i].x].limb[cc.limbGPUid[i].y], load_convert(data[i]));
+837-   837	    }
+838-   838	
+839-   839	    if ((int)data.size() > limbsize) {
+840-   840	        generatePartialSpecialLimbs();
+841-   841	        this->SetModUp(true);
+842-   842	    }
+843-   843	    for (size_t i = limbsize; i < data.size(); ++i) {
+844-   844	        for (size_t j = 0; j < GPU.size(); ++j) {
+845-   845	            for (size_t k = 0; k < cc.splitSpecialMeta.at(j).size(); ++k) {
+846-   846	                if (cc.specialPrime.at(cc.splitSpecialMeta.at(j).at(k).id - cc.L - 1).p == moduli[i]) {
+847-   847	                    cudaSetDevice(GPU[j].device);
+848-   848	                    SWITCH(GPU[j].SPECIALlimb[k], load_convert(data[i]));
+849-   849	                }
+850-   850	            }
+851-   851	        }
+852-   852	    }
+853-   853	}
+854-   854	
+855-   855	void RNSPoly::broadcastLimb0() {
+856-   856	    if (cc.GPUid.size() == 1) {
+857-   857	        for (size_t i = 0; i < cc.GPUid.size(); ++i) {
+858-   858	            GPU.at(i).broadcastLimb0();
+859-   859	        }
+860-   860	    } else {
+861-   861	#pragma omp parallel for num_threads(cc.GPUid.size())
+862-   862	        for (size_t i = 0; i < cc.GPUid.size(); ++i) {
+863-   863	            assert(omp_get_num_threads() == (int)cc.GPUid.size());
+864-   864	            GPU.at(i).broadcastLimb0_mgpu();
+865-   865	        }
+866-   866	    }
+867-   867	}
+868:   868	void RNSPoly::evalLinearWSum(uint32_t n, std::vector<const RNSPoly*>& vec, std::vector<uint64_t>& elem) {
+869-   869	#pragma omp parallel for num_threads(cc.GPUid.size())
+870-   870	    for (size_t i = 0; i < cc.GPUid.size(); ++i) {
+871-   871	        assert(omp_get_num_threads() == (int)cc.GPUid.size());
+872-   872	        std::vector<const LimbPartition*> ps(n);
+873-   873	        for (int j = 0; j < (int)n; ++j) {
+874-   874	            ps[j] = &vec[j]->GPU.at(i);
+875-   875	        }
+876:   876	        GPU.at(i).evalLinearWSum(n, ps, elem);
+877-   877	    }
+878-   878	}
+879-   879	
+880-   880	void RNSPoly::squareModupDotKSK(RNSPoly& c0, RNSPoly& c1, const KeySwitchingKey& key) {
+881-   881	    assert(GPU.size() == 1 && "squareModupDotKSK Multi-GPU not implemented.");
+882-   882	    generateDecompAndDigit(false);
+883-   883	    c0.generateSpecialLimbs(false, false);
+884-   884	    c1.generateSpecialLimbs(false, false);
+885-   885	#pragma omp parallel for num_threads(cc.GPUid.size())
+886-   886	    for (size_t i = 0; i < cc.GPUid.size(); ++i) {
+887-   887	        assert(omp_get_num_threads() == (int)cc.GPUid.size());
+888-   888	        GPU.at(i).squareModupDotKSK(c1.GPU.at(i), c0.GPU.at(i), key.a.GPU.at(i), key.b.GPU.at(i));
+889-   889	    }
+890-   890	    c0.SetModUp(true);
+891-   891	    c1.SetModUp(true);
+892-   892	}
+893-   893	
+894-   894	void RNSPoly::generatePartialSpecialLimbs() {
+895-   895	#pragma omp parallel for num_threads(cc.GPUid.size())
+896-   896	    for (size_t i = 0; i < cc.GPUid.size(); ++i) {
+897-   897	        assert(omp_get_num_threads() == (int)cc.GPUid.size());
+898-   898	        GPU[i].generatePartialSpecialLimb();
+899-   899	    }
+900-   900	}
+901-   901	void RNSPoly::dotKSKfused(RNSPoly& out2, const RNSPoly& digitSrc, const RNSPoly& ksk_a, const RNSPoly& ksk_b,
+902-   902	                          const RNSPoly* source) {
+903-   903	    RNSPoly& out1 = *this;
+904-   904	    const RNSPoly& src = source ? *source : *this;
+905-   905	    if (cc.GPUid.size() == 1) {
+906-   906	        for (size_t i = 0; i < cc.GPUid.size(); ++i) {
+907-   907	            out1.GPU[i].dotKSKfusedMGPU(out2.GPU[i], digitSrc.GPU[i], ksk_a.GPU[i], ksk_b.GPU[i], src.GPU[i]);
+908-   908	        }
+909-   909	    } else {
+910-   910	#pragma omp parallel for num_threads(cc.GPUid.size())
+911-   911	        for (size_t i = 0; i < cc.GPUid.size(); ++i) {
+912-   912	            assert(omp_get_num_threads() == (int)cc.GPUid.size());
+913-   913	            out1.GPU[i].dotKSKfusedMGPU(out2.GPU[i], digitSrc.GPU[i], ksk_a.GPU[i], ksk_b.GPU[i], src.GPU[i]);
+914-   914	        }
+915-   915	    }
+916-   916	}
+917-   917	void RNSPoly::dotProductPt(RNSPoly& c1_, const std::vector<const RNSPoly*>& c0s_,
+918-   918	                           const std::vector<const RNSPoly*>& c1s_, const std::vector<const RNSPoly*>& pts_,
+919-   919	                           const bool ext) {
+920-   920	
+921-   921	    if (ext) {
+922-   922	        generateSpecialLimbs(false, false);
+923-   923	        c1_.generateSpecialLimbs(false, false);
+924-   924	    }
+925-   925	    int n = pts_.size();
+926-   926	#pragma omp parallel for num_threads(cc.GPUid.size())
+927-   927	    for (size_t j = 0; j < cc.GPUid.size(); ++j) {
+928-   928	        assert(omp_get_num_threads() == (int)cc.GPUid.size());
+929-   929	        std::vector<const LimbPartition*> c0s(n, nullptr), c1s(n, nullptr), pts(n, nullptr);
+930-   930	        for (int i = 0; i < n; ++i) {
+931-   931	            c0s[i] = &(c0s_[i]->GPU[j]);
+932-   932	            c1s[i] = &(c1s_[i]->GPU[j]);
+933-   933	            pts[i] = &(pts_[i]->GPU[j]);
+934-   934	        }
+935-   935	        GPU[j].dotProductPt(c1_.GPU[j], c0s, c1s, pts, ext);
+936-   936	    }
+937-   937	    c1_.SetModUp(ext);
+938-   938	    this->SetModUp(ext);
+939-   939	}
+940-   940	
+941-   941	void RNSPoly::dotProduct(RNSPoly& c1, const RNSPoly& kskb, const RNSPoly& kska, const std::vector<const RNSPoly*>& c0in,
+942-   942	                         const std::vector<const RNSPoly*>& c1in, const std::vector<const RNSPoly*>& d0in,
+943-   943	                         const std::vector<const RNSPoly*>& d1in, bool ext_in, bool ext_out) {
+944-   944	
+945-   945	    auto& c2 = cc.getKeySwitchAux();
+946-   946	
+947-   947	    if (ext_in) {
+948-   948	        generateSpecialLimbs(false, false);
+949-   949	        c1.generateSpecialLimbs(false, false);
+950-   950	    }
+951-   951	    c2.setLevel(c1.getLevel());
+952-   952	
+953-   953	    int n = c0in.size();
+954-   954	#pragma omp parallel for num_threads(cc.GPUid.size())
+955-   955	    for (size_t j = 0; j < cc.GPUid.size(); ++j) {
+956-   956	        assert(omp_get_num_threads() == (int)cc.GPUid.size());
+957-   957	        std::vector<const LimbPartition*> c0s(n, nullptr), c1s(n, nullptr), d0s(n, nullptr), d1s(n, nullptr);
+958-   958	        for (int i = 0; i < n; ++i) {
+959-   959	            c0s[i] = &(c0in[i]->GPU[j]);
+960-   960	            c1s[i] = &(c1in[i]->GPU[j]);
+961-   961	            d0s[i] = &(d0in[i]->GPU[j]);
+962-   962	            d1s[i] = &(d1in[i]->GPU[j]);
+963-   963	        }
+964-   964	        GPU[j].binomialDotProduct(c1.GPU[j], c2.GPU[j], c0s, c1s, d0s, d1s, ext_in);
+965-   965	    }
+966-   966	
+967-   967	    c2.modup();
+968-   968	
+969-   969	    c2.dotKSKfused(cc.getKeySwitchAux2(), c2, kska, kskb, nullptr);
+970-   970	
+971-   971	    if (ext_out) {
+972-   972	        generateSpecialLimbs(false, false);
+973-   973	        c1.generateSpecialLimbs(false, false);
+974-   974	        this->scaleByP();
+975-   975	        this->scaleByP();
+976-   976	        this->add(cc.getKeySwitchAux2());
+977-   977	        c1.add(c2);
+978-   978	    } else {
+979-   979	        c2.moddown(true, false, 0);
+980-   980	        c1.add(c2);
+981-   981	        cc.getKeySwitchAux2().moddown(true, false, 1);
+982-   982	        this->add(cc.getKeySwitchAux2());
+983-   983	    }
+984-   984	
+985-   985	    c1.SetModUp(ext_in);
+986-   986	    this->SetModUp(ext_in);
+987-   987	}
+988-   988	
+989-   989	void RNSPoly::hoistedRotationFused(std::vector<int> indexes, std::vector<RNSPoly*>& c0, std::vector<RNSPoly*>& c1,
+990-   990	                                   const std::vector<RNSPoly*>& ksk_a, const std::vector<RNSPoly*>& ksk_b,
+991-   991	                                   const RNSPoly& src_c0, const RNSPoly& src_c1) {
+992-   992	    int n = indexes.size();
+993-   993	    for (size_t j = 0; j < n; ++j) {
+994-   994	        c0[j]->generateSpecialLimbs(false, false);
+995-   995	        c1[j]->generateSpecialLimbs(false, false);
+996-   996	        indexes[j] = indexes[j] == 2 * cc.N - 1 ? 2 * cc.N - 1 : automorph_index_precomp(indexes[j]);
+997-   997	    }
+998-   998	    //    assert(src_c0.isModUp() == false);
+999-   999	
+1000-  1000	#pragma omp parallel for num_threads(cc.GPUid.size())
+1001-  1001	    for (size_t j = 0; j < cc.GPUid.size(); ++j) {
+1002-  1002	        assert(omp_get_num_threads() == (int)cc.GPUid.size());
+1003-  1003	        std::vector<LimbPartition*> c0s(n, nullptr), c1s(n, nullptr), ksk_as(n, nullptr), ksk_bs(n, nullptr);
+1004-  1004	        for (int i = 0; i < n; ++i) {
+1005-  1005	            c0s[i] = &(c0[i]->GPU[j]);
+1006-  1006	            c1s[i] = &(c1[i]->GPU[j]);
+1007-  1007	            ksk_as[i] = &(ksk_a[i]->GPU[j]);
+1008-  1008	            ksk_bs[i] = &(ksk_b[i]->GPU[j]);
+1009-  1009	        }
+1010-  1010	        GPU[j].fusedHoistRotate(n, indexes, c0s, c1s, ksk_as, ksk_bs, src_c0.GPU[j], src_c1.GPU[j], src_c0.isModUp());
+1011-  1011	    }
+1012-  1012	
+1013-  1013	    for (size_t j = 0; j < n; ++j) {
+1014-  1014	        c0[j]->SetModUp(true);
+1015-  1015	        c1[j]->SetModUp(true);
+1016-  1016	    }
+
+----------------------------------------------------------------------------------------------------
+3) Kernels used by add/sub/evalLinearWSum
+----------------------------------------------------------------------------------------------------
+/root/fideslib/src/AddSub.cuh:13:__global__ void add_(T* a, const T* b, const int primeId);
+/root/fideslib/src/AddSub.cuh:16:__global__ void sub_(T* a, const T* b, const int primeId);
+/root/fideslib/src/AddSub.cuh:19:__global__ void add_(void** a, void** b, const int primeid_init);
+/root/fideslib/src/AddSub.cuh:22:__global__ void sub_(void** a, void** b, const int primeid_init);
+/root/fideslib/src/AddSub.cuh:25:__global__ void add_(void** a, void** b, void** c, const int primeid_init);
+/root/fideslib/src/AddSub.cuh:28:__global__ void sub_(void** a, void** b, void** c, const int primeid_init);
+/root/fideslib/src/AddSub.cuh:31:__global__ void scalar_add_(void** a, uint64_t* b, const int primeid_init);
+/root/fideslib/src/AddSub.cuh:34:__global__ void scalar_sub_(void** a, uint64_t* b, const int primeid_init);
+/root/fideslib/src/CKKS/RNSPoly.cpp:868:void RNSPoly::evalLinearWSum(uint32_t n, std::vector<const RNSPoly*>& vec, std::vector<uint64_t>& elem) {
+/root/fideslib/src/CKKS/RNSPoly.cpp:876:        GPU.at(i).evalLinearWSum(n, ps, elem);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:90:__global__ void addMult_(T* l, const T* l1, const T* l2, const __grid_constant__ int primeid) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:94:__global__ void addMult_(void** l, void** l1, void** l2, const __grid_constant__ int primeid_init) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:205:__global__ void eval_linear_w_sum_(const __grid_constant__ int n, void** a, void*** bs, uint64_t* w,
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1125:__global__ void addScaleB_(void** a, void** b, void** c, const int primeid_init) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1145:__global__ void add_reuse_b___(void*** a, void*** b, const int primeid_init, const int n, const int its) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1167:__global__ void add_reuse_scale_p_b___(void*** a, void*** b, const int primeid_init, const int n, const int its) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1191:__global__ void sub_reuse_scale_p_b___(void*** a, void*** b, const int primeid_init, const int n, const int its) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1215:__global__ void add_scale_p_reuse_b___(void*** a, void*** b, const int primeid_init, const int n, const int its) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1240:__global__ void sub_scale_p_reuse_b___(void*** a, void*** b, const int primeid_init, const int n, const int its) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1307:__global__ void add_scalar_reuse_b___(void*** a, void*** b, const int primeid_init, const int n, const int its) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1354:__global__ void sub_reuse_b___(void*** a, void*** b, const int primeid_init, const int n, const int its) {
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1635:template __global__ void FIDESlib::CKKS::addMult_<uint64_t>(uint64_t* l, const uint64_t* l1, const uint64_t* l2,
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1638:template __global__ void FIDESlib::CKKS::addMult_<uint32_t>(uint32_t* l, const uint32_t* l1, const uint32_t* l2,
+/root/fideslib/src/CKKS/LimbPartition.cuh:207:    void evalLinearWSum(uint32_t n, std::vector<const LimbPartition*> ps, std::vector<uint64_t>& weights);
+/root/fideslib/src/CKKS/ApproxModEval.cu:213:				cu.evalLinearWSumMutable(dc, T, weights);
+/root/fideslib/src/CKKS/ApproxModEval.cu:255:				qu.evalLinearWSumMutable(/*bcrypto::Degree(qcopy)*/ ctxs.size(), ctxs, weights);
+/root/fideslib/src/CKKS/ApproxModEval.cu:328:				su.evalLinearWSumMutable(/*lbcrypto::Degree(scopy)*/ ctxs.size(), T, weights);
+/root/fideslib/src/CKKS/RNSPoly.cuh:111:    void evalLinearWSum(uint32_t i, std::vector<const RNSPoly*>& vector1, std::vector<uint64_t>& vector2);
+/root/fideslib/src/CKKS/Ciphertext.cpp:1272:void Ciphertext::evalLinearWSumMutable(uint32_t n, const std::vector<Ciphertext*>& ctxs, std::vector<double> weights) {
+/root/fideslib/src/CKKS/Ciphertext.cpp:1315:		c0.evalLinearWSum(n, c0s, elem);
+/root/fideslib/src/CKKS/Ciphertext.cpp:1316:		c1.evalLinearWSum(n, c1s, elem);
+/root/fideslib/src/CKKS/LimbPartition.cu:2343:void LimbPartition::evalLinearWSum(uint32_t n, std::vector<const LimbPartition*> ps, std::vector<uint64_t>& weights) {
+/root/fideslib/src/CKKS/Ciphertext.cuh:467:    void evalLinearWSumMutable(uint32_t n, const std::vector<Ciphertext*>& ctxs, std::vector<double> weights);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cuh:22:__global__ void addMult_(T* l, const T* l1, const T* l2, const __grid_constant__ int primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cuh:24:__global__ void addMult_(void** l, void** l1, void** l2, const __grid_constant__ int primeid_init);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cuh:40:__global__ void eval_linear_w_sum_(const __grid_constant__ int n, void** a, void*** bs, uint64_t* w,
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cuh:70:__global__ void addScaleB_(void** a, void** b, void** c, const int primeid_init);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cuh:73:__global__ void add___(void*** a, const int primeid_init, const int n);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cuh:74:__global__ void add_reuse_b___(void*** a, void*** b, const int primeid_init, const int n, const int its);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cuh:75:__global__ void sub_reuse_b___(void*** a, void*** b, const int primeid_init, const int n, const int its);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cuh:77:__global__ void add_scalar_reuse_b___(void*** a, void*** b, const int primeid_init, const int n, const int its);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cuh:80:__global__ void add_reuse_scale_p_b___(void*** a, void*** b, const int primeid_init, const int n, const int its);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cuh:81:__global__ void sub_reuse_scale_p_b___(void*** a, void*** b, const int primeid_init, const int n, const int its);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cuh:82:__global__ void add_scale_p_reuse_b___(void*** a, void*** b, const int primeid_init, const int n, const int its);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cuh:83:__global__ void sub_scale_p_reuse_b___(void*** a, void*** b, const int primeid_init, const int n, const int its);
+/root/fideslib/src/AddSub.cu:10:__global__ void add_(T* a, const T* b, const int primeId) {
+/root/fideslib/src/AddSub.cu:17:template __global__ void add_(uint64_t* a, const uint64_t* b, const int primeId);
+/root/fideslib/src/AddSub.cu:19:template __global__ void add_(uint32_t* a, const uint32_t* b, const int primeId);
+/root/fideslib/src/AddSub.cu:22:__global__ void sub_(T* a, const T* b, const int primeId) {
+/root/fideslib/src/AddSub.cu:28:template __global__ void sub_(uint64_t* a, const uint64_t* b, const int primeId);
+/root/fideslib/src/AddSub.cu:30:template __global__ void sub_(uint32_t* a, const uint32_t* b, const int primeId);
+/root/fideslib/src/AddSub.cu:32:__global__ void add_(void** a, void** b, const int primeid_init) {
+/root/fideslib/src/AddSub.cu:45:__global__ void sub_(void** a, void** b, const int primeid_init) {
+/root/fideslib/src/AddSub.cu:57:__global__ void add_(void** a, void** b, void** c, const int primeid_init) {
+/root/fideslib/src/AddSub.cu:69:__global__ void sub_(void** a, void** b, void** c, const int primeid_init) {
+/root/fideslib/src/AddSub.cu:81:__global__ void scalar_add_(void** a, uint64_t* b, const int primeid_init) {
+/root/fideslib/src/AddSub.cu:92:__global__ void scalar_sub_(void** a, uint64_t* b, const int primeid_init) {
+/root/fideslib/src/PeerUtils.cu:252:        cudaGraphAddKernelNode(&peer_kernel_node, capturing_graph, deps, dep_count,
+/root/fideslib/src/PeerUtils.cu:318:        cudaGraphAddKernelNode(&peer_kernel_node, capturing_graph, deps, dep_count,
+/root/fideslib/src/PeerUtils.cu:816:        cudaGraphAddKernelNode(&peer_kernel_node, capturing_graph, deps, dep_count,
+
+----------------------------------------------------------------------------------------------------
+4) Limb / LimbPartition declarations and data layout
+----------------------------------------------------------------------------------------------------
+
+==== /root/fideslib/src/CKKS/Limb.cuh ====
+     1	//
+     2	// Created by carlos on 6/03/24.
+     3	//
+     4	#ifndef FIDESLIB_CKKS_LIMB_CUH
+     5	#define FIDESLIB_CKKS_LIMB_CUH
+     6	
+     7	// #include <concepts>
+     8	#include <iostream>
+     9	#include <variant>
+    10	#include "ConstantsGPU.cuh"
+    11	#include "VectorGPU.cuh"
+    12	#include "forwardDefs.cuh"
+    13	
+    14	namespace FIDESlib::CKKS {
+    15	
+    16	template <typename T>
+    17	class Limb {
+    18	    using LimbImpl = std::variant<Limb<uint32_t>, Limb<uint64_t>>;
+    19	    static_assert(std::is_integral_v<T> && std::is_unsigned_v<T>);
+    20	
+    21	    ContextData& cc;
+    22	
+    23	   public:
+    24	    int primeid;
+    25	    Stream& stream;
+    26	    VectorGPU<T> v;
+    27	    VectorGPU<T> aux;
+    28	
+    29	   private:
+    30	    const int id;
+    31	    const bool raw;
+    32	    static constexpr int block = 128;
+    33	
+    34	   public:
+    35	    ~Limb() noexcept;
+    36	
+    37	    Limb(Limb<T>&& l) noexcept;
+    38	
+    39	    Limb(ContextData& context, const int id, Stream& stream, const int primeid = -1, bool constant = false);
+    40	
+    41	    Limb<T> clone();
+    42	
+    43	    //    Limb(Context &context, const int device, const int primeid = -1);
+    44	    Limb(ContextData& context, T* data, const int offset, const int id, Stream& stream, const int primeid = -1,
+    45	         T* data_aux = nullptr, const int offset_aux = 0);
+    46	    //void free();
+    47	
+    48	    Global::Globals* getGlobals();
+    49	
+    50	    void add(const LimbImpl& l);
+    51	
+    52	    void add(const Limb<uint64_t>& l);
+    53	
+    54	    void add(const Limb<uint32_t>& l);
+    55	
+    56	    void sub(const LimbImpl& l);
+    57	
+    58	    void sub(const Limb<uint64_t>& l);
+    59	
+    60	    void sub(const Limb<uint32_t>& l);
+    61	
+    62	    void mult(const LimbImpl& l);
+    63	
+    64	    void mult(const Limb<uint64_t>& l);
+    65	
+    66	    void mult(const Limb<uint32_t>& l);
+    67	
+    68	    void mult(const LimbImpl& _l1, const LimbImpl& _l2, const bool inplace = false);
+    69	
+    70	    template <typename Q>
+    71	    void load(const std::vector<Q>& dat_);
+    72	
+    73	    void load(const VectorGPU<T>& dat);
+    74	
+    75	    void store(std::vector<T>& dat) const;
+    76	
+    77	    template <typename Q>
+    78	    void load_convert(const std::vector<Q>& dat_raw);
+    79	
+    80	    template <typename Q>
+    81	    void store_convert(std::vector<Q>& dat_raw);
+    82	
+    83	    template <ALGO algo = ALGO_SHOUP>
+    84	    void INTT();
+    85	
+    86	    template <ALGO algo = ALGO_SHOUP>
+    87	    void NTT();
+    88	
+    89	    void NTT_rescale_fused(const LimbImpl& l);
+    90	
+    91	    void NTT_rescale_fused(const Limb<uint32_t>& l);
+    92	
+    93	    void NTT_rescale_fused(const Limb<uint64_t>& l);
+    94	
+    95	    void NTT_moddown_fused(const LimbImpl& l);
+    96	
+    97	    void NTT_multpt_fused(const LimbImpl& _l, const LimbImpl& _pt);
+    98	
+    99	    void copyV(const LimbImpl& l);
+   100	
+   101	    void copyV(const Limb<uint32_t>& l);
+   102	
+   103	    void copyV(const Limb<uint64_t>& l);
+   104	
+   105	    void INTT_from(LimbImpl& l);
+   106	
+   107	    void addMult(const LimbImpl& _l1, const LimbImpl& _l2, const bool inplace = false);
+   108	
+   109	    void printThisLimb(int num = 32) const;
+   110	
+   111	    void INTT_from_mult(LimbImpl& res0_, LimbImpl& res1_, const LimbImpl& c1_, const LimbImpl& c1tilde_,
+   112	                        const LimbImpl& c0_, const LimbImpl& c0tilde_, const LimbImpl& kska_, const LimbImpl& kskb_);
+   113	
+   114	    void INTT_from_mult_acc(LimbImpl& res0_, LimbImpl& res1_, const LimbImpl& c1_, const LimbImpl& c1tilde_,
+   115	                            const LimbImpl& c0_, const LimbImpl& c0tilde_, const LimbImpl& kska_,
+   116	                            const LimbImpl& kskb_);
+   117	
+   118	    void NTT_and_ksk_dot(LimbImpl& res0_, LimbImpl& res1_, const LimbImpl& kska_, const LimbImpl& kskb_);
+   119	
+   120	    void NTT_and_ksk_dot_acc(LimbImpl& res0_, LimbImpl& res1_, const LimbImpl& kska_, const LimbImpl& kskb_);
+   121	
+   122	    void automorph(const int index, const int br);
+   123	};
+   124	
+   125	using LimbImpl = std::variant<Limb<uint32_t>, Limb<uint64_t>>;
+   126	}  // namespace FIDESlib::CKKS
+   127	
+   128	#endif  //FIDESLIB_LIMB_CUH
+
+==== /root/fideslib/src/CKKS/Limb.cu ====
+     1	//
+     2	// Created by carlosad on 25/03/24.
+     3	//
+     4	
+     5	#include "AddSub.cuh"
+     6	#include "CKKS/Context.cuh"
+     7	#include "CKKS/ElemenwiseBatchKernels.cuh"
+     8	#include "CKKS/Limb.cuh"
+     9	#include "ModMult.cuh"
+    10	#include "NTT.cuh"
+    11	#include "Rotation.cuh"
+    12	
+    13	namespace FIDESlib::CKKS {
+    14	template <typename T>
+    15	Limb<T>::Limb(Limb<T>&& l) noexcept
+    16	    : cc(l.cc), primeid(l.primeid), stream(l.stream), v(std::move(l.v)), aux(std::move(l.aux)), id(l.id), raw(l.raw) {}
+    17	
+    18	template <typename T>
+    19	Limb<T>::~Limb() noexcept {
+    20	    v.free(stream);
+    21	    aux.free(stream);
+    22	}
+    23	
+    24	template <typename T>
+    25	Limb<T>::Limb(ContextData& context, const int id, Stream& stream, const int primeid, bool constant)
+    26	    : cc(context),
+    27	      primeid(primeid),
+    28	      stream(stream /*StartStream(primeid, cc.L + cc.K + 1)*/),
+    29	      v(stream, context.N, cc.GPUid[id]),
+    30	      aux(stream, constant ? 0 : context.N, cc.GPUid[id]),
+    31	      id(id),
+    32	      raw(!cc.isValidPrimeId(primeid)) {
+    33	    // TODO: CryptoContext limb tracking.
+    34	    //id = cc.generateId(this);
+    35	    if (raw) {
+    36	        assert(primeid == -1);
+    37	    }
+    38	    // assert(stream.ptr() != nullptr);
+    39	    // assert(stream.ev != nullptr);
+    40	    int dev;
+    41	    cudaGetDevice(&dev);
+    42	    assert(this->v.size == cc.N);
+    43	    assert(dev == v.device);
+    44	}
+    45	
+    46	/**
+    47	     * Caution! Auxiliar vector is not managed and operations like INTT and NTT shouldn't be used on this.
+    48	     * TODO add assertions for correct use.
+    49	     */
+    50	template <typename T>
+    51	Limb<T>::Limb(ContextData& context, T* data, const int offset, const int id, Stream& stream, const int primeid,
+    52	              T* data_aux, const int offset_aux)
+    53	    : cc(context),
+    54	      primeid(primeid),
+    55	      stream(stream /*StartStream(primeid, cc.L + cc.K + 1)*/),
+    56	      v(data, context.N, cc.GPUid[id], offset),
+    57	      aux(data_aux ? data_aux : data, context.N, cc.GPUid[id], data_aux ? offset_aux : offset),
+    58	      id(id),
+    59	      raw(!cc.isValidPrimeId(primeid)) {
+    60	    // TODO: CryptoContext limb tracking.
+    61	    //id = cc.generateId(this);
+    62	    if (raw) {
+    63	        assert(primeid == -1);
+    64	    }
+    65	    // assert(stream.ptr() != nullptr);
+    66	    // assert(stream.ev != nullptr);
+    67	
+    68	    int dev;
+    69	    cudaGetDevice(&dev);
+    70	    assert(this->v.size == cc.N);
+    71	    assert(dev == v.device);
+    72	}
+    73	
+    74	template <typename T>
+    75	Global::Globals* Limb<T>::getGlobals() {
+    76	    return cc.precom.globals->globals[id];
+    77	}
+    78	
+    79	template <typename T>
+    80	void Limb<T>::store(std::vector<T>& dat) const {
+    81	    dat.resize(v.size);
+    82	
+    83	    //cudaHostRegister((void*)dat.data(), dat.size() * sizeof(T), cudaHostRegisterDefault);
+    84	    //cudaMemcpyAsync((void *) dat.data(), v.data, dat.size() * sizeof(T), cudaMemcpyDeviceToHost, stream.ptr());
+    85	
+    86	    cudaMemcpyAsync((void*)dat.data(), v.data, dat.size() * sizeof(T), cudaMemcpyDeviceToHost, stream.ptr());
+    87	    cudaStreamSynchronize(stream.ptr());
+    88	    //cudaDeviceSynchronize();
+    89	    //cudaHostUnregister((void*)dat.data());
+    90	}
+    91	
+    92	template <typename T>
+    93	template <typename Q>
+    94	void Limb<T>::load(const std::vector<Q>& dat_) {
+    95	    assert(dat_.size() <= v.size);
+    96	    int device = -1;
+    97	    cudaGetDevice(&device);
+    98	    // std::cout << v.device << " " << device << ",";
+    99	    std::vector<T> dat;
+   100	    if constexpr (!std::is_same<T, Q>().value) {
+   101	        dat.assign(v.size, 0);
+   102	        for (size_t i = 0; i < dat.size(); ++i) {
+   103	            dat[i] = dat_[i];
+   104	        }
+   105	    } else {
+   106	        dat = dat_;
+   107	    }
+   108	
+   109	    //cudaHostRegister((void *) dat.data(), dat.size() * sizeof(T), cudaHostRegisterDefault);
+   110	    //cudaDeviceSynchronize();
+   111	    cudaMemcpyAsync(v.data, dat.data(), dat.size() * sizeof(T), cudaMemcpyHostToDevice, stream.ptr());
+   112	    //cudaDeviceSynchronize();
+   113	    //cudaHostUnregister((void *) dat.data());
+   114	}
+   115	
+   116	template void Limb<uint32_t>::load<uint32_t>(const std::vector<uint32_t>& dat_);
+   117	
+   118	template void Limb<uint32_t>::load<uint64_t>(const std::vector<uint64_t>& dat_);
+   119	
+   120	template void Limb<uint64_t>::load<uint32_t>(const std::vector<uint32_t>& dat_);
+   121	
+   122	template void Limb<uint64_t>::load<uint64_t>(const std::vector<uint64_t>& dat_);
+   123	
+   124	template <typename T>
+   125	void Limb<T>::load(const VectorGPU<T>& dat) {
+   126	    cudaMemcpyAsync(v.data, dat.data, v.size, cudaMemcpyDeviceToDevice, stream.ptr());
+   127	}
+   128	
+   129	template <typename T>
+   130	template <typename Q>
+   131	void Limb<T>::load_convert(const std::vector<Q>& dat_raw) {
+   132	    assert(dat_raw.size() <= v.size);
+   133	    std::vector<T> dat(dat_raw.size());
+   134	
+   135	    for (size_t i = 0; i < dat.size(); ++i)
+   136	        dat[i] = static_cast<T>(dat_raw[i]);
+   137	
+   138	    load(dat);
+   139	}
+   140	
+   141	template void Limb<uint32_t>::load_convert<uint64_t>(const std::vector<uint64_t>& dat_raw);
+   142	
+   143	template void Limb<uint64_t>::load_convert<uint64_t>(const std::vector<uint64_t>& dat_raw);
+   144	
+   145	template <typename T>
+   146	template <typename Q>
+   147	void Limb<T>::store_convert(std::vector<Q>& dat_raw) {
+   148	    dat_raw.resize(v.size);
+   149	    if constexpr (std::is_same_v<T, Q>) {
+   150	        store(dat_raw);
+   151	    } else {
+   152	        std::vector<T> dat(v.size);
+   153	        store(dat);
+   154	        for (size_t i = 0; i < dat.size(); ++i)
+   155	            dat_raw[i] = static_cast<Q>(dat[i]);
+   156	    }
+   157	}
+   158	
+   159	template void Limb<uint32_t>::store_convert<uint64_t>(std::vector<uint64_t>& dat_raw);
+   160	
+   161	template void Limb<uint64_t>::store_convert<uint64_t>(std::vector<uint64_t>& dat_raw);
+   162	
+   163	template <typename T>
+   164	void Limb<T>::add(const LimbImpl& l) {
+   165	    switch (l.index()) {
+   166	        case U32:
+   167	            add(std::get<U32>(l));
+   168	            break;
+   169	        case U64:
+   170	            add(std::get<U64>(l));
+   171	            break;
+   172	    }
+   173	}
+   174	
+   175	template <>
+   176	void Limb<uint64_t>::add(const Limb<uint64_t>& l) {
+   177	    //stream.wait(l.stream);
+   178	    dim3 blockDim{block};
+   179	    dim3 gridDim{(uint32_t)(cc.N) / block};
+   180	    add_<uint64_t><<<gridDim, blockDim, 0, stream.ptr()>>>(v.data, l.v.data, primeid);
+   181	}
+   182	
+   183	template <>
+   184	void Limb<uint64_t>::add(const Limb<uint32_t>& l) {
+   185	    assert("Not implemented." == nullptr);
+   186	}
+   187	
+   188	template <>
+   189	void Limb<uint32_t>::add(const Limb<uint64_t>& l) {
+   190	    assert("Not implemented." == nullptr);
+   191	}
+   192	
+   193	template <>
+   194	void Limb<uint32_t>::add(const Limb<uint32_t>& l) {
+   195	    //stream.wait(l.stream);
+   196	    dim3 blockDim{block};
+   197	    dim3 gridDim{(uint32_t)(cc.N) / block};
+   198	    add_<uint32_t><<<gridDim, blockDim, 0, stream.ptr()>>>(v.data, l.v.data, primeid);
+   199	}
+   200	
+   201	template <typename T>
+   202	void Limb<T>::sub(const LimbImpl& l) {
+   203	    switch (l.index()) {
+   204	        case U32:
+   205	            sub(std::get<U32>(l));
+   206	            break;
+   207	        case U64:
+   208	            sub(std::get<U64>(l));
+   209	            break;
+   210	    }
+   211	}
+   212	
+   213	template <>
+   214	void Limb<uint32_t>::sub(const Limb<uint32_t>& l) {
+   215	    stream.wait(l.stream);
+   216	    dim3 blockDim{block};
+   217	    dim3 gridDim{(uint32_t)(cc.N) / block};
+   218	    sub_<uint32_t><<<gridDim, blockDim, 0, stream.ptr()>>>(v.data, l.v.data, primeid);
+   219	}
+   220	
+   221	template <>
+   222	void Limb<uint32_t>::sub(const Limb<uint64_t>& l) {
+   223	    assert("Not implemented." == nullptr);
+   224	}
+   225	
+   226	template <>
+   227	void Limb<uint64_t>::sub(const Limb<uint32_t>& l) {
+   228	    assert("Not implemented." == nullptr);
+   229	}
+   230	
+   231	template <>
+   232	void Limb<uint64_t>::sub(const Limb<uint64_t>& l) {
+   233	    stream.wait(l.stream);
+   234	    dim3 blockDim{block};
+   235	    dim3 gridDim{(uint32_t)(cc.N) / block};
+   236	    sub_<uint64_t><<<gridDim, blockDim, 0, stream.ptr()>>>(v.data, l.v.data, primeid);
+   237	}
+   238	
+   239	template <typename T>
+   240	void Limb<T>::mult(const LimbImpl& l) {
+   241	    switch (l.index()) {
+   242	        case U32:
+   243	            mult(std::get<U32>(l));
+   244	            break;
+   245	        case U64:
+   246	            mult(std::get<U64>(l));
+   247	            break;
+   248	    }
+   249	}
+   250	
+   251	template <>
+   252	void Limb<uint64_t>::mult(const Limb<uint32_t>& l) {
+   253	    assert("Not implemented." == nullptr);
+   254	}
+   255	
+   256	template <>
+   257	void Limb<uint32_t>::mult(const Limb<uint32_t>& l) {
+   258	    assert(v.size == l.v.size);
+   259	    mult_<uint32_t, ALGO_BARRETT><<<v.size / block, block, 0, stream.ptr()>>>(v.data, l.v.data, primeid);
+   260	}
+   261	
+   262	template <>
+   263	void Limb<uint32_t>::mult(const Limb<uint64_t>& l) {
+   264	    assert("Not implemented." == nullptr);
+   265	}
+   266	
+   267	template <>
+   268	void Limb<uint64_t>::mult(const Limb<uint64_t>& l) {
+   269	    assert(v.size == l.v.size);
+   270	    mult_<uint64_t, ALGO_BARRETT><<<v.size / block, block, 0, stream.ptr()>>>(v.data, l.v.data, primeid);
+   271	}
+   272	
+   273	template <>
+   274	void Limb<uint64_t>::mult(const LimbImpl& _l1, const LimbImpl& _l2, const bool inplace) {
+   275	    assert(_l1.index() == U64);
+   276	    assert(_l2.index() == U64);
+   277	    using T = uint64_t;
+   278	    const Limb<T>& l1 = std::get<U64>(_l1);
+   279	    const Limb<T>& l2 = std::get<U64>(_l2);
+   280	
+   281	    mult_<T, ALGO_BARRETT>
+   282	        <<<v.size / block, block, 0, stream.ptr()>>>(inplace ? aux.data : v.data, l1.v.data, l2.v.data, primeid);
+   283	}
+   284	
+   285	template <>
+   286	void Limb<uint32_t>::mult(const LimbImpl& _l1, const LimbImpl& _l2, const bool inplace) {
+   287	    assert(_l1.index() == U32);
+   288	    assert(_l2.index() == U32);
+   289	    using T = uint32_t;
+   290	    const Limb<T>& l1 = std::get<U32>(_l1);
+   291	    const Limb<T>& l2 = std::get<U32>(_l2);
+   292	
+   293	    mult_<T, ALGO_BARRETT>
+   294	        <<<v.size / block, block, 0, stream.ptr()>>>(inplace ? aux.data : v.data, l1.v.data, l2.v.data, primeid);
+   295	}
+   296	
+   297	template <typename T>
+   298	template <ALGO algo>
+   299	void Limb<T>::INTT() {
+   300	    assert(primeid >= 0);
+   301	    constexpr int M = sizeof(T) == 8 ? 4 : 8;
+   302	
+   303	    if constexpr (1) {
+   304	        dim3 blockDim = 1 << ((cc.logN) / 2 - 1);
+   305	        dim3 gridDim{v.size / blockDim.x / 2 / M};
+   306	        int bytes = sizeof(T) * blockDim.x * (2 * M + 1 + (algo == 2 || algo == 3 ? 1 : 0));
+   307	
+   308	        INTT_<T, false, algo><<<gridDim, blockDim, bytes, stream.ptr()>>>(getGlobals(), v.data, primeid, aux.data);
+   309	
+   310	        blockDim = (1 << ((cc.logN + 1) / 2 - 1));
+   311	        gridDim = {v.size / blockDim.x / 2 / M};
+   312	        bytes = sizeof(T) * blockDim.x * (2 * M + 1 + (algo == 2 || algo == 3 ? 1 : 0));
+   313	
+   314	        INTT_<T, true, algo><<<gridDim, blockDim, bytes, stream.ptr()>>>(getGlobals(), aux.data, primeid, v.data);
+   315	    }
+   316	}
+   317	
+   318	template <typename T>
+   319	template <ALGO algo>
+   320	void Limb<T>::NTT() {
+   321	
+   322	    if constexpr (0) {
+   323	        assert(primeid >= 0);
+   324	        constexpr int M = sizeof(T) == 8 ? 4 : 8;
+   325	        constexpr int K = 1;
+   326	
+   327	        dim3 blockDim{(uint32_t)(1 << ((cc.logN + 1) / 2 - 1)), K};
+   328	        dim3 gridDim{v.size / blockDim.x / 2 / M};
+   329	        int bytes = sizeof(T) * blockDim.x * (2 * M + 1 + (algo == 2 || algo == 3 ? 1 : 0));
+   330	
+   331	        //T *psi_arr = (T *) G_::psi[primeid];
+   332	        //T *psi_arr_middle_scale = (T *) G_::psi_middle_scale[primeid];
+   333	
+   334	        int primeid_ = primeid;
+   335	        void* args[6] = {getGlobals(), &v.data, (void*)&primeid_, &aux.data, (void*)&primeid_, (void*)&primeid_};
+   336	        cudaLaunchCooperativeKernel(get_NTT_reference(false) /*(void *) test_kernel*/ /*(void *) NTT_<T, false, algo>*/,
+   337	                                    gridDim, blockDim, args, bytes, stream.ptr());
+   338	        //CudaCheckErrorModNoSync;
+   339	    } else if constexpr (1) {
+   340	        static std::map<int, cudaGraphExec_t> exec;
+   341	
+   342	        run_in_graph<false>(exec[primeid], stream, [&]() {
+   343	            assert(primeid >= 0);
+   344	            constexpr int M = sizeof(T) == 8 ? 4 : 8;
+   345	
+   346	            dim3 blockDim{(uint32_t)(1 << ((cc.logN + 1 + (cc.logN > 13 ? 0 : 0)) / 2 - 1))};
+   347	            dim3 gridDim{v.size / blockDim.x / 2 / M};
+   348	            int bytes = sizeof(T) * blockDim.x * (2 * M + 1 + (algo == 2 || algo == 3 ? 1 : 0));
+   349	
+   350	            NTT_<T, false, algo><<<gridDim, blockDim, bytes, stream.ptr()>>>(getGlobals(), v.data, primeid, aux.data);
+   351	
+   352	            {
+   353	                blockDim = dim3{(uint32_t)(1 << ((cc.logN + (cc.logN > 13 ? 0 : 0)) / 2 - 1))};
+   354	                gridDim = {v.size / blockDim.x / 2 / M};
+   355	                bytes = sizeof(T) * blockDim.x * (2 * M + 1 + (algo == 2 || algo == 3 ? 1 : 0));
+   356	
+   357	                NTT_<T, true, algo>
+   358	                    <<<gridDim, blockDim, bytes, stream.ptr()>>>(getGlobals(), aux.data, primeid, v.data);
+   359	            }
+   360	        });
+
+==== /root/fideslib/src/CKKS/LimbPartition.cuh ====
+     1	//
+     2	// Created by carlosad on 16/03/24.
+     3	//
+     4	
+     5	#ifndef FIDESLIB_CKKS_LIMBPARTITION_CUH
+     6	#define FIDESLIB_CKKS_LIMBPARTITION_CUH
+     7	
+     8	#include <atomic>
+     9	#include "Limb.cuh"
+    10	#include "LimbUtils.cuh"
+    11	#include "NTT.cuh"
+    12	#include "PeerUtils.cuh"
+    13	#ifdef NCCL
+    14	#include "nccl.h"
+    15	#endif
+    16	namespace FIDESlib::CKKS {
+    17	
+    18	extern bool MEMCPY_PEER;
+    19	extern bool GRAPH_CAPTURE;
+    20	class LimbPartition {
+    21	   public:
+    22	    ContextData& cc;
+    23	    const uint64_t uid;
+    24	    int* level;
+    25	    const int id;
+    26	    const int device;
+    27	#ifdef NCCL
+    28	    const ncclComm_t rank;  // For NCCL / RCCL
+    29	#else
+    30	    const int rank;
+    31	#endif
+    32	    Stream s;
+    33	
+    34	    std::vector<LimbRecord>& meta;
+    35	    std::vector<LimbRecord>& SPECIALmeta;
+    36	    const std::vector<int>& digitid;
+    37	    std::vector<std::vector<LimbRecord>>& DECOMPmeta;
+    38	    std::vector<std::vector<LimbRecord>>& DIGITmeta;
+    39	    std::vector<LimbRecord>& GATHERmeta;
+    40	
+    41	    std::vector<LimbImpl> limb;
+    42	    std::vector<LimbImpl> SPECIALlimb;
+    43	    std::vector<std::vector<LimbImpl>> DECOMPlimb;
+    44	    std::vector<std::vector<LimbImpl>> DIGITlimb;
+    45	    std::vector<LimbImpl> GATHERlimb;
+    46	
+    47	    void** bufferAUXptrs;
+    48	    VectorGPU<void*> limbptr;
+    49	    VectorGPU<void*> auxptr;
+    50	    VectorGPU<void*> SPECIALlimbptr;
+    51	    VectorGPU<void*> SPECIALauxptr;
+    52	
+    53	    std::vector<VectorGPU<void*>> DECOMPlimbptr;
+    54	    //  std::vector<VectorGPU<void*>> DECOMPauxptr;
+    55	    std::vector<VectorGPU<void*>> DIGITlimbptr;
+    56	    // std::vector<VectorGPU<void*>> DIGITauxptr;
+    57	    VectorGPU<void*> GATHERptr;
+    58	
+    59	    uint64_t* bufferDECOMPandDIGIT = nullptr;
+    60	    uint64_t* bufferSPECIAL = nullptr;
+    61	    uint64_t* bufferLIMB = nullptr;
+    62	    uint64_t* bufferGATHER = nullptr;
+    63	    void* bufferDECOMPandDIGIT_handle = nullptr;
+    64	    void* bufferGATHER_handle = nullptr;
+    65	
+    66	    /*
+    67	    LimbPartition(LimbPartition && lp) :
+    68	        device(lp.device),
+    69	        rank(lp.rank),
+    70	        meta(lp.meta),
+    71	        SPECIALmeta(lp.SPECIALmeta),
+    72	        DECOMPmeta(lp.DECOMPmeta),
+    73	        limb(std::move(lp.limb)),
+    74	        SPECIALlimb(std::move(lp.SPECIALlimb)),
+    75	        DECOMPlimb(std::move(lp.DECOMPlimb)),
+    76	        limbptr(std::move(lp.limbptr)),
+    77	        SPECIALlimbptr(std::move(lp.SPECIALlimbptr)),
+    78	        DECOMPlimbptr(std::move(lp.DECOMPlimbptr))
+    79	        {}
+    80	*/
+    81	
+    82	    LimbPartition(LimbPartition&& l) noexcept;
+    83	
+    84	    LimbPartition(ContextData& cc, const uint64_t& uid, int* level, const int id, bool def_stream = false);
+    85	
+    86	    ~LimbPartition();
+    87	
+    88	    Global::Globals* getGlobals();
+    89	    void binomialDotProduct(LimbPartition& c1, LimbPartition& c2, const std::vector<const LimbPartition*>& c0s,
+    90	                            const std::vector<const LimbPartition*>& c1s, const std::vector<const LimbPartition*>& d0s,
+    91	                            const std::vector<const LimbPartition*>& d1s, bool ext);
+    92	    void binomialMult(LimbPartition& c1, LimbPartition& c2, const LimbPartition& d0, const LimbPartition& d1,
+    93	                      bool extend_ins, bool square);
+    94	    void generateLimbToLevel(int new_level);
+    95	
+    96	    enum GENERATION_MODE { AUTOMATIC, SINGLE_BUFFER, DUAL_BUFFER };
+    97	
+    98	    void generate(std::vector<LimbRecord>& records, std::vector<LimbImpl>& limbs, VectorGPU<void*>& ptrs, int pos,
+    99	                  VectorGPU<void*>* auxptrs, uint64_t* buffer = nullptr, size_t offset = 0,
+   100	                  uint64_t* buffer_aux = nullptr, size_t offset_aux = 0, bool noptr = false);
+   101	
+   102	    void generateLimb();
+   103	
+   104	    void generateSpecialLimb(bool zero_out, bool for_communication);
+   105	
+   106	    void add(const LimbPartition& p, const bool ext);
+   107	    void add(const LimbPartition& a, const LimbPartition& b, const bool ext_a, const bool ext_b);
+   108	
+   109	    void sub(const LimbPartition& p);
+   110	
+   111	    void multElement(const LimbPartition& p);
+   112	
+   113	    void multPt(const LimbPartition& p);
+   114	
+   115	    void modup(LimbPartition& aux_partition);
+   116	
+   117	    template <ALGO algo = ALGO_SHOUP>
+   118	    void moddown(LimbPartition& auxLimbs, bool ntt, bool free_special_limbs);
+   119	
+   120	    void rescale();
+   121	
+   122	    void freeSpecialLimbs();
+   123	
+   124	    using OptReference = LimbPartition*;
+   125	    using OptConstReference = const LimbPartition*;
+   126	    struct NTT_fusion_fields {
+   127	        OptReference op2;
+   128	        OptConstReference pt;
+   129	        OptReference res0;
+   130	        OptReference res1;
+   131	        OptConstReference kska;
+   132	        OptConstReference kskb;
+   133	    };
+   134	
+   135	    template <ALGO algo, NTT_MODE mode>
+   136	    void ApplyNTT(int batch, LimbPartition::NTT_fusion_fields fields, std::vector<LimbImpl>& limb,
+   137	                  VectorGPU<void*>& limbptr, VectorGPU<void*>& auxptr, ContextData& cc, const int primeid_init,
+   138	                  const int limbsize = -1);
+   139	
+   140	    template <ALGO algo = ALGO_SHOUP, NTT_MODE mode = NTT_NONE>
+   141	    void NTT(int batch = 1, bool sync = false, NTT_fusion_fields fields = NTT_fusion_fields{});
+   142	
+   143	    struct INTT_fusion_fields {
+   144	        OptReference res0;
+   145	        OptReference res1;
+   146	        OptConstReference kska;
+   147	        OptConstReference kskb;
+   148	        OptConstReference c0;
+   149	        OptConstReference c0tilde;
+   150	        OptConstReference c1;
+   151	        OptConstReference c1tilde;
+   152	    };
+   153	
+   154	    template <ALGO algo, INTT_MODE mode>
+   155	    void ApplyINTT(int batch, LimbPartition::INTT_fusion_fields fields, std::vector<LimbImpl>& limb,
+   156	                   VectorGPU<void*>& limbptr, VectorGPU<void*>& auxptr, ContextData& cc, const int primeid_init,
+   157	                   const int limbsize);
+   158	
+   159	    template <ALGO algo = ALGO_SHOUP, INTT_MODE mode = INTT_NONE>
+   160	    void INTT(int batch = 1, bool sync = false, INTT_fusion_fields fields = INTT_fusion_fields{});
+   161	
+   162	    static std::vector<VectorGPU<void*>> generateDecompLimbptr(void** buffer,
+   163	                                                               const std::vector<std::vector<LimbRecord>>& DECOMPmeta,
+   164	                                                               const int device, int offset);
+   165	
+   166	    void generateAllDecompLimb(uint64_t* pInt, size_t offset);
+   167	
+   168	    void generateAllDigitLimb(uint64_t* pInt, size_t offset);
+   169	
+   170	    void copyLimb(const LimbPartition& partition);
+   171	    void copySpecialLimb(const LimbPartition& p);
+   172	
+   173	    void generateAllDecompAndDigit(bool iskey);
+   174	
+   175	    void mult1AddMult23Add4(const LimbPartition& partition1, const LimbPartition& partition2,
+   176	                            const LimbPartition& partition3, const LimbPartition& partition4);
+   177	
+   178	    void mult1Add2(const LimbPartition& partition1, const LimbPartition& partition2);
+   179	
+   180	    void generateLimbSingleMalloc();
+   181	    void generateLimbConstant();
+   182	
+   183	    void loadDecompDigit(const std::vector<std::vector<std::vector<uint64_t>>>& data,
+   184	                         const std::vector<std::vector<uint64_t>>& moduli);
+   185	
+   186	    void dotKSK(const LimbPartition& src, const LimbPartition& ksk, const bool inplace = false,
+   187	                const LimbPartition* limbsrc = nullptr);
+   188	
+   189	    void multElement(const LimbPartition& partition1, const LimbPartition& partition2);
+   190	
+   191	    void multModupDotKSK(LimbPartition& c1, const LimbPartition& c1tilde, LimbPartition& c0,
+   192	                         const LimbPartition& c0tilde, const LimbPartition& ksk_a, const LimbPartition& ksk_b);
+   193	
+   194	    int getLimbSize(int level);
+   195	    void automorph(const int index, const int br, LimbPartition* src, bool ext);
+   196	
+   197	    void modupInto(LimbPartition& partition, LimbPartition& partition1);
+   198	    void multScalar(std::vector<uint64_t>& vector);
+   199	    void squareElement(const LimbPartition& p);
+   200	    void binomialSquareFold(LimbPartition& c0_res, const LimbPartition& c2_key_switched_0,
+   201	                            const LimbPartition& c2_key_switched_1);
+   202	    void addScalar(std::vector<uint64_t>& vector);
+   203	    void subScalar(std::vector<uint64_t>& vector);
+   204	    void dropLimb();
+   205	    void addMult(const LimbPartition& partition, const LimbPartition& partition1);
+   206	    void broadcastLimb0();
+   207	    void evalLinearWSum(uint32_t n, std::vector<const LimbPartition*> ps, std::vector<uint64_t>& weights);
+   208	    void rotateModupDotKSK(LimbPartition& c1, LimbPartition& c0, const LimbPartition& ksk_a,
+   209	                           const LimbPartition& ksk_b);
+   210	    void squareModupDotKSK(LimbPartition& c1, LimbPartition& c0, const LimbPartition& ksk_a,
+   211	                           const LimbPartition& ksk_b);
+   212	    void rescaleMGPU();
+   213	    void moddownMGPU(LimbPartition& auxLimbs, bool ntt, bool free_special_limbs,
+   214	                     const std::vector<uint64_t*>& bufferSpecial_);
+   215	    void generatePartialSpecialLimb();
+   216	    void dotProductPt(LimbPartition& c1, const std::vector<const LimbPartition*>& c0s,
+   217	                      const std::vector<const LimbPartition*>& c1s, const std::vector<const LimbPartition*>& pts,
+   218	                      bool ext);
+   219	
+   220	    void generateGatherLimb(bool iskey);
+   221	    void dotKSKfusedMGPU(LimbPartition& out2, const LimbPartition& digitSrc, const LimbPartition& ksk_a,
+   222	                         const LimbPartition& ksk_b, const LimbPartition& src);
+   223	    void fusedHoistRotate(int n, std::vector<int> indexes, std::vector<LimbPartition*>& c0,
+   224	                          std::vector<LimbPartition*>& c1, const std::vector<LimbPartition*>& ksk_a,
+   225	                          const std::vector<LimbPartition*>& ksk_b, const LimbPartition& src_c0,
+   226	                          const LimbPartition& src_c1, bool c0_modup);
+   227	
+   228	    void modup_ksk_moddown_mgpu(LimbPartition& c0, const LimbPartition& ksk_a, const LimbPartition& ksk_b,
+   229	                                LimbPartition& auxLimbs1, LimbPartition& auxLimbs2, const bool moddown,
+   230	                                const std::vector<uint64_t*>& bufferGather_,
+   231	                                const std::vector<uint64_t*>& bufferSpecial_c0,
+   232	                                const std::vector<uint64_t*>& bufferSpecial_c1, const std::vector<Stream*>& external_s,
+   233	                                std::vector<std::vector<std::vector<std::pair<uint64_t, TimelineSemaphore*>>>>& signal,
+   234	                                std::vector<std::atomic_uint64_t*>& thread_stop);
+   235	    void broadcastLimb0_mgpu();
+   236	    void doubleRescaleMGPU(LimbPartition& partition);
+   237	    void scaleByP();
+   238	
+   239	    void modupMGPU(LimbPartition& aux, const std::vector<uint64_t*>& bufferGather_,
+   240	                   std::vector<std::atomic_uint64_t*>& thread_stop, std::vector<Stream*>& external_s);
+   241	
+   242	    void multNoModdownEnd(LimbPartition& c0, const LimbPartition& bc0, const LimbPartition& bc1,
+   243	                          const LimbPartition& in, const LimbPartition& aux);
+   244	    static void multScalarBatchManyToOne(std::vector<LimbPartition*>& parta,
+   245	                                         const std::vector<std::vector<unsigned long int>>& vector,
+   246	                                         const std::vector<std::vector<unsigned long int>>& vector_shoup, int stride,
+   247	                                         double usage);
+   248	
+   249	    static void addScalarBatchManyToOne(std::vector<LimbPartition*>& parta,
+   250	                                        const std::vector<std::vector<unsigned long int>>& vector, int stride,
+   251	                                        double usage);
+   252	
+   253	    static void multPtBatchManyToOne(std::vector<LimbPartition*>& parta, const std::vector<LimbPartition*>& partb,
+   254	                                     int stride, double usage);
+   255	
+   256	    static void addBatchManyToOne(std::vector<LimbPartition*>& parta, const std::vector<LimbPartition*>& partb,
+   257	                                  int stride, double usage, bool sub, bool exta, bool extb);
+   258	
+   259	    static void LTdotProductPtBatch(std::vector<LimbPartition*>& out, const std::vector<LimbPartition*>& in,
+   260	                                    const std::vector<LimbPartition*>& pt, int bStep, int gStep, int stride,
+   261	                                    double usage, bool ext);
+   262	
+   263	    static void fusedHoistedRotateBatch(std::vector<LimbPartition*>& out, const std::vector<LimbPartition*>& in,
+   264	                                        const std::vector<LimbPartition*>& ksk_a,
+   265	                                        const std::vector<LimbPartition*>& ksk_b, const std::vector<int>& indexes,
+   266	                                        int n, int stride, double usage, bool c0_modup);
+   267	
+   268	    Stream& getS() const { return const_cast<LimbPartition*>(this)->s; }
+   269	};
+   270	
+   271	}  // namespace FIDESlib::CKKS
+   272	#endif  //FIDESLIB_CKKS_LIMBPARTITION_CUH
+
+==== /root/fideslib/src/CKKS/LimbPartition.cu ====
+     1	//
+     2	// Created by carlosad on 27/04/24.
+     3	//
+     4	#include <algorithm>
+     5	#include <array>
+     6	#include <variant>
+     7	#include <vector>
+     8	
+     9	#include "CKKS/Context.cuh"
+    10	#include "CKKS/Conv.cuh"
+    11	#include "CKKS/ElemenwiseBatchKernels.cuh"
+    12	#include "CKKS/LimbPartition.cuh"
+    13	#include "LimbUtils.cuh"
+    14	#include "NTT.cuh"
+    15	#include "Rotation.cuh"
+    16	#include "VectorGPU.cuh"
+    17	
+    18	#if defined(__clang__)
+    19	#include <experimental/source_location>
+    20	using sc = std::experimental::source_location;
+    21	constexpr int PREFIX_SIZE = 0;
+    22	#else
+    23	#include <source_location>
+    24	using sc = std::source_location;
+    25	constexpr int PREFIX_SIZE = 23;
+    26	#endif
+    27	
+    28	namespace FIDESlib::CKKS {
+    29	
+    30	LimbPartition::LimbPartition(LimbPartition&& l) noexcept
+    31	    : cc(l.cc),
+    32	      uid(l.uid),
+    33	      level(l.level),
+    34	      id(l.id),
+    35	      device((cudaSetDevice(l.device), l.device)),
+    36	      rank(l.rank),
+    37	      s(std::move(l.s)),
+    38	      meta(l.meta),
+    39	      SPECIALmeta(l.SPECIALmeta),
+    40	      digitid(l.digitid),
+    41	      DECOMPmeta(l.DECOMPmeta),
+    42	      DIGITmeta(l.DIGITmeta),
+    43	      GATHERmeta(l.GATHERmeta),
+    44	      limb(std::move(l.limb)),
+    45	      SPECIALlimb(std::move(l.SPECIALlimb)),
+    46	      DECOMPlimb(std::move(l.DECOMPlimb)),
+    47	      DIGITlimb(std::move(l.DIGITlimb)),
+    48	      GATHERlimb(std::move(l.GATHERlimb)),
+    49	      bufferAUXptrs(l.bufferAUXptrs),
+    50	      limbptr(std::move(l.limbptr)),
+    51	      auxptr(std::move(l.auxptr)),
+    52	
+    53	      SPECIALlimbptr(std::move(l.SPECIALlimbptr)),
+    54	      SPECIALauxptr(std::move(l.SPECIALauxptr)),
+    55	      DECOMPlimbptr(std::move(l.DECOMPlimbptr)),
+    56	      //      DECOMPauxptr(std::move(l.DECOMPlimbptr)),
+    57	      DIGITlimbptr(std::move(l.DIGITlimbptr)),
+    58	      //      DIGITauxptr(std::move(l.DIGITlimbptr)),
+    59	      GATHERptr(std::move(l.GATHERptr)),
+    60	      bufferDECOMPandDIGIT(l.bufferDECOMPandDIGIT),
+    61	      bufferSPECIAL(l.bufferSPECIAL),
+    62	      bufferLIMB(l.bufferLIMB),
+    63	      bufferGATHER(l.bufferGATHER),
+    64	      bufferDECOMPandDIGIT_handle(l.bufferDECOMPandDIGIT_handle),
+    65	      bufferGATHER_handle(l.bufferGATHER_handle) {
+    66	    l.bufferSPECIAL = nullptr;
+    67	    l.bufferLIMB = nullptr;
+    68	    l.bufferDECOMPandDIGIT = nullptr;
+    69	    l.bufferAUXptrs = nullptr;
+    70	    l.bufferGATHER = nullptr;
+    71	    l.bufferDECOMPandDIGIT_handle = nullptr;
+    72	    l.bufferGATHER_handle = nullptr;
+    73	}
+    74	
+    75	std::vector<VectorGPU<void*>> LimbPartition::generateDecompLimbptr(
+    76	    void** buffer, const std::vector<std::vector<LimbRecord>>& DECOMPmeta, const int device, int offset) {
+    77	    std::vector<VectorGPU<void*>> result;
+    78	    for (auto& d : DECOMPmeta) {
+    79	        result.emplace_back(buffer, std::max(1ul, d.size()), device, offset);
+    80	        offset += MAXP;
+    81	    }
+    82	    return result;
+    83	}
+    84	
+    85	void** CudaMallocAuxBuffer(Stream& stream, unsigned long size, int device) {
+    86	    void** malloc;
+    87	    CudaCheckErrorModNoSync;
+    88	    malloc = (void**)GPUmalloc(device, MAXP * sizeof(void*) * (4ul + 4 * std::max(size, 1ul)), stream.ptr(), false);
+    89	    //cudaMallocAsync(&malloc, MAXP * sizeof(void*) * (4ul + 4 * std::max(size, 1ul)),
+    90	    //                stream.ptr());  // TODO: can reduce to 3
+    91	    CudaCheckErrorModNoSync;
+    92	    return malloc;
+    93	}
+    94	
+    95	Stream initStream(bool default_) {
+    96	    Stream s;
+    97	    if (default_) {
+    98	        s.initDefault();
+    99	    } else {
+   100	        s.init(50);
+   101	    }
+   102	    return s;
+   103	}
+   104	
+   105	LimbPartition::LimbPartition(ContextData& cc, const uint64_t& uid, int* level, const int id, const bool def_stream)
+   106	    : cc(cc),
+   107	      uid(uid),
+   108	      level(level),
+   109	      id(id),
+   110	      device((cudaSetDevice(cc.GPUid.at(id)), cc.GPUid.at(id))),
+   111	      rank(cc.GPUrank.at(id)),
+   112	      s(initStream(def_stream)),
+   113	      meta(cc.meta.at(id)),
+   114	      SPECIALmeta(cc.specialMeta.at(id)),
+   115	      digitid(cc.GPUdigits.at(id)),
+   116	      DECOMPmeta(cc.decompMeta.at(id)),
+   117	      DIGITmeta(cc.digitMeta.at(id)),
+   118	      GATHERmeta(cc.gatherMeta),
+   119	      DECOMPlimb(DECOMPmeta.size()),
+   120	      DIGITlimb(DIGITmeta.size()),
+   121	      bufferAUXptrs(CudaMallocAuxBuffer(s, cc.dnum, device)),
+   122	      /*
+   123	            limbptr(s, meta.size(), device),
+   124	            auxptr(s, meta.size(), device),
+   125	            SPECIALlimbptr(s, SPECIALmeta.size(), device),
+   126	            SPECIALauxptr(s, SPECIALmeta.size(), device),
+   127	            */
+   128	
+   129	      limbptr(bufferAUXptrs, std::max(1ul, meta.size()), device, 0),
+   130	      auxptr(bufferAUXptrs, std::max(1ul, meta.size()), device, MAXP),
+   131	      SPECIALlimbptr(bufferAUXptrs, std::max(1ul, SPECIALmeta.size()), device, 2 * MAXP),
+   132	      SPECIALauxptr(bufferAUXptrs, std::max(1ul, SPECIALmeta.size()), device, 3 * MAXP),
+   133	
+   134	      DECOMPlimbptr(generateDecompLimbptr(bufferAUXptrs, DECOMPmeta, device, 4 * MAXP)),
+   135	      //      DECOMPauxptr(generateDecompLimbptr(bufferAUXptrs, DECOMPmeta, device, (4 + DECOMPmeta.size()) * MAXP)),
+   136	      DIGITlimbptr(generateDecompLimbptr(bufferAUXptrs, DIGITmeta, device, (4 + DECOMPmeta.size()) * MAXP)),
+   137	      //      , DIGITauxptr(generateDecompLimbptr(bufferAUXptrs, DIGITmeta, device, (4 + 3 * DECOMPmeta.size()) * MAXP))
+   138	      GATHERptr(bufferAUXptrs, std::max(1ul, GATHERmeta.size()), device, (4 + 2 * DECOMPmeta.size()) * MAXP) {}
+   139	
+   140	LimbPartition::~LimbPartition() {
+   141	    CudaNvtxRange r(std::string{sc::current().function_name()}.substr());
+   142	    cudaSetDevice(device);
+   143	    /*
+   144	        for (auto &i: limb) s.wait(STREAM(i));
+   145	        for (auto &i: SPECIALlimb) s.wait(STREAM(i));
+   146	        for (auto &i: DECOMPlimb) for (auto &j: i) s.wait(STREAM(j));
+   147	        for (auto &i: DIGITlimb) for (auto &j: i) s.wait(STREAM(j));
+   148	*/
+   149	
+   150	    limbptr.free(s);
+   151	    auxptr.free(s);
+   152	    SPECIALlimbptr.free(s);
+   153	    SPECIALauxptr.free(s);
+   154	    GATHERptr.free(s);
+   155	    for (auto& d : DECOMPlimbptr)
+   156	        d.free(s);
+   157	    //    for (auto& d : DECOMPauxptr)
+   158	    //        d.free(s);
+   159	    for (auto& d : DIGITlimbptr)
+   160	        d.free(s);
+   161	    // for (auto& d : DIGITauxptr)
+   162	    //    d.free(s);
+   163	
+   164	    //CudaCheckErrorMod;
+   165	    if (bufferDECOMPandDIGIT_handle) {
+   166	        cudaStreamSynchronize(s.ptr());
+   167	#ifdef NCCL
+   168	        if (bufferDECOMPandDIGIT_handle != (void*)-1)
+   169	            NCCLCHECK(ncclCommDeregister(rank, bufferDECOMPandDIGIT_handle));
+   170	        NCCLCHECK(ncclMemFree(bufferDECOMPandDIGIT));
+   171	#else
+   172	        assert(false);
+   173	#endif
+   174	    } else {
+   175	        if (bufferDECOMPandDIGIT)
+   176	            GPUfree(bufferDECOMPandDIGIT, id, 0, s.ptr());
+   177	        // cudaFreeAsync(bufferDECOMPandDIGIT, s.ptr());
+   178	    }
+   179	    if (bufferSPECIAL)
+   180	        GPUfree(bufferSPECIAL, id, 0, s.ptr());
+   181	    //cudaFreeAsync(bufferSPECIAL, s.ptr());
+   182	    if (bufferLIMB) {
+   183	        GPUfree(bufferLIMB, id, 0, s.ptr());
+   184	        //cudaFreeAsync(bufferLIMB, s.ptr());
+   185	    }
+   186	    if (bufferAUXptrs)
+   187	        GPUfree(bufferAUXptrs, id, MAXP * sizeof(void*) * (4ul + 4 * std::max(cc.dnum, 1)), s.ptr(), false);
+   188	    // cudaFreeAsync(bufferAUXptrs, s.ptr());
+   189	    if (bufferGATHER_handle) {
+   190	        cudaStreamSynchronize(s.ptr());
+   191	
+   192	#ifdef NCCL
+   193	        if (bufferGATHER_handle != (void*)-1)
+   194	            NCCLCHECK(ncclCommDeregister(rank, bufferGATHER_handle));
+   195	        NCCLCHECK(ncclMemFree(bufferGATHER));
+   196	#else
+   197	        assert(false);
+   198	#endif
+   199	    } else {
+   200	        if (bufferGATHER)
+   201	            GPUfree(bufferGATHER, id, 0, s.ptr());
+   202	        //cudaFreeAsync(bufferGATHER, s.ptr());
+   203	    }
+   204	    limb.clear();
+   205	    SPECIALlimb.clear();
+   206	    DECOMPlimb.clear();
+   207	    DIGITlimb.clear();
+   208	}
+   209	
+   210	Global::Globals* LimbPartition::getGlobals() {
+   211	    return cc.precom.globals->globals[id];
+   212	}
+   213	
+   214	void LimbPartition::generate(std::vector<LimbRecord>& records, std::vector<LimbImpl>& limbs, VectorGPU<void*>& ptrs,
+   215	                             int pos, VectorGPU<void*>* auxptrs, uint64_t* buffer, size_t offset, uint64_t* buffer_aux,
+   216	                             size_t offset_aux, bool noptr) {
+   217	    CudaNvtxRange r(std::string{sc::current().function_name()}.substr());
+   218	    constexpr bool USE_PARTITION_STREAM = true;
+   219	    assert(pos < (int)records.size());
+   220	    cudaSetDevice(device);
+   221	
+   222	    const int limbs_size = limbs.size();
+   223	    int size = std::max((int)(pos - limbs_size + 1), (int)0);
+   224	    std::vector<void*> cpu_ptr(size, nullptr);
+   225	    std::vector<void*> cpu_auxptr(size, nullptr);
+   226	    for (int i = limbs_size; i <= pos; ++i) {
+   227	        const LimbRecord& r = records.at(i);
+   228	        if (r.type == U32) {
+   229	            if (buffer && buffer_aux) {
+   230	                limbs.emplace_back(Limb<uint32_t>(cc, (uint32_t*)buffer, 2 * offset, id,
+   231	                                                  USE_PARTITION_STREAM ? s : records.at(i).stream, r.id,
+   232	                                                  (uint32_t*)buffer_aux, 2 * offset_aux));
+   233	                offset += cc.N;
+   234	                offset_aux += cc.N;
+   235	            } else if (buffer) {
+   236	                limbs.emplace_back(Limb<uint32_t>(cc, (uint32_t*)buffer, 2 * offset, id,
+   237	                                                  USE_PARTITION_STREAM ? s : records.at(i).stream, r.id, nullptr, 0));
+   238	                offset += cc.N;
+   239	            } else
+   240	                limbs.emplace_back(
+   241	                    Limb<uint32_t>(cc, id, USE_PARTITION_STREAM ? s : records.at(i).stream, r.id, auxptrs ? 1 : 0));
+   242	            cpu_ptr[i - limbs_size] = {&(std::get<U32>(limbs.back()).v.data)[0]};
+   243	            cpu_auxptr[i - limbs_size] = {&(std::get<U32>(limbs.back()).aux.data)[0]};
+   244	        }
+   245	        if (r.type == U64) {
+   246	            if (buffer && buffer_aux) {
+   247	                limbs.emplace_back(Limb<uint64_t>(cc, buffer, offset, id,
+   248	                                                  USE_PARTITION_STREAM ? s : records.at(i).stream, r.id, buffer_aux,
+   249	                                                  offset_aux));
+   250	                offset += cc.N;
+   251	                offset_aux += cc.N;
+   252	            } else if (buffer) {
+   253	                limbs.emplace_back(Limb<uint64_t>(cc, buffer, offset, id,
+   254	                                                  USE_PARTITION_STREAM ? s : records.at(i).stream, r.id, nullptr, 0));
+   255	                offset += cc.N;
+   256	            } else {
+   257	                if (auxptrs) {
+   258	                    limbs.emplace_back(
+   259	                        Limb<uint64_t>(cc, id, USE_PARTITION_STREAM ? s : records.at(i).stream, r.id, false));
+   260	                } else {
+   261	                    limbs.emplace_back(
+   262	                        Limb<uint64_t>(cc, id, USE_PARTITION_STREAM ? s : records.at(i).stream, r.id, true));
+   263	                }
+   264	            }
+   265	
+   266	            cpu_ptr[i - limbs_size] = {&(std::get<U64>(limbs.back()).v.data)[0]};
+   267	            cpu_auxptr[i - limbs_size] = {&(std::get<U64>(limbs.back()).aux.data)[0]};
+   268	            //cudaFreeHost(aux);
+   269	        }
+   270	        CudaCheckErrorModNoSync;
+   271	        s.wait(USE_PARTITION_STREAM ? s : records.at(i).stream);
+   272	        CudaCheckErrorModNoSync;
+   273	    }
+   274	    if (size > 0) {
+   275	        if (!noptr) {
+   276	            cudaMemcpyAsync(ptrs.data + limbs_size, cpu_ptr.data(), size * sizeof(void*), cudaMemcpyHostToDevice,
+   277	                            s.ptr());
+   278	            CudaCheckErrorModNoSync;
+   279	            if (auxptrs) {
+   280	                cudaMemcpyAsync((*auxptrs).data + limbs_size, cpu_auxptr.data(), size * sizeof(void*),
+   281	                                cudaMemcpyHostToDevice, s.ptr());
+   282	            }
+   283	            CudaCheckErrorModNoSync;
+   284	        }
+   285	    }
+   286	    CudaCheckErrorModNoSync;
+   287	}
+   288	/*
+   289	void LimbPartition::generateLimb() {
+   290	    cudaSetDevice(device);
+   291	    generate(meta, limb, limbptr, (int)limb.size(), &auxptr);
+   292	}
+   293	*/
+   294	
+   295	void LimbPartition::generateLimbToLevel(int new_level) {
+   296	    cudaSetDevice(device);
+   297	    int new_size = getLimbSize(new_level);
+   298	    if (new_size > limb.size()) {
+   299	        generate(meta, limb, limbptr, new_size - 1, &auxptr);
+   300	    }
+   301	}
+   302	
+   303	/*
+   304	void LimbPartition::generateAllDecompLimb(uint64_t* pInt, size_t offset) {
+   305	    cudaSetDevice(device);
+   306	    DECOMPlimb.resize(DECOMPmeta.size());
+   307	    for (size_t i = 0; i < DECOMPmeta.size(); ++i) {
+   308	        generate(DECOMPmeta[i], DECOMPlimb[i], DECOMPlimbptr[i], (int)DECOMPmeta[i].size() - 1,
+   309	                 nullptr, pInt, offset, nullptr, 0);
+   310	        offset += cc.N * DECOMPmeta.at(i).size();
+   311	    }
+   312	}
+   313	
+   314	*/
+   315	
+   316	void LimbPartition::generateAllDigitLimb(uint64_t* pInt, size_t offset) {
+   317	    cudaSetDevice(device);
+   318	    DIGITlimb.resize(DIGITmeta.size());
+   319	    for (size_t i = 0; i < DIGITmeta.size(); ++i) {
+   320	        generate(DIGITmeta[i], DIGITlimb[i], DIGITlimbptr[i], (int)DIGITmeta[i].size() - 1, nullptr /*&DIGITauxptr[i]*/,
+   321	                 pInt, offset, nullptr, 0);
+   322	        offset += cc.N * DIGITmeta.at(i).size();
+   323	    }
+   324	}
+   325	
+   326	void LimbPartition::generateSpecialLimb(const bool zero_out, const bool for_communication) {
+   327	    cudaSetDevice(device);
+   328	    if ((for_communication && cc.GPUid.size() > 0 && bufferSPECIAL == nullptr && SPECIALmeta.size() > 0) ||
+   329	        (!(for_communication && cc.GPUid.size() > 0) && SPECIALlimb.size() == 0 && SPECIALmeta.size() > 0)) {
+   330	        if ((for_communication && cc.GPUid.size() > 0)) {
+   331	            assert(SPECIALlimb.size() == 0);
+   332	            cudaMalloc(&bufferSPECIAL, std::max(1ul, cc.N * SPECIALmeta.size() * 2 * sizeof(uint64_t)));
+   333	            generate(SPECIALmeta, SPECIALlimb, SPECIALlimbptr, (int)SPECIALmeta.size() - 1, &SPECIALauxptr,
+   334	                     bufferSPECIAL, 0, bufferSPECIAL, cc.N * SPECIALmeta.size());
+   335	        } else {
+   336	            assert(bufferSPECIAL == nullptr);
+   337	            bufferSPECIAL = (uint64_t*)GPUmalloc(device, cc.N * SPECIALmeta.size() * 2 * sizeof(uint64_t), s.ptr());
+   338	            CudaCheckErrorModNoSync;
+   339	            //generate(SPECIALmeta, SPECIALlimb, SPECIALlimbptr, (int)SPECIALmeta.size() - 1, &SPECIALauxptr, nullptr, 0,
+   340	            //         nullptr, 0);
+   341	            //cudaMalloc(&bufferSPECIAL, std::max(1ul, cc.N * SPECIALmeta.size() * 2 * sizeof(uint64_t)));
+   342	            generate(SPECIALmeta, SPECIALlimb, SPECIALlimbptr, (int)SPECIALmeta.size() - 1, &SPECIALauxptr,
+   343	                     bufferSPECIAL, 0, bufferSPECIAL, cc.N * SPECIALmeta.size());
+   344	
+   345	            //cudaMallocAsync(&bufferDECOMPandDIGIT, cc.N * SPECIALmeta.size() * 2 * sizeof(uint64_t), s.ptr());
+   346	        }
+   347	    }
+   348	    if (zero_out) {
+   349	        if (bufferSPECIAL) {
+   350	            if (cc.N * SPECIALmeta.size() * sizeof(uint64_t) > 0)
+   351	                cudaMemsetAsync(bufferSPECIAL, 0, cc.N * SPECIALmeta.size() * sizeof(uint64_t), s.ptr());
+   352	        } else {
+   353	            for (auto& i : SPECIALlimb) {
+   354	                if (i.index() == U32) {
+   355	                    cudaMemsetAsync(std::get<U32>(i).v.data, 0, cc.N * sizeof(uint32_t), STREAM(i).ptr());
+   356	                } else {
+   357	                    cudaMemsetAsync(std::get<U64>(i).v.data, 0, cc.N * sizeof(uint64_t), STREAM(i).ptr());
+   358	                }
+   359	            }
+   360	        }
+
+==== /root/fideslib/src/CKKS/LimbPartitionMGPU.cu ====
+     1	//
+     2	// Created by carlosad on 8/06/25.
+     3	//
+     4	
+     5	#include "CKKS/Context.cuh"
+     6	#include "CKKS/Conv.cuh"
+     7	#include "CKKS/ElemenwiseBatchKernels.cuh"
+     8	#include "CKKS/LimbPartition.cuh"
+     9	#include "PeerUtils.cuh"
+    10	#include "parallel_for.hpp"
+    11	
+    12	namespace FIDESlib::CKKS {
+    13	
+    14	static bool envMemcopyPeer(bool def = false) {
+    15	    bool out = def;
+    16	
+    17	    char* res = getenv("FIDESLIB_USE_MEMCPY_PEER");
+    18	    if (res && !(0 == std::strcmp(res, ""))) {
+    19	        out = atoi(res);
+    20	        std::cout << "FIDESLIB_USE_MEMCPY_PEER=" << res << ", set to: " << out << std::endl;
+    21	        /*
+    22	        if ((res == "0" || res == "false" || res == "False" || res == "FALSE")) {
+    23	            std::cout << "Use memcpy peer deactivated" << std::endl;
+    24	            out = false;
+    25	        }
+    26	
+    27	        if ((res == "1" || res == "true" || res == "True" || res == "TRUE")) {
+    28	            std::cout << "Use memcpy peer activated" << std::endl;
+    29	            out = true;
+    30	        }
+    31	        */
+    32	    }
+    33	    return out;
+    34	}
+    35	
+    36	static bool envGraphCapture(bool def = false) {
+    37	    bool out = def;
+    38	
+    39	    char* res = getenv("FIDESLIB_USE_GRAPH_CAPTURE");
+    40	    if (res && !(0 == std::strcmp(res, ""))) {
+    41	        out = atoi(res);
+    42	        std::cout << "FIDESLIB_USE_GRAPH_CAPTURE=" << res << ", set to: " << out << std::endl;
+    43	        /*
+    44	        if ((res == "0" || res == "false" || res == "False" || res == "FALSE")) {
+    45	            std::cout << "Use memcpy peer deactivated" << std::endl;
+    46	            out = false;
+    47	        }
+    48	
+    49	        if ((res == "1" || res == "true" || res == "True" || res == "TRUE")) {
+    50	            std::cout << "Use memcpy peer activated" << std::endl;
+    51	            out = true;
+    52	        }
+    53	        */
+    54	    }
+    55	    return out;
+    56	}
+    57	
+    58	bool MEMCPY_PEER = envMemcopyPeer(true);
+    59	bool GRAPH_CAPTURE = envGraphCapture(false);
+    60	
+    61	void LimbPartition::rescaleMGPU() {
+    62	    const int limbsize = getLimbSize(*level);
+    63	    cudaSetDevice(device);
+    64	
+    65	    Stream& stream = cc.top_limb_stream[id];
+    66	    uint64_t* buffer = cc.top_limb_buffer[id];
+    67	    VectorGPU<void*>& ptr = cc.top_limbptr[id];
+    68	
+    69	    if (cc.limbGPUid[*level].x == id) {
+    70	        if (limb.size() > cc.limbGPUid[*level].y && PRIMEID(limb[cc.limbGPUid[*level].y]) == *level) {
+    71	
+    72	            LimbImpl& top = limb.at(limbsize - 1);
+    73	            stream.wait(s);
+    74	            //SWITCH(top, INTT<ALGO_SHOUP>());
+    75	            {
+    76	                constexpr ALGO algo = ALGO_SHOUP;
+    77	                constexpr int M = 4;
+    78	
+    79	                dim3 blockDimFirst{(uint32_t)(1 << ((cc.logN) / 2 - 1))};
+    80	                dim3 blockDimSecond = dim3{(uint32_t)(1 << ((cc.logN + 1) / 2 - 1))};
+    81	                int bytesFirst = 8 * blockDimFirst.x * (2 * M + 1 + (algo == 2 || algo == 3 ? 1 : 0));
+    82	                int bytesSecond = 8 * blockDimSecond.x * (2 * M + 1 + (algo == 2 || algo == 3 ? 1 : 0));
+    83	
+    84	                int start = 0;
+    85	                for (int i = limbsize - 1; i < limbsize; i += cc.batch) {
+    86	                    cc.top_limb_stream.at(id).wait(s);
+    87	                    uint32_t num_limbs = 1;
+    88	
+    89	                    INTT_<false, algo, INTT_NONE>
+    90	                        <<<dim3{cc.N / (blockDimFirst.x * M * 2), num_limbs}, blockDimFirst, bytesFirst,
+    91	                           stream.ptr()>>>(getGlobals(), limbptr.data + start + i, PARTITION(id, start + i),
+    92	                                           cc.top_limbptr.at(cc.GPUid.size() + id).data);
+    93	                    INTT_<true, algo, INTT_NONE>
+    94	                        <<<dim3{cc.N / (blockDimSecond.x * M * 2), num_limbs}, blockDimSecond, bytesSecond,
+    95	                           stream.ptr()>>>(getGlobals(), cc.top_limbptr.at(cc.GPUid.size() + id).data,
+    96	                                           PARTITION(id, start + i), cc.top_limbptr.at(id).data);
+    97	                }
+    98	                //s.wait(cc.top_limb_stream.at(id));
+    99	            }
+   100	            //STREAM(top).wait(stream);
+   101	            //cudaMemcpyAsync(buffer, std::get<U64>(top).v.data, cc.N * sizeof(uint64_t), cudaMemcpyDeviceToDevice,
+   102	            //                STREAM(top).ptr());
+   103	            //stream.wait(STREAM(top));
+   104	            /*
+   105	            std::cout << "GPU: " << id << " ";
+   106	            SWITCH(top, printThisLimb(2));
+   107	            std::cout << std::endl;
+   108	*/
+   109	            //while (bufferLIMB == nullptr && limb.size() > limbsize - 1) {
+   110	            //    STREAM(limb.back()).wait(stream);
+   111	            //    limb.pop_back();
+   112	            //}
+   113	        } else {
+   114	            std::cout << "Cant find the top limb!!!" << id << " " << *level << " " << cc.limbGPUid[*level].y << " "
+   115	                      << limb.size() << std::endl;
+   116	        }
+   117	    } else {
+   118	        //stream.wait(s);
+   119	    }
+   120	
+   121	    if (cc.GPUid.size() > 1) {
+   122	        if (MEMCPY_PEER && cc.canP2P) {
+   123	
+   124	            int top_gpu = cc.limbGPUid[*level].x;
+   125	            if (top_gpu == id)
+   126	                stream.record();
+   127	
+   128	            openmp_synchronize();
+   129	
+   130	            if (top_gpu != id) {
+   131	                for (int i = 0; i < cc.GPUid.size(); ++i) {
+   132	                    if (i == id) {
+   133	                        //cudaSetDevice(cc.GPUid[i]);
+   134	                        stream.wait(cc.top_limb_stream[top_gpu]);
+   135	                        cudaMemcpyPeerAsync(buffer, cc.GPUid[i], cc.top_limb_buffer[top_gpu], cc.GPUid[top_gpu],
+   136	                                            cc.N * sizeof(uint64_t), stream.ptr());
+   137	                    }
+   138	                    CudaCheckErrorModNoSync;
+   139	                }
+   140	                cudaSetDevice(device);
+   141	            }
+   142	        } else {
+   143	
+   144	#ifdef NCCL
+   145	            if constexpr (0) {
+   146	                NCCLCHECK(ncclBroadcast(buffer, buffer, cc.N, ncclUint64, cc.limbGPUid[*level].x, rank, stream.ptr()));
+   147	            } else {
+   148	                NCCLCHECK(ncclGroupStart());
+   149	                if (id == cc.limbGPUid[*level].x) {
+   150	                    for (int i = 0; i < cc.GPUid.size(); ++i) {
+   151	                        if (i != id)
+   152	                            ncclSend(buffer, cc.N, ncclUint64, i, rank, stream.ptr());
+   153	                    }
+   154	                } else {
+   155	                    ncclRecv(buffer, cc.N, ncclUint64, cc.limbGPUid[*level].x, rank, stream.ptr());
+   156	                }
+   157	                NCCLCHECK(ncclGroupEnd());
+   158	            }
+   159	#else
+   160	            assert(false);
+   161	#endif
+   162	        }
+   163	    }
+   164	    /* {
+   165	        std::vector<uint64_t> data(cc.N, 0);
+   166	        cudaMemcpyAsync(data.data(), buffer, cc.N * sizeof(uint64_t), cudaMemcpyDeviceToHost, stream.ptr());
+   167	        cudaDeviceSynchronize();
+   168	        std::cout << "GPU " << id << " (" << data[0] << " " << data[1] << ")" << std::endl;
+   169	    } */
+   170	
+   171	    {
+   172	        {
+   173	            stream.wait(s);
+   174	            constexpr ALGO algo = ALGO_SHOUP;
+   175	            constexpr int M = 4;
+   176	
+   177	            const dim3 blockDimFirst{(uint32_t)(1 << ((cc.logN + 1) / 2 - 1))};
+   178	            const dim3 blockDimSecond = dim3{(uint32_t)(1 << ((cc.logN) / 2 - 1))};
+   179	            const int bytesFirst = 8 * blockDimFirst.x * (2 * M + 1 + (algo == 2 || algo == ALGO_SHOUP ? 1 : 0));
+   180	            const int bytesSecond = 8 * blockDimSecond.x * (2 * M + 1 + (algo == 2 || algo == ALGO_SHOUP ? 1 : 0));
+   181	            const int size = getLimbSize(*level - 1);
+   182	            const int batch = cc.batch;
+   183	            const NTT_MODE mode = NTT_RESCALE;
+   184	
+   185	            for (int i = 0; i < size; i += batch) {
+   186	                uint32_t num_limbs = std::min((uint32_t)batch, (uint32_t)(size - i));
+   187	
+   188	                NTT_<false, algo, mode>
+   189	                    <<<dim3{cc.N / (blockDimFirst.x * M * 2), num_limbs}, blockDimFirst, bytesFirst, stream.ptr()>>>(
+   190	                        getGlobals(), ptr.data, PARTITION(id, i), auxptr.data + i, nullptr, *level);
+   191	
+   192	                s.wait(stream);  // Data dependency on top_limb reaches only to here
+   193	
+   194	                NTT_<true, algo, mode>
+   195	                    <<<dim3{cc.N / (blockDimSecond.x * M * 2), num_limbs}, blockDimSecond, bytesSecond, s.ptr()>>>(
+   196	                        getGlobals(), auxptr.data + i, PARTITION(id, i), limbptr.data + i, nullptr, *level);
+   197	            }
+   198	        }
+   199	    }
+   200	    if (cc.GPUid.size() > 1) {
+   201	        openmp_synchronize();
+   202	        if (MEMCPY_PEER && cc.canP2P) {
+   203	            if (cc.limbGPUid[*level].x == id) {
+   204	                for (int i = 0; i < cc.GPUid.size(); ++i) {
+   205	                    if (i != id) {
+   206	                        stream.wait(cc.top_limb_stream[i]);
+   207	                    }
+   208	                }
+   209	            }
+   210	        }
+   211	    }
+   212	}
+   213	
+   214	void LimbPartition::doubleRescaleMGPU(LimbPartition& partition) {
+   215	    const int limbsize = getLimbSize(*level);
+   216	    assert(limbsize == getLimbSize(*partition.level));
+   217	    cudaSetDevice(device);
+   218	
+   219	    Stream* stream[2] = {&cc.top_limb_stream[id], &cc.top_limb_stream2[id]};
+   220	
+   221	    uint64_t* buffer[2] = {cc.top_limb_buffer[id], cc.top_limb_buffer2[id]};
+   222	
+   223	    VectorGPU<void*>* ptr[2] = {&cc.top_limbptr[id], &cc.top_limbptr2[id]};
+   224	    VectorGPU<void*>* ptraux[2] = {&cc.top_limbptr[cc.GPUid.size() + id], &cc.top_limbptr2[cc.GPUid.size() + id]};
+   225	
+   226	    LimbPartition* part[2] = {this, &partition};
+   227	    //parity = !parity;
+   228	
+   229	    for (int i = 0; i < 2; ++i) {
+   230	        if (cc.limbGPUid[*part[i]->level].x == id) {
+   231	            if (part[i]->limb.size() > cc.limbGPUid[*part[i]->level].y &&
+   232	                PRIMEID(part[i]->limb[cc.limbGPUid[*part[i]->level].y]) == *part[i]->level) {
+   233	                LimbImpl& top = part[i]->limb.at(limbsize - 1);
+   234	                if (1) {
+   235	                    stream[i]->wait(part[i]->s);
+   236	                    constexpr ALGO algo = ALGO_SHOUP;
+   237	                    constexpr int M = 4;
+   238	
+   239	                    dim3 blockDimFirst{(uint32_t)(1 << ((cc.logN) / 2 - 1))};
+   240	                    dim3 blockDimSecond = dim3{(uint32_t)(1 << ((cc.logN + 1) / 2 - 1))};
+   241	                    int bytesFirst = 8 * blockDimFirst.x * (2 * M + 1 + (algo == 2 || algo == 3 ? 1 : 0));
+   242	                    int bytesSecond = 8 * blockDimSecond.x * (2 * M + 1 + (algo == 2 || algo == 3 ? 1 : 0));
+   243	
+   244	                    int start = 0;
+   245	                    for (int i_ = limbsize - 1; i_ < limbsize; i_ += cc.batch) {
+   246	                        //stream[i]->wait(i ? partition.s : s);
+   247	                        uint32_t num_limbs = 1;
+   248	
+   249	                        INTT_<false, algo, INTT_NONE>
+   250	                            <<<dim3{cc.N / (blockDimFirst.x * M * 2), num_limbs}, blockDimFirst, bytesFirst,
+   251	                               stream[i]->ptr()>>>(getGlobals(), part[i]->limbptr.data + start + i_,
+   252	                                                   PARTITION(id, start + i_), ptraux[i]->data);
+   253	                        INTT_<true, algo, INTT_NONE><<<dim3{cc.N / (blockDimSecond.x * M * 2), num_limbs},
+   254	                                                       blockDimSecond, bytesSecond, stream[i]->ptr()>>>(
+   255	                            getGlobals(), ptraux[i]->data, PARTITION(id, start + i_), ptr[i]->data);
+   256	                    }
+   257	                    //s.wait(cc.top_limb_stream.at(id));
+   258	                } else {
+   259	                    STREAM(top).wait(part[i]->s);
+   260	                    SWITCH(top, INTT<ALGO_SHOUP>());
+   261	                    stream[i]->wait(STREAM(top));
+   262	                    cudaMemcpyAsync(buffer[i], std::get<U64>(top).v.data, cc.N * sizeof(uint64_t),
+   263	                                    cudaMemcpyDeviceToDevice, stream[i]->ptr());
+   264	                }
+   265	                /*
+   266	            std::cout << "GPU: " << id << " ";
+   267	            SWITCH(top, printThisLimb(2));
+   268	            std::cout << std::endl;
+   269	*/
+   270	                //while (part[i]->bufferLIMB == nullptr && part[i]->limb.size() > limbsize - 1) {
+   271	                //    STREAM(part[i]->limb.back()).wait(*stream[i]);
+   272	                //    part[i]->limb.pop_back();
+   273	                //}
+   274	            } else {
+   275	                std::cout << "Cant find the top limb!!!" << part[i]->id << " " << *part[i]->level << " "
+   276	                          << cc.limbGPUid[*part[i]->level].y << " " << part[i]->limb.size() << std::endl;
+   277	            }
+   278	        } else {
+   279	            stream[i]->wait(part[i]->s);
+   280	            //stream[i]->record();
+   281	        }
+   282	    }
+   283	
+   284	    if (cc.GPUid.size() > 1) {
+   285	        if (MEMCPY_PEER && cc.canP2P) {
+   286	            //openmp_synchronize();
+   287	
+   288	            int top_gpu = cc.limbGPUid[*level].x;
+   289	            if (top_gpu == id) {
+   290	                stream[0]->record();
+   291	                stream[1]->record();
+   292	            }
+   293	            openmp_synchronize();
+   294	
+   295	            if (top_gpu != id) {
+   296	                for (int i = 0; i < cc.GPUid.size(); ++i) {
+   297	
+   298	                    if (i == id) {
+   299	                        {
+   300	                            // auto& stream_0 = cc.digitStreamForMemcpyPeer[0].at(id).at(i);
+   301	                            // auto& stream_1 = cc.digitStreamForMemcpyPeer[cc.dnum > 1 ? 1 : 0].at(id).at(i);
+   302	
+   303	                            if (limbsize > 0) {
+   304	                                stream[0]->wait(cc.top_limb_stream[top_gpu]);
+   305	                                stream[1]->wait(cc.top_limb_stream2[top_gpu]);
+   306	
+   307	                                //stream_0.wait(cc.top_limb_stream[i]);
+   308	                                //stream_1.wait(cc.top_limb_stream2[i]);
+   309	                                cudaMemcpyPeerAsync(buffer[0], cc.GPUid[i], cc.top_limb_buffer[top_gpu],
+   310	                                                    cc.GPUid[top_gpu], cc.N * sizeof(uint64_t), stream[0]->ptr());
+   311	                                cudaMemcpyPeerAsync(buffer[1], cc.GPUid[i], cc.top_limb_buffer2[top_gpu],
+   312	                                                    cc.GPUid[top_gpu], cc.N * sizeof(uint64_t), stream[1]->ptr());
+   313	                            }
+   314	                        }
+   315	                    }
+   316	                    CudaCheckErrorModNoSync;
+   317	                }
+   318	
+   319	                cudaSetDevice(device);
+   320	            }
+   321	        } else {
+   322	#ifdef NCCL
+   323	            {
+   324	                NCCLCHECK(ncclGroupStart());
+   325	                if (id == cc.limbGPUid[*level].x) {
+   326	                    for (int i = 0; i < cc.GPUid.size(); ++i) {
+   327	                        if (i != id) {
+   328	                            ncclSend(buffer[0], cc.N, ncclUint64, i, rank, stream[0]->ptr());
+   329	                            ncclSend(buffer[1], cc.N, ncclUint64, i, rank, stream[1]->ptr());
+   330	                        }
+   331	                    }
+   332	                } else {
+   333	                    ncclRecv(buffer[0], cc.N, ncclUint64, cc.limbGPUid[*part[0]->level].x, rank, stream[0]->ptr());
+   334	                    ncclRecv(buffer[1], cc.N, ncclUint64, cc.limbGPUid[*part[1]->level].x, rank, stream[1]->ptr());
+   335	                }
+   336	                NCCLCHECK(ncclGroupEnd());
+   337	            }
+   338	#else
+   339	            assert(false);
+   340	#endif
+   341	        }
+   342	        /* {
+   343	            std::vector<uint64_t> data(cc.N, 0);
+   344	            cudaMemcpyAsync(data.data(), buffer, cc.N * sizeof(uint64_t), cudaMemcpyDeviceToHost, stream.ptr());
+   345	            cudaDeviceSynchronize();
+   346	            std::cout << "GPU " << id << " (" << data[0] << " " << data[1] << ")" << std::endl;
+   347	        } */
+   348	    }
+   349	    for (int j = 0; j < 2; ++j) {
+   350	        stream[j]->wait(part[j]->s);
+   351	        {
+   352	            constexpr ALGO algo = ALGO_SHOUP;
+   353	            constexpr int M = 4;
+   354	
+   355	            const dim3 blockDimFirst{(uint32_t)(1 << ((cc.logN + 1) / 2 - 1))};
+   356	            const dim3 blockDimSecond = dim3{(uint32_t)(1 << ((cc.logN) / 2 - 1))};
+   357	            const int bytesFirst = 8 * blockDimFirst.x * (2 * M + 1 + (algo == 2 || algo == ALGO_SHOUP ? 1 : 0));
+   358	            const int bytesSecond = 8 * blockDimSecond.x * (2 * M + 1 + (algo == 2 || algo == ALGO_SHOUP ? 1 : 0));
+   359	            const int size = getLimbSize(*part[j]->level - 1);
+   360	            const int batch = cc.batch;
+
+----------------------------------------------------------------------------------------------------
+5) VectorGPU layout and constructors
+----------------------------------------------------------------------------------------------------
+
+==== /root/fideslib/src/VectorGPU.cuh ====
+     1	//
+     2	// Created by carlos on 6/03/24.
+     3	//
+     4	
+     5	#ifndef FIDESLIB_VECTORGPU_CUH
+     6	#define FIDESLIB_VECTORGPU_CUH
+     7	#include <driver_types.h>
+     8	#include <cassert>
+     9	#include <type_traits>
+    10	#include <vector>
+    11	#include "CudaUtils.cuh"
+    12	#include "LogUtil.hpp"
+    13	#include "cuda.h"
+    14	namespace FIDESlib {
+    15	template <typename T>
+    16	class VectorGPU {
+    17	    static_assert(std::is_trivially_copyable_v<T>);
+    18	    bool freeing;
+    19	    bool managed;
+    20	
+    21	   public:
+    22	    T* data;
+    23	    const int size;
+    24	    const int device;
+    25	
+    26	    VectorGPU(VectorGPU<T>&& v) noexcept;
+    27	    /*
+    28	        VectorGPU<T> &operator=(VectorGPU<T> && v) noexcept
+    29	         {
+    30	            freeing = v.freeing;
+    31	            managed = v.managed;
+    32	            data = v.data;
+    33	            size = v.size;
+    34	            device = v.device;
+    35	            v.freeing = true;
+    36	            return *this;
+    37	        }
+    38	*/
+    39	    VectorGPU<T>& operator=(VectorGPU<T>& other) = delete;
+    40	    VectorGPU<T>& operator=(const VectorGPU<T>& v) = delete;
+    41	    VectorGPU(const VectorGPU<T>& v) = delete;
+    42	    VectorGPU(T* data, const int size, const int device, const int offset = 0);
+    43	    VectorGPU(Stream& stream, const int size, const int device, const T* src = nullptr);
+    44	    void free(Stream& stream);
+    45	    ~VectorGPU();
+    46	};
+    47	
+    48	}  // namespace FIDESlib
+    49	#endif  //FIDESLIB_VECTORGPU_CUH
+
+==== /root/fideslib/src/VectorGPU.cu ====
+     1	//
+     2	// Created by carlosad on 2/05/24.
+     3	//
+     4	#include "VectorGPU.cuh"
+     5	
+     6	namespace FIDESlib {
+     7	template <typename T>
+     8	VectorGPU<T>::VectorGPU(VectorGPU<T>&& v) noexcept
+     9	    : freeing(v.freeing), managed(v.managed), data(v.data), size(v.size), device(v.device) {
+    10	    v.freeing = true;
+    11	    v.managed = false;
+    12	}
+    13	
+    14	template <typename T>
+    15	VectorGPU<T>::VectorGPU(T* data, const int size, const int device, const int offset)
+    16	    : data(data + offset), size(size), device(device), managed(false), freeing(true) {
+    17	    assert(data != nullptr);
+    18	    {
+    19	        cudaPointerAttributes att{};
+    20	        cudaPointerGetAttributes(&att, data);
+    21	        assert(att.type == cudaMemoryTypeManaged || att.type == cudaMemoryTypeDevice);
+    22	        assert(att.device == this->device);
+    23	    }
+    24	    CudaCheckErrorModNoSync;
+    25	    assert(size > 0);
+    26	
+    27	    Out(MEMORY, "Unmanaged vector construct OK");
+    28	}
+    29	
+    30	template <typename T>
+    31	VectorGPU<T>::~VectorGPU() {
+    32	    assert(freeing == true);
+    33	    Out(MEMORY, "Vector destruct OK");
+    34	}
+    35	
+    36	template <typename T>
+    37	void VectorGPU<T>::free(Stream& stream) {
+    38	    if (!managed) {
+    39	        return;
+    40	    }
+    41	    assert(!freeing);
+    42	    //cudaDeviceSynchronize();
+    43	    GPUfree(data, device, sizeof(T) * size, stream.ptr(), true);
+    44	    //cudaFreeAsync((void*)data, stream.ptr());
+    45	    freeing = true;
+    46	    Out(MEMORY, "Managed vector free OK");
+    47	}
+    48	
+    49	template <typename T>
+    50	VectorGPU<T>::VectorGPU(Stream& stream, const int size, const int device, const T* src)
+    51	    : data(nullptr), size(size), device(device), freeing(false), managed(true) {
+    52	    assert(device >= 0);
+    53	    {
+    54	        int device_count = -1;
+    55	        assert(cudaGetDeviceCount(&device_count) == cudaSuccess);
+    56	        assert(device < device_count);
+    57	    }
+    58	    {
+    59	        int dev = -1;
+    60	        assert(cudaGetDevice(&dev) == cudaSuccess);
+    61	        assert(dev == device);
+    62	        //cudaSetDevice(device);
+    63	    }
+    64	    int bytes = size * sizeof(T);
+    65	
+    66	    if (size == 0) {
+    67	        managed = false;
+    68	        freeing = true;
+    69	    } else {
+    70	        //cudaDeviceSynchronize();
+    71	        data = (T*)GPUmalloc(device, bytes, stream.ptr(), true);
+    72	        //cudaDeviceSynchronize();
+    73	        //cudaMallocAsync(&data, bytes, stream.ptr());
+    74	
+    75	        if (src != nullptr) {
+    76	            cudaMemcpyAsync(data, src, bytes, cudaMemcpyHostToDevice, stream.ptr());
+    77	        }
+    78	    }
+    79	    Out(MEMORY, "Managed vector construct OK");
+    80	}
+    81	
+    82	template class VectorGPU<int>;
+    83	template class VectorGPU<void*>;
+    84	template class VectorGPU<void**>;
+    85	template class VectorGPU<uint32_t>;
+    86	template class VectorGPU<uint64_t>;
+    87	}  // namespace FIDESlib
+
+----------------------------------------------------------------------------------------------------
+6) Modular arithmetic helpers used in kernels
+----------------------------------------------------------------------------------------------------
+/root/fideslib/src/AddSub.cuh:37:__forceinline__ __device__ T modadd(const T a, const T b, const int primeId) {
+/root/fideslib/src/AddSub.cuh:45:__forceinline__ __device__ T modsub(const T a, const T b, const int primeId) {
+/root/fideslib/src/CKKS/Conv.cuh:8:#include "ModMult.cuh"
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:26:        T res = modmult<algo>(((T*)l[blockIdx.y])[idx], ((T*)l1[blockIdx.y])[idx], primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:27:        res = modadd(res, aux, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:28:        res = modadd(res, modmult<algo>(((T*)l2[blockIdx.y])[idx], ((T*)l3[blockIdx.y])[idx], primeid), primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:44:        T res = modmult<ALGO_SHOUP>(modmult<algo>(((T*)c1[blockIdx.y])[idx], ((T*)bc0[blockIdx.y])[idx], primeid),
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:46:        res = modadd(res, aux0, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:47:        res = modadd(res,
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:48:                     modmult<ALGO_SHOUP>(modmult<algo>(((T*)c0[blockIdx.y])[idx], ((T*)bc1[blockIdx.y])[idx], primeid),
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:53:        res = modmult<ALGO_SHOUP>(modmult<algo>(((T*)c0[blockIdx.y])[idx], ((T*)bc0[blockIdx.y])[idx], primeid),
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:55:        res = modadd(res, aux0, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:71:        T res = modmult<algo>(((T*)l[blockIdx.y])[idx], ((T*)l1[blockIdx.y])[idx], primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:72:        ((T*)l[blockIdx.y])[idx] = modadd(res, aux, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:76:        T res = modmult<algo>(((T*)l[blockIdx.y])[idx], ((T*)l1[blockIdx.y])[idx], primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:77:        ((T*)l[blockIdx.y])[idx] = modadd(res, aux, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:86:    l[idx] = modadd(l[idx], modmult<algo>(l1[idx], l2[idx], primeid), primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:114:            modmult<ALGO_BARRETT>(((uint64_t*)l1[blockIdx.y])[idx], ((uint64_t*)l2[blockIdx.y])[idx], primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:117:            modmult<ALGO_BARRETT>(((uint32_t*)l1[blockIdx.y])[idx], ((uint32_t*)l2[blockIdx.y])[idx], primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:127:        ((uint64_t*)l[blockIdx.y])[idx] = modmult<ALGO_BARRETT>(in, in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:130:        ((uint32_t*)l[blockIdx.y])[idx] = modmult<ALGO_BARRETT>(in, in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:143:        uint64_t ok = modadd(modmult<ALGO_BARRETT>(in0, in0, primeid), in2_0, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:146:        uint64_t aux = modmult<ALGO_BARRETT>(in0, in1, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:147:        uint64_t aux2 = modadd(aux, aux, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:148:        ok = modadd(aux2, in2_1, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:198:            modmult<algo>(((uint64_t*)a[blockIdx.y])[idx], b[primeid], primeid, shoup_mu ? shoup_mu[primeid] : 0);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:200:        ((uint32_t*)a[blockIdx.y])[idx] = modmult<algo>(((uint32_t*)a[blockIdx.y])[idx], (uint32_t)b[primeid], primeid,
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:212:        uint64_t res = modmult<algo>(((uint64_t*)(bs[0])[blockIdx.y])[idx], w[primeid], primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:214:            uint64_t temp = modmult<algo>(((uint64_t*)(bs[i])[blockIdx.y])[idx], w[i * MAXP + primeid], primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:215:            res = modadd(res, temp, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:246:    aux1 = modmult<ALGO_BARRETT>(in, ((uint64_t*)digits[C_.dnum + decomp * 3 * C_.dnum][decomp ? pos_dec : pos])[idx],
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:248:    aux2 = modmult<ALGO_BARRETT>(
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:255:        uint64_t add1 = modmult<ALGO_BARRETT>(
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:257:        uint64_t add2 = modmult<ALGO_BARRETT>(
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:259:        aux1 = modadd(aux1, add1, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:260:        aux2 = modadd(aux2, add2, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:274:        uint64_t add1 = modmult<ALGO_BARRETT>(
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:276:        uint64_t add2 = modmult<ALGO_BARRETT>(
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:283:            aux1 = modadd(aux1, add1, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:284:            aux2 = modadd(aux2, add2, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:329:            in2 = modmult<ALGO_SHOUP>(in2, C_.P[primeid], primeid, C_.P_shoup[primeid]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:342:            uint64_t add1 = modmult<ALGO_BARRETT>(
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:352:            uint64_t add2 = modmult<ALGO_BARRETT>(
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:367:                    aux2 = modadd(in2, add2, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:372:                aux1 = modadd(aux1, add1, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:373:                aux2 = modadd(aux2, add2, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:474:            in2 = modmult<ALGO_SHOUP>(in2, C_.P[primeid], primeid, C_.P_shoup[primeid]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:512:                uint64_t add = modmult<ALGO_BARRETT>(in1[i * stride_in], ksk[i * stride_ksk], primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:518:                        aux = modadd(in2, add, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:523:                    aux = modadd(aux, add, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:596:            in2 = modmult<ALGO_SHOUP>(in2, C_.P[primeid], primeid, C_.P_shoup[primeid]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:619:            uint64_t add = modmult<ALGO_BARRETT>(in1[i * stride_in], ksk[i * stride_ksk], primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:625:                    aux = modadd(in2, add, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:630:                aux = modadd(aux, add, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:661:    out0 = modmult<algo>(in, ((uint64_t*)data[0][ptroffset + blockIdx.y])[idx], primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:666:    out1 = modmult<algo>(in, ((uint64_t*)data[n][ptroffset + blockIdx.y])[idx], primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:677:        uint64_t aux0 = modmult<algo>(in, ((uint64_t*)data[i][ptroffset + blockIdx.y])[idx], primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:682:        uint64_t aux1 = modmult<algo>(in, ((uint64_t*)data[n + i][ptroffset + blockIdx.y])[idx], primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:686:        out0 = modadd(out0, aux0, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:687:        out1 = modadd(out1, aux1, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:712:    __uint128_t* acc_this_thread = (__uint128_t*)(((uint64_t*)buffer) + in_stride * batch) + block_id;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:752:                    acc_this_thread[0] = (__uint128_t)in[in_stride * i] * pt[0];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:760:                        __uint128_t res = acc_this_thread[0];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:840:                    mult = modmult<ALGO_BARRETT>(in, ((uint64_t*)pt_partition[blockIdx.y])[idx], primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:845:                    acc_this_thread[j * in_stride] = modadd(acc_this_thread[j * in_stride], mult, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:869:    __uint128_t* acc_this_thread = ((__uint128_t*)buffer) + block_id;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:889:                __uint128_t mult = 0;
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:892:                    mult = (__uint128_t)in * (__uint128_t)((uint64_t*)pt_partition[blockIdx.y])[idx];
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:969:                    acc_this_thread[0] = modmult<ALGO_BARRETT>(in[in_stride * i_0], pt[0], primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:971:                        acc_this_thread[in_stride] = modmult<ALGO_BARRETT>(in[in_stride * (i_0 + 1)], pt[0], primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:983:                                modadd(acc_this_thread[0], acc_this_thread[0 + r * blockDim.x * blockDim.y], primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:987:                                modadd(acc_this_thread[in_stride],
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:997:                                modadd(acc_this_thread[0], acc_this_thread[0 + r * blockDim.x * blockDim.y], primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1001:                                modadd(acc_this_thread[in_stride],
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1082:                    acc_this_thread[in_stride * i] = modmult<ALGO_BARRETT>(in[in_stride * i], pt[0], primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1094:                            modadd(acc_this_thread[in_stride * i],
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1106:                            modadd(acc_this_thread[in_stride * i],
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1129:        uint64_t in = modmult<ALGO_SHOUP>(((uint64_t*)b[blockIdx.y])[idx], C_.P[primeid], primeid, C_.P_shoup[primeid]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1130:        ((uint64_t*)a[blockIdx.y])[idx] = modadd(in, ((uint64_t*)c[blockIdx.y])[idx], primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1139:        uint64_t in = modmult<ALGO_SHOUP>(((uint64_t*)a[blockIdx.y])[idx], C_.P[primeid], primeid, C_.P_shoup[primeid]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1153:                    modadd(((uint64_t*)(a[i * its + j][blockIdx.y]))[idx], load, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1161:                    modadd(((uint32_t*)(a[i * its + j][blockIdx.y]))[idx], load, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1173:            load = modmult<ALGO_SHOUP>(load, C_.P[primeid], primeid, C_.P_shoup[primeid]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1176:                    modadd(((uint64_t*)(a[i * its + j][blockIdx.y]))[idx], load, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1182:            load = modmult<ALGO_SHOUP>(load, (uint32_t)C_.P[primeid], primeid, (uint32_t)C_.P_shoup[primeid]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1185:                    modadd(((uint32_t*)(a[i * its + j][blockIdx.y]))[idx], load, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1197:            load = modmult<ALGO_SHOUP>(load, C_.P[primeid], primeid, C_.P_shoup[primeid]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1200:                    modsub(((uint64_t*)(a[i * its + j][blockIdx.y]))[idx], load, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1206:            load = modmult<ALGO_SHOUP>(load, (uint32_t)C_.P[primeid], primeid, (uint32_t)C_.P_shoup[primeid]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1209:                    modsub(((uint32_t*)(a[i * its + j][blockIdx.y]))[idx], load, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1222:                uint64_t aux = modmult<ALGO_SHOUP>(((uint64_t*)(a[i * its + j][blockIdx.y]))[idx], C_.P[primeid],
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1224:                ((uint64_t*)(a[i * its + j][blockIdx.y]))[idx] = modadd(aux, load, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1230:            load = modmult<ALGO_SHOUP>(load, (uint32_t)C_.P[primeid], primeid, (uint32_t)C_.P_shoup[primeid]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1232:                uint32_t aux = modmult<ALGO_SHOUP>(((uint32_t*)(a[i * its + j][blockIdx.y]))[idx],
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1234:                ((uint32_t*)(a[i * its + j][blockIdx.y]))[idx] = modadd(aux, load, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1247:                uint64_t aux = modmult<ALGO_SHOUP>(((uint64_t*)(a[i * its + j][blockIdx.y]))[idx], C_.P[primeid],
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1249:                ((uint64_t*)(a[i * its + j][blockIdx.y]))[idx] = modsub(aux, load, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1255:            load = modmult<ALGO_SHOUP>(load, (uint32_t)C_.P[primeid], primeid, (uint32_t)C_.P_shoup[primeid]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1257:                uint32_t aux = modmult<ALGO_SHOUP>(((uint32_t*)(a[i * its + j][blockIdx.y]))[idx],
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1259:                ((uint32_t*)(a[i * its + j][blockIdx.y]))[idx] = modsub(aux, load, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1315:                    modadd(((uint64_t*)(a[i * its + j][blockIdx.y]))[idx], load, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1323:                    modadd(((uint32_t*)(a[i * its + j][blockIdx.y]))[idx], load, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1339:                    modmult<ALGO_SHOUP>(((uint64_t*)(a[i * its + j][blockIdx.y]))[idx], load, primeid, load_shoup);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1348:                    modmult<ALGO_SHOUP>(((uint32_t*)(a[i * its + j][blockIdx.y]))[idx], load, primeid, load_shoup);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1362:                    modsub(((uint64_t*)(a[i * its + j][blockIdx.y]))[idx], load, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1370:                    modsub(((uint32_t*)(a[i * its + j][blockIdx.y]))[idx], load, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1384:                    modmult<ALGO_BARRETT>(((uint64_t*)(a[i * its + j][blockIdx.y]))[idx], load, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1392:                    modmult<ALGO_BARRETT>(((uint32_t*)(a[i * its + j][blockIdx.y]))[idx], load, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1411:        T aux0 = modmult<ALGO_BARRETT>(c0in, d0in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1415:            modadd(modmult<ALGO_BARRETT>(c0in, d1in, primeid), modmult<ALGO_BARRETT>(c1in, d0in, primeid), primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1418:        T aux2 = modmult<ALGO_BARRETT>(c1in, d1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1428:        T aux0 = modmult<ALGO_BARRETT>(c0in, d0in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1432:            modadd(modmult<ALGO_BARRETT>(c0in, d1in, primeid), modmult<ALGO_BARRETT>(c1in, d0in, primeid), primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1435:        T aux2 = modmult<ALGO_BARRETT>(c1in, d1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1453:        T aux0 = modmult<ALGO_BARRETT>(c0in, d0in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1454:        ((T*)(c0[blockIdx.y]))[idx] = modmult<ALGO_SHOUP>(aux0, (T)C_.P[primeid], primeid, (T)C_.P_shoup[primeid]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1457:            modadd(modmult<ALGO_BARRETT>(c0in, d1in, primeid), modmult<ALGO_BARRETT>(c1in, d0in, primeid), primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1458:        ((T*)(c1[blockIdx.y]))[idx] = modmult<ALGO_SHOUP>(aux1, (T)C_.P[primeid], primeid, (T)C_.P_shoup[primeid]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1460:        T aux2 = modmult<ALGO_BARRETT>(c1in, d1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1470:        T aux0 = modmult<ALGO_BARRETT>(c0in, d0in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1471:        ((T*)(c0[blockIdx.y]))[idx] = modmult<ALGO_SHOUP>(aux0, (T)C_.P[primeid], primeid, (T)C_.P_shoup[primeid]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1474:            modadd(modmult<ALGO_BARRETT>(c0in, d1in, primeid), modmult<ALGO_BARRETT>(c1in, d0in, primeid), primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1475:        ((T*)(c1[blockIdx.y]))[idx] = modmult<ALGO_SHOUP>(aux1, (T)C_.P[primeid], primeid, (T)C_.P_shoup[primeid]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1477:        T aux2 = modmult<ALGO_BARRETT>(c1in, d1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1492:        T aux0 = modmult<ALGO_BARRETT>(c0in, c0in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1495:        T aux1 = modmult<ALGO_BARRETT>(c0in, c1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1496:        ((T*)(c1[blockIdx.y]))[idx] = modadd(aux1, aux1, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1498:        T aux2 = modmult<ALGO_BARRETT>(c1in, c1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1506:        T aux0 = modmult<ALGO_BARRETT>(c0in, c0in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1509:        T aux1 = modmult<ALGO_BARRETT>(c0in, c1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1510:        ((T*)(c1[blockIdx.y]))[idx] = modadd(aux1, aux1, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1512:        T aux2 = modmult<ALGO_BARRETT>(c1in, c1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1527:        T aux0 = modmult<ALGO_BARRETT>(c0in, c0in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1528:        ((T*)(c0[blockIdx.y]))[idx] = modmult<ALGO_SHOUP>(aux0, C_.P[primeid], primeid, C_.P_shoup[primeid]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1530:        T aux1 = modmult<ALGO_BARRETT>(c0in, c1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1532:            modmult<ALGO_SHOUP>(modadd(aux1, aux1, primeid), C_.P[primeid], primeid, C_.P_shoup[primeid]);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1534:        T aux2 = modmult<ALGO_BARRETT>(c1in, c1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1542:        T aux0 = modmult<ALGO_BARRETT>(c0in, c0in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1545:        T aux1 = modmult<ALGO_BARRETT>(c0in, c1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1546:        ((T*)(c1[blockIdx.y]))[idx] = modadd(aux1, aux1, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1548:        T aux2 = modmult<ALGO_BARRETT>(c1in, c1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1569:                T aux0 = modmult<ALGO_BARRETT>(c0in, d0in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1571:                T aux1 = modadd(modmult<ALGO_BARRETT>(c0in, d1in, primeid), modmult<ALGO_BARRETT>(c1in, d0in, primeid),
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1574:                T aux2 = modmult<ALGO_BARRETT>(c1in, d1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1581:                    acc0 = modadd(acc0, aux0, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1582:                    acc1 = modadd(acc1, aux1, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1583:                    acc2 = modadd(acc2, aux2, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1601:                T aux0 = modmult<ALGO_BARRETT>(c0in, d0in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1603:                T aux1 = modadd(modmult<ALGO_BARRETT>(c0in, d1in, primeid), modmult<ALGO_BARRETT>(c1in, d0in, primeid),
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1606:                T aux2 = modmult<ALGO_BARRETT>(c1in, d1in, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1613:                    acc0 = modadd(acc0, aux0, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1614:                    acc1 = modadd(acc1, aux1, primeid);
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cu:1615:                    acc2 = modadd(acc2, aux2, primeid);
+/root/fideslib/src/CKKS/Rescale.cuh:9:#include "ModMult.cuh"
+/root/fideslib/src/CKKS/Rescale.cuh:57:            T diff{nm - modmult<ALGO_BARRETT>(om, 1, nm_pid)}; // TODO: change to modular reduction routine
+/root/fideslib/src/CKKS/Rescale.cuh:61:                a = modmult<ALGO_BARRETT>(a, 1, nm_pid);
+/root/fideslib/src/CKKS/Context.cu:463:std::ostream& operator<<(std::ostream& o, const uint128_t& x) {
+/root/fideslib/src/CKKS/Context.cu:464:    if (x == std::numeric_limits<uint128_t>::min())
+/root/fideslib/src/CKKS/Context.cu:525:        std::vector<uint128_t> result(sizeQl);
+/root/fideslib/src/CKKS/Context.cu:527:            result[i] = crtConstant[i].ConvertToInt<uint128_t>();
+/root/fideslib/src/CKKS/Context.cu:549:    std::vector<uint128_t> result(sizeQl);
+/root/fideslib/src/CKKS/Context.cu:551:        result[i] = crtConstant[i].ConvertToInt<uint128_t>();
+/root/fideslib/src/CKKS/Conv.cu:6:#include "ModMult.cuh"
+/root/fideslib/src/CKKS/Conv.cu:16:    a[idx] = modmult(a[idx], q_hat_inv, primeid);
+/root/fideslib/src/CKKS/Conv.cu:40:                    modmult<algo_>(((uint64_t*)(b[i]))[idx], TABLE64(C_.L, C_.L + i), C_.L + i);
+/root/fideslib/src/CKKS/Conv.cu:43:                    modmult<algo_>(((uint32_t*)b[i])[idx], (uint32_t)TABLE32(C_.L, C_.L + i), C_.L + i);
+/root/fideslib/src/CKKS/Conv.cu:49:                        modmult<algo>(((uint64_t*)(b[i]))[idx], G_->ModDown_pre_scale[primeid], primeid);
+/root/fideslib/src/CKKS/Conv.cu:52:                        modmult<algo>((uint64_t)((uint32_t*)b[i])[idx], G_->ModDown_pre_scale[primeid], primeid);
+/root/fideslib/src/CKKS/Conv.cu:56:                    buff[tid + blockDim.x * i] = modmult<algo>(((uint64_t*)(b[i]))[idx], G_->ModDown_pre_scale[primeid],
+/root/fideslib/src/CKKS/Conv.cu:60:                        modmult<algo>((uint64_t)((uint32_t*)b[i])[idx], G_->ModDown_pre_scale[primeid], primeid,
+/root/fideslib/src/CKKS/Conv.cu:83:            __uint128_t res = 0;
+/root/fideslib/src/CKKS/Conv.cu:85:                res = res + (__uint128_t)buff[i * blockDim.x + tid] * G_->ModDown_matrix[MODDOWN_MATRIX(i, primeid)];
+/root/fideslib/src/CKKS/Conv.cu:99:                    uint64_t aux = modmult<algo_>(buff[i * blockDim.x + tid], (uint64_t)TABLE64(C_.L + i, j), j);
+/root/fideslib/src/CKKS/Conv.cu:100:                    // res = modadd(res, aux, j);
+/root/fideslib/src/CKKS/Conv.cu:105:                            modmult<algo>(buff[i * blockDim.x + tid], G_->ModDown_matrix[MODDOWN_MATRIX(i, j)], j);
+/root/fideslib/src/CKKS/Conv.cu:107:                        res = modadd(res, aux, j);
+/root/fideslib/src/CKKS/Conv.cu:111:                            modmult<algo>(buff[i * blockDim.x + tid], G_->ModDown_matrix[MODDOWN_MATRIX(i, j)], j,
+/root/fideslib/src/CKKS/Conv.cu:113:                        res = modadd(res, aux, j);
+/root/fideslib/src/CKKS/Conv.cu:186:                    modmult<algo>(((uint64_t*)(a[pos]))[idx],
+/root/fideslib/src/CKKS/Conv.cu:190:                    modmult<algo>((uint64_t)((uint32_t*)a[pos])[idx],
+/root/fideslib/src/CKKS/Conv.cu:195:                buff[tid + blockDim.x * i_] = modmult<algo>(
+/root/fideslib/src/CKKS/Conv.cu:200:                    modmult<algo>((uint64_t)((uint32_t*)a[pos])[idx],
+/root/fideslib/src/CKKS/Conv.cu:228:                __uint128_t res = 0;
+/root/fideslib/src/CKKS/Conv.cu:234:                    res = res + (__uint128_t)buff[i_ * blockDim.x + tid] *
+/root/fideslib/src/CKKS/Conv.cu:256:                        uint64_t aux = modmult<algo>(
+/root/fideslib/src/CKKS/Conv.cu:259:                        res = modadd(res, aux, primeid_j);
+/root/fideslib/src/CKKS/Conv.cu:261:                        uint64_t aux = modmult<algo>(
+/root/fideslib/src/CKKS/Conv.cu:265:                        res = modadd(res, aux, primeid_j);
+/root/fideslib/src/CKKS/Bootstrap.cu:37:    //NativeInteger q = elementParamsRaisedPtr->GetParams()[0]->GetModulus().ConvertToInt();
+/root/fideslib/src/CKKS/Bootstrap.cu:181:    //NativeInteger q = elementParamsRaisedPtr->GetParams()[0]->GetModulus().ConvertToInt();
+/root/fideslib/src/CKKS/Bootstrap.cu:326:    //NativeInteger q = elementParamsRaisedPtr->GetParams()[0]->GetModulus().ConvertToInt();
+/root/fideslib/src/CKKS/Limb.cu:9:#include "ModMult.cuh"
+/root/fideslib/src/CKKS/ElemenwiseBatchKernels.cuh:10:#include "ModMult.cuh"
+/root/fideslib/src/Math.cuh:16:    uint64_t modadd(uint64_t a, uint64_t b, uint64_t p);
+/root/fideslib/src/Math.cuh:17:    uint64_t modsub(uint64_t a, uint64_t b, uint64_t p);
+/root/fideslib/src/NTThelper.cuh:37:            b = modmult<algo>(b, psi, primeid, shoup_psi);
+/root/fideslib/src/NTThelper.cuh:38:            c = modadd(a, b, primeid);
+/root/fideslib/src/NTThelper.cuh:39:            d = modsub(a, b, primeid);
+/root/fideslib/src/NTThelper.cuh:43:            //  T baux = modmult<0>(b, psi, primeid);
+/root/fideslib/src/NTThelper.cuh:44:            b = modmult<algo>(b, psi, primeid);
+/root/fideslib/src/NTThelper.cuh:48:            c = modadd(a, b, primeid);
+/root/fideslib/src/NTThelper.cuh:49:            d = modsub(a, b, primeid);
+/root/fideslib/src/NTThelper.cuh:64:            c = modadd(a, b, primeid);
+/root/fideslib/src/NTThelper.cuh:65:            b = modsub(a, b, primeid);
+/root/fideslib/src/NTThelper.cuh:66:            d = modmult<algo>(b, psi, primeid, shoup_psi);
+/root/fideslib/src/NTThelper.cuh:70:            c = modadd(a, b, primeid);
+/root/fideslib/src/NTThelper.cuh:71:            b = modsub(a, b, primeid);
+/root/fideslib/src/NTThelper.cuh:72:            //   T baux = modmult<0>(b, psi, primeid);
+/root/fideslib/src/NTThelper.cuh:73:            d = modmult<algo>(b, psi, primeid);
+/root/fideslib/src/AddSub.cu:14:    a[idx] = modadd(a[idx], b[idx], primeId);
+/root/fideslib/src/AddSub.cu:25:    a[idx] = modsub(a[idx], b[idx], primeId);
+/root/fideslib/src/AddSub.cu:38:            modadd(((uint64_t*)a[blockIdx.y])[idx], ((uint64_t*)b[blockIdx.y])[idx], primeid);
+/root/fideslib/src/AddSub.cu:41:            modadd(((uint32_t*)a[blockIdx.y])[idx], ((uint32_t*)b[blockIdx.y])[idx], primeid);
+/root/fideslib/src/AddSub.cu:50:            modsub(((uint64_t*)a[blockIdx.y])[idx], ((uint64_t*)b[blockIdx.y])[idx], primeid);
+/root/fideslib/src/AddSub.cu:53:            modsub(((uint32_t*)a[blockIdx.y])[idx], ((uint32_t*)b[blockIdx.y])[idx], primeid);
+/root/fideslib/src/AddSub.cu:62:            modadd(((uint64_t*)b[blockIdx.y])[idx], ((uint64_t*)c[blockIdx.y])[idx], primeid);
+/root/fideslib/src/AddSub.cu:65:            modadd(((uint32_t*)b[blockIdx.y])[idx], ((uint32_t*)c[blockIdx.y])[idx], primeid);
+/root/fideslib/src/AddSub.cu:74:            modsub(((uint64_t*)b[blockIdx.y])[idx], ((uint64_t*)c[blockIdx.y])[idx], primeid);
+/root/fideslib/src/AddSub.cu:77:            modsub(((uint32_t*)b[blockIdx.y])[idx], ((uint32_t*)c[blockIdx.y])[idx], primeid);
+/root/fideslib/src/AddSub.cu:86:        ((uint64_t*)a[blockIdx.y])[idx] = modadd(((uint64_t*)a[blockIdx.y])[idx], b[primeid], primeid);
+/root/fideslib/src/AddSub.cu:88:        ((uint32_t*)a[blockIdx.y])[idx] = modadd(((uint32_t*)a[blockIdx.y])[idx], (uint32_t)b[primeid], primeid);
+/root/fideslib/src/AddSub.cu:97:        ((uint64_t*)a[blockIdx.y])[idx] = modsub(((uint64_t*)a[blockIdx.y])[idx], b[primeid], primeid);
+/root/fideslib/src/AddSub.cu:99:        ((uint32_t*)a[blockIdx.y])[idx] = modsub(((uint32_t*)a[blockIdx.y])[idx], (uint32_t)b[primeid], primeid);
+/root/fideslib/src/NTT.cu:8:#include "ModMult.cuh"
+/root/fideslib/src/NTT.cu:133:                        psi_aux[k] = modmult<algo>(((T*)G_->inv_psi_no[primeid])[lo_exp << 1], psi[hi_exp_br], primeid,
+/root/fideslib/src/NTT.cu:136:                        psi_aux[k] = modmult<algo>(psi[hi_exp_br], ((T*)G_->inv_psi_no[primeid])[lo_exp << 1], primeid);
+/root/fideslib/src/NTT.cu:142:                A(i)[j] = modmult<FIDESlib::ALGO_BARRETT>(A(i)[j], psi_aux[0], primeid);
+/root/fideslib/src/NTT.cu:143:                A(i)[j + 1] = modmult<FIDESlib::ALGO_BARRETT>(A(i)[j + 1], psi_aux[1], primeid);
+/root/fideslib/src/NTT.cu:145:                A(i)[j] = modmult<algo>(A(i)[j], psi_aux[0], primeid);
+/root/fideslib/src/NTT.cu:146:                A(i)[j + 1] = modmult<algo>(A(i)[j + 1], psi_aux[1], primeid);
+/root/fideslib/src/NTT.cu:188:        A(i)[tid] = modadd(aux[0], aux[1], primeid);
+/root/fideslib/src/NTT.cu:189:        A(i)[tid + m] = modsub(aux[0], aux[1], primeid);
+/root/fideslib/src/NTT.cu:401:        A[tid] = modadd(aux[0], aux[1], primeid);
+/root/fideslib/src/NTT.cu:402:        A[tid | m] = modsub(aux[0], aux[1], primeid);
+/root/fideslib/src/NTT.cu:407:                A(i)[tid] = modadd(aux0, aux1, primeid);
+/root/fideslib/src/NTT.cu:408:                A(i)[tid + m] = modsub(aux0, aux1, primeid);
+/root/fideslib/src/NTT.cu:596:                            //assert(modmult<ALGO_NATIVE>(psi[hi_exp_br], ((T*)G_::psi_no[primeid])[lo_exp * 2], primeid) ==
+/root/fideslib/src/NTT.cu:602:                                ((T*)&aux)[k] = modmult<algo>(((T*)G_->psi_no[primeid])[lo_exp * 2], psi[hi_exp_br],
+/root/fideslib/src/NTT.cu:606:                                    modmult<algo>(psi[hi_exp_br], ((T*)G_->psi_no[primeid])[lo_exp * 2], primeid);
+/root/fideslib/src/NTT.cu:612:                        ((T*)&aux)[0] = modmult<ALGO_BARRETT>(A[j], (T)((T*)&aux)[0], primeid);
+/root/fideslib/src/NTT.cu:613:                        ((T*)&aux)[1] = modmult<ALGO_BARRETT>(A[j + 1], (T)((T*)&aux)[1], primeid);
+/root/fideslib/src/NTT.cu:615:                        ((T*)&aux)[0] = modmult<algo>(A[j], (T)((T*)&aux)[0], primeid);
+/root/fideslib/src/NTT.cu:616:                        ((T*)&aux)[1] = modmult<algo>(A[j + 1], (T)((T*)&aux)[1], primeid);
+/root/fideslib/src/NTT.cu:831:            aux[threadIdx.x] = modmult<ALGO_NATIVE>(aux[threadIdx.x], N_inv, primeid);
+/root/fideslib/src/NTT.cu:833:            aux[threadIdx.x + blockDim.x] = modmult<ALGO_NATIVE>(aux[threadIdx.x + blockDim.x], N_inv, primeid);
+/root/fideslib/src/ModMult.cuh:37:__forceinline__ __device__ uint32_t modmult(const uint32_t a, const uint32_t b, const int primeid,
+/root/fideslib/src/ModMult.cuh:42:__forceinline__ __device__ uint64_t modmult(const uint64_t a, const uint64_t b, const int primeid,
+/root/fideslib/src/ModMult.cuh:56:      //  const__uint128_t rx = (uint128_t) op1 * op2;
+/root/fideslib/src/ModMult.cuh:66:    __uint128_t c = (__uint128_t)op1 * op2;
+/root/fideslib/src/ModMult.cuh:209:__forceinline__ __device__ uint64_t modmult(const uint64_t a, const uint64_t b, const int primeid,
+/root/fideslib/src/ModMult.cuh:221:        res = (__uint128_t)a * b % p;
+/root/fideslib/src/ModMult.cuh:227:__device__ uint32_t modmult(const uint32_t a, const uint32_t b, const int primeid, const uint32_t shoup_b) {
+/root/fideslib/src/ModMult.cuh:245:__forceinline__ __device__ uint64_t Neal_reduce_64(__uint128_t c, const uint64_t mu, const uint64_t prime,
+/root/fideslib/src/ModMult.cuh:248:    __uint128_t c = (__uint128_t)op1 * op2;
+/root/fideslib/src/ModMult.cuh:259:    __uint128_t p2 = (__uint128_t)prime * prime;
+/root/fideslib/src/ModMult.cuh:303:__device__ uint64_t modreduce(const __uint128_t a, const int primeid) {
+/root/fideslib/src/ModMult.cuh:306:        return a % (__uint128_t)C_.primes[primeid];
+/root/fideslib/src/ModMult.cu:4:#include "ModMult.cuh"
+/root/fideslib/src/ModMult.cu:12:        a[idx] = modmult<algo>(a[idx], b[idx], primeid);
+/root/fideslib/src/ModMult.cu:18:        a[idx] = modmult<algo>(b[idx], c[idx], primeid);
+/root/fideslib/src/ModMult.cu:24:        a[idx] = modmult<algo>(a[idx], b, primeid, shoup_mu);
+/root/fideslib/src/Math.cu:8:    uint64_t modadd(uint64_t a, uint64_t b, uint64_t p) {
+/root/fideslib/src/Math.cu:13:    uint64_t modsub(uint64_t a, uint64_t b, uint64_t p) {
+/root/fideslib/src/Math.cu:20:        return (__uint128_t(a)) * b % p;
+/root/fideslib/src/Math.cu:27:            if (e & 1) r = (__uint128_t(a)) * r % p;
+/root/fideslib/src/Math.cu:29:            a = (__uint128_t(a)) * a % p;
+/root/fideslib/src/NTTfusions.cuh:24:            in1[0] = modmult<algo>(c1_[0], c1tilde_[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:25:            in1[1] = modmult<algo>(c1_[1], c1tilde_[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:34:            in2[0] = modmult<algo>(c1_[0], c0tilde_[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:35:            in2[1] = modmult<algo>(c1_[1], c0tilde_[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:36:            in2[0] = modadd(in2[0], modmult<algo>(c1tilde_[0], c0_[0], primeid), primeid);
+/root/fideslib/src/NTTfusions.cuh:37:            in2[1] = modadd(in2[1], modmult<algo>(c1tilde_[1], c0_[1], primeid), primeid);
+/root/fideslib/src/NTTfusions.cuh:38:            in2[0] = modmult<algo>(in2[0], C_.P[primeid], primeid);  // TODO shoup
+/root/fideslib/src/NTTfusions.cuh:39:            in2[1] = modmult<algo>(in2[1], C_.P[primeid], primeid);  // TODO shoup
+/root/fideslib/src/NTTfusions.cuh:45:            in2[0] = modadd(in2[0], modmult<algo>(in1[0], ksk2[0], primeid), primeid);
+/root/fideslib/src/NTTfusions.cuh:46:            in2[1] = modadd(in2[1], modmult<algo>(in1[1], ksk2[1], primeid), primeid);
+/root/fideslib/src/NTTfusions.cuh:53:            in2[0] = modmult<algo>(c0_[0], c0tilde_[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:54:            in2[1] = modmult<algo>(c0_[1], c0tilde_[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:55:            in2[0] = modmult<algo>(in2[0], C_.P[primeid], primeid);  // TODO shoup
+/root/fideslib/src/NTTfusions.cuh:56:            in2[1] = modmult<algo>(in2[1], C_.P[primeid], primeid);  // TODO shoup
+/root/fideslib/src/NTTfusions.cuh:62:            in2[0] = modadd(modmult<algo>(in1[0], ksk1[0], primeid), in2[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:63:            in2[1] = modadd(modmult<algo>(in1[1], ksk1[1], primeid), in2[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:87:            in2[0] = modmult<algo>(c1_[0], ksk2[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:88:            in2[1] = modmult<algo>(c1_[1], ksk2[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:93:            in2[0] = modmult<algo>(c0_[0], C_.P[primeid], primeid);  // TODO shoup
+/root/fideslib/src/NTTfusions.cuh:94:            in2[1] = modmult<algo>(c0_[1], C_.P[primeid], primeid);  // TODO shoup
+/root/fideslib/src/NTTfusions.cuh:97:            in2[0] = modadd(modmult<algo>(c1_[0], ksk1[0], primeid), in2[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:98:            in2[1] = modadd(modmult<algo>(c1_[1], ksk1[1], primeid), in2[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:119:            in1[0] = modmult<algo>(c1_[0], c1_[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:120:            in1[1] = modmult<algo>(c1_[1], c1_[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:125:            in2[0] = modmult<algo>(c0_[0], c0_[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:126:            in2[1] = modmult<algo>(c0_[1], c0_[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:127:            in2[0] = modmult<algo>(in2[0], C_.P[primeid], primeid);  // TODO shoup
+/root/fideslib/src/NTTfusions.cuh:128:            in2[1] = modmult<algo>(in2[1], C_.P[primeid], primeid);  // TODO shoup
+/root/fideslib/src/NTTfusions.cuh:131:            in2[0] = modadd(modmult<algo>(in1[0], ksk1[0], primeid), in2[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:132:            in2[1] = modadd(modmult<algo>(in1[1], ksk1[1], primeid), in2[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:136:            in2[0] = modmult<algo>(c1_[0], c0_[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:137:            in2[1] = modmult<algo>(c1_[1], c0_[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:138:            in2[0] = modadd(in2[0], in2[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:139:            in2[1] = modadd(in2[1], in2[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:140:            in2[0] = modmult<algo>(in2[0], C_.P[primeid], primeid);  // TODO shoup
+/root/fideslib/src/NTTfusions.cuh:141:            in2[1] = modmult<algo>(in2[1], C_.P[primeid], primeid);  // TODO shoup
+/root/fideslib/src/NTTfusions.cuh:142:            in2[0] = modadd(modmult<algo>(in1[0], ksk2[0], primeid), in2[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:143:            in2[1] = modadd(modmult<algo>(in1[1], ksk2[1], primeid), in2[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:164:            in1[0] = modmult<algo>(c1_[0], c1tilde_[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:165:            in1[1] = modmult<algo>(c1_[1], c1tilde_[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:174:            in2[0] = modmult<algo>(c1_[0], c0tilde_[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:175:            in2[1] = modmult<algo>(c1_[1], c0tilde_[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:176:            in2[0] = modadd(in2[0], modmult<algo>(c1tilde_[0], c0_[0], primeid), primeid);
+/root/fideslib/src/NTTfusions.cuh:177:            in2[1] = modadd(in2[1], modmult<algo>(c1tilde_[1], c0_[1], primeid), primeid);
+/root/fideslib/src/NTTfusions.cuh:178:            in2[0] = modmult<algo>(in2[0], C_.P[primeid], primeid);  // TODO shoup
+/root/fideslib/src/NTTfusions.cuh:179:            in2[1] = modmult<algo>(in2[1], C_.P[primeid], primeid);  // TODO shoup
+/root/fideslib/src/NTTfusions.cuh:185:            in2[0] = modadd(in2[0], modmult<algo>(in1[0], ksk2[0], primeid), primeid);
+/root/fideslib/src/NTTfusions.cuh:186:            in2[1] = modadd(in2[1], modmult<algo>(in1[1], ksk2[1], primeid), primeid);
+/root/fideslib/src/NTTfusions.cuh:189:            in2[0] = modadd(in2[0], r1[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:190:            in2[1] = modadd(in2[1], r1[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:197:            in2[0] = modmult<algo>(c0_[0], c0tilde_[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:198:            in2[1] = modmult<algo>(c0_[1], c0tilde_[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:199:            in2[0] = modmult<algo>(in2[0], C_.P[primeid], primeid);  // TODO shoup
+/root/fideslib/src/NTTfusions.cuh:200:            in2[1] = modmult<algo>(in2[1], C_.P[primeid], primeid);  // TODO shoup
+/root/fideslib/src/NTTfusions.cuh:206:            in2[0] = modadd(modmult<algo>(in1[0], ksk1[0], primeid), in2[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:207:            in2[1] = modadd(modmult<algo>(in1[1], ksk1[1], primeid), in2[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:210:            in2[0] = modadd(in2[0], r0[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:211:            in2[1] = modadd(in2[1], r0[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:233:            A[j] = modadd(modmult<algo>(q_inv_temp, in[0], primeid),
+/root/fideslib/src/NTTfusions.cuh:234:                          modmult<algo>(QlQlInvModqlDivqlModq_temp, A[j], primeid), primeid);
+/root/fideslib/src/NTTfusions.cuh:235:            A[j | 1] = modadd(modmult<algo>(q_inv_temp, in[1], primeid),
+/root/fideslib/src/NTTfusions.cuh:236:                              modmult<algo>(QlQlInvModqlDivqlModq_temp, A[j | 1], primeid), primeid);
+/root/fideslib/src/NTTfusions.cuh:238:            A[j] = modmult<algo>(q_inv_temp, modsub(in[0], A[j], primeid), primeid);
+/root/fideslib/src/NTTfusions.cuh:239:            A[j | 1] = modmult<algo>(q_inv_temp, modsub(in[1], A[j | 1], primeid), primeid);
+/root/fideslib/src/NTTfusions.cuh:253:            A[j] = modmult<algo>(modsub(in[0], A[j], primeid), (T)C_.P_inv[primeid], primeid);
+/root/fideslib/src/NTTfusions.cuh:254:            A[j | 1] = modmult<algo>(modsub(in[1], A[j | 1], primeid), (T)C_.P_inv[primeid], primeid);
+/root/fideslib/src/NTTfusions.cuh:257:                modmult<algo>(modsub(in[0], A[j], primeid), (T)C_.P_inv[primeid], primeid, (T)C_.P_inv_shoup[primeid]);
+/root/fideslib/src/NTTfusions.cuh:258:            A[j | 1] = modmult<algo>(modsub(in[1], A[j | 1], primeid), (T)C_.P_inv[primeid], primeid,
+/root/fideslib/src/NTTfusions.cuh:278:        in[0] = modmult<algo>(in[0], pt[OFFSET_T(i)], primeid);
+/root/fideslib/src/NTTfusions.cuh:279:        in[1] = modmult<algo>(in[1], pt[OFFSET_T(i) | 1], primeid);
+/root/fideslib/src/NTTfusions.cuh:283:            A[j] = modadd(modmult<algo>(q_inv_temp, in[0], primeid),
+/root/fideslib/src/NTTfusions.cuh:284:                          modmult<algo>(QlQlInvModqlDivqlModq_temp, A[j], primeid), primeid);
+/root/fideslib/src/NTTfusions.cuh:285:            A[j | 1] = modadd(modmult<algo>(q_inv_temp, in[1], primeid),
+/root/fideslib/src/NTTfusions.cuh:286:                              modmult<algo>(QlQlInvModqlDivqlModq_temp, A[j | 1], primeid), primeid);
+/root/fideslib/src/NTTfusions.cuh:288:            A[j] = modmult<algo>(q_inv_temp, modsub(in[0], A[j], primeid), primeid);
+/root/fideslib/src/NTTfusions.cuh:289:            A[j | 1] = modmult<algo>(q_inv_temp, modsub(in[1], A[j | 1], primeid), primeid);
+/root/fideslib/src/NTTfusions.cuh:307:            in2[0] = modmult<algo>(A[j], ksk2[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:308:            in2[1] = modmult<algo>(A[j + 1], ksk2[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:312:            in1[0] = modmult<algo>(A[j], ksk1[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:313:            in1[1] = modmult<algo>(A[j + 1], ksk1[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:334:            in2[0] = modmult<algo>(A[j], ksk2[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:335:            in2[1] = modmult<algo>(A[j + 1], ksk2[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:337:            in2[0] = modadd(in2[0], r1[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:338:            in2[1] = modadd(in2[1], r1[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:342:            in1[0] = modmult<algo>(A[j], ksk1[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:343:            in1[1] = modmult<algo>(A[j + 1], ksk1[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:345:            in1[0] = modadd(in1[0], r0[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:346:            in1[1] = modadd(in1[1], r0[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:362:            [tid] = modmult<ALGO_BARRETT>(
+/root/fideslib/src/NTTfusions.cuh:365:            [tid + blockDim.x] = modmult<ALGO_BARRETT>(
+/root/fideslib/src/NTTfusions.cuh:376:                aux[0] = modmult<4>(aux[0], root, primeid);
+/root/fideslib/src/NTTfusions.cuh:377:                aux[1] = modmult<4>(aux[1], root, primeid);
+/root/fideslib/src/NTTfusions.cuh:379:            A(i)[tid] = modmult<4>(A(i)[tid], aux[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:380:            A(i)[tid + blockDim.x] = modmult<4>(A(i)[tid + blockDim.x], aux[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:393:            aux = modmult<algo>(aux_3, psi[pos1], primeid, psi_shoup[pos1]);
+/root/fideslib/src/NTTfusions.cuh:395:            aux = modmult<algo>(aux_3, psi[pos1], primeid);
+/root/fideslib/src/NTTfusions.cuh:410:                //aux = modmult<4>(aux, root, primeid);
+/root/fideslib/src/NTTfusions.cuh:412:                    aux = modmult<algo>(aux, root, primeid, root_shoup);
+/root/fideslib/src/NTTfusions.cuh:414:                    aux = modmult<algo>(aux, root, primeid);
+/root/fideslib/src/NTTfusions.cuh:420:                aux2 = modmult<algo>(aux, fourth_root, primeid, fourth_root_shoup);
+/root/fideslib/src/NTTfusions.cuh:422:                aux2 = modmult<algo>(aux, fourth_root, primeid);
+/root/fideslib/src/NTTfusions.cuh:425:            A(i)[tid] = modmult<FIDESlib::ALGO_BARRETT>(A(i)[tid], aux, primeid);
+/root/fideslib/src/NTTfusions.cuh:426:            A(i)[tid + blockDim.x] = modmult<FIDESlib::ALGO_BARRETT>(A(i)[tid + blockDim.x], aux2, primeid);
+/root/fideslib/src/NTTfusions.cuh:440:            [tid] = modmult<ALGO_BARRETT>(
+/root/fideslib/src/NTTfusions.cuh:443:            [tid + blockDim.x] = modmult<ALGO_BARRETT>(
+/root/fideslib/src/NTTfusions.cuh:446:            A(i)[tid] = modmult<ALGO_SHOUP>(A(i)[tid], C_.N, primeid, C_.N_shoup[primeid]);
+/root/fideslib/src/NTTfusions.cuh:447:            A(i)[tid + blockDim.x] = modmult<ALGO_SHOUP>(A(i)[tid + blockDim.x], C_.N, primeid, C_.N_shoup[primeid]);
+/root/fideslib/src/NTTfusions.cuh:456:                aux[0] = modmult<4>(aux[0], root, primeid);
+/root/fideslib/src/NTTfusions.cuh:457:                aux[1] = modmult<4>(aux[1], root, primeid);
+/root/fideslib/src/NTTfusions.cuh:459:            A(i)[tid] = modmult<4>(A(i)[tid], aux[0], primeid);
+/root/fideslib/src/NTTfusions.cuh:460:            A(i)[tid + blockDim.x] = modmult<4>(A(i)[tid + blockDim.x], aux[1], primeid);
+/root/fideslib/src/NTTfusions.cuh:471:        aux_3 = modmult<ALGO_SHOUP>(aux_3, C_.N, primeid, C_.N_shoup[primeid]);
+/root/fideslib/src/NTTfusions.cuh:475:            aux = modmult<algo>(aux_3, psi[pos1], primeid, psi_shoup[pos1]);
+/root/fideslib/src/NTTfusions.cuh:477:            aux = modmult<algo>(aux_3, psi[pos1], primeid);
+/root/fideslib/src/NTTfusions.cuh:500:                    aux = modmult<algo>(aux, root, primeid, root_shoup);
+/root/fideslib/src/NTTfusions.cuh:502:                    aux = modmult<algo>(aux, root, primeid);
+/root/fideslib/src/NTTfusions.cuh:508:                aux2 = modmult<algo>(aux, fourth_root, primeid, fourth_root_shoup);
+/root/fideslib/src/NTTfusions.cuh:510:                aux2 = modmult<algo>(aux, fourth_root, primeid);
+/root/fideslib/src/NTTfusions.cuh:513:            A(i)[tid] = modmult<FIDESlib::ALGO_BARRETT>(A(i)[tid], aux, primeid);
+/root/fideslib/src/NTTfusions.cuh:514:            A(i)[tid + blockDim.x] = modmult<FIDESlib::ALGO_BARRETT>(A(i)[tid + blockDim.x], aux2, primeid);
+/root/fideslib/src/ConstantsGPU.cu:33:    __uint128_t res =
+/root/fideslib/src/ConstantsGPU.cu:34:        (((__uint128_t)1) << (2 * num_bits + (VERSION == DHEM ? 3 : (VERSION == NEIL ? 1 : 0)))) / ((__uint128_t)q);
+/root/fideslib/src/ConstantsGPU.cu:73:    return (__uint128_t)((val) << 1) * (1ul << 63) / hC_.primes[primeid];
+/root/fideslib/src/ConstantsGPU.cu:319:                        (__uint128_t)(((uint64_t*)hG_.psi[i])[j] << 1) * (1ul << 63) / hC_.primes[i];
+/root/fideslib/src/ConstantsGPU.cu:321:                        (__uint128_t)(((uint64_t*)hG_.inv_psi[i])[j] << 1) * (1ul << 63) / hC_.primes[i];
+
+----------------------------------------------------------------------------------------------------
+7) Existing CUDA target / CMake support in FIDESlib-GPT
+----------------------------------------------------------------------------------------------------
+     1	cmake_minimum_required(VERSION 3.25)
+     2	project(FIDESlibGPT LANGUAGES CXX)
+     3	
+     4	set(CMAKE_CXX_STANDARD 20)
+     5	set(CMAKE_CXX_STANDARD_REQUIRED ON)
+     6	
+     7	option(BUILD_NATIVE_SMOKE "Build native smoke test executable" ON)
+     8	
+     9	set(FIDESLIB_ROOT "/root/fideslib" CACHE PATH "Path to FIDESlib source/build tree")
+    10	set(OPENFHE_ROOT "/root/fideslib/deps/openfhe-install" CACHE PATH "Path to OpenFHE install")
+    11	
+    12	# Locate pybind11 from the current Python environment
+    13	execute_process(
+    14	    COMMAND python3 -m pybind11 --cmakedir
+    15	    OUTPUT_VARIABLE PYBIND11_CMAKE_DIR
+    16	    OUTPUT_STRIP_TRAILING_WHITESPACE
+    17	)
+    18	
+    19	if(NOT PYBIND11_CMAKE_DIR)
+    20	    message(FATAL_ERROR "Failed to locate pybind11 CMake directory. Did you install pybind11?")
+    21	endif()
+    22	
+    23	list(APPEND CMAKE_PREFIX_PATH "${PYBIND11_CMAKE_DIR}")
+    24	
+    25	find_package(pybind11 CONFIG REQUIRED)
+    26	find_package(OpenFHE 1.4.2 CONFIG REQUIRED PATHS "${OPENFHE_ROOT}/lib/OpenFHE" NO_DEFAULT_PATH)
+    27	find_package(TBB REQUIRED)
+    28	find_package(OpenMP REQUIRED)
+    29	find_package(Threads REQUIRED)
+    30	find_package(CUDAToolkit REQUIRED)
+    31	find_library(NCCL_LIB nccl REQUIRED)
+    32	
+    33	set(COMMON_INCLUDE_DIRS
+    34	    "${FIDESLIB_ROOT}/api"
+    35	    "${CMAKE_SOURCE_DIR}"
+    36	    "${CMAKE_SOURCE_DIR}/cpp"
+    37	)
+    38	
+    39	set(COMMON_LINK_LIBS
+    40	    "${FIDESLIB_ROOT}/build/fideslib.a"
+    41	    OPENFHEpke
+    42	    OPENFHEbinfhe
+    43	    OPENFHEcore
+    44	    TBB::tbb
+    45	    OpenMP::OpenMP_CXX
+    46	    Threads::Threads
+    47	    CUDA::cudart
+    48	    CUDA::cuda_driver
+    49	    ${NCCL_LIB}
+    50	)
+    51	
+    52	set(HEGPT_HELPER_SOURCES
+    53	    cpp/native_helpers.cpp
+    54	)
+    55	
+    56	# Python extension module
+    57	pybind11_add_module(_fideslib MODULE
+    58	    bindings/bindings.cpp
+    59	    ${HEGPT_HELPER_SOURCES}
+    60	)
+    61	target_include_directories(_fideslib PRIVATE ${COMMON_INCLUDE_DIRS})
+    62	target_link_libraries(_fideslib PRIVATE ${COMMON_LINK_LIBS})
+    63	set_target_properties(_fideslib PROPERTIES
+    64	    BUILD_RPATH "${OPENFHE_ROOT}/lib;/usr/local/cuda/lib64"
+    65	    INSTALL_RPATH "${OPENFHE_ROOT}/lib;/usr/local/cuda/lib64"
+    66	)
+    67	
+    68	# Native smoke test executable
+    69	if(BUILD_NATIVE_SMOKE AND EXISTS "${CMAKE_SOURCE_DIR}/cpp/native_smoke_test.cpp")
+    70	    add_executable(fideslib_gpt_minimal
+    71	        cpp/native_smoke_test.cpp
+    72	        ${HEGPT_HELPER_SOURCES}
+    73	    )
+    74	    target_include_directories(fideslib_gpt_minimal PRIVATE ${COMMON_INCLUDE_DIRS})
+    75	    target_link_libraries(fideslib_gpt_minimal PRIVATE ${COMMON_LINK_LIBS})
+    76	    set_target_properties(fideslib_gpt_minimal PROPERTIES
+    77	        BUILD_RPATH "${OPENFHE_ROOT}/lib;/usr/local/cuda/lib64"
+    78	        INSTALL_RPATH "${OPENFHE_ROOT}/lib;/usr/local/cuda/lib64"
+    79	    )
+    80	endif()
+    81	
+    82	message(STATUS "FIDESLIB_ROOT = ${FIDESLIB_ROOT}")
+    83	message(STATUS "OPENFHE_ROOT = ${OPENFHE_ROOT}")
+    84	message(STATUS "PYBIND11_CMAKE_DIR = ${PYBIND11_CMAKE_DIR}")
+    85	message(STATUS "BUILD_NATIVE_SMOKE = ${BUILD_NATIVE_SMOKE}")
+    86	
+    87	
+    88	# FIDESLIB_GPT_OPENFHE_COMPONENT_INCLUDE_PATCH
+    89	if(TARGET _fideslib)
+    90	  target_include_directories(_fideslib PRIVATE
+    91	    "/root/fideslib/deps/openfhe-install/include"
+    92	    "/root/fideslib/deps/openfhe-install/include/openfhe"
+    93	    "/root/fideslib/deps/openfhe-install/include/openfhe/binfhe"
+    94	    "/root/fideslib/deps/openfhe-install/include/openfhe/core"
+    95	    "/root/fideslib/deps/openfhe-install/include/openfhe/pke"
+    96	    "/root/fideslib/deps/openfhe-src/src/binfhe/include"
+    97	    "/root/fideslib/deps/openfhe-src/src/core/include"
+    98	    "/root/fideslib/deps/openfhe-src/src/pke/include"
+    99	  )
+   100	endif()
+   101	
+   102	
+   103	# FIDESLIB_GPT_FIDES_INTERNAL_COMPONENT_INCLUDE_PATCH
+   104	if(TARGET _fideslib)
+   105	  target_include_directories(_fideslib PRIVATE
+   106	    "/root/fideslib/src"
+   107	    "/root/fideslib/src/CKKS"
+   108	  )
+   109	endif()
+
+/workspace/FIDESlib-GPT/bindings/bindings.cpp
+/workspace/FIDESlib-GPT/cpp/native_helpers.cpp
+/workspace/FIDESlib-GPT/cpp/native_helpers.hpp
+/workspace/FIDESlib-GPT/cpp/native_smoke_test.cpp
+
+----------------------------------------------------------------------------------------------------
+8) Current component hooks in bindings.cpp
+----------------------------------------------------------------------------------------------------
+355-   355	        out->SetLevel(h.ct_->GetLevel());
+356-   356	
+357-   357	        return CiphertextHandle(out);
+358-   358	    }
+359-   359	
+360-   360	
+361-   361	    static std::uint64_t mod_mul_signed_i64(std::int64_t w, std::uint64_t x, std::uint64_t mod) {
+362-   362	        if (mod == 0) {
+363-   363	            throw std::runtime_error("mod_mul_signed_i64(): modulus is zero");
+364-   364	        }
+365-   365	
+366-   366	        bool neg = (w < 0);
+367-   367	        std::uint64_t absw = 0;
+368-   368	
+369-   369	        if (w == std::numeric_limits<std::int64_t>::min()) {
+370-   370	            absw = static_cast<std::uint64_t>(std::numeric_limits<std::int64_t>::max()) + 1ULL;
+371-   371	        } else {
+372-   372	            absw = static_cast<std::uint64_t>(neg ? -w : w);
+373-   373	        }
+374-   374	
+375-   375	        absw %= mod;
+376-   376	        x %= mod;
+377-   377	
+378-   378	        const std::uint64_t prod = static_cast<std::uint64_t>(
+379-   379	            (static_cast<__uint128_t>(absw) * static_cast<__uint128_t>(x)) % static_cast<__uint128_t>(mod)
+380-   380	        );
+381-   381	
+382-   382	        if (!neg || prod == 0) {
+383-   383	            return prod;
+384-   384	        }
+385-   385	
+386-   386	        return mod - prod;
+387-   387	    }
+388-   388	
+389-   389	    static std::uint64_t mod_add_u64(std::uint64_t a, std::uint64_t b, std::uint64_t mod) {
+390-   390	        return static_cast<std::uint64_t>(
+391-   391	            (static_cast<__uint128_t>(a) + static_cast<__uint128_t>(b)) % static_cast<__uint128_t>(mod)
+392-   392	        );
+393-   393	    }
+394-   394	
+395:   395	    std::vector<CiphertextHandle> component_int_linear_combination_cpu(
+396-   396	        const std::vector<CiphertextHandle>& rows,
+397-   397	        const std::vector<std::vector<std::int64_t>>& weights
+398-   398	    ) {
+399-   399	        require_ready();
+400-   400	
+401-   401	        if (rows.empty()) {
+402:   402	            throw std::runtime_error("component_int_linear_combination_cpu(): rows is empty");
+403-   403	        }
+404-   404	        if (weights.empty()) {
+405:   405	            throw std::runtime_error("component_int_linear_combination_cpu(): weights is empty");
+406-   406	        }
+407-   407	
+408-   408	        const std::size_t n_in = rows.size();
+409-   409	        const std::size_t n_out = weights.size();
+410-   410	
+411-   411	        for (std::size_t r = 0; r < n_out; ++r) {
+412-   412	            if (weights[r].size() != n_in) {
+413:   413	                throw std::runtime_error("component_int_linear_combination_cpu(): each weight row must have len(rows)");
+414-   414	            }
+415-   415	        }
+416-   416	
+417-   417	        using OpenFHECiphertext = lbcrypto::Ciphertext<lbcrypto::DCRTPoly>;
+418-   418	
+419-   419	        std::vector<const OpenFHECiphertext*> ct_ptrs;
+420-   420	        ct_ptrs.reserve(n_in);
+421-   421	
+422-   422	        for (std::size_t i = 0; i < n_in; ++i) {
+423-   423	            rows[i].require_valid();
+424-   424	
+425-   425	            if (!rows[i].ct_->cpu.has_value()) {
+426:   426	                throw std::runtime_error("component_int_linear_combination_cpu(): one input row has no CPU object. Use ciphertext_autoload=False.");
+427-   427	            }
+428-   428	
+429-   429	            const OpenFHECiphertext* p = std::any_cast<OpenFHECiphertext>(&rows[i].ct_->cpu);
+430-   430	            if (p == nullptr || !(*p)) {
+431:   431	                throw std::runtime_error("component_int_linear_combination_cpu(): ct_->cpu is not a valid OpenFHE ciphertext");
+432-   432	            }
+433-   433	
+434-   434	            ct_ptrs.push_back(p);
+435-   435	        }
+436-   436	
+437-   437	        const auto& ct0 = *ct_ptrs[0];
+438-   438	        const auto& elems0 = ct0->GetElements();
+439-   439	
+440-   440	        if (elems0.size() < 2) {
+441:   441	            throw std::runtime_error("component_int_linear_combination_cpu(): expected at least 2 RLWE components");
+442-   442	        }
+443-   443	
+444-   444	        const std::size_t num_parts = elems0.size();
+445-   445	
+446-   446	        // Basic compatibility checks.
+447-   447	        for (std::size_t i = 1; i < n_in; ++i) {
+448-   448	            const auto& cti = *ct_ptrs[i];
+449-   449	            const auto& elemsi = cti->GetElements();
+450-   450	
+451-   451	            if (elemsi.size() != num_parts) {
+452:   452	                throw std::runtime_error("component_int_linear_combination_cpu(): incompatible num_parts");
+453-   453	            }
+454-   454	            if (cti->GetLevel() != ct0->GetLevel()) {
+455:   455	                throw std::runtime_error("component_int_linear_combination_cpu(): incompatible OpenFHE levels");
+456-   456	            }
+457-   457	            if (cti->GetNoiseScaleDeg() != ct0->GetNoiseScaleDeg()) {
+458:   458	                throw std::runtime_error("component_int_linear_combination_cpu(): incompatible noise scale degree");
+459-   459	            }
+460-   460	            if (cti->GetSlots() != ct0->GetSlots()) {
+461:   461	                throw std::runtime_error("component_int_linear_combination_cpu(): incompatible slots");
+462-   462	            }
+463-   463	        }
+464-   464	
+465-   465	        std::vector<CiphertextHandle> outputs;
+466-   466	        outputs.reserve(n_out);
+467-   467	
+468-   468	        for (std::size_t r = 0; r < n_out; ++r) {
+469-   469	            // Copy metadata from ct0.
+470-   470	            auto ct_dst = std::make_shared<lbcrypto::CiphertextImpl<lbcrypto::DCRTPoly>>(*ct0);
+471-   471	
+472-   472	            std::vector<lbcrypto::DCRTPoly> elems_dst;
+473-   473	            elems_dst.reserve(num_parts);
+474-   474	
+475-   475	            for (std::size_t part_idx = 0; part_idx < num_parts; ++part_idx) {
+476-   476	                lbcrypto::DCRTPoly poly_out = elems0[part_idx];
+477-   477	
+478-   478	                auto& out_towers = poly_out.GetAllElements();
+479-   479	                const std::size_t num_towers = out_towers.size();
+480-   480	
+481-   481	                for (std::size_t tower_idx = 0; tower_idx < num_towers; ++tower_idx) {
+482-   482	                    auto& out_tower = out_towers[tower_idx];
+483-   483	                    auto& out_values = *out_tower.m_values;
+484-   484	
+485-   485	                    const std::uint64_t mod = static_cast<std::uint64_t>(out_tower.GetModulus().ConvertToInt());
+486-   486	                    const std::size_t ring_dim = out_values.GetLength();
+487-   487	
+488-   488	                    for (std::size_t k = 0; k < ring_dim; ++k) {
+489-   489	                        std::uint64_t acc = 0;
+490-   490	
+491-   491	                        for (std::size_t i = 0; i < n_in; ++i) {
+492-   492	                            const std::int64_t w = weights[r][i];
+493-   493	                            if (w == 0) {
+494-   494	                                continue;
+495-   495	                            }
+496-   496	
+497-   497	                            const auto& in_poly = (*ct_ptrs[i])->GetElements()[part_idx];
+498-   498	                            const auto& in_tower = in_poly.GetAllElements()[tower_idx];
+499-   499	                            const auto& in_values = in_tower.GetValues();
+500-   500	
+501-   501	                            const std::uint64_t x = static_cast<std::uint64_t>(in_values[k].ConvertToInt());
+502-   502	                            const std::uint64_t term = mod_mul_signed_i64(w, x, mod);
+503-   503	                            acc = mod_add_u64(acc, term, mod);
+504-   504	                        }
+505-   505	
+506-   506	                        out_values.at(k).SetValue(acc);
+507-   507	                    }
+508-   508	                }
+509-   509	
+510-   510	                elems_dst.push_back(poly_out);
+511-   511	            }
+512-   512	
+513-   513	            ct_dst->SetElements(elems_dst);
+514-   514	            ct_dst->SetLevel(ct0->GetLevel());
+515-   515	            ct_dst->SetScalingFactor(ct0->GetScalingFactor());
+516-   516	            ct_dst->SetNoiseScaleDeg(ct0->GetNoiseScaleDeg());
+517-   517	            ct_dst->SetKeyTag(ct0->GetKeyTag());
+518-   518	            ct_dst->SetSlots(ct0->GetSlots());
+519-   519	
+520-   520	            auto out = rows[0].ct_->Clone();
+521-   521	            out->cpu = ct_dst;
+522-   522	            out->gpu = 0;
+523-   523	            out->loaded = false;
+524-   524	            out->SetLevel(rows[0].ct_->GetLevel());
+525-   525	
+526-   526	            outputs.emplace_back(out);
+527-   527	        }
+528-   528	
+529-   529	        return outputs;
+530-   530	    }
+531-   531	
+532-   532	
+533-   533	
+534-   534	
+535:   535	    py::dict ciphertext_storage_state(const CiphertextHandle& h) {
+536-   536	        h.require_valid();
+537-   537	
+538-   538	        py::dict out;
+539-   539	        out["valid"] = true;
+540-   540	        out["loaded"] = h.ct_->loaded;
+541-   541	        out["gpu"] = h.ct_->gpu;
+542-   542	        out["has_cpu"] = h.ct_->cpu.has_value();
+543-   543	        out["level"] = h.ct_->GetLevel();
+544-   544	        out["noise_scale_deg"] = h.ct_->GetNoiseScaleDeg();
+545-   545	        out["original_level"] = h.ct_->original_level;
+546-   546	        return out;
+547-   547	    }
+548-   548	
+549-   549	
+550-   550	
+551-   551	
+552-   552	
+553-   553	
+554:   554	    CiphertextHandle component_linear_wsum_gpu(
+555-   555	        const std::vector<CiphertextHandle>& rows,
+556-   556	        const std::vector<double>& weights
+557-   557	    ) {
+558-   558	        require_ready();
+559-   559	
+560-   560	        if (rows.empty()) {
+561:   561	            throw std::runtime_error("component_linear_wsum_gpu(): rows is empty");
+562-   562	        }
+563-   563	        if (weights.size() != rows.size()) {
+564:   564	            throw std::runtime_error("component_linear_wsum_gpu(): weights.size() must equal rows.size()");
+565-   565	        }
+566-   566	
+567-   567	        auto parent = rows[0].ct_->parent_context;
+568-   568	        if (!parent) {
+569:   569	            throw std::runtime_error("component_linear_wsum_gpu(): first row has null parent_context");
+570-   570	        }
+571-   571	
+572-   572	        using OpenFHECiphertext = lbcrypto::Ciphertext<lbcrypto::DCRTPoly>;
+573-   573	
+574-   574	        if (!rows[0].ct_->cpu.has_value()) {
+575:   575	            throw std::runtime_error("component_linear_wsum_gpu(): rows[0] has no CPU OpenFHE template ciphertext");
+576-   576	        }
+577-   577	
+578-   578	        const OpenFHECiphertext* cpu_template_ptr = std::any_cast<OpenFHECiphertext>(&rows[0].ct_->cpu);
+579-   579	        if (cpu_template_ptr == nullptr || !(*cpu_template_ptr)) {
+580:   580	            throw std::runtime_error("component_linear_wsum_gpu(): rows[0].ct_->cpu is not a valid OpenFHE ciphertext");
+581-   581	        }
+582-   582	
+583-   583	        const OpenFHECiphertext& cpu_template = *cpu_template_ptr;
+584-   584	
+585-   585	        auto ensure_loaded = [&](const CiphertextHandle& h) {
+586-   586	            h.require_valid();
+587-   587	
+588-   588	            if (h.ct_->parent_context != parent) {
+589:   589	                throw std::runtime_error("component_linear_wsum_gpu(): all rows must share the same parent_context");
+590-   590	            }
+591-   591	
+592-   592	            if (!h.ct_->loaded || h.ct_->gpu == 0) {
+593-   593	                h.ct_->gpu = parent->CopyDeviceCiphertext(*h.ct_);
+594-   594	                h.ct_->loaded = true;
+595-   595	            }
+596-   596	
+597-   597	            auto& opaque = parent->GetDeviceCiphertext(h.ct_->gpu);
+598-   598	            auto gpu_ct = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(opaque);
+599-   599	
+600-   600	            if (!gpu_ct) {
+601:   601	                throw std::runtime_error("component_linear_wsum_gpu(): failed to cast device ciphertext handle");
+602-   602	            }
+603-   603	
+604-   604	            return gpu_ct;
+605-   605	        };
+606-   606	
+607-   607	        std::vector<std::shared_ptr<FIDESlib::CKKS::Ciphertext>> gpu_inputs;
+608-   608	        gpu_inputs.reserve(rows.size());
+609-   609	
+610-   610	        for (std::size_t i = 0; i < rows.size(); ++i) {
+611-   611	            gpu_inputs.push_back(ensure_loaded(rows[i]));
+612-   612	        }
+613-   613	
+614-   614	        int first_idx = -1;
+615-   615	        std::vector<std::int64_t> int_weights;
+616-   616	        int_weights.reserve(weights.size());
+617-   617	
+618-   618	        for (std::size_t i = 0; i < weights.size(); ++i) {
+619-   619	            const double w = weights[i];
+620-   620	
+621-   621	            if (!std::isfinite(w)) {
+622:   622	                throw std::runtime_error("component_linear_wsum_gpu(): non-finite weight");
+623-   623	            }
+624-   624	
+625-   625	            const double rounded = std::round(w);
+626-   626	            if (std::fabs(w - rounded) > 1e-9) {
+627:   627	                throw std::runtime_error("component_linear_wsum_gpu(): repeated-add/sub path supports integer weights only");
+628-   628	            }
+629-   629	
+630-   630	            if (rounded > static_cast<double>(std::numeric_limits<std::int64_t>::max()) ||
+631-   631	                rounded < static_cast<double>(std::numeric_limits<std::int64_t>::min() + 1)) {
+632:   632	                throw std::runtime_error("component_linear_wsum_gpu(): weight out of int64 range");
+633-   633	            }
+634-   634	
+635-   635	            const std::int64_t k = static_cast<std::int64_t>(rounded);
+636-   636	            int_weights.push_back(k);
+637-   637	
+638-   638	            if (k != 0 && first_idx < 0) {
+639-   639	                first_idx = static_cast<int>(i);
+640-   640	            }
+641-   641	        }
+642-   642	
+643-   643	        if (first_idx < 0) {
+644:   644	            throw std::runtime_error("component_linear_wsum_gpu(): all-zero weights are not supported in this GPU repeated-add/sub path");
+645-   645	        }
+646-   646	
+647-   647	        auto first_row = rows[static_cast<std::size_t>(first_idx)].ct_;
+648-   648	        const std::uint32_t out_handle = parent->CopyDeviceCiphertext(*first_row);
+649-   649	
+650-   650	        auto out_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(
+651-   651	            parent->GetDeviceCiphertext(out_handle)
+652-   652	        );
+653-   653	
+654-   654	        if (!out_gpu) {
+655:   655	            throw std::runtime_error("component_linear_wsum_gpu(): failed to allocate output GPU ciphertext");
+656-   656	        }
+657-   657	
+658-   658	        const std::int64_t first_weight = int_weights[static_cast<std::size_t>(first_idx)];
+659-   659	        const std::uint64_t first_abs =
+660-   660	            static_cast<std::uint64_t>(first_weight < 0 ? -first_weight : first_weight);
+661-   661	
+662-   662	        if (first_weight < 0) {
+663-   663	            out_gpu->multScalar(-1.0);
+664-   664	        }
+665-   665	
+666-   666	        for (std::uint64_t t = 1; t < first_abs; ++t) {
+667-   667	            if (first_weight > 0) {
+668-   668	                out_gpu->add(*gpu_inputs[static_cast<std::size_t>(first_idx)]);
+669-   669	            } else {
+670-   670	                out_gpu->sub(*gpu_inputs[static_cast<std::size_t>(first_idx)]);
+671-   671	            }
+672-   672	        }
+673-   673	
+674-   674	        for (std::size_t i = static_cast<std::size_t>(first_idx) + 1; i < rows.size(); ++i) {
+675-   675	            const std::int64_t k = int_weights[i];
+676-   676	
+677-   677	            if (k > 0) {
+678-   678	                for (std::int64_t t = 0; t < k; ++t) {
+679-   679	                    out_gpu->add(*gpu_inputs[i]);
+680-   680	                }
+681-   681	            } else if (k < 0) {
+682-   682	                for (std::int64_t t = 0; t < -k; ++t) {
+683-   683	                    out_gpu->sub(*gpu_inputs[i]);
+684-   684	                }
+685-   685	            }
+686-   686	        }
+687-   687	
+688-   688	        parent->Synchronize();
+689-   689	
+690-   690	        FIDESlib::CKKS::RawCipherText raw_out;
+691-   691	        out_gpu->store(raw_out);
+692-   692	
+693-   693	        raw_out.keyid = out_gpu->keyID;
+694-   694	        raw_out.slots = cpu_template->GetSlots();
+695-   695	        raw_out.Noise = cpu_template->GetScalingFactor();
+696-   696	        raw_out.NoiseLevel = out_gpu->NoiseLevel;
+697-   697	
+698-   698	        OpenFHECiphertext cpu_out =
+699-   699	            std::make_shared<lbcrypto::CiphertextImpl<lbcrypto::DCRTPoly>>(*cpu_template);
+700-   700	
+701-   701	        FIDESlib::CKKS::GetOpenFHECipherText(cpu_out, raw_out, 1);
+702-   702	
+703-   703	        auto out = rows[0].ct_->Clone();
+704-   704	        out->cpu = std::make_any<OpenFHECiphertext>(std::move(cpu_out));
+705-   705	        out->gpu = out_handle;
+706-   706	        out->loaded = true;
+707-   707	        out->parent_context = parent;
+708-   708	        out->original_level = out_gpu->getLevel();
+709-   709	        out->SetLevel(rows[0].ct_->GetLevel());
+710-   710	
+711-   711	        return CiphertextHandle(out);
+712-   712	    }
+713-   713	
+714-   714	
+715:   715	    CiphertextHandle gpu_copyback_cpu_debug(const CiphertextHandle& h, int rev) {
+716-   716	        require_ready();
+717-   717	        h.require_valid();
+718-   718	
+719-   719	        if (!h.ct_->parent_context) {
+720:   720	            throw std::runtime_error("gpu_copyback_cpu_debug(): null parent_context");
+721-   721	        }
+722-   722	
+723-   723	        auto parent = h.ct_->parent_context;
+724-   724	
+725-   725	        if (!h.ct_->loaded || h.ct_->gpu == 0) {
+726-   726	            h.ct_->gpu = parent->CopyDeviceCiphertext(*h.ct_);
+727-   727	            h.ct_->loaded = true;
+728-   728	        }
+729-   729	
+730-   730	        if (!h.ct_->cpu.has_value()) {
+731:   731	            throw std::runtime_error("gpu_copyback_cpu_debug(): input has no CPU OpenFHE template");
+732-   732	        }
+733-   733	
+734-   734	        using OpenFHECiphertext = lbcrypto::Ciphertext<lbcrypto::DCRTPoly>;
+735-   735	
+736-   736	        const OpenFHECiphertext* cpu_template_ptr = std::any_cast<OpenFHECiphertext>(&h.ct_->cpu);
+737-   737	        if (cpu_template_ptr == nullptr || !(*cpu_template_ptr)) {
+738:   738	            throw std::runtime_error("gpu_copyback_cpu_debug(): input CPU object is not valid OpenFHE ciphertext");
+739-   739	        }
+740-   740	
+741-   741	        const OpenFHECiphertext& cpu_template = *cpu_template_ptr;
+742-   742	
+743-   743	        auto& opaque = parent->GetDeviceCiphertext(h.ct_->gpu);
+744-   744	        auto gpu_ct = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(opaque);
+745-   745	        if (!gpu_ct) {
+746:   746	            throw std::runtime_error("gpu_copyback_cpu_debug(): failed to cast GPU ciphertext");
+747-   747	        }
+748-   748	
+749-   749	        parent->Synchronize();
+750-   750	
+751-   751	        FIDESlib::CKKS::RawCipherText raw;
+752-   752	        gpu_ct->store(raw);
+753-   753	
+754-   754	        raw.keyid = gpu_ct->keyID;
+755-   755	        raw.slots = cpu_template->GetSlots();
+756-   756	        raw.Noise = cpu_template->GetScalingFactor();
+757-   757	        raw.NoiseLevel = gpu_ct->NoiseLevel;
+758-   758	
+759-   759	        OpenFHECiphertext cpu_out =
+760-   760	            std::make_shared<lbcrypto::CiphertextImpl<lbcrypto::DCRTPoly>>(*cpu_template);
+761-   761	
+762-   762	        FIDESlib::CKKS::GetOpenFHECipherText(cpu_out, raw, rev);
+763-   763	
+764-   764	        auto out = h.ct_->Clone();
+765-   765	
+766-   766	        out->cpu = std::make_any<OpenFHECiphertext>(std::move(cpu_out));
+767-   767	
+768-   768	        // CPU-only copyback debug object.
+769-   769	        // Do not reuse h.ct_->gpu here. Clone() may have copied the original handle,
+770-   770	        // and sharing/evicting that handle can corrupt the registry.
+771-   771	        out->gpu = 0;
+772-   772	        out->loaded = false;
+773-   773	        out->parent_context = parent;
+774-   774	        out->original_level = gpu_ct->getLevel();
+775-   775	        out->SetLevel(h.ct_->GetLevel());
+776-   776	
+777-   777	        return CiphertextHandle(out);
+778-   778	    }
+779-   779	
+780-   780	    std::vector<double> roundtrip(const std::vector<double>& x) {
+781-   781	        auto ct = encrypt(x);
+782-   782	        return decrypt(ct, x.size());
+783-   783	    }
+784-   784	
+785-   785	    std::vector<double> eval_add(const std::vector<double>& x, const std::vector<double>& y) {
+786-   786	        require_ready();
+787-   787	
+788-   788	        if (x.size() != y.size()) {
+789-   789	            throw std::runtime_error("eval_add(): x and y must have the same length");
+790-   790	        }
+791-   791	
+792-   792	        auto ct_x = encrypt(x);
+793-   793	        auto ct_y = encrypt(y);
+794-   794	        auto ct_sum = eval_add_ct(ct_x, ct_y);
+795-   795	        return decrypt(ct_sum, x.size());
+796-   796	    }
+797-   797	
+798-   798	    std::vector<double> eval_mult_scalar(const std::vector<double>& x, double scalar) {
+799-   799	        require_ready();
+800-   800	
+801-   801	        auto ct_x = encrypt(x);
+802-   802	        auto ct_mul = eval_mult_scalar_ct(ct_x, scalar);
+803-   803	        return decrypt(ct_mul, x.size());
+804-   804	    }
+805-   805	
+806-   806	    void close() {
+807-   807	        if (sk_) sk_.reset();
+808-   808	        if (pk_) pk_.reset();
+809-   809	        if (cc_) cc_.reset();
+810-   810	        (void)cudaDeviceSynchronize();
+811-   811	    }
+812-   812	
+813-   813	private:
+814-   814	    void require_ready() const {
+815-   815	        if (!cc_ || !pk_ || !sk_) {
+816-   816	            throw std::runtime_error("FidesCKKSContext is not initialized");
+817-   817	        }
+818-   818	    }
+819-   819	
+820-   820	    CryptoContext<DCRTPoly> cc_;
+821-   821	    PublicKey<DCRTPoly> pk_;
+822-   822	    PrivateKey<DCRTPoly> sk_;
+823-   823	};
+824-   824	
+825-   825	PYBIND11_MODULE(_fideslib, m) {
+826-   826	    m.doc() = "pybind11 bindings for FIDESlib";
+827-   827	
+828-   828	    py::class_<CiphertextHandle>(m, "CiphertextHandle")
+829-   829	        .def(py::init<>())
+830-   830	        .def("valid", &CiphertextHandle::valid)
+831-   831	        .def("level", &CiphertextHandle::level)
+832-   832	        .def("noise_scale_deg", &CiphertextHandle::noise_scale_deg);
+833-   833	
+834-   834	    py::class_<FidesCKKSContext>(m, "FidesCKKSContext")
+835-   835	        .def(py::init<>())
+836-   836	
+837-   837	        .def(
+838-   838	            "init",
+839-   839	            &FidesCKKSContext::init,
+840-   840	            py::arg("multiplicative_depth") = 2,
+841-   841	            py::arg("scaling_mod_size") = 50,
+842-   842	            py::arg("batch_size") = 8,
+843-   843	            py::arg("ring_dim") = (1u << 14),
+844-   844	            py::arg("first_mod_size") = -1,
+845-   845	            py::arg("num_large_digits") = -1,
+846-   846	            py::arg("devices") = std::vector<int>{0},
+847-   847	            py::arg("plaintext_autoload") = true,
+848-   848	            py::arg("ciphertext_autoload") = true,
+849-   849	            py::arg("with_mult_key") = true,
+850-   850	            py::arg("rotation_steps") = std::vector<int>{}
+851-   851	        )
+852-   852	
+853-   853	        .def("info", &FidesCKKSContext::info)
+854-   854	
+855-   855	        .def("encrypt", &FidesCKKSContext::encrypt, py::arg("x"))
+856-   856	        .def("decrypt", &FidesCKKSContext::decrypt,
+857-   857	             py::arg("ciphertext"),
+858-   858	             py::arg("logical_length") = 0)
+859-   859	        .def("eval_add_ct", &FidesCKKSContext::eval_add_ct,
+860-   860	             py::arg("a"), py::arg("b"))
+861-   861	        .def("eval_add_plain_ct", &FidesCKKSContext::eval_add_plain_ct,
+862-   862	             py::arg("a"), py::arg("plain"))
+863-   863	        .def("eval_mult_scalar_ct", &FidesCKKSContext::eval_mult_scalar_ct,
+864-   864	             py::arg("a"), py::arg("scalar"))
+865-   865	        .def("eval_mult_plain_ct", &FidesCKKSContext::eval_mult_plain_ct,
+866-   866	             py::arg("a"), py::arg("plain"))
+867-   867	        .def("eval_rotate_ct", &FidesCKKSContext::eval_rotate_ct,
+868-   868	             py::arg("a"), py::arg("steps"))
+869-   869	
+870-   870	        .def("inspect_rlwe_components_cpu", &FidesCKKSContext::inspect_rlwe_components_cpu,
+871-   871	             py::arg("ciphertext"), py::arg("coeff_sample") = 8)
+872-   872	        .def("roundtrip_rlwe_components_cpu", &FidesCKKSContext::roundtrip_rlwe_components_cpu,
+873-   873	             py::arg("ciphertext"))
+874:   874	        .def("component_int_linear_combination_cpu", &FidesCKKSContext::component_int_linear_combination_cpu,
+875-   875	             py::arg("rows"), py::arg("weights"))
+876:   876	        .def("ciphertext_storage_state", &FidesCKKSContext::ciphertext_storage_state,
+877-   877	             py::arg("ciphertext"))
+878:   878	        .def("component_linear_wsum_gpu", &FidesCKKSContext::component_linear_wsum_gpu,
+879-   879	             py::arg("rows"), py::arg("weights"))
+880:   880	        .def("gpu_copyback_cpu_debug", &FidesCKKSContext::gpu_copyback_cpu_debug,
+881-   881	             py::arg("ciphertext"), py::arg("rev") = 0)
+882-   882	        .def("roundtrip", &FidesCKKSContext::roundtrip)
+883-   883	        .def("eval_add", &FidesCKKSContext::eval_add)
+884-   884	        .def("eval_mult_scalar", &FidesCKKSContext::eval_mult_scalar)
+885-   885	
+886-   886	        .def("close", &FidesCKKSContext::close);
+887-   887	}

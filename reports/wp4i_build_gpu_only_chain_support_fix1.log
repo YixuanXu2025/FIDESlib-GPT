@@ -1,0 +1,600 @@
+[ 50%] Built target fideslib_gpt_minimal
+[ 66%] Building CXX object CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:52:1: error: storage class specifiers invalid in friend function declarations
+   52 | static std::optional<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>> g_gpu_chain_cpu_template;
+      | ^~~~~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:52:64: error: ‘g_gpu_chain_cpu_template’ is neither function nor member function; cannot be declared friend
+   52 | static std::optional<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>> g_gpu_chain_cpu_template;
+      |                                                                ^~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:54:20: error: ISO C++ forbids in-class initialization of non-const static member ‘CiphertextHandle::g_gpu_chain_slots’
+   54 | static std::size_t g_gpu_chain_slots = 0;
+      |                    ^~~~~~~~~~~~~~~~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘std::vector<double> FidesCKKSContext::decrypt(CiphertextHandle&, std::size_t)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:159:24: error: ‘void CiphertextHandle::require_valid() const’ is private within this context
+  159 |         h.require_valid();
+      |         ~~~~~~~~~~~~~~~^~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:58:10: note: declared private here
+   58 |     void require_valid() const {
+      |          ^~~~~~~~~~~~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:162:39: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  162 |         auto dec_res = cc_->Decrypt(h.ct_, sk_, &pt_dec);
+      |                                       ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘CiphertextHandle FidesCKKSContext::eval_add_ct(const CiphertextHandle&, const CiphertextHandle&)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:178:24: error: ‘void CiphertextHandle::require_valid() const’ is private within this context
+  178 |         a.require_valid();
+      |         ~~~~~~~~~~~~~~~^~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:58:10: note: declared private here
+   58 |     void require_valid() const {
+      |          ^~~~~~~~~~~~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:179:24: error: ‘void CiphertextHandle::require_valid() const’ is private within this context
+  179 |         b.require_valid();
+      |         ~~~~~~~~~~~~~~~^~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:58:10: note: declared private here
+   58 |     void require_valid() const {
+      |          ^~~~~~~~~~~~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:181:38: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  181 |         auto ct_out = cc_->EvalAdd(a.ct_, b.ct_);
+      |                                      ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:181:45: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  181 |         auto ct_out = cc_->EvalAdd(a.ct_, b.ct_);
+      |                                             ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘CiphertextHandle FidesCKKSContext::eval_add_plain_ct(const CiphertextHandle&, const std::vector<double>&)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:187:24: error: ‘void CiphertextHandle::require_valid() const’ is private within this context
+  187 |         a.require_valid();
+      |         ~~~~~~~~~~~~~~~^~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:58:10: note: declared private here
+   58 |     void require_valid() const {
+      |          ^~~~~~~~~~~~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:190:38: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  190 |         auto ct_out = cc_->EvalAdd(a.ct_, pt);
+      |                                      ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘CiphertextHandle FidesCKKSContext::eval_mult_scalar_ct(const CiphertextHandle&, double)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:197:24: error: ‘void CiphertextHandle::require_valid() const’ is private within this context
+  197 |         a.require_valid();
+      |         ~~~~~~~~~~~~~~~^~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:58:10: note: declared private here
+   58 |     void require_valid() const {
+      |          ^~~~~~~~~~~~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:199:39: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  199 |         auto ct_out = cc_->EvalMult(a.ct_, scalar);
+      |                                       ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘CiphertextHandle FidesCKKSContext::eval_mult_plain_ct(const CiphertextHandle&, const std::vector<double>&)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:205:24: error: ‘void CiphertextHandle::require_valid() const’ is private within this context
+  205 |         a.require_valid();
+      |         ~~~~~~~~~~~~~~~^~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:58:10: note: declared private here
+   58 |     void require_valid() const {
+      |          ^~~~~~~~~~~~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:208:39: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  208 |         auto ct_out = cc_->EvalMult(a.ct_, pt);
+      |                                       ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘CiphertextHandle FidesCKKSContext::eval_rotate_ct(const CiphertextHandle&, int)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:215:24: error: ‘void CiphertextHandle::require_valid() const’ is private within this context
+  215 |         a.require_valid();
+      |         ~~~~~~~~~~~~~~~^~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:58:10: note: declared private here
+   58 |     void require_valid() const {
+      |          ^~~~~~~~~~~~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:217:41: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  217 |         auto ct_out = cc_->EvalRotate(a.ct_, steps);
+      |                                         ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘pybind11::dict FidesCKKSContext::inspect_rlwe_components_cpu(const CiphertextHandle&, std::size_t)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:227:24: error: ‘void CiphertextHandle::require_valid() const’ is private within this context
+  227 |         h.require_valid();
+      |         ~~~~~~~~~~~~~~~^~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:58:10: note: declared private here
+   58 |     void require_valid() const {
+      |          ^~~~~~~~~~~~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:231:33: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  231 |         out["fides_loaded"] = h.ct_->loaded;
+      |                                 ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:232:37: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  232 |         out["fides_gpu_handle"] = h.ct_->gpu;
+      |                                     ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:233:32: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  233 |         out["fides_level"] = h.ct_->GetLevel();
+      |                                ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:234:42: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  234 |         out["fides_noise_scale_deg"] = h.ct_->GetNoiseScaleDeg();
+      |                                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:236:16: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  236 |         if (!h.ct_->cpu.has_value()) {
+      |                ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:241:79: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  241 |         const OpenFHECiphertext* ct_ptr = std::any_cast<OpenFHECiphertext>(&h.ct_->cpu);
+      |                                                                               ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘CiphertextHandle FidesCKKSContext::roundtrip_rlwe_components_cpu(const CiphertextHandle&)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:328:24: error: ‘void CiphertextHandle::require_valid() const’ is private within this context
+  328 |         h.require_valid();
+      |         ~~~~~~~~~~~~~~~^~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:58:10: note: declared private here
+   58 |     void require_valid() const {
+      |          ^~~~~~~~~~~~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:330:16: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  330 |         if (!h.ct_->cpu.has_value()) {
+      |                ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:336:79: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  336 |         const OpenFHECiphertext* ct_ptr = std::any_cast<OpenFHECiphertext>(&h.ct_->cpu);
+      |                                                                               ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:369:22: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  369 |         auto out = h.ct_->Clone();
+      |                      ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:373:25: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  373 |         out->SetLevel(h.ct_->GetLevel());
+      |                         ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘std::vector<CiphertextHandle> FidesCKKSContext::component_int_linear_combination_cpu(const std::vector<CiphertextHandle>&, const std::vector<std::vector<long int> >&)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:441:34: error: ‘void CiphertextHandle::require_valid() const’ is private within this context
+  441 |             rows[i].require_valid();
+      |             ~~~~~~~~~~~~~~~~~~~~~^~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:58:10: note: declared private here
+   58 |     void require_valid() const {
+      |          ^~~~~~~~~~~~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:443:26: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  443 |             if (!rows[i].ct_->cpu.has_value()) {
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:447:84: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  447 |             const OpenFHECiphertext* p = std::any_cast<OpenFHECiphertext>(&rows[i].ct_->cpu);
+      |                                                                                    ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:538:32: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  538 |             auto out = rows[0].ct_->Clone();
+      |                                ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:542:35: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  542 |             out->SetLevel(rows[0].ct_->GetLevel());
+      |                                   ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘pybind11::dict FidesCKKSContext::ciphertext_storage_state(const CiphertextHandle&)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:554:24: error: ‘void CiphertextHandle::require_valid() const’ is private within this context
+  554 |         h.require_valid();
+      |         ~~~~~~~~~~~~~~~^~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:58:10: note: declared private here
+   58 |     void require_valid() const {
+      |          ^~~~~~~~~~~~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:558:27: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  558 |         out["loaded"] = h.ct_->loaded;
+      |                           ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:559:24: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  559 |         out["gpu"] = h.ct_->gpu;
+      |                        ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:560:28: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  560 |         out["has_cpu"] = h.ct_->cpu.has_value();
+      |                            ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:561:26: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  561 |         out["level"] = h.ct_->GetLevel();
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:562:36: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  562 |         out["noise_scale_deg"] = h.ct_->GetNoiseScaleDeg();
+      |                                    ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:563:35: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  563 |         out["original_level"] = h.ct_->original_level;
+      |                                   ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘CiphertextHandle FidesCKKSContext::component_linear_wsum_gpu(const std::vector<CiphertextHandle>&, const std::vector<double>&)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:585:31: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  585 |         auto parent = rows[0].ct_->parent_context;
+      |                               ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:592:22: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  592 |         if (!rows[0].ct_->cpu.has_value()) {
+      |                      ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:596:95: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  596 |         const OpenFHECiphertext* cpu_template_ptr = std::any_cast<OpenFHECiphertext>(&rows[0].ct_->cpu);
+      |                                                                                               ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In lambda function:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:604:28: error: ‘void CiphertextHandle::require_valid() const’ is private within this context
+  604 |             h.require_valid();
+      |             ~~~~~~~~~~~~~~~^~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:58:10: note: declared private here
+   58 |     void require_valid() const {
+      |          ^~~~~~~~~~~~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:606:19: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  606 |             if (h.ct_->parent_context != parent) {
+      |                   ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:610:20: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  610 |             if (!h.ct_->loaded || h.ct_->gpu == 0) {
+      |                    ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:610:37: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  610 |             if (!h.ct_->loaded || h.ct_->gpu == 0) {
+      |                                     ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:611:19: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  611 |                 h.ct_->gpu = parent->CopyDeviceCiphertext(*h.ct_);
+      |                   ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:611:62: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  611 |                 h.ct_->gpu = parent->CopyDeviceCiphertext(*h.ct_);
+      |                                                              ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:612:19: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  612 |                 h.ct_->loaded = true;
+      |                   ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:615:58: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  615 |             auto& opaque = parent->GetDeviceCiphertext(h.ct_->gpu);
+      |                                                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘CiphertextHandle FidesCKKSContext::component_linear_wsum_gpu(const std::vector<CiphertextHandle>&, const std::vector<double>&)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:665:68: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  665 |         auto first_row = rows[static_cast<std::size_t>(first_idx)].ct_;
+      |                                                                    ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:721:28: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  721 |         auto out = rows[0].ct_->Clone();
+      |                            ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:727:31: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  727 |         out->SetLevel(rows[0].ct_->GetLevel());
+      |                               ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘CiphertextHandle FidesCKKSContext::component_linear_wsum_gpu_fused_raw(const std::vector<CiphertextHandle>&, const std::vector<double>&)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:747:31: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  747 |         auto parent = rows[0].ct_->parent_context;
+      |                               ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:754:22: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  754 |         if (!rows[0].ct_->cpu.has_value()) {
+      |                      ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:758:95: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  758 |         const OpenFHECiphertext* cpu_template_ptr = std::any_cast<OpenFHECiphertext>(&rows[0].ct_->cpu);
+      |                                                                                               ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:776:34: error: ‘void CiphertextHandle::require_valid() const’ is private within this context
+  776 |             rows[i].require_valid();
+      |             ~~~~~~~~~~~~~~~~~~~~~^~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:58:10: note: declared private here
+   58 |     void require_valid() const {
+      |          ^~~~~~~~~~~~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:778:25: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  778 |             if (rows[i].ct_->parent_context != parent) {
+      |                         ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:782:26: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  782 |             if (!rows[i].ct_->loaded || rows[i].ct_->gpu == 0) {
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:782:49: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  782 |             if (!rows[i].ct_->loaded || rows[i].ct_->gpu == 0) {
+      |                                                 ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:783:25: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  783 |                 rows[i].ct_->gpu = parent->CopyDeviceCiphertext(*rows[i].ct_);
+      |                         ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:783:74: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  783 |                 rows[i].ct_->gpu = parent->CopyDeviceCiphertext(*rows[i].ct_);
+      |                                                                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:784:25: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  784 |                 rows[i].ct_->loaded = true;
+      |                         ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:787:64: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  787 |             auto& opaque = parent->GetDeviceCiphertext(rows[i].ct_->gpu);
+      |                                                                ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:895:28: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  895 |         auto out = rows[0].ct_->Clone();
+      |                            ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:903:31: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  903 |         out->SetLevel(rows[0].ct_->GetLevel());
+      |                               ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘std::vector<CiphertextHandle> FidesCKKSContext::component_linear_matmul_gpu_fused_raw(const std::vector<CiphertextHandle>&, const std::vector<std::vector<double> >&, bool)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:934:31: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  934 |         auto parent = rows[0].ct_->parent_context;
+      |                               ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:946:26: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  946 |             if (!rows[i].ct_) {
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:950:25: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  950 |             if (rows[i].ct_->cpu.has_value()) {
+      |                         ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:951:90: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  951 |                 const OpenFHECiphertext* ptr = std::any_cast<OpenFHECiphertext>(&rows[i].ct_->cpu);
+      |                                                                                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:961:35: error: ‘g_gpu_chain_cpu_template’ was not declared in this scope
+  961 |         if (!have_cpu_template && g_gpu_chain_cpu_template.has_value()) {
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:974:9: error: ‘g_gpu_chain_cpu_template’ was not declared in this scope
+  974 |         g_gpu_chain_cpu_template = cpu_template;
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:975:9: error: ‘g_gpu_chain_slots’ was not declared in this scope
+  975 |         g_gpu_chain_slots = cpu_template->GetSlots();
+      |         ^~~~~~~~~~~~~~~~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:978:9: error: ‘g_gpu_chain_moduli’ was not declared in this scope
+  978 |         g_gpu_chain_moduli.clear();
+      |         ^~~~~~~~~~~~~~~~~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:996:34: error: ‘void CiphertextHandle::require_valid() const’ is private within this context
+  996 |             rows[i].require_valid();
+      |             ~~~~~~~~~~~~~~~~~~~~~^~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:58:10: note: declared private here
+   58 |     void require_valid() const {
+      |          ^~~~~~~~~~~~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:998:25: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+  998 |             if (rows[i].ct_->parent_context != parent) {
+      |                         ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:1002:26: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+ 1002 |             if (!rows[i].ct_->loaded || rows[i].ct_->gpu == 0) {
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:1002:49: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+ 1002 |             if (!rows[i].ct_->loaded || rows[i].ct_->gpu == 0) {
+      |                                                 ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:1003:30: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+ 1003 |                 if (!rows[i].ct_->cpu.has_value()) {
+      |                              ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:1008:25: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+ 1008 |                 rows[i].ct_->gpu = parent->CopyDeviceCiphertext(*rows[i].ct_);
+      |                         ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:1008:74: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+ 1008 |                 rows[i].ct_->gpu = parent->CopyDeviceCiphertext(*rows[i].ct_);
+      |                                                                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:1009:25: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+ 1009 |                 rows[i].ct_->loaded = true;
+      |                         ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:1012:64: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+ 1012 |             auto& opaque = parent->GetDeviceCiphertext(rows[i].ct_->gpu);
+      |                                                                ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:1118:32: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+ 1118 |             auto out = rows[0].ct_->Clone();
+      |                                ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:1144:35: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+ 1144 |             out->SetLevel(rows[0].ct_->GetLevel());
+      |                                   ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘CiphertextHandle FidesCKKSContext::gpu_copyback_cpu_debug(const CiphertextHandle&, int)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:1155:24: error: ‘void CiphertextHandle::require_valid() const’ is private within this context
+ 1155 |         h.require_valid();
+      |         ~~~~~~~~~~~~~~~^~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:58:10: note: declared private here
+   58 |     void require_valid() const {
+      |          ^~~~~~~~~~~~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:1157:16: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+ 1157 |         if (!h.ct_->parent_context) {
+      |                ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:1161:25: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+ 1161 |         auto parent = h.ct_->parent_context;
+      |                         ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:1163:16: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+ 1163 |         if (!h.ct_->loaded || h.ct_->gpu == 0) {
+      |                ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:1163:33: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+ 1163 |         if (!h.ct_->loaded || h.ct_->gpu == 0) {
+      |                                 ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:1164:15: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+ 1164 |             h.ct_->gpu = parent->CopyDeviceCiphertext(*h.ct_);
+      |               ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:1164:58: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+ 1164 |             h.ct_->gpu = parent->CopyDeviceCiphertext(*h.ct_);
+      |                                                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:1165:15: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+ 1165 |             h.ct_->loaded = true;
+      |               ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:1168:16: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+ 1168 |         if (!h.ct_->cpu.has_value()) {
+      |                ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:1174:89: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+ 1174 |         const OpenFHECiphertext* cpu_template_ptr = std::any_cast<OpenFHECiphertext>(&h.ct_->cpu);
+      |                                                                                         ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:1181:54: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+ 1181 |         auto& opaque = parent->GetDeviceCiphertext(h.ct_->gpu);
+      |                                                      ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:1202:22: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+ 1202 |         auto out = h.ct_->Clone();
+      |                      ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:1213:25: error: ‘fideslib::Ciphertext<unsigned int> CiphertextHandle::ct_’ is private within this context
+ 1213 |         out->SetLevel(h.ct_->GetLevel());
+      |                         ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:72:26: note: declared private here
+   72 |     Ciphertext<DCRTPoly> ct_;
+      |                          ^~~
+gmake[2]: *** [CMakeFiles/_fideslib.dir/build.make:79: CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:90: CMakeFiles/_fideslib.dir/all] Error 2
+gmake: *** [Makefile:91: all] Error 2

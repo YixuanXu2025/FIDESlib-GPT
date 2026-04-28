@@ -1,0 +1,45 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+WP4-F GPU-native component matmul repeated-add debug
+====================================================================================================
+n_in=4, n_out=3, slots=8
+U=
+[[1 0 1 2]
+ [0 1 1 1]
+ [2 1 0 1]]
+----------------------------------------------------------------------------------------------------
+encrypt_rows_us=62815.573
+gpu_component_matmul_core_us=34441.593
+highlevel_add_matmul_core_us=2556.077
+decrypt_outputs_us=86390.672
+----------------------------------------------------------------------------------------------------
+err_input=1.678102e-13
+err_gpu_to_ref=1.281891e-13
+err_high_to_ref=1.813133e-13
+err_gpu_to_high=1.778577e-13
+----------------------------------------------------------------------------------------------------
+input0 state:
+{'valid': True, 'loaded': True, 'gpu': 2, 'has_cpu': True, 'level': 4294967295, 'noise_scale_deg': 2, 'original_level': 18446744069414584323}
+gpu output0 state:
+{'valid': True, 'loaded': True, 'gpu': 9, 'has_cpu': True, 'level': 4294967295, 'noise_scale_deg': 2, 'original_level': 3}
+high-level output0 state:
+{'valid': True, 'loaded': True, 'gpu': 17, 'has_cpu': True, 'level': 4294967295, 'noise_scale_deg': 2, 'original_level': 18446744069414584323}
+====================================================================================================
+报告已保存
+JSON路径: /workspace/FIDESlib-GPT/reports/wp4f_component_matmul_gpu_repeated_add_debug_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

@@ -1,0 +1,29 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+========================================================================================================================
+WP4-H3 matrix-level fused raw scaling sweep
+========================================================================================================================
+  n_in  n_out   gpu_only_med(us)   copyback(us)  decrypt(us)   perrow(us)   repeat(us)      cpu(us)     err_matrix
+------------------------------------------------------------------------------------------------------------------------
+     4      4           1162.369      47493.115    56354.924    48904.157    47073.536   190760.134   1.263434e-13
+     8      8           1571.768      89204.743   108889.080    98681.989    99748.941   688363.227   1.717515e-13
+    16     16           4771.927     183842.167   211578.080           NA           NA           NA   1.709743e-13
+    32     32          21833.838     414323.870   446668.018           NA           NA           NA   1.780798e-13
+========================================================================================================================
+报告已保存
+JSON路径: /workspace/FIDESlib-GPT/reports/wp4h3_matrix_api_scaling_sweep_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

@@ -1,0 +1,192 @@
+====================================================================================================
+WP4-E2 CopyHostCiphertext exact signature probe
+====================================================================================================
+
+----------------------------------------------------------------------------------------------------
+api/CryptoContext.hpp around CopyHost/CopyDevice/Register
+----------------------------------------------------------------------------------------------------
+202-	std::any gpu;
+203-	/// @brief Whether the context has been loaded to the devices.
+204-	bool loaded = false;
+205-	/// @brief List of devices the context is loaded on.
+206-	std::vector<int> devices = { 0 };
+207-	/// @brief Whether plaintexts should be automatically loaded to the device upon encryption.
+208-	bool auto_load_plaintexts = false;
+209-	/// @brief Whether ciphertexts should be automatically loaded to the device upon creation.
+210-	bool auto_load_ciphertexts = true;
+211-	/// @brief Self reference to enable shared_from_this-like behavior.
+212-	std::weak_ptr<CryptoContextImpl<DCRTPoly>> self_reference;
+213-	/// @brief Multiplicative depth of the context.
+214-	uint32_t multiplicative_depth = 0;
+215-	/// @brief Rotation indexes for which rotation keys are available.
+216-	std::vector<int32_t> rotation_indexes;
+217-	/// @brief Secret key distribution.
+218-	SecretKeyDist keyDist = UNIFORM_TERNARY;
+219-
+220-	// ---- Copy helpers ----
+221-
+222:	uint32_t CopyDeviceCiphertext(const CiphertextImpl<DCRTPoly>& ct);
+223-
+224-	// --- Map Handling ----
+225-
+226-	/// @brief  Registry of plaintexts stored on the GPU (opaque types).
+227-	std::unordered_map<uint32_t, std::shared_ptr<void>> device_plaintexts;
+228-	std::unique_ptr<std::shared_mutex> device_plaintexts_mutex;
+229-	/// @brief  Registry of ciphertexts stored on the GPU (opaque types).
+230-	std::unordered_map<uint32_t, std::shared_ptr<void>> device_ciphertexts;
+231-	std::unique_ptr<std::shared_mutex> device_ciphertexts_mutex;
+232-	/// @brief Next available handle for GPU objects. Zero is reserved as a null handle.
+233-	uint32_t next_gpu_handle = 1;
+234-
+235-	uint32_t RegisterDevicePlaintext(std::shared_ptr<void>&& p);
+236:	uint32_t RegisterDeviceCiphertext(std::shared_ptr<void>&& c);
+237-	std::shared_ptr<void>& GetDevicePlaintext(uint32_t handle);
+238:	std::shared_ptr<void>& GetDeviceCiphertext(uint32_t handle);
+239-	bool EvictDevicePlaintext(uint32_t handle);
+240:	bool EvictDeviceCiphertext(uint32_t handle);
+241-
+242-	void Synchronize() const;
+243-
+244-	static std::vector<int> GetConvolutionTransformRotationIndices(int rowSize, int bStep, int stride, uint32_t gStep);
+245-};
+246-
+247-} // namespace fideslib
+248-
+249-#endif // API_CRYPTOCONTEXT_HPP
+
+----------------------------------------------------------------------------------------------------
+All source occurrences
+----------------------------------------------------------------------------------------------------
+/root/fideslib/api/CryptoContext.hpp:222:	uint32_t CopyDeviceCiphertext(const CiphertextImpl<DCRTPoly>& ct);
+/root/fideslib/api/CryptoContext.hpp:236:	uint32_t RegisterDeviceCiphertext(std::shared_ptr<void>&& c);
+/root/fideslib/api/CryptoContext.hpp:238:	std::shared_ptr<void>& GetDeviceCiphertext(uint32_t handle);
+/root/fideslib/api/CryptoContext.hpp:240:	bool EvictDeviceCiphertext(uint32_t handle);
+/root/fideslib/api/Ciphertext.cpp:12:		this->parent_context->EvictDeviceCiphertext(this->gpu);
+/root/fideslib/api/Ciphertext.cpp:35:		this->gpu = other.parent_context->CopyDeviceCiphertext(other);
+/root/fideslib/api/Ciphertext.cpp:66:	auto ct_gpu	  = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->parent_context->GetDeviceCiphertext(this->gpu));
+/root/fideslib/api/Ciphertext.cpp:80:	auto ct_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->parent_context->GetDeviceCiphertext(this->gpu));
+/root/fideslib/api/Ciphertext.cpp:95:	auto ct_gpu	  = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->parent_context->GetDeviceCiphertext(this->gpu));
+/root/fideslib/api/Ciphertext.cpp:127:	auto ct_gpu	  = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->parent_context->GetDeviceCiphertext(this->gpu));
+/root/fideslib/api/CryptoContext.cpp:261:	uint32_t handle									   = this->RegisterDeviceCiphertext(std::move(gpu_ct));
+/root/fideslib/api/CryptoContext.cpp:575:		auto ct_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct->gpu));
+/root/fideslib/api/CryptoContext.cpp:646:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:665:	auto ct_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct->gpu));
+/root/fideslib/api/CryptoContext.cpp:688:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:689:	auto ct2_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct2->gpu));
+/root/fideslib/api/CryptoContext.cpp:713:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:740:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:766:	auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+/root/fideslib/api/CryptoContext.cpp:767:	auto ct2_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct2->gpu));
+/root/fideslib/api/CryptoContext.cpp:787:	auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+/root/fideslib/api/CryptoContext.cpp:810:	auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+/root/fideslib/api/CryptoContext.cpp:862:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:935:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:936:	auto ct2_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct2->gpu));
+/root/fideslib/api/CryptoContext.cpp:961:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:987:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1012:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1035:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1059:	auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+/root/fideslib/api/CryptoContext.cpp:1060:	auto ct2_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct2->gpu));
+/root/fideslib/api/CryptoContext.cpp:1078:	auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+/root/fideslib/api/CryptoContext.cpp:1096:	auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+/root/fideslib/api/CryptoContext.cpp:1137:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1138:	auto ct2_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct2->gpu));
+/root/fideslib/api/CryptoContext.cpp:1163:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1191:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1217:	auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+/root/fideslib/api/CryptoContext.cpp:1236:	auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+/root/fideslib/api/CryptoContext.cpp:1270:	auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct1->gpu));
+/root/fideslib/api/CryptoContext.cpp:1271:	auto ct2_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct2->gpu));
+/root/fideslib/api/CryptoContext.cpp:1291:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1311:	auto ct_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct->gpu));
+/root/fideslib/api/CryptoContext.cpp:1336:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1356:	auto ct_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ciphertext->gpu));
+/root/fideslib/api/CryptoContext.cpp:1396:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1397:	auto ct_gpu					= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct->gpu));
+/root/fideslib/api/CryptoContext.cpp:1421:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1422:	auto ct_gpu					= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct->gpu));
+/root/fideslib/api/CryptoContext.cpp:1450:	auto ct_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct->gpu));
+/root/fideslib/api/CryptoContext.cpp:1460:			auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1492:	auto ct_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct->gpu));
+/root/fideslib/api/CryptoContext.cpp:1501:			auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1528:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1549:	auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct->gpu));
+/root/fideslib/api/CryptoContext.cpp:1574:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1595:	auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ciphertext->gpu));
+/root/fideslib/api/CryptoContext.cpp:1620:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1644:	auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ciphertext->gpu));
+/root/fideslib/api/CryptoContext.cpp:1672:	auto res_gpu				= std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(result->gpu));
+/root/fideslib/api/CryptoContext.cpp:1697:	auto res_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct->gpu));
+/root/fideslib/api/CryptoContext.cpp:1716:	auto ct_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct->gpu));
+/root/fideslib/api/CryptoContext.cpp:1748:	auto ct_gpu = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct->gpu));
+/root/fideslib/api/CryptoContext.cpp:1770:uint32_t CryptoContextImpl<DCRTPoly>::CopyDeviceCiphertext(const CiphertextImpl<DCRTPoly>& ct) {
+/root/fideslib/api/CryptoContext.cpp:1776:	auto ct_gpu		  = std::static_pointer_cast<FIDESlib::CKKS::Ciphertext>(this->GetDeviceCiphertext(ct.gpu));
+/root/fideslib/api/CryptoContext.cpp:1779:	uint32_t handle = this->RegisterDeviceCiphertext(std::move(new_ct));
+/root/fideslib/api/CryptoContext.cpp:1796:uint32_t CryptoContextImpl<DCRTPoly>::RegisterDeviceCiphertext(std::shared_ptr<void>&& c) {
+/root/fideslib/api/CryptoContext.cpp:1814:std::shared_ptr<void>& CryptoContextImpl<DCRTPoly>::GetDeviceCiphertext(uint32_t handle) {
+/root/fideslib/api/CryptoContext.cpp:1828:bool CryptoContextImpl<DCRTPoly>::EvictDeviceCiphertext(uint32_t handle) {
+
+----------------------------------------------------------------------------------------------------
+CryptoContext implementation excerpts
+----------------------------------------------------------------------------------------------------
+
+==== /root/fideslib/api/CryptoContext.hpp ====
+192-   192		  Plaintext& mask,
+193-   193		  const std::vector<int>& indexes,
+194-   194		  int stride			 = 1,
+195-   195		  int maskRotationStride = 1,
+196-   196		  int rowSize			 = 0);
+197-   197	
+198-   198	  public:
+199-   199		// ---- Internal State ----
+200-   200	
+201-   201		std::any cpu;
+202-   202		std::any gpu;
+203-   203		/// @brief Whether the context has been loaded to the devices.
+204-   204		bool loaded = false;
+205-   205		/// @brief List of devices the context is loaded on.
+206-   206		std::vector<int> devices = { 0 };
+207-   207		/// @brief Whether plaintexts should be automatically loaded to the device upon encryption.
+208-   208		bool auto_load_plaintexts = false;
+209-   209		/// @brief Whether ciphertexts should be automatically loaded to the device upon creation.
+210-   210		bool auto_load_ciphertexts = true;
+211-   211		/// @brief Self reference to enable shared_from_this-like behavior.
+212-   212		std::weak_ptr<CryptoContextImpl<DCRTPoly>> self_reference;
+213-   213		/// @brief Multiplicative depth of the context.
+214-   214		uint32_t multiplicative_depth = 0;
+215-   215		/// @brief Rotation indexes for which rotation keys are available.
+216-   216		std::vector<int32_t> rotation_indexes;
+217-   217		/// @brief Secret key distribution.
+218-   218		SecretKeyDist keyDist = UNIFORM_TERNARY;
+219-   219	
+220-   220		// ---- Copy helpers ----
+221-   221	
+222:   222		uint32_t CopyDeviceCiphertext(const CiphertextImpl<DCRTPoly>& ct);
+223-   223	
+224-   224		// --- Map Handling ----
+225-   225	
+226-   226		/// @brief  Registry of plaintexts stored on the GPU (opaque types).
+227-   227		std::unordered_map<uint32_t, std::shared_ptr<void>> device_plaintexts;
+228-   228		std::unique_ptr<std::shared_mutex> device_plaintexts_mutex;
+229-   229		/// @brief  Registry of ciphertexts stored on the GPU (opaque types).
+230-   230		std::unordered_map<uint32_t, std::shared_ptr<void>> device_ciphertexts;
+231-   231		std::unique_ptr<std::shared_mutex> device_ciphertexts_mutex;
+232-   232		/// @brief Next available handle for GPU objects. Zero is reserved as a null handle.
+233-   233		uint32_t next_gpu_handle = 1;
+234-   234	
+235-   235		uint32_t RegisterDevicePlaintext(std::shared_ptr<void>&& p);
+236:   236		uint32_t RegisterDeviceCiphertext(std::shared_ptr<void>&& c);
+237-   237		std::shared_ptr<void>& GetDevicePlaintext(uint32_t handle);
+238:   238		std::shared_ptr<void>& GetDeviceCiphertext(uint32_t handle);
+239-   239		bool EvictDevicePlaintext(uint32_t handle);
+240:   240		bool EvictDeviceCiphertext(uint32_t handle);
+241-   241	
+242-   242		void Synchronize() const;
+243-   243	
+244-   244		static std::vector<int> GetConvolutionTransformRotationIndices(int rowSize, int bStep, int stride, uint32_t gStep);
+245-   245	};
+246-   246	
+247-   247	} // namespace fideslib
+248-   248	
+249-   249	#endif // API_CRYPTOCONTEXT_HPP

@@ -1,0 +1,58 @@
+==============================================================================================================
+Launching block-parallel BSGS workers
+gpu_groups=[(0, 1), (2, 3), (4, 5), (6, 7)]
+num_workers=4
+==============================================================================================================
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU P2P? 0
+GPU P2P? 0
+GPU P2P? 0
+GPU P2P? 0
+NCCL version 2.27.3+cuda12.9
+NCCL version 2.27.3+cuda12.9
+NCCL version 2.27.3+cuda12.9
+NCCL version 2.27.3+cuda12.9
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'
+[done] task=3 physical=(6, 7) local=(0, 1) CUDA_VISIBLE_DEVICES=6,7 err=6.598055e-13 worker_wall_us=54682992.239
+[done] task=2 physical=(4, 5) local=(0, 1) CUDA_VISIBLE_DEVICES=4,5 err=6.572520e-13 worker_wall_us=62694833.529
+[done] task=0 physical=(0, 1) local=(0, 1) CUDA_VISIBLE_DEVICES=0,1 err=6.536993e-13 worker_wall_us=63045549.192
+[done] task=1 physical=(2, 3) local=(0, 1) CUDA_VISIBLE_DEVICES=2,3 err=8.069101e-13 worker_wall_us=64097439.418
+==============================================================================================================
+WP3-D BSGS block-parallel 8GPU probe
+==============================================================================================================
+NCCL_P2P_DISABLE=1
+CUDA_LAUNCH_BLOCKING=1
+parallel_wall_us=65508538.570
+
+task  physical          local                  err   worker_wall(us)    core_med(us)   pMult(us)     add(us)     rot(us)     enc(us)     dec(us)
+------------------------------------------------------------------------------------------------------------------------------------------------
+0     (0, 1)            (0, 1)        6.536993e-13      63045549.192     9233588.200   57711.694   11349.254   16286.483  567219.098  275103.616
+1     (2, 3)            (0, 1)        8.069101e-13      64097439.418     9451058.309   59009.814   11547.018   16583.605  584724.151  203874.942
+2     (4, 5)            (0, 1)        6.572520e-13      62694833.529     9244152.564   57729.814   11177.869   16378.097  594623.818  231673.537
+3     (6, 7)            (0, 1)        6.598055e-13      54682992.239     7701334.275   48163.247    9197.186   14295.793  572012.136  203002.132
+------------------------------------------------------------------------------------------------------------------------------------------------
+sum_worker_wall_us=244520814.378
+parallel_wall_us=65508538.570
+estimated_throughput_speedup=sum_worker_wall/parallel_wall=3.733x
+max_err=8.069101e-13
+==============================================================================================================
+报告已保存
+JSON路径: /workspace/FIDESlib-GPT/reports/wp3d_bsgs_block_parallel_8gpu_probe_isolated_report.json

@@ -1,0 +1,113 @@
+{
+  "experiment": "wp4e2_component_linear_wsum_gpu_diag",
+  "n_in": 4,
+  "slots": 8,
+  "seed": 205402,
+  "weights": [
+    1,
+    0,
+    1,
+    2
+  ],
+  "input_states": [
+    {
+      "valid": true,
+      "loaded": true,
+      "gpu": 2,
+      "has_cpu": true,
+      "level": 4294967295,
+      "noise_scale_deg": 2,
+      "original_level": 18446744069414584323
+    },
+    {
+      "valid": true,
+      "loaded": true,
+      "gpu": 4,
+      "has_cpu": true,
+      "level": 4294967295,
+      "noise_scale_deg": 2,
+      "original_level": 18446744069414584323
+    },
+    {
+      "valid": true,
+      "loaded": true,
+      "gpu": 6,
+      "has_cpu": true,
+      "level": 4294967295,
+      "noise_scale_deg": 2,
+      "original_level": 18446744069414584323
+    },
+    {
+      "valid": true,
+      "loaded": true,
+      "gpu": 8,
+      "has_cpu": true,
+      "level": 4294967295,
+      "noise_scale_deg": 2,
+      "original_level": 18446744069414584323
+    }
+  ],
+  "gpu_output_state": {
+    "valid": true,
+    "loaded": true,
+    "gpu": 9,
+    "has_cpu": true,
+    "level": 4294967295,
+    "noise_scale_deg": 2,
+    "original_level": 3
+  },
+  "highlevel_output_state": {
+    "valid": true,
+    "loaded": true,
+    "gpu": 13,
+    "has_cpu": true,
+    "level": 4294967295,
+    "noise_scale_deg": 2,
+    "original_level": 18446744069414584323
+  },
+  "decrypt_input_errors": [
+    null,
+    null,
+    null,
+    null
+  ],
+  "decrypt_gpu_error": null,
+  "decrypt_highlevel_error": null,
+  "dec_gpu": [
+    1.243161659559443,
+    -0.5588793837416732,
+    0.1478053892161614,
+    0.832620905240352,
+    -0.5616067447668245,
+    0.06249603837623391,
+    -0.2662006245597567,
+    -0.2348577241813049
+  ],
+  "dec_high": [
+    1.243161659559461,
+    -0.5588793837416963,
+    0.14780538921610425,
+    0.8326209052402762,
+    -0.5616067447667383,
+    0.062496038376401025,
+    -0.26620062455982096,
+    -0.2348577241811205
+  ],
+  "y_ref": [
+    1.2431616595594783,
+    -0.5588793837416774,
+    0.14780538921612946,
+    0.8326209052403384,
+    -0.5616067447668147,
+    0.062496038376316995,
+    -0.2662006245597951,
+    -0.23485772418124068
+  ],
+  "encrypt_rows_us": 63284.64208984375,
+  "gpu_wsum_core_us": 11392.10302734375,
+  "highlevel_add_core_us": 546.4609375,
+  "decrypt_outputs_us": 25106.77001953125,
+  "err_gpu_to_ref": 8.308631560538515e-14,
+  "err_high_to_ref": 1.201816424156732e-13,
+  "err_gpu_to_high": 1.844080443902385e-13
+}

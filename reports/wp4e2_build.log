@@ -1,0 +1,960 @@
+[ 50%] Built target fideslib_gpt_minimal
+[ 66%] Building CXX object CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o
+[ 83%] Building CXX object CMakeFiles/_fideslib.dir/cpp/native_helpers.cpp.o
+In file included from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/chrono:26,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__thread/threading_support.h:25,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/polling.h:27,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/atomic:41,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/__atomic/atomic.h:24,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/atomic:24,
+                 from /root/fideslib/src/PeerUtils.cuh:17,
+                 from /root/fideslib/src/CKKS/LimbPartition.cuh:12,
+                 from /root/fideslib/src/CKKS/RNSPoly.cuh:9,
+                 from /root/fideslib/src/CKKS/Ciphertext.cuh:9,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:16:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1099:105: error: macro "duration" passed 3 arguments, but takes just 1
+ 1099 |                 && (treat_as_floating_point<rep>::value || !treat_as_floating_point<_Rep2>::value)>* = 0)
+      |                                                                                                         ^
+In file included from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/intnat/ubintnat.h:44,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/nativeintbackend.h:36,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/math-hal.h:49,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/elemparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/default/ilparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/lat-backend.h:49,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/lat-hal.h:35,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/openfhecore.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/pke/openfhe.h:40,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:15:
+/root/fideslib/deps/openfhe-install/include/openfhe/core/utils/debug.h:198: note: macro "duration" defined here
+  198 | #define duration(a)    std::chrono::duration_cast<std::chrono::milliseconds>(a).count()
+      | 
+In file included from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/chrono:26,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__thread/threading_support.h:25,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/polling.h:27,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/atomic:41,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/__atomic/atomic.h:24,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/atomic:24,
+                 from /root/fideslib/src/PeerUtils.cuh:17,
+                 from /root/fideslib/src/CKKS/LimbPartition.cuh:12,
+                 from /root/fideslib/src/CKKS/RNSPoly.cuh:9,
+                 from /root/fideslib/src/CKKS/Ciphertext.cuh:9,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:16:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1110:8: error: macro "duration" passed 4 arguments, but takes just 1
+ 1110 |       0)
+      |        ^
+In file included from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/intnat/ubintnat.h:44,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/nativeintbackend.h:36,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/math-hal.h:49,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/elemparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/default/ilparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/lat-backend.h:49,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/lat-hal.h:35,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/openfhecore.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/pke/openfhe.h:40,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:15:
+/root/fideslib/deps/openfhe-install/include/openfhe/core/utils/debug.h:198: note: macro "duration" defined here
+  198 | #define duration(a)    std::chrono::duration_cast<std::chrono::milliseconds>(a).count()
+      | 
+/root/fideslib/deps/openfhe-install/include/openfhe/core/utils/debug.h:198:64: error: ‘milliseconds’ is not a member of ‘cuda::std::__4::chrono’; did you mean ‘std::chrono::milliseconds’?
+  198 | #define duration(a)    std::chrono::duration_cast<std::chrono::milliseconds>(a).count()
+      |                                                                ^~~~~~~~~~~~
+In file included from /usr/include/c++/11/shared_mutex:36,
+                 from /root/fideslib/api/CryptoContext.hpp:9,
+                 from /root/fideslib/api/Ciphertext.hpp:8,
+                 from /root/fideslib/api/fideslib.hpp:5,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:1:
+/usr/include/c++/11/chrono:844:11: note: ‘std::chrono::milliseconds’ declared here
+  844 |     using milliseconds  = duration<_GLIBCXX_CHRONO_INT64_T, milli>;
+      |           ^~~~~~~~~~~~
+In file included from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/intnat/ubintnat.h:44,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/nativeintbackend.h:36,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/math-hal.h:49,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/elemparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/default/ilparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/lat-backend.h:49,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/lat-hal.h:35,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/openfhecore.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/pke/openfhe.h:40,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:15:
+/root/fideslib/deps/openfhe-install/include/openfhe/core/utils/debug.h:198:37: error: ‘cuda::std::__4::chrono::duration_cast(const cuda::std::__4::chrono::duration<_Rep, _Period>&)’ is not a type
+  198 | #define duration(a)    std::chrono::duration_cast<std::chrono::milliseconds>(a).count()
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/root/fideslib/deps/openfhe-install/include/openfhe/core/utils/debug.h:198:79: error: expected unqualified-id before ‘)’ token
+  198 | #define duration(a)    std::chrono::duration_cast<std::chrono::milliseconds>(a).count()
+      |                                                                               ^
+In file included from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/chrono:26,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__thread/threading_support.h:25,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/polling.h:27,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/atomic:41,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/__atomic/atomic.h:24,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/atomic:24,
+                 from /root/fideslib/src/PeerUtils.cuh:17,
+                 from /root/fideslib/src/CKKS/LimbPartition.cuh:12,
+                 from /root/fideslib/src/CKKS/RNSPoly.cuh:9,
+                 from /root/fideslib/src/CKKS/Ciphertext.cuh:9,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:16:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1100:7: error: found ‘:’ in nested-name-specifier, expected ‘::’
+ 1100 |       : __rep_(static_cast<rep>(__r))
+      |       ^
+      |       ::
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1100:16: error: expected identifier before ‘static_cast’
+ 1100 |       : __rep_(static_cast<rep>(__r))
+      |                ^~~~~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1100:16: error: expected ‘,’ or ‘...’ before ‘static_cast’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1096:48: error: extra qualification ‘cuda::std::__4::chrono::duration<_Rep, _Period>::’ on member ‘__rep_’ [-fpermissive]
+ 1096 |   _LIBCUDACXX_HIDE_FROM_ABI constexpr explicit duration(
+      |                                                ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1096:39: error: only declarations of constructors and conversion operators can be ‘explicit’
+ 1096 |   _LIBCUDACXX_HIDE_FROM_ABI constexpr explicit duration(
+      |                                       ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1101:4: error: ‘constexpr int cuda::std::__4::chrono::duration<_Rep, _Period>::__rep_(int)’ conflicts with a previous declaration
+ 1101 |   {}
+      |    ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1090:7: note: previous declaration ‘cuda::std::__4::chrono::duration<_Rep, _Period>::rep cuda::std::__4::chrono::duration<_Rep, _Period>::__rep_’
+ 1090 |   rep __rep_;
+      |       ^~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1111:7: error: found ‘:’ in nested-name-specifier, expected ‘::’
+ 1111 |       : __rep_(_CUDA_VSTD::chrono::duration_cast<duration>(__d).count())
+      |       ^
+      |       ::
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1111:36: error: ‘cuda::std::__4::chrono::duration_cast(const cuda::std::__4::chrono::duration<_Rep, _Period>&)’ is not a type
+ 1111 |       : __rep_(_CUDA_VSTD::chrono::duration_cast<duration>(__d).count())
+      |                                    ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1111:64: error: expected ‘,’ or ‘...’ before ‘.’ token
+ 1111 |       : __rep_(_CUDA_VSTD::chrono::duration_cast<duration>(__d).count())
+      |                                                                ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1105:39: error: extra qualification ‘cuda::std::__4::chrono::duration<_Rep, _Period>::’ on member ‘__rep_’ [-fpermissive]
+ 1105 |   _LIBCUDACXX_HIDE_FROM_ABI constexpr duration(
+      |                                       ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1112:4: error: ‘constexpr int cuda::std::__4::chrono::duration<_Rep, _Period>::__rep_(int)’ conflicts with a previous declaration
+ 1112 |   {}
+      |    ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1090:7: note: previous declaration ‘cuda::std::__4::chrono::duration<_Rep, _Period>::rep cuda::std::__4::chrono::duration<_Rep, _Period>::__rep_’
+ 1090 |   rep __rep_;
+      |       ^~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In member function ‘constexpr int cuda::std::__4::chrono::duration<_Rep, _Period>::__rep_(int)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1101:4: error: no return statement in ‘constexpr’ function returning non-void
+ 1101 |   {}
+      |    ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In member function ‘constexpr int cuda::std::__4::chrono::duration<_Rep, _Period>::__rep_(int)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1112:4: error: no return statement in ‘constexpr’ function returning non-void
+ 1112 |   {}
+      |    ^
+In file included from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/intnat/ubintnat.h:44,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/nativeintbackend.h:36,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/math-hal.h:49,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/elemparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/default/ilparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/lat-backend.h:49,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/lat-hal.h:35,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/openfhecore.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/pke/openfhe.h:40,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:15:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In member function ‘constexpr cuda::std::__4::chrono::duration<_Rep, _Period> cuda::std::__4::chrono::duration<_Rep, _Period>::operator++(int)’:
+/root/fideslib/deps/openfhe-install/include/openfhe/core/utils/debug.h:198:64: error: ‘milliseconds’ is not a member of ‘cuda::std::__4::chrono’; did you mean ‘std::chrono::milliseconds’?
+  198 | #define duration(a)    std::chrono::duration_cast<std::chrono::milliseconds>(a).count()
+      |                                                                ^~~~~~~~~~~~
+In file included from /usr/include/c++/11/shared_mutex:36,
+                 from /root/fideslib/api/CryptoContext.hpp:9,
+                 from /root/fideslib/api/Ciphertext.hpp:8,
+                 from /root/fideslib/api/fideslib.hpp:5,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:1:
+/usr/include/c++/11/chrono:844:11: note: ‘std::chrono::milliseconds’ declared here
+  844 |     using milliseconds  = duration<_GLIBCXX_CHRONO_INT64_T, milli>;
+      |           ^~~~~~~~~~~~
+In file included from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/intnat/ubintnat.h:44,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/nativeintbackend.h:36,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/math-hal.h:49,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/elemparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/default/ilparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/lat-backend.h:49,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/lat-hal.h:35,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/openfhecore.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/pke/openfhe.h:40,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:15:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In member function ‘constexpr cuda::std::__4::chrono::duration<_Rep, _Period> cuda::std::__4::chrono::duration<_Rep, _Period>::operator--(int)’:
+/root/fideslib/deps/openfhe-install/include/openfhe/core/utils/debug.h:198:64: error: ‘milliseconds’ is not a member of ‘cuda::std::__4::chrono’; did you mean ‘std::chrono::milliseconds’?
+  198 | #define duration(a)    std::chrono::duration_cast<std::chrono::milliseconds>(a).count()
+      |                                                                ^~~~~~~~~~~~
+In file included from /usr/include/c++/11/shared_mutex:36,
+                 from /root/fideslib/api/CryptoContext.hpp:9,
+                 from /root/fideslib/api/Ciphertext.hpp:8,
+                 from /root/fideslib/api/fideslib.hpp:5,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:1:
+/usr/include/c++/11/chrono:844:11: note: ‘std::chrono::milliseconds’ declared here
+  844 |     using milliseconds  = duration<_GLIBCXX_CHRONO_INT64_T, milli>;
+      |           ^~~~~~~~~~~~
+In file included from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/intnat/ubintnat.h:44,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/nativeintbackend.h:36,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/math-hal.h:49,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/elemparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/default/ilparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/lat-backend.h:49,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/lat-hal.h:35,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/openfhecore.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/pke/openfhe.h:40,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:15:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In static member function ‘static constexpr cuda::std::__4::chrono::duration<_Rep, _Period> cuda::std::__4::chrono::duration<_Rep, _Period>::zero()’:
+/root/fideslib/deps/openfhe-install/include/openfhe/core/utils/debug.h:198:64: error: ‘milliseconds’ is not a member of ‘cuda::std::__4::chrono’; did you mean ‘std::chrono::milliseconds’?
+  198 | #define duration(a)    std::chrono::duration_cast<std::chrono::milliseconds>(a).count()
+      |                                                                ^~~~~~~~~~~~
+In file included from /usr/include/c++/11/shared_mutex:36,
+                 from /root/fideslib/api/CryptoContext.hpp:9,
+                 from /root/fideslib/api/Ciphertext.hpp:8,
+                 from /root/fideslib/api/fideslib.hpp:5,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:1:
+/usr/include/c++/11/chrono:844:11: note: ‘std::chrono::milliseconds’ declared here
+  844 |     using milliseconds  = duration<_GLIBCXX_CHRONO_INT64_T, milli>;
+      |           ^~~~~~~~~~~~
+In file included from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/intnat/ubintnat.h:44,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/nativeintbackend.h:36,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/math-hal.h:49,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/elemparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/default/ilparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/lat-backend.h:49,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/lat-hal.h:35,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/openfhecore.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/pke/openfhe.h:40,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:15:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In static member function ‘static constexpr cuda::std::__4::chrono::duration<_Rep, _Period> cuda::std::__4::chrono::duration<_Rep, _Period>::min()’:
+/root/fideslib/deps/openfhe-install/include/openfhe/core/utils/debug.h:198:64: error: ‘milliseconds’ is not a member of ‘cuda::std::__4::chrono’; did you mean ‘std::chrono::milliseconds’?
+  198 | #define duration(a)    std::chrono::duration_cast<std::chrono::milliseconds>(a).count()
+      |                                                                ^~~~~~~~~~~~
+In file included from /usr/include/c++/11/shared_mutex:36,
+                 from /root/fideslib/api/CryptoContext.hpp:9,
+                 from /root/fideslib/api/Ciphertext.hpp:8,
+                 from /root/fideslib/api/fideslib.hpp:5,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:1:
+/usr/include/c++/11/chrono:844:11: note: ‘std::chrono::milliseconds’ declared here
+  844 |     using milliseconds  = duration<_GLIBCXX_CHRONO_INT64_T, milli>;
+      |           ^~~~~~~~~~~~
+In file included from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/intnat/ubintnat.h:44,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/nativeintbackend.h:36,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/math-hal.h:49,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/elemparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/default/ilparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/lat-backend.h:49,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/lat-hal.h:35,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/openfhecore.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/pke/openfhe.h:40,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:15:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In static member function ‘static constexpr cuda::std::__4::chrono::duration<_Rep, _Period> cuda::std::__4::chrono::duration<_Rep, _Period>::max()’:
+/root/fideslib/deps/openfhe-install/include/openfhe/core/utils/debug.h:198:64: error: ‘milliseconds’ is not a member of ‘cuda::std::__4::chrono’; did you mean ‘std::chrono::milliseconds’?
+  198 | #define duration(a)    std::chrono::duration_cast<std::chrono::milliseconds>(a).count()
+      |                                                                ^~~~~~~~~~~~
+In file included from /usr/include/c++/11/shared_mutex:36,
+                 from /root/fideslib/api/CryptoContext.hpp:9,
+                 from /root/fideslib/api/Ciphertext.hpp:8,
+                 from /root/fideslib/api/fideslib.hpp:5,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:1:
+/usr/include/c++/11/chrono:844:11: note: ‘std::chrono::milliseconds’ declared here
+  844 |     using milliseconds  = duration<_GLIBCXX_CHRONO_INT64_T, milli>;
+      |           ^~~~~~~~~~~~
+In file included from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/chrono:26,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__thread/threading_support.h:25,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/polling.h:27,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/atomic:41,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/__atomic/atomic.h:24,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/atomic:24,
+                 from /root/fideslib/src/PeerUtils.cuh:17,
+                 from /root/fideslib/src/CKKS/LimbPartition.cuh:12,
+                 from /root/fideslib/src/CKKS/RNSPoly.cuh:9,
+                 from /root/fideslib/src/CKKS/Ciphertext.cuh:9,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:16:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In function ‘constexpr cuda::std::__4::chrono::days cuda::std::__4::chrono::operator-(const cuda::std::__4::chrono::day&, const cuda::std::__4::chrono::day&)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1746:110: error: no matching function for call to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration(int)’
+ 1746 |   return days(static_cast<int>(static_cast<unsigned>(__lhs)) - static_cast<int>(static_cast<unsigned>(__rhs)));
+      |                                                                                                              ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration(const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration(cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In function ‘constexpr cuda::std::__4::chrono::months cuda::std::__4::chrono::operator-(const cuda::std::__4::chrono::month&, const cuda::std::__4::chrono::month&)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1855:46: error: no matching function for call to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >::duration(unsigned int)’
+ 1855 |   return months(__dm <= 11 ? __dm : __dm + 12);
+      |                                              ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >::duration(const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘unsigned int’ to ‘const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >::duration(cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘unsigned int’ to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In function ‘constexpr cuda::std::__4::chrono::years cuda::std::__4::chrono::operator-(const cuda::std::__4::chrono::year&, const cuda::std::__4::chrono::year&)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1980:65: error: no matching function for call to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >::duration(<brace-enclosed initializer list>)’
+ 1980 |   return years{static_cast<int>(__lhs) - static_cast<int>(__rhs)};
+      |                                                                 ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >::duration(const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >::duration(cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In function ‘constexpr cuda::std::__4::chrono::days cuda::std::__4::chrono::operator-(const cuda::std::__4::chrono::weekday&, const cuda::std::__4::chrono::weekday&)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:2120:31: error: no matching function for call to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration(<brace-enclosed initializer list>)’
+ 2120 |   return days{__wdu - __wk * 7};
+      |                               ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration(const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration(cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In function ‘constexpr cuda::std::__4::chrono::year_month cuda::std::__4::chrono::operator+(const cuda::std::__4::chrono::year_month&, const months&)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:2612:36: error: no matching function for call to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >::duration(const int&)’
+ 2612 |   return (__lhs.year() + years(__dy)) / month(static_cast<unsigned>(__dmi));
+      |                                    ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >::duration(const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘const int’ to ‘const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >::duration(cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘const int’ to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In function ‘constexpr cuda::std::__4::chrono::months cuda::std::__4::chrono::operator-(const cuda::std::__4::chrono::year_month&, const cuda::std::__4::chrono::year_month&)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:2633:92: error: no matching function for call to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >::duration(unsigned int)’
+ 2633 |        + months(static_cast<unsigned>(__lhs.month()) - static_cast<unsigned>(__rhs.month()));
+      |                                                                                            ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >::duration(const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘unsigned int’ to ‘const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >::duration(cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘unsigned int’ to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In member function ‘constexpr cuda::std::__4::chrono::days cuda::std::__4::chrono::year_month_day::__to_days() const’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:2738:64: error: no matching function for call to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration(<brace-enclosed initializer list>)’
+ 2738 |   return days{__era * 146097 + static_cast<int>(__doe) - 719468};
+      |                                                                ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration(const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration(cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In member function ‘constexpr cuda::std::__4::chrono::days cuda::std::__4::chrono::year_month_weekday::__to_days() const’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3156:93: error: no matching function for call to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration(<brace-enclosed initializer list>)’
+ 3156 |   return (__sysd + (__wdi.weekday() - chrono::weekday(__sysd) + days{(__wdi.index() - 1) * 7})).time_since_epoch();
+      |                                                                                             ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration(const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘unsigned int’ to ‘const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration(cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘unsigned int’ to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In function ‘constexpr bool cuda::std::__4::chrono::is_am(const hours&)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3501:24: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(int)’
+ 3501 |   return __h >= hours(0) && __h < hours(12);
+      |                        ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3501:43: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(int)’
+ 3501 |   return __h >= hours(0) && __h < hours(12);
+      |                                           ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In function ‘constexpr bool cuda::std::__4::chrono::is_pm(const hours&)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3505:25: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(int)’
+ 3505 |   return __h >= hours(12) && __h < hours(24);
+      |                         ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3505:44: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(int)’
+ 3505 |   return __h >= hours(12) && __h < hours(24);
+      |                                            ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In function ‘constexpr cuda::std::__4::chrono::hours cuda::std::__4::chrono::make12(const hours&)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3510:21: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(int)’
+ 3510 |   if (__h == hours(0))
+      |                     ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3512:20: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(int)’
+ 3512 |     return hours(12);
+      |                    ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3514:27: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(int)’
+ 3514 |   else if (__h <= hours(12))
+      |                           ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3520:26: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(int)’
+ 3520 |     return __h - hours(12);
+      |                          ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In function ‘constexpr cuda::std::__4::chrono::hours cuda::std::__4::chrono::make24(const hours&, bool)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3528:27: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(int)’
+ 3528 |     return __h == hours(12) ? __h : __h + hours(12);
+      |                           ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3528:51: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(int)’
+ 3528 |     return __h == hours(12) ? __h : __h + hours(12);
+      |                                                   ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3532:27: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(int)’
+ 3532 |     return __h == hours(12) ? hours(0) : __h;
+      |                           ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3532:38: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(int)’
+ 3532 |     return __h == hours(12) ? hours(0) : __h;
+      |                                      ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In function ‘constexpr cuda::std::__4::chrono::hours cuda::std::__4::literals::chrono_literals::operator""h(long long unsigned int)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3559:60: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::rep)’
+ 3559 |   return chrono::hours(static_cast<chrono::hours::rep>(__h));
+      |                                                            ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::rep’ {aka ‘long int’} to ‘const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::duration(cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >::rep’ {aka ‘long int’} to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<3600> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In function ‘constexpr cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<3600> > cuda::std::__4::literals::chrono_literals::operator""h(long double)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3565:85: error: no matching function for call to ‘cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<3600> >::duration(long double&)’
+ 3565 |   return chrono::duration<_LIBCUDACXX_CHRONO_LITERAL_INTERNAL_T, ratio<3600, 1>>(__h);
+      |                                                                                     ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<3600> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<3600> >::duration(const cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<3600> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘long double’ to ‘const cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<3600> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<3600> >::duration(cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<3600> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘long double’ to ‘cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<3600> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In function ‘constexpr cuda::std::__4::chrono::minutes cuda::std::__4::literals::chrono_literals::operator""min(long long unsigned int)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3570:64: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<60> >::duration(cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<60> >::rep)’
+ 3570 |   return chrono::minutes(static_cast<chrono::minutes::rep>(__m));
+      |                                                                ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<60> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<60> >::duration(const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<60> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<60> >::rep’ {aka ‘long int’} to ‘const cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<60> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<60> >::duration(cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<60> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<60> >::rep’ {aka ‘long int’} to ‘cuda::std::__4::chrono::duration<long int, cuda::std::__4::ratio<60> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In function ‘constexpr cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<60> > cuda::std::__4::literals::chrono_literals::operator""min(long double)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3576:83: error: no matching function for call to ‘cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<60> >::duration(long double&)’
+ 3576 |   return chrono::duration<_LIBCUDACXX_CHRONO_LITERAL_INTERNAL_T, ratio<60, 1>>(__m);
+      |                                                                                   ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<60> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<60> >::duration(const cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<60> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘long double’ to ‘const cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<60> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<60> >::duration(cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<60> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘long double’ to ‘cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<60> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In function ‘constexpr cuda::std::__4::chrono::seconds cuda::std::__4::literals::chrono_literals::operator""s(long long unsigned int)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3581:64: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long long int>::duration(cuda::std::__4::chrono::duration<long long int>::rep)’
+ 3581 |   return chrono::seconds(static_cast<chrono::seconds::rep>(__s));
+      |                                                                ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int>::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int>::duration(const cuda::std::__4::chrono::duration<long long int>&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘cuda::std::__4::chrono::duration<long long int>::rep’ {aka ‘long long int’} to ‘const cuda::std::__4::chrono::duration<long long int>&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int>::duration(cuda::std::__4::chrono::duration<long long int>&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘cuda::std::__4::chrono::duration<long long int>::rep’ {aka ‘long long int’} to ‘cuda::std::__4::chrono::duration<long long int>&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In function ‘constexpr cuda::std::__4::chrono::duration<double> cuda::std::__4::literals::chrono_literals::operator""s(long double)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3586:69: error: no matching function for call to ‘cuda::std::__4::chrono::duration<double>::duration(long double&)’
+ 3586 |   return chrono::duration<_LIBCUDACXX_CHRONO_LITERAL_INTERNAL_T>(__s);
+      |                                                                     ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<double>::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<double>::duration(const cuda::std::__4::chrono::duration<double>&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘long double’ to ‘const cuda::std::__4::chrono::duration<double>&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<double>::duration(cuda::std::__4::chrono::duration<double>&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘long double’ to ‘cuda::std::__4::chrono::duration<double>&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In function ‘constexpr cuda::std::__4::chrono::milliseconds cuda::std::__4::literals::chrono_literals::operator""ms(long long unsigned int)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3591:75: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000> >::duration(cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000> >::rep)’
+ 3591 |   return chrono::milliseconds(static_cast<chrono::milliseconds::rep>(__ms));
+      |                                                                           ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000> >::duration(const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000> >::rep’ {aka ‘long long int’} to ‘const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000> >::duration(cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000> >::rep’ {aka ‘long long int’} to ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In function ‘constexpr cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000> > cuda::std::__4::literals::chrono_literals::operator""ms(long double)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3597:77: error: no matching function for call to ‘cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000> >::duration(long double&)’
+ 3597 |   return chrono::duration<_LIBCUDACXX_CHRONO_LITERAL_INTERNAL_T, milli>(__ms);
+      |                                                                             ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000> >::duration(const cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘long double’ to ‘const cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000> >::duration(cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘long double’ to ‘cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In function ‘constexpr cuda::std::__4::chrono::microseconds cuda::std::__4::literals::chrono_literals::operator""us(long long unsigned int)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3602:75: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000> >::duration(cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000> >::rep)’
+ 3602 |   return chrono::microseconds(static_cast<chrono::microseconds::rep>(__us));
+      |                                                                           ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000> >::duration(const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000> >::rep’ {aka ‘long long int’} to ‘const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000> >::duration(cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000> >::rep’ {aka ‘long long int’} to ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In function ‘constexpr cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000000> > cuda::std::__4::literals::chrono_literals::operator""us(long double)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3608:77: error: no matching function for call to ‘cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000000> >::duration(long double&)’
+ 3608 |   return chrono::duration<_LIBCUDACXX_CHRONO_LITERAL_INTERNAL_T, micro>(__us);
+      |                                                                             ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000000> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000000> >::duration(const cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000000> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘long double’ to ‘const cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000000> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000000> >::duration(cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000000> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘long double’ to ‘cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000000> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In function ‘constexpr cuda::std::__4::chrono::nanoseconds cuda::std::__4::literals::chrono_literals::operator""ns(long long unsigned int)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3613:73: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration(cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::rep)’
+ 3613 |   return chrono::nanoseconds(static_cast<chrono::nanoseconds::rep>(__ns));
+      |                                                                         ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration(const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::rep’ {aka ‘long long int’} to ‘const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration(cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::rep’ {aka ‘long long int’} to ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In function ‘constexpr cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000000000> > cuda::std::__4::literals::chrono_literals::operator""ns(long double)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3619:76: error: no matching function for call to ‘cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000000000> >::duration(long double&)’
+ 3619 |   return chrono::duration<_LIBCUDACXX_CHRONO_LITERAL_INTERNAL_T, nano>(__ns);
+      |                                                                            ^
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000000000> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000000000> >::duration(const cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000000000> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘long double’ to ‘const cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000000000> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000000000> >::duration(cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000000000> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘long double’ to ‘cuda::std::__4::chrono::duration<double, cuda::std::__4::ratio<1, 1000000000> >&&’
+In file included from /usr/local/cuda/targets/x86_64-linux/include/nv/detail/__target_macros:14,
+                 from /usr/local/cuda/targets/x86_64-linux/include/nv/target:230,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__cccl/assert.h:34,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/__cccl_config:14,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/__config:14,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/__config:43,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/atomic:14,
+                 from /root/fideslib/src/PeerUtils.cuh:17,
+                 from /root/fideslib/src/CKKS/LimbPartition.cuh:12,
+                 from /root/fideslib/src/CKKS/RNSPoly.cuh:9,
+                 from /root/fideslib/src/CKKS/Ciphertext.cuh:9,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:16:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__cuda/chrono.h: In static member function ‘static cuda::std::__4::chrono::system_clock::time_point cuda::std::__4::chrono::system_clock::now()’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__cuda/chrono.h:41:3: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration(std::chrono::duration<long int, std::ratio<1, 1000000000> >::rep)’
+   41 |   NV_DISPATCH_TARGET(
+      |   ^~~~~~~~~~~~~~~~~~
+In file included from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/chrono:26,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__thread/threading_support.h:25,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/polling.h:27,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/atomic:41,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/__atomic/atomic.h:24,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/atomic:24,
+                 from /root/fideslib/src/PeerUtils.cuh:17,
+                 from /root/fideslib/src/CKKS/LimbPartition.cuh:12,
+                 from /root/fideslib/src/CKKS/RNSPoly.cuh:9,
+                 from /root/fideslib/src/CKKS/Ciphertext.cuh:9,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:16:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration(const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘std::chrono::duration<long int, std::ratio<1, 1000000000> >::rep’ {aka ‘long int’} to ‘const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration(cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘std::chrono::duration<long int, std::ratio<1, 1000000000> >::rep’ {aka ‘long int’} to ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&&’
+In file included from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3684,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/chrono:26,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__thread/threading_support.h:25,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/polling.h:27,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/atomic:41,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/__atomic/atomic.h:24,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/atomic:24,
+                 from /root/fideslib/src/PeerUtils.cuh:17,
+                 from /root/fideslib/src/CKKS/LimbPartition.cuh:12,
+                 from /root/fideslib/src/CKKS/RNSPoly.cuh:9,
+                 from /root/fideslib/src/CKKS/Ciphertext.cuh:9,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:16:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__cuda/chrono.h: In static member function ‘static cuda::std::__4::chrono::system_clock::time_point cuda::std::__4::chrono::system_clock::from_time_t(time_t)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__cuda/chrono.h:59:32: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long long int>::duration(time_t&)’
+   59 |   return time_point(seconds(__t));
+      |                                ^
+In file included from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/chrono:26,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__thread/threading_support.h:25,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/polling.h:27,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/atomic:41,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/__atomic/atomic.h:24,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/atomic:24,
+                 from /root/fideslib/src/PeerUtils.cuh:17,
+                 from /root/fideslib/src/CKKS/LimbPartition.cuh:12,
+                 from /root/fideslib/src/CKKS/RNSPoly.cuh:9,
+                 from /root/fideslib/src/CKKS/Ciphertext.cuh:9,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:16:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int>::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int>::duration(const cuda::std::__4::chrono::duration<long long int>&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘time_t’ {aka ‘long int’} to ‘const cuda::std::__4::chrono::duration<long long int>&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int>::duration(cuda::std::__4::chrono::duration<long long int>&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘time_t’ {aka ‘long int’} to ‘cuda::std::__4::chrono::duration<long long int>&&’
+In file included from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/polling.h:27,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/atomic:41,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/__atomic/atomic.h:24,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/atomic:24,
+                 from /root/fideslib/src/PeerUtils.cuh:17,
+                 from /root/fideslib/src/CKKS/LimbPartition.cuh:12,
+                 from /root/fideslib/src/CKKS/RNSPoly.cuh:9,
+                 from /root/fideslib/src/CKKS/Ciphertext.cuh:9,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:16:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__thread/threading_support.h: In function ‘bool cuda::std::__4::__cccl_thread_poll_with_backoff(_Fn&&, cuda::std::__4::chrono::nanoseconds)’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__thread/threading_support.h:90:63: error: could not convert ‘(cuda::std::__4::chrono::milliseconds)(1)’ from ‘duration<[...],ratio<[...],1000>>’ to ‘duration<[...],ratio<[...],1000000000>>’
+   90 |       _CUDA_VSTD::__cccl_thread_sleep_for(_CUDA_VSTD::chrono::milliseconds(1));
+      |                                                               ^~~~~~~~~~~~~~~
+      |                                                               |
+      |                                                               duration<[...],ratio<[...],1000>>
+In file included from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/chrono:26,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__thread/threading_support.h:25,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/polling.h:27,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/atomic:41,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/__atomic/atomic.h:24,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/atomic:24,
+                 from /root/fideslib/src/PeerUtils.cuh:17,
+                 from /root/fideslib/src/CKKS/LimbPartition.cuh:12,
+                 from /root/fideslib/src/CKKS/RNSPoly.cuh:9,
+                 from /root/fideslib/src/CKKS/Ciphertext.cuh:9,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:16:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In instantiation of ‘constexpr typename cuda::std::__4::common_type<cuda::std::__4::chrono::duration<_Rep, _Period> >::type cuda::std::__4::chrono::duration<_Rep, _Period>::operator-() const [with _Rep = int; _Period = cuda::std::__4::ratio<86400, 1>; typename cuda::std::__4::common_type<cuda::std::__4::chrono::duration<_Rep, _Period> >::type = cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >]’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1741:19:   required from here
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1129:44: error: no matching function for call to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration(int)’
+ 1129 |     return typename common_type<duration>::type(-__rep_);
+      |                                            ^~~~~~~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration(const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration(cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In instantiation of ‘constexpr typename cuda::std::__4::common_type<cuda::std::__4::chrono::duration<_Rep, _Period> >::type cuda::std::__4::chrono::duration<_Rep, _Period>::operator-() const [with _Rep = int; _Period = cuda::std::__4::ratio<2629746, 1>; typename cuda::std::__4::common_type<cuda::std::__4::chrono::duration<_Rep, _Period> >::type = cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >]’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1849:19:   required from here
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1129:44: error: no matching function for call to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >::duration(int)’
+ 1129 |     return typename common_type<duration>::type(-__rep_);
+      |                                            ^~~~~~~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >::duration(const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >::duration(cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<2629746, 1> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In instantiation of ‘constexpr typename cuda::std::__4::common_type<cuda::std::__4::chrono::duration<_Rep, _Period> >::type cuda::std::__4::chrono::duration<_Rep, _Period>::operator-() const [with _Rep = int; _Period = cuda::std::__4::ratio<31556952, 1>; typename cuda::std::__4::common_type<cuda::std::__4::chrono::duration<_Rep, _Period> >::type = cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >]’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1975:19:   required from here
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1129:44: error: no matching function for call to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >::duration(int)’
+ 1129 |     return typename common_type<duration>::type(-__rep_);
+      |                                            ^~~~~~~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >::duration(const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >::duration(cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<31556952, 1> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In instantiation of ‘constexpr _ToDuration cuda::std::__4::chrono::__duration_cast<_FromDuration, _ToDuration, _Period, true, false>::operator()(const _FromDuration&) const [with _FromDuration = cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >; _ToDuration = cuda::std::__4::chrono::duration<long long int>; _Period = cuda::std::__4::ratio<1, 1000000000>]’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:972:65:   required from ‘constexpr cuda::std::__4::enable_if_t<cuda::std::__4::chrono::__is_duration<_Tp>::value, _ToDuration> cuda::std::__4::chrono::duration_cast(const cuda::std::__4::chrono::duration<_Rep, _Period>&) [with _ToDuration = cuda::std::__4::chrono::duration<long long int>; _Rep = long long int; _Period = cuda::std::__4::ratio<1, 1000000000>; cuda::std::__4::enable_if_t<cuda::std::__4::chrono::__is_duration<_Tp>::value, _ToDuration> = cuda::std::__4::chrono::duration<long long int>]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__thread/threading_support_pthread.h:86:39:   required from here
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:941:12: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long long int>::duration(cuda::std::__4::chrono::duration<long long int>::rep)’
+  941 |     return _ToDuration(
+      |            ^~~~~~~~~~~~
+  942 |       static_cast<typename _ToDuration::rep>(static_cast<_Ct>(__fd.count()) / static_cast<_Ct>(_Period::den)));
+      |       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int>::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int>::duration(const cuda::std::__4::chrono::duration<long long int>&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘cuda::std::__4::chrono::duration<long long int>::rep’ {aka ‘long long int’} to ‘const cuda::std::__4::chrono::duration<long long int>&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int>::duration(cuda::std::__4::chrono::duration<long long int>&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘cuda::std::__4::chrono::duration<long long int>::rep’ {aka ‘long long int’} to ‘cuda::std::__4::chrono::duration<long long int>&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In instantiation of ‘constexpr typename cuda::std::__4::common_type<cuda::std::__4::chrono::duration<_Rep, _Period>, cuda::std::__4::chrono::duration<_Rep2, _Period2> >::type cuda::std::__4::chrono::operator-(const cuda::std::__4::chrono::duration<_Rep, _Period>&, const cuda::std::__4::chrono::duration<_Rep2, _Period2>&) [with _Rep1 = long long int; _Period1 = cuda::std::__4::ratio<1, 1000000000>; _Rep2 = long long int; _Period2 = cuda::std::__4::ratio<1>; typename cuda::std::__4::common_type<cuda::std::__4::chrono::duration<_Rep, _Period>, cuda::std::__4::chrono::duration<_Rep2, _Period2> >::type = cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >]’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__thread/threading_support_pthread.h:94:64:   required from here
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1319:35: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration(const cuda::std::__4::chrono::duration<long long int>&)’
+ 1319 |   return _Cd(_Cd(__lhs).count() - _Cd(__rhs).count());
+      |                                   ^~~~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration(const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘const cuda::std::__4::chrono::duration<long long int>’ to ‘const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration(cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘const cuda::std::__4::chrono::duration<long long int>’ to ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In instantiation of ‘constexpr typename cuda::std::__4::common_type<cuda::std::__4::chrono::duration<_Rep, _Period>, cuda::std::__4::chrono::duration<_Rep2, _Period2> >::type cuda::std::__4::chrono::operator-(const cuda::std::__4::chrono::duration<_Rep, _Period>&, const cuda::std::__4::chrono::duration<_Rep2, _Period2>&) [with _Rep1 = int; _Period1 = cuda::std::__4::ratio<86400, 1>; _Rep2 = int; _Period2 = cuda::std::__4::ratio<86400, 1>; typename cuda::std::__4::common_type<cuda::std::__4::chrono::duration<_Rep, _Period>, cuda::std::__4::chrono::duration<_Rep2, _Period2> >::type = cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >]’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1583:40:   required from ‘constexpr cuda::std::__4::chrono::time_point<_Clock, typename cuda::std::__4::common_type<_Duration1, cuda::std::__4::chrono::duration<_Rep2, _Period2> >::type> cuda::std::__4::chrono::operator-(const cuda::std::__4::chrono::time_point<_Clock, _Duration1>&, const cuda::std::__4::chrono::duration<_Rep2, _Period2>&) [with _Clock = cuda::std::__4::chrono::system_clock; _Duration1 = cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >; _Rep2 = int; _Period2 = cuda::std::__4::ratio<86400, 1>; typename cuda::std::__4::common_type<_Duration1, cuda::std::__4::chrono::duration<_Rep2, _Period2> >::type = cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:3309:62:   required from here
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1319:10: error: no matching function for call to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration(cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::rep)’
+ 1319 |   return _Cd(_Cd(__lhs).count() - _Cd(__rhs).count());
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration(const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::rep’ {aka ‘int’} to ‘const cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::duration(cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >::rep’ {aka ‘int’} to ‘cuda::std::__4::chrono::duration<int, cuda::std::__4::ratio<86400, 1> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In instantiation of ‘constexpr cuda::std::__4::enable_if_t<((! cuda::std::__4::chrono::__is_duration<_Rep2>::value) && cuda::std::__4::is_convertible<_Rep2, typename cuda::std::__4::common_type<_Rep1, _Rep2>::type>::value), cuda::std::__4::chrono::duration<typename cuda::std::__4::common_type<_Rep1, _Rep2>::type, _Period> > cuda::std::__4::chrono::operator/(const cuda::std::__4::chrono::duration<_Rep, _Period>&, const _Rep2&) [with _Rep1 = long long int; _Period = cuda::std::__4::ratio<1, 1000000000>; _Rep2 = int; cuda::std::__4::enable_if_t<((! cuda::std::__4::chrono::__is_duration<_Rep2>::value) && cuda::std::__4::is_convertible<_Rep2, typename cuda::std::__4::common_type<_Rep1, _Rep2>::type>::value), cuda::std::__4::chrono::duration<typename cuda::std::__4::common_type<_Rep1, _Rep2>::type, _Period> > = cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >; typename cuda::std::__4::common_type<_Rep1, _Rep2>::type = long long int]’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__thread/threading_support.h:87:62:   required from ‘bool cuda::std::__4::__cccl_thread_poll_with_backoff(_Fn&&, cuda::std::__4::chrono::nanoseconds) [with _Fn = cuda::std::__4::__atomic_poll_tester<cuda::std::__4::__atomic_storage<int>, cuda::std::__4::__thread_scope_system_tag>; cuda::std::__4::chrono::nanoseconds = cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/polling.h:56:46:   required from ‘void cuda::std::__4::__atomic_try_wait_slow_fallback(const volatile _Tp*, cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp>, cuda::std::__4::memory_order, _Sco) [with _Tp = cuda::std::__4::__atomic_storage<int>; _Sco = cuda::std::__4::__thread_scope_system_tag; cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp> = int]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/notify_wait.h:36:3:   required from ‘void cuda::std::__4::__atomic_try_wait_slow(const volatile _Tp*, cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp>, cuda::std::__4::memory_order, _Sco) [with _Tp = cuda::std::__4::__atomic_storage<int>; _Sco = cuda::std::__4::__thread_scope_system_tag; cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp> = int]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/notify_wait.h:84:27:   required from ‘void cuda::std::__4::__atomic_wait(const volatile _Tp*, cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp>, cuda::std::__4::memory_order, _Sco) [with _Tp = cuda::std::__4::__atomic_storage<int>; _Sco = cuda::std::__4::__thread_scope_system_tag; cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp> = int]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/atomic:610:18:   required from here
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1352:10: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration(cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::rep)’
+ 1352 |   return _Cd(_Cd(__d).count() / static_cast<_Cr>(__s));
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration(const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::rep’ {aka ‘long long int’} to ‘const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration(cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::rep’ {aka ‘long long int’} to ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&&’
+In file included from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/polling.h:27,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/atomic:41,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/__atomic/atomic.h:24,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/atomic:24,
+                 from /root/fideslib/src/PeerUtils.cuh:17,
+                 from /root/fideslib/src/CKKS/LimbPartition.cuh:12,
+                 from /root/fideslib/src/CKKS/RNSPoly.cuh:9,
+                 from /root/fideslib/src/CKKS/Ciphertext.cuh:9,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:16:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__thread/threading_support.h: In instantiation of ‘bool cuda::std::__4::__cccl_thread_poll_with_backoff(_Fn&&, cuda::std::__4::chrono::nanoseconds) [with _Fn = cuda::std::__4::__atomic_poll_tester<cuda::std::__4::__atomic_storage<int>, cuda::std::__4::__thread_scope_system_tag>; cuda::std::__4::chrono::nanoseconds = cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >]’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/polling.h:56:46:   required from ‘void cuda::std::__4::__atomic_try_wait_slow_fallback(const volatile _Tp*, cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp>, cuda::std::__4::memory_order, _Sco) [with _Tp = cuda::std::__4::__atomic_storage<int>; _Sco = cuda::std::__4::__thread_scope_system_tag; cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp> = int]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/notify_wait.h:36:3:   required from ‘void cuda::std::__4::__atomic_try_wait_slow(const volatile _Tp*, cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp>, cuda::std::__4::memory_order, _Sco) [with _Tp = cuda::std::__4::__atomic_storage<int>; _Sco = cuda::std::__4::__thread_scope_system_tag; cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp> = int]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/notify_wait.h:84:27:   required from ‘void cuda::std::__4::__atomic_wait(const volatile _Tp*, cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp>, cuda::std::__4::memory_order, _Sco) [with _Tp = cuda::std::__4::__atomic_storage<int>; _Sco = cuda::std::__4::__thread_scope_system_tag; cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp> = int]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/atomic:610:18:   required from here
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__thread/threading_support.h:88:39: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000> >::duration(int)’
+   88 |     if (__step >= _CUDA_VSTD::chrono::milliseconds(1))
+      |                                       ^~~~~~~~~~~~~~~
+In file included from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/chrono:26,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__thread/threading_support.h:25,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/polling.h:27,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/atomic:41,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/__atomic/atomic.h:24,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/atomic:24,
+                 from /root/fideslib/src/PeerUtils.cuh:17,
+                 from /root/fideslib/src/CKKS/LimbPartition.cuh:12,
+                 from /root/fideslib/src/CKKS/RNSPoly.cuh:9,
+                 from /root/fideslib/src/CKKS/Ciphertext.cuh:9,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:16:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000> >::duration(const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000> >::duration(cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000> >&&’
+In file included from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/polling.h:27,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/atomic:41,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/__atomic/atomic.h:24,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/atomic:24,
+                 from /root/fideslib/src/PeerUtils.cuh:17,
+                 from /root/fideslib/src/CKKS/LimbPartition.cuh:12,
+                 from /root/fideslib/src/CKKS/RNSPoly.cuh:9,
+                 from /root/fideslib/src/CKKS/Ciphertext.cuh:9,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:16:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__thread/threading_support.h:92:44: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000> >::duration(int)’
+   92 |     else if (__step >= _CUDA_VSTD::chrono::microseconds(10))
+      |                                            ^~~~~~~~~~~~~~~~
+In file included from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/chrono:26,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__thread/threading_support.h:25,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/polling.h:27,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/std/atomic:41,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/__atomic/atomic.h:24,
+                 from /usr/local/cuda/targets/x86_64-linux/include/cuda/atomic:24,
+                 from /root/fideslib/src/PeerUtils.cuh:17,
+                 from /root/fideslib/src/CKKS/LimbPartition.cuh:12,
+                 from /root/fideslib/src/CKKS/RNSPoly.cuh:9,
+                 from /root/fideslib/src/CKKS/Ciphertext.cuh:9,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:16:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000> >::duration(const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000> >::duration(cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘int’ to ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In instantiation of ‘constexpr typename cuda::std::__4::common_type<cuda::std::__4::chrono::duration<_Rep, _Period>, cuda::std::__4::chrono::duration<_Rep2, _Period2> >::type cuda::std::__4::chrono::operator-(const cuda::std::__4::chrono::duration<_Rep, _Period>&, const cuda::std::__4::chrono::duration<_Rep2, _Period2>&) [with _Rep1 = long long int; _Period1 = cuda::std::__4::ratio<1, 1000000000>; _Rep2 = long long int; _Period2 = cuda::std::__4::ratio<1, 1000000000>; typename cuda::std::__4::common_type<cuda::std::__4::chrono::duration<_Rep, _Period>, cuda::std::__4::chrono::duration<_Rep2, _Period2> >::type = cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >]’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1592:35:   required from ‘constexpr typename cuda::std::__4::common_type<_Duration1, _Duration2>::type cuda::std::__4::chrono::operator-(const cuda::std::__4::chrono::time_point<_Clock, _Duration1>&, const cuda::std::__4::chrono::time_point<_Clock, _Duration2>&) [with _Clock = cuda::std::__4::chrono::system_clock; _Duration1 = cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >; _Duration2 = cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >; typename cuda::std::__4::common_type<_Duration1, _Duration2>::type = cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__thread/threading_support.h:82:56:   required from ‘bool cuda::std::__4::__cccl_thread_poll_with_backoff(_Fn&&, cuda::std::__4::chrono::nanoseconds) [with _Fn = cuda::std::__4::__atomic_poll_tester<cuda::std::__4::__atomic_storage<int>, cuda::std::__4::__thread_scope_system_tag>; cuda::std::__4::chrono::nanoseconds = cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/polling.h:56:46:   required from ‘void cuda::std::__4::__atomic_try_wait_slow_fallback(const volatile _Tp*, cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp>, cuda::std::__4::memory_order, _Sco) [with _Tp = cuda::std::__4::__atomic_storage<int>; _Sco = cuda::std::__4::__thread_scope_system_tag; cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp> = int]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/notify_wait.h:36:3:   required from ‘void cuda::std::__4::__atomic_try_wait_slow(const volatile _Tp*, cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp>, cuda::std::__4::memory_order, _Sco) [with _Tp = cuda::std::__4::__atomic_storage<int>; _Sco = cuda::std::__4::__thread_scope_system_tag; cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp> = int]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/notify_wait.h:84:27:   required from ‘void cuda::std::__4::__atomic_wait(const volatile _Tp*, cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp>, cuda::std::__4::memory_order, _Sco) [with _Tp = cuda::std::__4::__atomic_storage<int>; _Sco = cuda::std::__4::__thread_scope_system_tag; cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp> = int]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/atomic:610:18:   required from here
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1319:10: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration(cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::rep)’
+ 1319 |   return _Cd(_Cd(__lhs).count() - _Cd(__rhs).count());
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration(const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::rep’ {aka ‘long long int’} to ‘const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration(cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::rep’ {aka ‘long long int’} to ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In instantiation of ‘constexpr bool cuda::std::__4::chrono::__duration_lt<_LhsDuration, _RhsDuration>::operator()(const _LhsDuration&, const _RhsDuration&) const [with _LhsDuration = cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >; _RhsDuration = cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000> >]’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1272:79:   required from ‘constexpr bool cuda::std::__4::chrono::operator<(const cuda::std::__4::chrono::duration<_Rep, _Period>&, const cuda::std::__4::chrono::duration<_Rep2, _Period2>&) [with _Rep1 = long long int; _Period1 = cuda::std::__4::ratio<1, 1000000000>; _Rep2 = long long int; _Period2 = cuda::std::__4::ratio<1, 1000>]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1299:18:   required from ‘constexpr bool cuda::std::__4::chrono::operator>=(const cuda::std::__4::chrono::duration<_Rep, _Period>&, const cuda::std::__4::chrono::duration<_Rep2, _Period2>&) [with _Rep1 = long long int; _Period1 = cuda::std::__4::ratio<1, 1000000000>; _Rep2 = long long int; _Period2 = cuda::std::__4::ratio<1, 1000>]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__thread/threading_support.h:88:16:   required from ‘bool cuda::std::__4::__cccl_thread_poll_with_backoff(_Fn&&, cuda::std::__4::chrono::nanoseconds) [with _Fn = cuda::std::__4::__atomic_poll_tester<cuda::std::__4::__atomic_storage<int>, cuda::std::__4::__thread_scope_system_tag>; cuda::std::__4::chrono::nanoseconds = cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/polling.h:56:46:   required from ‘void cuda::std::__4::__atomic_try_wait_slow_fallback(const volatile _Tp*, cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp>, cuda::std::__4::memory_order, _Sco) [with _Tp = cuda::std::__4::__atomic_storage<int>; _Sco = cuda::std::__4::__thread_scope_system_tag; cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp> = int]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/notify_wait.h:36:3:   required from ‘void cuda::std::__4::__atomic_try_wait_slow(const volatile _Tp*, cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp>, cuda::std::__4::memory_order, _Sco) [with _Tp = cuda::std::__4::__atomic_storage<int>; _Sco = cuda::std::__4::__thread_scope_system_tag; cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp> = int]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/notify_wait.h:84:27:   required from ‘void cuda::std::__4::__atomic_wait(const volatile _Tp*, cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp>, cuda::std::__4::memory_order, _Sco) [with _Tp = cuda::std::__4::__atomic_storage<int>; _Sco = cuda::std::__4::__thread_scope_system_tag; cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp> = int]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/atomic:610:18:   required from here
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1255:33: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration(const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000> >&)’
+ 1255 |     return _Ct(__lhs).count() < _Ct(__rhs).count();
+      |                                 ^~~~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration(const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000> >’ to ‘const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration(cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000> >’ to ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono: In instantiation of ‘constexpr bool cuda::std::__4::chrono::__duration_lt<_LhsDuration, _RhsDuration>::operator()(const _LhsDuration&, const _RhsDuration&) const [with _LhsDuration = cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >; _RhsDuration = cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000> >]’:
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1272:79:   required from ‘constexpr bool cuda::std::__4::chrono::operator<(const cuda::std::__4::chrono::duration<_Rep, _Period>&, const cuda::std::__4::chrono::duration<_Rep2, _Period2>&) [with _Rep1 = long long int; _Period1 = cuda::std::__4::ratio<1, 1000000000>; _Rep2 = long long int; _Period2 = cuda::std::__4::ratio<1, 1000000>]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1299:18:   required from ‘constexpr bool cuda::std::__4::chrono::operator>=(const cuda::std::__4::chrono::duration<_Rep, _Period>&, const cuda::std::__4::chrono::duration<_Rep2, _Period2>&) [with _Rep1 = long long int; _Period1 = cuda::std::__4::ratio<1, 1000000000>; _Rep2 = long long int; _Period2 = cuda::std::__4::ratio<1, 1000000>]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__thread/threading_support.h:92:21:   required from ‘bool cuda::std::__4::__cccl_thread_poll_with_backoff(_Fn&&, cuda::std::__4::chrono::nanoseconds) [with _Fn = cuda::std::__4::__atomic_poll_tester<cuda::std::__4::__atomic_storage<int>, cuda::std::__4::__thread_scope_system_tag>; cuda::std::__4::chrono::nanoseconds = cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/polling.h:56:46:   required from ‘void cuda::std::__4::__atomic_try_wait_slow_fallback(const volatile _Tp*, cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp>, cuda::std::__4::memory_order, _Sco) [with _Tp = cuda::std::__4::__atomic_storage<int>; _Sco = cuda::std::__4::__thread_scope_system_tag; cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp> = int]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/notify_wait.h:36:3:   required from ‘void cuda::std::__4::__atomic_try_wait_slow(const volatile _Tp*, cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp>, cuda::std::__4::memory_order, _Sco) [with _Tp = cuda::std::__4::__atomic_storage<int>; _Sco = cuda::std::__4::__thread_scope_system_tag; cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp> = int]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/__atomic/wait/notify_wait.h:84:27:   required from ‘void cuda::std::__4::__atomic_wait(const volatile _Tp*, cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp>, cuda::std::__4::memory_order, _Sco) [with _Tp = cuda::std::__4::__atomic_storage<int>; _Sco = cuda::std::__4::__thread_scope_system_tag; cuda::std::__4::__atomic_underlying_remove_cv_t<_Tp> = int]’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/atomic:610:18:   required from here
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1255:33: error: no matching function for call to ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration(const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000> >&)’
+ 1255 |     return _Ct(__lhs).count() < _Ct(__rhs).count();
+      |                                 ^~~~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration()’
+ 1050 | class _CCCL_TYPE_VISIBILITY_DEFAULT duration
+      |                                     ^~~~~~~~
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   candidate expects 0 arguments, 1 provided
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration(const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000> >’ to ‘const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note: candidate: ‘constexpr cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >::duration(cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&&)’
+/usr/local/cuda/targets/x86_64-linux/include/cuda/std/detail/libcxx/include/chrono:1050:37: note:   no known conversion for argument 1 from ‘const cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000> >’ to ‘cuda::std::__4::chrono::duration<long long int, cuda::std::__4::ratio<1, 1000000000> >&&’
+gmake[2]: *** [CMakeFiles/_fideslib.dir/build.make:79: CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:90: CMakeFiles/_fideslib.dir/all] Error 2
+gmake: *** [Makefile:91: all] Error 2

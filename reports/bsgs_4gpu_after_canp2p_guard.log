@@ -1,0 +1,210 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU P2P? 0
+e1484d733358:81683:81683 [0] NCCL INFO cudaDriverVersion 12020
+e1484d733358:81683:81683 [0] NCCL INFO NCCL version 2.27.3+cuda12.9
+e1484d733358:81683:81960 [3] NCCL INFO NET/Plugin: Could not find: libnccl-net.so. 
+e1484d733358:81683:81960 [3] NCCL INFO NET/IB : No device found.
+e1484d733358:81683:81960 [3] NCCL INFO NET/IB : Using [RO]; OOB eth0:172.17.0.2<0>
+e1484d733358:81683:81960 [3] NCCL INFO NET/Socket : Using [0]eth0:172.17.0.2<0>
+e1484d733358:81683:81960 [3] NCCL INFO Initialized NET plugin Socket
+e1484d733358:81683:81960 [3] NCCL INFO Assigned NET plugin Socket to comm
+e1484d733358:81683:81960 [3] NCCL INFO Using network Socket
+e1484d733358:81683:81957 [0] NCCL INFO Assigned NET plugin Socket to comm
+e1484d733358:81683:81957 [0] NCCL INFO Using network Socket
+e1484d733358:81683:81958 [1] NCCL INFO Assigned NET plugin Socket to comm
+e1484d733358:81683:81958 [1] NCCL INFO Using network Socket
+e1484d733358:81683:81959 [2] NCCL INFO Assigned NET plugin Socket to comm
+e1484d733358:81683:81959 [2] NCCL INFO Using network Socket
+e1484d733358:81683:81959 [2] NCCL INFO ncclCommInitRank comm 0x562ade0768f0 rank 2 nranks 4 cudaDev 2 nvmlDev 2 busId 36000 commId 0x5a90d3b9c819869d - Init START
+e1484d733358:81683:81960 [3] NCCL INFO ncclCommInitRank comm 0x562ade188240 rank 3 nranks 4 cudaDev 3 nvmlDev 3 busId 37000 commId 0x5a90d3b9c819869d - Init START
+e1484d733358:81683:81957 [0] NCCL INFO ncclCommInitRank comm 0x562adde53610 rank 0 nranks 4 cudaDev 0 nvmlDev 0 busId 34000 commId 0x5a90d3b9c819869d - Init START
+e1484d733358:81683:81958 [1] NCCL INFO ncclCommInitRank comm 0x562addf64fa0 rank 1 nranks 4 cudaDev 1 nvmlDev 1 busId 35000 commId 0x5a90d3b9c819869d - Init START
+e1484d733358:81683:81960 [3] NCCL INFO RAS client listening socket at ::1<28028>
+e1484d733358:81683:81960 [3] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+e1484d733358:81683:81957 [0] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+e1484d733358:81683:81958 [1] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+e1484d733358:81683:81959 [2] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+e1484d733358:81683:81957 [0] NCCL INFO TOPO/NET : Importing network plugins to topology
+e1484d733358:81683:81957 [0] NCCL INFO Retrieving state for Socket
+e1484d733358:81683:81957 [0] NCCL INFO Initialized state 0 for Socket
+e1484d733358:81683:81957 [0] NCCL INFO ncclTopoPopulateNics : Filled eth0 in topo with pciPath=(null) keep=1 coll=(null)
+e1484d733358:81683:81959 [2] NCCL INFO TOPO/NET : Importing network plugins to topology
+e1484d733358:81683:81959 [2] NCCL INFO Retrieving state for Socket
+e1484d733358:81683:81959 [2] NCCL INFO ncclTopoPopulateNics : Filled eth0 in topo with pciPath=(null) keep=1 coll=(null)
+e1484d733358:81683:81958 [1] NCCL INFO TOPO/NET : Importing network plugins to topology
+e1484d733358:81683:81958 [1] NCCL INFO Retrieving state for Socket
+e1484d733358:81683:81958 [1] NCCL INFO ncclTopoPopulateNics : Filled eth0 in topo with pciPath=(null) keep=1 coll=(null)
+e1484d733358:81683:81960 [3] NCCL INFO TOPO/NET : Importing network plugins to topology
+e1484d733358:81683:81960 [3] NCCL INFO Retrieving state for Socket
+e1484d733358:81683:81960 [3] NCCL INFO ncclTopoPopulateNics : Filled eth0 in topo with pciPath=(null) keep=1 coll=(null)
+e1484d733358:81683:81957 [0] NCCL INFO === System : maxBw 24.0 totalBw 24.0 ===
+e1484d733358:81683:81957 [0] NCCL INFO CPU/0-0 (1/1/2)
+e1484d733358:81683:81957 [0] NCCL INFO + PCI[5000.0] - NIC/0-0
+e1484d733358:81683:81957 [0] NCCL INFO + PCI[24.0] - PCI/0-31000 (11f8400011f8beef)
+e1484d733358:81683:81957 [0] NCCL INFO               + PCI[24.0] - GPU/0-34000 (0)
+e1484d733358:81683:81957 [0] NCCL INFO               + PCI[24.0] - GPU/0-35000 (1)
+e1484d733358:81683:81957 [0] NCCL INFO               + PCI[24.0] - GPU/0-36000 (2)
+e1484d733358:81683:81957 [0] NCCL INFO               + PCI[24.0] - GPU/0-37000 (3)
+e1484d733358:81683:81957 [0] NCCL INFO ==========================================
+e1484d733358:81683:81957 [0] NCCL INFO GPU/0-34000 :GPU/0-34000 (0/5000.0/LOC) GPU/0-35000 (4/24.0/PHB) GPU/0-36000 (4/24.0/PHB) GPU/0-37000 (4/24.0/PHB) CPU/0-0 (2/24.0/PHB) 
+e1484d733358:81683:81957 [0] NCCL INFO GPU/0-35000 :GPU/0-34000 (4/24.0/PHB) GPU/0-35000 (0/5000.0/LOC) GPU/0-36000 (4/24.0/PHB) GPU/0-37000 (4/24.0/PHB) CPU/0-0 (2/24.0/PHB) 
+e1484d733358:81683:81957 [0] NCCL INFO GPU/0-36000 :GPU/0-34000 (4/24.0/PHB) GPU/0-35000 (4/24.0/PHB) GPU/0-36000 (0/5000.0/LOC) GPU/0-37000 (4/24.0/PHB) CPU/0-0 (2/24.0/PHB) 
+e1484d733358:81683:81957 [0] NCCL INFO GPU/0-37000 :GPU/0-34000 (4/24.0/PHB) GPU/0-35000 (4/24.0/PHB) GPU/0-36000 (4/24.0/PHB) GPU/0-37000 (0/5000.0/LOC) CPU/0-0 (2/24.0/PHB) 
+e1484d733358:81683:81960 [3] NCCL INFO === System : maxBw 24.0 totalBw 24.0 ===
+e1484d733358:81683:81960 [3] NCCL INFO CPU/0-0 (1/1/2)
+e1484d733358:81683:81957 [0] NCCL INFO Setting affinity for GPU 0 to 0-23,48-71
+e1484d733358:81683:81960 [3] NCCL INFO + PCI[5000.0] - NIC/0-0
+e1484d733358:81683:81960 [3] NCCL INFO + PCI[24.0] - PCI/0-31000 (11f8400011f8beef)
+e1484d733358:81683:81960 [3] NCCL INFO               + PCI[24.0] - GPU/0-34000 (0)
+e1484d733358:81683:81960 [3] NCCL INFO               + PCI[24.0] - GPU/0-35000 (1)
+e1484d733358:81683:81960 [3] NCCL INFO               + PCI[24.0] - GPU/0-36000 (2)
+e1484d733358:81683:81960 [3] NCCL INFO               + PCI[24.0] - GPU/0-37000 (3)
+e1484d733358:81683:81960 [3] NCCL INFO ==========================================
+e1484d733358:81683:81960 [3] NCCL INFO GPU/0-34000 :GPU/0-34000 (0/5000.0/LOC) GPU/0-35000 (4/24.0/PHB) GPU/0-36000 (4/24.0/PHB) GPU/0-37000 (4/24.0/PHB) CPU/0-0 (2/24.0/PHB) 
+e1484d733358:81683:81960 [3] NCCL INFO GPU/0-35000 :GPU/0-34000 (4/24.0/PHB) GPU/0-35000 (0/5000.0/LOC) GPU/0-36000 (4/24.0/PHB) GPU/0-37000 (4/24.0/PHB) CPU/0-0 (2/24.0/PHB) 
+e1484d733358:81683:81960 [3] NCCL INFO GPU/0-36000 :GPU/0-34000 (4/24.0/PHB) GPU/0-35000 (4/24.0/PHB) GPU/0-36000 (0/5000.0/LOC) GPU/0-37000 (4/24.0/PHB) CPU/0-0 (2/24.0/PHB) 
+e1484d733358:81683:81960 [3] NCCL INFO GPU/0-37000 :GPU/0-34000 (4/24.0/PHB) GPU/0-35000 (4/24.0/PHB) GPU/0-36000 (4/24.0/PHB) GPU/0-37000 (0/5000.0/LOC) CPU/0-0 (2/24.0/PHB) 
+e1484d733358:81683:81960 [3] NCCL INFO Setting affinity for GPU 3 to 0-23,48-71
+e1484d733358:81683:81957 [0] NCCL INFO NVLS multicast support is not available on dev 0 (NVLS_NCHANNELS 0)
+e1484d733358:81683:81959 [2] NCCL INFO === System : maxBw 24.0 totalBw 24.0 ===
+e1484d733358:81683:81959 [2] NCCL INFO CPU/0-0 (1/1/2)
+e1484d733358:81683:81959 [2] NCCL INFO + PCI[5000.0] - NIC/0-0
+e1484d733358:81683:81959 [2] NCCL INFO + PCI[24.0] - PCI/0-31000 (11f8400011f8beef)
+e1484d733358:81683:81959 [2] NCCL INFO               + PCI[24.0] - GPU/0-34000 (0)
+e1484d733358:81683:81959 [2] NCCL INFO               + PCI[24.0] - GPU/0-35000 (1)
+e1484d733358:81683:81959 [2] NCCL INFO               + PCI[24.0] - GPU/0-36000 (2)
+e1484d733358:81683:81959 [2] NCCL INFO               + PCI[24.0] - GPU/0-37000 (3)
+e1484d733358:81683:81959 [2] NCCL INFO ==========================================
+e1484d733358:81683:81959 [2] NCCL INFO GPU/0-34000 :GPU/0-34000 (0/5000.0/LOC) GPU/0-35000 (4/24.0/PHB) GPU/0-36000 (4/24.0/PHB) GPU/0-37000 (4/24.0/PHB) CPU/0-0 (2/24.0/PHB) 
+e1484d733358:81683:81960 [3] NCCL INFO NVLS multicast support is not available on dev 3 (NVLS_NCHANNELS 0)
+e1484d733358:81683:81959 [2] NCCL INFO GPU/0-35000 :GPU/0-34000 (4/24.0/PHB) GPU/0-35000 (0/5000.0/LOC) GPU/0-36000 (4/24.0/PHB) GPU/0-37000 (4/24.0/PHB) CPU/0-0 (2/24.0/PHB) 
+e1484d733358:81683:81959 [2] NCCL INFO GPU/0-36000 :GPU/0-34000 (4/24.0/PHB) GPU/0-35000 (4/24.0/PHB) GPU/0-36000 (0/5000.0/LOC) GPU/0-37000 (4/24.0/PHB) CPU/0-0 (2/24.0/PHB) 
+e1484d733358:81683:81959 [2] NCCL INFO GPU/0-37000 :GPU/0-34000 (4/24.0/PHB) GPU/0-35000 (4/24.0/PHB) GPU/0-36000 (4/24.0/PHB) GPU/0-37000 (0/5000.0/LOC) CPU/0-0 (2/24.0/PHB) 
+e1484d733358:81683:81959 [2] NCCL INFO Setting affinity for GPU 2 to 0-23,48-71
+e1484d733358:81683:81959 [2] NCCL INFO NVLS multicast support is not available on dev 2 (NVLS_NCHANNELS 0)
+e1484d733358:81683:81958 [1] NCCL INFO === System : maxBw 24.0 totalBw 24.0 ===
+e1484d733358:81683:81958 [1] NCCL INFO CPU/0-0 (1/1/2)
+e1484d733358:81683:81958 [1] NCCL INFO + PCI[5000.0] - NIC/0-0
+e1484d733358:81683:81958 [1] NCCL INFO + PCI[24.0] - PCI/0-31000 (11f8400011f8beef)
+e1484d733358:81683:81958 [1] NCCL INFO               + PCI[24.0] - GPU/0-34000 (0)
+e1484d733358:81683:81958 [1] NCCL INFO               + PCI[24.0] - GPU/0-35000 (1)
+e1484d733358:81683:81958 [1] NCCL INFO               + PCI[24.0] - GPU/0-36000 (2)
+e1484d733358:81683:81958 [1] NCCL INFO               + PCI[24.0] - GPU/0-37000 (3)
+e1484d733358:81683:81958 [1] NCCL INFO ==========================================
+e1484d733358:81683:81958 [1] NCCL INFO GPU/0-34000 :GPU/0-34000 (0/5000.0/LOC) GPU/0-35000 (4/24.0/PHB) GPU/0-36000 (4/24.0/PHB) GPU/0-37000 (4/24.0/PHB) CPU/0-0 (2/24.0/PHB) 
+e1484d733358:81683:81958 [1] NCCL INFO GPU/0-35000 :GPU/0-34000 (4/24.0/PHB) GPU/0-35000 (0/5000.0/LOC) GPU/0-36000 (4/24.0/PHB) GPU/0-37000 (4/24.0/PHB) CPU/0-0 (2/24.0/PHB) 
+e1484d733358:81683:81958 [1] NCCL INFO GPU/0-36000 :GPU/0-34000 (4/24.0/PHB) GPU/0-35000 (4/24.0/PHB) GPU/0-36000 (0/5000.0/LOC) GPU/0-37000 (4/24.0/PHB) CPU/0-0 (2/24.0/PHB) 
+e1484d733358:81683:81958 [1] NCCL INFO GPU/0-37000 :GPU/0-34000 (4/24.0/PHB) GPU/0-35000 (4/24.0/PHB) GPU/0-36000 (4/24.0/PHB) GPU/0-37000 (0/5000.0/LOC) CPU/0-0 (2/24.0/PHB) 
+e1484d733358:81683:81958 [1] NCCL INFO Setting affinity for GPU 1 to 0-23,48-71
+e1484d733358:81683:81958 [1] NCCL INFO NVLS multicast support is not available on dev 1 (NVLS_NCHANNELS 0)
+e1484d733358:81683:81960 [3] NCCL INFO Pattern 4, crossNic 0, nChannels 1, bw 5.000000/5.000000, type PHB/PIX, sameChannels 1
+e1484d733358:81683:81960 [3] NCCL INFO  0 : GPU/0 GPU/1 GPU/2 GPU/3
+e1484d733358:81683:81960 [3] NCCL INFO Pattern 1, crossNic 0, nChannels 1, bw 6.000000/6.000000, type PHB/PIX, sameChannels 1
+e1484d733358:81683:81960 [3] NCCL INFO  0 : GPU/0 GPU/1 GPU/2 GPU/3
+e1484d733358:81683:81959 [2] NCCL INFO Pattern 4, crossNic 0, nChannels 1, bw 5.000000/5.000000, type PHB/PIX, sameChannels 1
+e1484d733358:81683:81959 [2] NCCL INFO  0 : GPU/0 GPU/1 GPU/2 GPU/3
+e1484d733358:81683:81957 [0] NCCL INFO Pattern 4, crossNic 0, nChannels 1, bw 5.000000/5.000000, type PHB/PIX, sameChannels 1
+e1484d733358:81683:81957 [0] NCCL INFO  0 : GPU/0 GPU/1 GPU/2 GPU/3
+e1484d733358:81683:81959 [2] NCCL INFO Pattern 1, crossNic 0, nChannels 1, bw 6.000000/6.000000, type PHB/PIX, sameChannels 1
+e1484d733358:81683:81959 [2] NCCL INFO  0 : GPU/0 GPU/1 GPU/2 GPU/3
+e1484d733358:81683:81957 [0] NCCL INFO Pattern 1, crossNic 0, nChannels 1, bw 6.000000/6.000000, type PHB/PIX, sameChannels 1
+e1484d733358:81683:81957 [0] NCCL INFO  0 : GPU/0 GPU/1 GPU/2 GPU/3
+e1484d733358:81683:81958 [1] NCCL INFO Pattern 4, crossNic 0, nChannels 1, bw 5.000000/5.000000, type PHB/PIX, sameChannels 1
+e1484d733358:81683:81958 [1] NCCL INFO  0 : GPU/0 GPU/1 GPU/2 GPU/3
+e1484d733358:81683:81958 [1] NCCL INFO Pattern 1, crossNic 0, nChannels 1, bw 6.000000/6.000000, type PHB/PIX, sameChannels 1
+e1484d733358:81683:81958 [1] NCCL INFO  0 : GPU/0 GPU/1 GPU/2 GPU/3
+e1484d733358:81683:81960 [3] NCCL INFO comm 0x562ade188240 rank 3 nRanks 4 nNodes 1 localRanks 4 localRank 3 MNNVL 0
+e1484d733358:81683:81958 [1] NCCL INFO comm 0x562addf64fa0 rank 1 nRanks 4 nNodes 1 localRanks 4 localRank 1 MNNVL 0
+e1484d733358:81683:81960 [3] NCCL INFO Ring 00 : 2 -> 3 -> 0
+e1484d733358:81683:81957 [0] NCCL INFO comm 0x562adde53610 rank 0 nRanks 4 nNodes 1 localRanks 4 localRank 0 MNNVL 0
+e1484d733358:81683:81957 [0] NCCL INFO Tree 0 : -1 -> 0 -> 1/-1/-1
+e1484d733358:81683:81957 [0] NCCL INFO Tree 1 : -1 -> 0 -> 1/-1/-1
+e1484d733358:81683:81960 [3] NCCL INFO Ring 01 : 2 -> 3 -> 0
+e1484d733358:81683:81957 [0] NCCL INFO Channel 00/02 : 0 1 2 3
+e1484d733358:81683:81957 [0] NCCL INFO Channel 01/02 : 0 1 2 3
+e1484d733358:81683:81958 [1] NCCL INFO Tree 0 : 0 -> 1 -> 2/-1/-1
+e1484d733358:81683:81957 [0] NCCL INFO Ring 00 : 3 -> 0 -> 1
+e1484d733358:81683:81957 [0] NCCL INFO Ring 01 : 3 -> 0 -> 1
+e1484d733358:81683:81959 [2] NCCL INFO comm 0x562ade0768f0 rank 2 nRanks 4 nNodes 1 localRanks 4 localRank 2 MNNVL 0
+e1484d733358:81683:81958 [1] NCCL INFO Tree 1 : 0 -> 1 -> 2/-1/-1
+e1484d733358:81683:81960 [3] NCCL INFO Trees [0] -1/-1/-1->3->2 [1] -1/-1/-1->3->2
+e1484d733358:81683:81960 [3] NCCL INFO P2P Chunksize set to 131072
+e1484d733358:81683:81958 [1] NCCL INFO Ring 00 : 0 -> 1 -> 2
+e1484d733358:81683:81959 [2] NCCL INFO Ring 00 : 1 -> 2 -> 3
+e1484d733358:81683:81957 [0] NCCL INFO Trees [0] 1/-1/-1->0->-1 [1] 1/-1/-1->0->-1
+e1484d733358:81683:81958 [1] NCCL INFO Ring 01 : 0 -> 1 -> 2
+e1484d733358:81683:81958 [1] NCCL INFO Trees [0] 2/-1/-1->1->0 [1] 2/-1/-1->1->0
+e1484d733358:81683:81959 [2] NCCL INFO Ring 01 : 1 -> 2 -> 3
+e1484d733358:81683:81959 [2] NCCL INFO Trees [0] 3/-1/-1->2->1 [1] 3/-1/-1->2->1
+e1484d733358:81683:81959 [2] NCCL INFO P2P Chunksize set to 131072
+e1484d733358:81683:81957 [0] NCCL INFO P2P Chunksize set to 131072
+e1484d733358:81683:81958 [1] NCCL INFO P2P Chunksize set to 131072
+e1484d733358:81683:81960 [3] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+e1484d733358:81683:81962 [3] NCCL INFO [Proxy Service] Device 3 CPU core 51
+e1484d733358:81683:81959 [2] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+e1484d733358:81683:81963 [3] NCCL INFO [Proxy Service UDS] Device 3 CPU core 52
+e1484d733358:81683:81957 [0] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+e1484d733358:81683:81957 [0] NCCL INFO Check P2P Type isAllDirectP2p 0 directMode 1
+e1484d733358:81683:81964 [2] NCCL INFO [Proxy Service] Device 2 CPU core 55
+e1484d733358:81683:81958 [1] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+e1484d733358:81683:81967 [1] NCCL INFO [Proxy Service] Device 1 CPU core 58
+e1484d733358:81683:81965 [2] NCCL INFO [Proxy Service UDS] Device 2 CPU core 56
+e1484d733358:81683:81966 [0] NCCL INFO [Proxy Service] Device 0 CPU core 57
+e1484d733358:81683:81968 [1] NCCL INFO [Proxy Service UDS] Device 1 CPU core 11
+e1484d733358:81683:81969 [0] NCCL INFO [Proxy Service UDS] Device 0 CPU core 60
+e1484d733358:81683:81959 [2] NCCL INFO threadThresholds 8/8/64 | 32/8/64 | 512 | 512
+e1484d733358:81683:81959 [2] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+e1484d733358:81683:81957 [0] NCCL INFO threadThresholds 8/8/64 | 32/8/64 | 512 | 512
+e1484d733358:81683:81957 [0] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+e1484d733358:81683:81958 [1] NCCL INFO threadThresholds 8/8/64 | 32/8/64 | 512 | 512
+e1484d733358:81683:81958 [1] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+e1484d733358:81683:81960 [3] NCCL INFO threadThresholds 8/8/64 | 32/8/64 | 512 | 512
+e1484d733358:81683:81960 [3] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+e1484d733358:81683:81957 [0] NCCL INFO CC Off, workFifoBytes 1048576
+e1484d733358:81683:81960 [3] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so. Using internal tuner plugin.
+e1484d733358:81683:81960 [3] NCCL INFO ncclCommInitRank comm 0x562ade188240 rank 3 nranks 4 cudaDev 3 nvmlDev 3 busId 37000 commId 0x5a90d3b9c819869d - Init COMPLETE
+e1484d733358:81683:81960 [3] NCCL INFO Init timings - ncclCommInitRank: rank 3 nranks 4 total 0.41 (kernels 0.31, alloc 0.07, bootstrap 0.00, allgathers 0.00, topo 0.01, graphs 0.00, connections 0.01, rest 0.00)
+e1484d733358:81683:81957 [0] NCCL INFO ncclCommInitRank comm 0x562adde53610 rank 0 nranks 4 cudaDev 0 nvmlDev 0 busId 34000 commId 0x5a90d3b9c819869d - Init COMPLETE
+e1484d733358:81683:81957 [0] NCCL INFO Init timings - ncclCommInitRank: rank 0 nranks 4 total 0.41 (kernels 0.31, alloc 0.07, bootstrap 0.00, allgathers 0.00, topo 0.01, graphs 0.00, connections 0.01, rest 0.00)
+e1484d733358:81683:81959 [2] NCCL INFO ncclCommInitRank comm 0x562ade0768f0 rank 2 nranks 4 cudaDev 2 nvmlDev 2 busId 36000 commId 0x5a90d3b9c819869d - Init COMPLETE
+e1484d733358:81683:81959 [2] NCCL INFO Init timings - ncclCommInitRank: rank 2 nranks 4 total 0.41 (kernels 0.31, alloc 0.07, bootstrap 0.00, allgathers 0.00, topo 0.01, graphs 0.00, connections 0.01, rest 0.00)
+e1484d733358:81683:81958 [1] NCCL INFO ncclCommInitRank comm 0x562addf64fa0 rank 1 nranks 4 cudaDev 1 nvmlDev 1 busId 35000 commId 0x5a90d3b9c819869d - Init COMPLETE
+e1484d733358:81683:81958 [1] NCCL INFO Init timings - ncclCommInitRank: rank 1 nranks 4 total 0.41 (kernels 0.31, alloc 0.07, bootstrap 0.00, allgathers 0.00, topo 0.01, graphs 0.00, connections 0.01, rest 0.00)
+e1484d733358:81683:81683 [0] NCCL INFO Broadcast: opCount 0 sendbuff 0x7f7af8400000 recvbuff 0x7f7af8400000 count 393216 datatype 5 op 0 root 0 comm 0x562adde53610 [nranks=4] stream 0x562ade3944d0
+e1484d733358:81683:81683 [0] NCCL INFO Broadcast: opCount 0 sendbuff 0x7f7af8c00000 recvbuff 0x7f7af8c00000 count 393216 datatype 5 op 0 root 1 comm 0x562adde53610 [nranks=4] stream 0x562ade3944d0
+e1484d733358:81683:81683 [0] NCCL INFO Broadcast: opCount 0 sendbuff 0x7f7af9400000 recvbuff 0x7f7af9400000 count 393216 datatype 5 op 0 root 2 comm 0x562adde53610 [nranks=4] stream 0x562ade3944d0
+e1484d733358:81683:81683 [0] NCCL INFO Broadcast: opCount 0 sendbuff 0x7f7af9c00000 recvbuff 0x7f7af9c00000 count 262144 datatype 5 op 0 root 3 comm 0x562adde53610 [nranks=4] stream 0x562ade3944d0
+e1484d733358:81683:81846 [3] NCCL INFO Broadcast: opCount 0 sendbuff 0x7f7afe000000 recvbuff 0x7f7afe000000 count 393216 datatype 5 op 0 root 0 comm 0x562ade188240 [nranks=4] stream 0x562ade3cffa0
+e1484d733358:81683:81846 [3] NCCL INFO Broadcast: opCount 0 sendbuff 0x7f7afe800000 recvbuff 0x7f7afe800000 count 393216 datatype 5 op 0 root 1 comm 0x562ade188240 [nranks=4] stream 0x562ade3cffa0
+e1484d733358:81683:81846 [3] NCCL INFO Broadcast: opCount 0 sendbuff 0x7f7aff000000 recvbuff 0x7f7aff000000 count 393216 datatype 5 op 0 root 2 comm 0x562ade188240 [nranks=4] stream 0x562ade3cffa0
+e1484d733358:81683:81846 [3] NCCL INFO Broadcast: opCount 0 sendbuff 0x7f7aff800000 recvbuff 0x7f7aff800000 count 262144 datatype 5 op 0 root 3 comm 0x562ade188240 [nranks=4] stream 0x562ade3cffa0
+e1484d733358:81683:81752 [2] NCCL INFO Broadcast: opCount 0 sendbuff 0x7f7afa400000 recvbuff 0x7f7afa400000 count 393216 datatype 5 op 0 root 0 comm 0x562ade0768f0 [nranks=4] stream 0x562ade3c5910
+e1484d733358:81683:81752 [2] NCCL INFO Broadcast: opCount 0 sendbuff 0x7f7afac00000 recvbuff 0x7f7afac00000 count 393216 datatype 5 op 0 root 1 comm 0x562ade0768f0 [nranks=4] stream 0x562ade3c5910
+e1484d733358:81683:81752 [2] NCCL INFO Broadcast: opCount 0 sendbuff 0x7f7afb400000 recvbuff 0x7f7afb400000 count 393216 datatype 5 op 0 root 2 comm 0x562ade0768f0 [nranks=4] stream 0x562ade3c5910
+e1484d733358:81683:81752 [2] NCCL INFO Broadcast: opCount 0 sendbuff 0x7f7afbc00000 recvbuff 0x7f7afbc00000 count 262144 datatype 5 op 0 root 3 comm 0x562ade0768f0 [nranks=4] stream 0x562ade3c5910
+e1484d733358:81683:81751 [1] NCCL INFO Broadcast: opCount 0 sendbuff 0x7f7b00000000 recvbuff 0x7f7b00000000 count 393216 datatype 5 op 0 root 0 comm 0x562addf64fa0 [nranks=4] stream 0x562ade3bb2f0
+e1484d733358:81683:81751 [1] NCCL INFO Broadcast: opCount 0 sendbuff 0x7f7b00800000 recvbuff 0x7f7b00800000 count 393216 datatype 5 op 0 root 1 comm 0x562addf64fa0 [nranks=4] stream 0x562ade3bb2f0
+e1484d733358:81683:81751 [1] NCCL INFO Broadcast: opCount 0 sendbuff 0x7f7b01000000 recvbuff 0x7f7b01000000 count 393216 datatype 5 op 0 root 2 comm 0x562addf64fa0 [nranks=4] stream 0x562ade3bb2f0
+e1484d733358:81683:81751 [1] NCCL INFO Broadcast: opCount 0 sendbuff 0x7f7b01800000 recvbuff 0x7f7b01800000 count 262144 datatype 5 op 0 root 3 comm 0x562addf64fa0 [nranks=4] stream 0x562ade3bb2f0
+e1484d733358:81683:81997 [0] NCCL INFO Channel 00 : 0[0] -> 1[1] via SHM/direct/direct
+e1484d733358:81683:81997 [0] NCCL INFO Channel 01 : 0[0] -> 1[1] via SHM/direct/direct
+
+[2026-04-24 06:02:18] e1484d733358:81683:81967 [1] misc/shmutils.cc:87 NCCL WARN Error: failed to extend /dev/shm/nccl-ImsRHd to 9637892 bytes, error: No space left on device (28)
+
+[2026-04-24 06:02:18] e1484d733358:81683:81967 [1] misc/shmutils.cc:128 NCCL WARN Error while creating shared memory segment /dev/shm/nccl-ImsRHd (size 9637888), error: No space left on device (28)
+e1

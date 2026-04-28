@@ -1,0 +1,9 @@
+[ 50%] Built target fideslib_gpt_minimal
+[ 66%] Building CXX object CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘CiphertextHandle FidesCKKSContext::component_linear_wsum_gpu(const std::vector<CiphertextHandle>&, const std::vector<double>&)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:630:34: error: ‘cpu_template’ was not declared in this scope
+  630 |         const auto& cpu_towers = cpu_template->GetElements()[0].GetAllElements();
+      |                                  ^~~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/_fideslib.dir/build.make:79: CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:90: CMakeFiles/_fideslib.dir/all] Error 2
+gmake: *** [Makefile:91: all] Error 2

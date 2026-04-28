@@ -1,0 +1,43 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+WP4-A component inspect CPU result
+====================================================================================================
+max_abs_err=9.192647e-14
+fides_loaded=False
+fides_gpu_handle=0
+num_parts=2
+openfhe_level=0
+openfhe_noise_scale_deg=2
+openfhe_scaling_factor=6.271904250631633e+20
+openfhe_slots=8
+openfhe_encoding_type=4
+openfhe_key_tag=04e6c5582a34d4d8f66540b414397f48
+----------------------------------------------------------------------------------------------------
+part_index=0 openfhe_name=GetElements()[0] fides_raw_name=sub_0 / c0 format=0 num_towers=4
+  tower=0 modulus=1152921504606748673 ring_dim=16384 hash=11120887253244199752 head=[1009623374380414299, 908209026688139813, 656916579459773397, 813565579032760871, 623431297011902604, 978574874375167850, 433629809372249988, 585147377316664350]
+  tower=1 modulus=1125899904679937 ring_dim=16384 hash=3366133418490929445 head=[578577964582496, 212945980512018, 812755068919483, 879851051268419, 1016140591294375, 1001333075150579, 31846009373905, 246511419289898]
+  tower=2 modulus=1125899908022273 ring_dim=16384 hash=7719160295806847898 head=[602332262301778, 268311046578111, 659925846847432, 176324378938148, 866656963559272, 664506959647966, 75110199463471, 63685507472809]
+----------------------------------------------------------------------------------------------------
+part_index=1 openfhe_name=GetElements()[1] fides_raw_name=sub_1 / c1 format=0 num_towers=4
+  tower=0 modulus=1152921504606748673 ring_dim=16384 hash=18382079286201703943 head=[1033796304965643803, 778088574932491918, 256891622820923008, 321087023993022348, 528413524007151889, 1048948975126005515, 290313971362860210, 327925005693910597]
+  tower=1 modulus=1125899904679937 ring_dim=16384 hash=16879697658265628149 head=[1041163351073936, 1075290661936135, 438978843068162, 231911968745887, 32750335352019, 473733013997219, 222275335908327, 285845689002343]
+  tower=2 modulus=1125899908022273 ring_dim=16384 hash=297419937788393779 head=[1038094123182024, 172613281545332, 775404856302056, 615329451785565, 498370851429223, 153001649384018, 566989291997582, 953836416589543]
+====================================================================================================
+报告已保存
+JSON路径: /workspace/FIDESlib-GPT/reports/wp4a_component_inspect_cpu_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

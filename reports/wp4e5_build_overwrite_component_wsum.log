@@ -1,0 +1,4 @@
+[ 50%] Built target fideslib_gpt_minimal
+[ 66%] Building CXX object CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o
+[ 83%] Linking CXX shared module _fideslib.cpython-310-x86_64-linux-gnu.so
+[100%] Built target _fideslib

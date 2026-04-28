@@ -1,0 +1,53 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU P2P? 0
+NCCL version 2.27.3+cuda12.9
+====================================================================================================
+多卡验证配置
+devices = (0, 1, 2, 3, 4, 5, 6, 7)
+rotation_steps_count = 15
+[runtime.info()] {'ring_dim': 131072, 'cyclotomic_order': 262144}
+====================================================================================================
+总体信息
+输入大小: (64, 64)
+W大小: (64, 64)
+连续轮数: 5
+rotation sigma: 1
+实际生成的 rotation key 数量: 15
+仅首次加密一次(us): 537126.535
+仅最后解密一次(us): 233489.293
+====================================================================================================
+单输入密文 + 连续5轮同一W + 最后解密（BSGS-only multi-GPU probe）
+轮次         cache构建(us)      命中      新建          核心(us)     pMult均值(us)     add均值(us)    rotate均值(us)
+----------------------------------------------------------------------------------------------------
+1           134600.217       0       1     9282748.226       53039.490     10501.815       41538.517
+2              117.080       1       0     8595656.468       52678.836      9642.664       23369.737
+3               64.601       1       0     8800098.581       54383.367      9694.682       22785.925
+4              119.243       1       0     8931607.880       55066.514      9915.728       23248.051
+5              117.704       1       0     8897218.584       54851.325      9688.346       24004.122
+----------------------------------------------------------------------------------------------------
+第2轮及以后中位数:
+  cache构建(us): 117.392
+  核心计算(us):  8848658.582
+  pMult均值(us): 54617.346
+  add均值(us):   9691.514
+  rotate均值(us): 23308.894
+最终一次解密后的误差(max_abs_err): 6.652456e-13
+====================================================================================================
+报告已保存
+JSON路径: /workspace/FIDESlib-GPT/reports/wp3c_square_block_bsgs_5round_single_ct_multigpu_probe_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'
