@@ -1,0 +1,504 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+[phase] encrypt rows for copyback baseline
+[phase] copyback=True every layer baseline
+[copyback baseline] layer=0 copyback=True
+[copyback baseline] layer=1 copyback=True
+[copyback baseline] layer=2 copyback=True
+[copyback baseline] layer=3 copyback=True
+[phase] decrypt copyback baseline
+[phase] encrypt rows for gpu-only chain
+[phase] gpu-only chain: intermediate copyback=False, final copyback=True
+[gpu-only chain] layer=0 copyback=False
+[gpu-only chain] layer=1 copyback=False
+[gpu-only chain] layer=2 copyback=False
+[gpu-only chain] layer=3 copyback=True
+[phase] decrypt gpu-only chain final
+====================================================================================================
+WP4-I reordered report
+{
+  "experiment": "wp4i_gpu_only_ccmm_chain_reordered",
+  "purpose": "Run copyback=True baseline before GPU-only chain to isolate bad_any_cast source.",
+  "n": 8,
+  "layers": 4,
+  "slots": 8,
+  "seed": 205600,
+  "Us": [
+    [
+      [
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        -1,
+        1
+      ],
+      [
+        1,
+        -1,
+        -1,
+        0,
+        0,
+        1,
+        -1,
+        -1
+      ],
+      [
+        0,
+        -1,
+        1,
+        1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      [
+        -1,
+        0,
+        -1,
+        0,
+        -1,
+        -1,
+        1,
+        -1
+      ],
+      [
+        1,
+        0,
+        0,
+        -1,
+        1,
+        0,
+        1,
+        -1
+      ],
+      [
+        1,
+        0,
+        1,
+        -1,
+        -1,
+        -1,
+        1,
+        0
+      ],
+      [
+        0,
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        -1
+      ],
+      [
+        1,
+        -1,
+        -1,
+        1,
+        -1,
+        0,
+        -1,
+        0
+      ]
+    ],
+    [
+      [
+        1,
+        0,
+        0,
+        1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      [
+        -1,
+        0,
+        -1,
+        -1,
+        1,
+        0,
+        -1,
+        -1
+      ],
+      [
+        1,
+        0,
+        0,
+        -1,
+        1,
+        1,
+        1,
+        -1
+      ],
+      [
+        1,
+        1,
+        1,
+        -1,
+        0,
+        -1,
+        0,
+        1
+      ],
+      [
+        1,
+        -1,
+        1,
+        1,
+        -1,
+        1,
+        0,
+        0
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        -1
+      ],
+      [
+        1,
+        1,
+        1,
+        -1,
+        -1,
+        -1,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        1,
+        -1,
+        -1,
+        0,
+        -1,
+        1
+      ]
+    ],
+    [
+      [
+        1,
+        0,
+        -1,
+        0,
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      [
+        0,
+        0,
+        0,
+        -1,
+        1,
+        1,
+        -1,
+        -1
+      ],
+      [
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        -1
+      ],
+      [
+        -1,
+        0,
+        -1,
+        1,
+        -1,
+        -1,
+        1,
+        -1
+      ],
+      [
+        -1,
+        1,
+        -1,
+        0,
+        1,
+        0,
+        -1,
+        1
+      ],
+      [
+        0,
+        -1,
+        0,
+        1,
+        -1,
+        -1,
+        0,
+        0
+      ],
+      [
+        -1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      [
+        0,
+        1,
+        1,
+        0,
+        0,
+        -1,
+        0,
+        -1
+      ]
+    ],
+    [
+      [
+        -1,
+        1,
+        -1,
+        0,
+        -1,
+        -1,
+        0,
+        -1
+      ],
+      [
+        0,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        1,
+        -1
+      ],
+      [
+        -1,
+        -1,
+        -1,
+        -1,
+        1,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        -1,
+        1,
+        0,
+        -1,
+        1,
+        1,
+        1
+      ],
+      [
+        -1,
+        1,
+        -1,
+        1,
+        1,
+        -1,
+        1,
+        -1
+      ],
+      [
+        0,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        0,
+        0
+      ],
+      [
+        0,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        -1,
+        -1,
+        -1,
+        1,
+        0,
+        -1
+      ]
+    ]
+  ],
+  "timing_us": {
+    "encrypt_rows_copyback_baseline": 124058.265625,
+    "copyback_every_layer_times": [
+      94858.97802734375,
+      85995.19775390625,
+      88132.1953125,
+      88331.94970703125
+    ],
+    "decrypt_copyback_baseline": 108316.9462890625,
+    "encrypt_rows_gpu_chain": 122248.77880859375,
+    "gpu_only_layer_times": [
+      24717.81103515625,
+      22440.68310546875,
+      23003.52392578125,
+      92135.15771484375
+    ],
+    "decrypt_gpu_chain_final": 108562.95263671875
+  },
+  "states": {
+    "copyback_every_layer_states": [
+      {
+        "valid": true,
+        "loaded": true,
+        "gpu": 18,
+        "has_cpu": true,
+        "level": 4294967295,
+        "noise_scale_deg": 2,
+        "original_level": 3
+      },
+      {
+        "valid": true,
+        "loaded": true,
+        "gpu": 34,
+        "has_cpu": true,
+        "level": 4294967295,
+        "noise_scale_deg": 2,
+        "original_level": 3
+      },
+      {
+        "valid": true,
+        "loaded": true,
+        "gpu": 50,
+        "has_cpu": true,
+        "level": 4294967295,
+        "noise_scale_deg": 2,
+        "original_level": 3
+      },
+      {
+        "valid": true,
+        "loaded": true,
+        "gpu": 66,
+        "has_cpu": true,
+        "level": 4294967295,
+        "noise_scale_deg": 2,
+        "original_level": 3
+      }
+    ],
+    "gpu_only_layer_states": [
+      {
+        "valid": true,
+        "loaded": true,
+        "gpu": 98,
+        "has_cpu": true,
+        "level": 4294967295,
+        "noise_scale_deg": 2,
+        "original_level": 3
+      },
+      {
+        "valid": true,
+        "loaded": true,
+        "gpu": 114,
+        "has_cpu": true,
+        "level": 4294967295,
+        "noise_scale_deg": 2,
+        "original_level": 3
+      },
+      {
+        "valid": true,
+        "loaded": true,
+        "gpu": 130,
+        "has_cpu": true,
+        "level": 4294967295,
+        "noise_scale_deg": 2,
+        "original_level": 3
+      },
+      {
+        "valid": true,
+        "loaded": true,
+        "gpu": 146,
+        "has_cpu": true,
+        "level": 4294967295,
+        "noise_scale_deg": 2,
+        "original_level": 3
+      }
+    ]
+  },
+  "errors": {
+    "copyback_chain_to_ref_max_abs_err": 1.557157180975821e-13,
+    "gpu_chain_to_ref_max_abs_err": 1.885436251569672e-13,
+    "gpu_chain_to_copyback_chain_max_abs_err": 1.7680301667155618e-13
+  },
+  "Y_ref_first_row": [
+    0.10195382936696235,
+    -0.2057553630187164,
+    -0.23086183422788933,
+    0.052358504916891674,
+    0.5760111716770394,
+    0.28326222002813417,
+    -4.7572591166188116e-05,
+    -0.2639085994702168
+  ],
+  "dec_copyback_first_row": [
+    0.1019538293669891,
+    -0.20575536301866704,
+    -0.2308618342278672,
+    0.052358504916926896,
+    0.5760111716770959,
+    0.28326222002812734,
+    -4.7572591084579785e-05,
+    -0.26390859947019607
+  ],
+  "dec_gpu_chain_first_row": [
+    0.10195382936699696,
+    -0.2057553630186418,
+    -0.23086183422789408,
+    0.05235850491691749,
+    0.5760111716769577,
+    0.28326222002811385,
+    -4.7572591107047923e-05,
+    -0.2639085994703013
+  ]
+}
+====================================================================================================
+saved: /workspace/FIDESlib-GPT/reports/wp4i_gpu_only_ccmm_chain_reordered_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

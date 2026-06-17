@@ -1,0 +1,142 @@
+{
+  "experiment": "wp4t1_relinearize_probe",
+  "purpose": "Probe native relinearization for no-relin 3-component coefficient ciphertext: (c0,c1,c2) -> (c0,c1).",
+  "status": "relinearization_probe_only_no_rescale_no_final_decrypt",
+  "input_row_a_i64": [
+    1,
+    -2,
+    3,
+    -1
+  ],
+  "input_row_b_i64": [
+    2,
+    1,
+    -1,
+    0
+  ],
+  "formula": {
+    "before": {
+      "value": "mul_no_relin(ct_a, ct_b) -> c0/c1/c2",
+      "zh": "先用 component-level no-relin 乘法生成三分量密文"
+    },
+    "after": {
+      "value": "Relinearize(c0,c1,c2) -> c0/c1",
+      "zh": "使用 relinearization key 把 c2 项压回二分量密文"
+    }
+  },
+  "before_relin": {
+    "ok": true,
+    "value": {
+      "valid": true,
+      "openfhe_level": 0,
+      "openfhe_noise_scale_deg": 1,
+      "openfhe_scaling_factor": 1.0,
+      "openfhe_slots": 0,
+      "openfhe_encoding_type": 1,
+      "num_parts": 3,
+      "parts_summary": [
+        {
+          "part_index": 0,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            851778145723054130,
+            636310481940547561,
+            255283533203841648,
+            176075803663397312,
+            195590154370314438,
+            35887909382733546,
+            758021973182019234,
+            706410775917205485
+          ]
+        },
+        {
+          "part_index": 1,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            942238633007677943,
+            982315217642316460,
+            987946352840114561,
+            435356487464880107,
+            56956113916318590,
+            605354819156550265,
+            676041400398296136,
+            414422517825769101
+          ]
+        },
+        {
+          "part_index": 2,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            147247615098628162,
+            855186103785502302,
+            180160714719883011,
+            1146223872614414110,
+            171508683688868562,
+            1148650567681922229,
+            964496001517889223,
+            132404797444232551
+          ]
+        }
+      ]
+    }
+  },
+  "relin_call": {
+    "ok": true,
+    "error": null
+  },
+  "after_relin": {
+    "ok": true,
+    "value": {
+      "valid": true,
+      "openfhe_level": 0,
+      "openfhe_noise_scale_deg": 1,
+      "openfhe_scaling_factor": 1.0,
+      "openfhe_slots": 0,
+      "openfhe_encoding_type": 1,
+      "num_parts": 2,
+      "parts_summary": [
+        {
+          "part_index": 0,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            236176696127628790,
+            1037210425670102928,
+            573645349619217541,
+            297493433122838533,
+            419367570804819648,
+            643052256497515847,
+            1097405334778000233,
+            815826266837831031
+          ]
+        },
+        {
+          "part_index": 1,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            1151918071156808473,
+            925839527454310031,
+            688112944945791146,
+            817948683848403461,
+            1081008614323614126,
+            565189592049042225,
+            850907178225326013,
+            541448611795545744
+          ]
+        }
+      ]
+    }
+  },
+  "checks": {
+    "before_relin_is_3part（重线性化前是 c0/c1/c2 三分量密文）": true,
+    "relin_call_ok（Relinearize 调用成功）": true,
+    "after_relin_valid（重线性化后密文有效）": true,
+    "after_relin_has_two_rlwe_parts（重线性化后压回 c0/c1 两个 RLWE component）": true,
+    "after_relin_uses_coef_encoding（重线性化后仍是 coefficient encoding）": true,
+    "after_relin_ring_dim_16384（重线性化后 ring_dim 仍是 16384）": true
+  }
+}

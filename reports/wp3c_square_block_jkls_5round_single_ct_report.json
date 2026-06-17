@@ -80,90 +80,90 @@
     -16,
     -32
   ],
-  "encrypt_once_us": 523645.47119140625,
-  "decrypt_once_us": 233999.82568359375,
-  "final_max_abs_err_jkls": 9.277023593767808e-13,
+  "encrypt_once_us": 846121.8579101562,
+  "decrypt_once_us": 567189.8432617188,
+  "final_max_abs_err_jkls": 9.624523400475482e-13,
   "rounds_jkls": [
     {
       "round_idx": 1,
-      "core_us": 15272450.710449219,
+      "core_us": 33403155.260253906,
       "primitive_stats": {
         "pMult_count": 128,
-        "pMult_total_us": 7298819.41796875,
+        "pMult_total_us": 25403965.0234375,
         "add_count": 447,
-        "add_total_us": 3922887.6420898438,
+        "add_total_us": 3927247.92578125,
         "rotate_count": 447,
-        "rotate_total_us": 3998034.94921875,
-        "pMult_avg_us": 57022.02670288086,
-        "add_avg_us": 8776.034993489584,
-        "rotate_avg_us": 8944.149774538591
+        "rotate_total_us": 4004936.5698242188,
+        "pMult_avg_us": 198468.47674560547,
+        "add_avg_us": 8785.789543134788,
+        "rotate_avg_us": 8959.58964166492
       }
     },
     {
       "round_idx": 2,
-      "core_us": 14737031.687988281,
+      "core_us": 33310035.161132812,
       "primitive_stats": {
         "pMult_count": 128,
-        "pMult_total_us": 6694208.340332031,
+        "pMult_total_us": 25246395.30859375,
         "add_count": 447,
-        "add_total_us": 3975221.970703125,
+        "add_total_us": 3961245.6416015625,
         "rotate_count": 447,
-        "rotate_total_us": 4012407.7416992188,
-        "pMult_avg_us": 52298.502658843994,
-        "add_avg_us": 8893.114028418624,
-        "rotate_avg_us": 8976.303672705188
+        "rotate_total_us": 4032467.4501953125,
+        "pMult_avg_us": 197237.46334838867,
+        "add_avg_us": 8861.847072934144,
+        "rotate_avg_us": 9021.179978065577
       }
     },
     {
       "round_idx": 3,
-      "core_us": 14934626.083984375,
+      "core_us": 33136821.98779297,
       "primitive_stats": {
         "pMult_count": 128,
-        "pMult_total_us": 6768001.4013671875,
+        "pMult_total_us": 25219544.78125,
         "add_count": 447,
-        "add_total_us": 4010709.15625,
+        "add_total_us": 3886338.2646484375,
         "rotate_count": 447,
-        "rotate_total_us": 4100252.8149414062,
-        "pMult_avg_us": 52875.01094818115,
-        "add_avg_us": 8972.503705257272,
-        "rotate_avg_us": 9172.825089354377
+        "rotate_total_us": 3961818.0791015625,
+        "pMult_avg_us": 197027.69360351562,
+        "add_avg_us": 8694.26904843051,
+        "rotate_avg_us": 8863.127693739514
       }
     },
     {
       "round_idx": 4,
-      "core_us": 14900240.583496094,
+      "core_us": 33211219.275878906,
       "primitive_stats": {
         "pMult_count": 128,
-        "pMult_total_us": 6741829.02734375,
+        "pMult_total_us": 25235047.420410156,
         "add_count": 447,
-        "add_total_us": 4022460.12109375,
+        "add_total_us": 3917126.7275390625,
         "rotate_count": 447,
-        "rotate_total_us": 4080126.1494140625,
-        "pMult_avg_us": 52670.53927612305,
-        "add_avg_us": 8998.792217211969,
-        "rotate_avg_us": 9127.798991977768
+        "rotate_total_us": 3988110.9526367188,
+        "pMult_avg_us": 197148.80797195435,
+        "add_avg_us": 8763.147041474413,
+        "rotate_avg_us": 8921.948439903173
       }
     },
     {
       "round_idx": 5,
-      "core_us": 15003902.687988281,
+      "core_us": 33095619.77734375,
       "primitive_stats": {
         "pMult_count": 128,
-        "pMult_total_us": 6789194.953613281,
+        "pMult_total_us": 25174502.16015625,
         "add_count": 447,
-        "add_total_us": 4056889.1630859375,
+        "add_total_us": 3899826.9755859375,
         "rotate_count": 447,
-        "rotate_total_us": 4101447.0146484375,
-        "pMult_avg_us": 53040.58557510376,
-        "add_avg_us": 9075.814682518876,
-        "rotate_avg_us": 9175.496677065856
+        "rotate_total_us": 3951444.271484375,
+        "pMult_avg_us": 196675.7981262207,
+        "add_avg_us": 8724.44513553901,
+        "rotate_avg_us": 8839.920070434844
       }
     }
   ],
   "post_round2_summary": {
-    "core_us_median": 14917433.333740234,
-    "pmult_avg_us_median": 52772.7751121521,
-    "add_avg_us_median": 8985.64796123462,
-    "rotate_avg_us_median": 9150.312040666073
+    "core_us_median": 33174020.631835938,
+    "pmult_avg_us_median": 197088.25078773499,
+    "add_avg_us_median": 8743.796088506711,
+    "rotate_avg_us_median": 8892.538066821344
   }
 }

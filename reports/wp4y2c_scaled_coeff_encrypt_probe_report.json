@@ -1,0 +1,3314 @@
+{
+  "experiment": "wp4y2c_scaled_coeff_encrypt_probe",
+  "purpose": "Test whether real encrypt_coeff_row_i64 becomes semantically correct when coefficient plaintexts are scaled before encryption and rounded after coefficient decrypt. Y2a showed unscaled messages are dominated by coefficient-domain encryption noise.",
+  "status": "scaled_coeff_encryption_probe",
+  "scale_policy": {
+    "value": "encrypt scale*row, decrypt, then round(decoded/scale)",
+    "zh": "加密前把 coefficient 明文乘以 scale，解密后除以 scale 并四舍五入。"
+  },
+  "cases": [
+    {
+      "scale": 1,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 1,
+          "scaled_input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "compress": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_compress": {
+            "ok": true,
+            "error": null,
+            "raw_decoded_scaled_domain": [
+              9,
+              1,
+              -15,
+              -4,
+              -23,
+              -13,
+              16,
+              8
+            ],
+            "rounded_after_dividing_by_scale": [
+              9,
+              1,
+              -15,
+              -4,
+              -23,
+              -13,
+              16,
+              8
+            ]
+          },
+          "compare_rounded_to_input": {
+            "exact": false,
+            "max_abs_err": 23,
+            "l1_err": 89,
+            "diff": [
+              9,
+              1,
+              -15,
+              -4,
+              -23,
+              -13,
+              16,
+              8
+            ]
+          },
+          "scaled_domain_residual": {
+            "residual": [
+              9,
+              1,
+              -15,
+              -4,
+              -23,
+              -13,
+              16,
+              8
+            ],
+            "residual_max_abs": 23,
+            "residual_l1": 89
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 1,
+          "scaled_input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "compress": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_compress": {
+            "ok": true,
+            "error": null,
+            "raw_decoded_scaled_domain": [
+              23,
+              -11,
+              -6,
+              -15,
+              14,
+              7,
+              -21,
+              -6
+            ],
+            "rounded_after_dividing_by_scale": [
+              23,
+              -11,
+              -6,
+              -15,
+              14,
+              7,
+              -21,
+              -6
+            ]
+          },
+          "compare_rounded_to_input": {
+            "exact": false,
+            "max_abs_err": 22,
+            "l1_err": 102,
+            "diff": [
+              22,
+              -11,
+              -6,
+              -15,
+              14,
+              7,
+              -21,
+              -6
+            ]
+          },
+          "scaled_domain_residual": {
+            "residual": [
+              22,
+              -11,
+              -6,
+              -15,
+              14,
+              7,
+              -21,
+              -6
+            ],
+            "residual_max_abs": 22,
+            "residual_l1": 102
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 1,
+          "scaled_input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "compress": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_compress": {
+            "ok": true,
+            "error": null,
+            "raw_decoded_scaled_domain": [
+              14,
+              -8,
+              -1,
+              -1,
+              -2,
+              16,
+              13,
+              -12
+            ],
+            "rounded_after_dividing_by_scale": [
+              14,
+              -8,
+              -1,
+              -1,
+              -2,
+              16,
+              13,
+              -12
+            ]
+          },
+          "compare_rounded_to_input": {
+            "exact": false,
+            "max_abs_err": 16,
+            "l1_err": 68,
+            "diff": [
+              14,
+              -9,
+              -1,
+              -1,
+              -2,
+              16,
+              13,
+              -12
+            ]
+          },
+          "scaled_domain_residual": {
+            "residual": [
+              14,
+              -9,
+              -1,
+              -1,
+              -2,
+              16,
+              13,
+              -12
+            ],
+            "residual_max_abs": 16,
+            "residual_l1": 68
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 1,
+          "scaled_input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "compress": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_compress": {
+            "ok": true,
+            "error": null,
+            "raw_decoded_scaled_domain": [
+              6,
+              10,
+              -5,
+              15,
+              11,
+              -3,
+              -16,
+              -23
+            ],
+            "rounded_after_dividing_by_scale": [
+              6,
+              10,
+              -5,
+              15,
+              11,
+              -3,
+              -16,
+              -23
+            ]
+          },
+          "compare_rounded_to_input": {
+            "exact": false,
+            "max_abs_err": 23,
+            "l1_err": 88,
+            "diff": [
+              6,
+              10,
+              -5,
+              14,
+              11,
+              -3,
+              -16,
+              -23
+            ]
+          },
+          "scaled_domain_residual": {
+            "residual": [
+              6,
+              10,
+              -5,
+              14,
+              11,
+              -3,
+              -16,
+              -23
+            ],
+            "residual_max_abs": 23,
+            "residual_l1": 88
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "scale": 1,
+          "scaled_input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "compress": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_compress": {
+            "ok": true,
+            "error": null,
+            "raw_decoded_scaled_domain": [
+              -18,
+              18,
+              5,
+              -19,
+              -22,
+              -12,
+              24,
+              -8
+            ],
+            "rounded_after_dividing_by_scale": [
+              -18,
+              18,
+              5,
+              -19,
+              -22,
+              -12,
+              24,
+              -8
+            ]
+          },
+          "compare_rounded_to_input": {
+            "exact": false,
+            "max_abs_err": 23,
+            "l1_err": 130,
+            "diff": [
+              -15,
+              20,
+              6,
+              -19,
+              -23,
+              -14,
+              21,
+              -12
+            ]
+          },
+          "scaled_domain_residual": {
+            "residual": [
+              -15,
+              20,
+              6,
+              -19,
+              -23,
+              -14,
+              21,
+              -12
+            ],
+            "residual_max_abs": 23,
+            "residual_l1": 130
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "scale": 1,
+          "scaled_input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "compress": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_compress": {
+            "ok": true,
+            "error": null,
+            "raw_decoded_scaled_domain": [
+              17,
+              14,
+              2,
+              -12,
+              -8,
+              -24,
+              19,
+              19
+            ],
+            "rounded_after_dividing_by_scale": [
+              17,
+              14,
+              2,
+              -12,
+              -8,
+              -24,
+              19,
+              19
+            ]
+          },
+          "compare_rounded_to_input": {
+            "exact": false,
+            "max_abs_err": 23,
+            "l1_err": 113,
+            "diff": [
+              16,
+              15,
+              1,
+              -11,
+              -9,
+              -23,
+              18,
+              20
+            ]
+          },
+          "scaled_domain_residual": {
+            "residual": [
+              16,
+              15,
+              1,
+              -11,
+              -9,
+              -23,
+              18,
+              20
+            ],
+            "residual_max_abs": 23,
+            "residual_l1": 113
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "scale": 1,
+          "scaled_input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "compress": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_compress": {
+            "ok": true,
+            "error": null,
+            "raw_decoded_scaled_domain": [
+              6,
+              -11,
+              15,
+              12,
+              -14,
+              3,
+              -12,
+              -18
+            ],
+            "rounded_after_dividing_by_scale": [
+              6,
+              -11,
+              15,
+              12,
+              -14,
+              3,
+              -12,
+              -18
+            ]
+          },
+          "compare_rounded_to_input": {
+            "exact": false,
+            "max_abs_err": 20,
+            "l1_err": 87,
+            "diff": [
+              -1,
+              -11,
+              20,
+              10,
+              -13,
+              3,
+              -15,
+              -14
+            ]
+          },
+          "scaled_domain_residual": {
+            "residual": [
+              -1,
+              -11,
+              20,
+              10,
+              -13,
+              3,
+              -15,
+              -14
+            ],
+            "residual_max_abs": 20,
+            "residual_l1": 87
+          }
+        }
+      ],
+      "summary": {
+        "all_encrypt_ok": true,
+        "all_compress_ok": true,
+        "all_decrypt_after_compress_ok": true,
+        "all_rounded_exact": false,
+        "exact_count": 0,
+        "max_residual_abs_over_rows": 23
+      }
+    },
+    {
+      "scale": 16,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 16,
+          "scaled_input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "compress": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_compress": {
+            "ok": true,
+            "error": null,
+            "raw_decoded_scaled_domain": [
+              17,
+              -9,
+              12,
+              -4,
+              -24,
+              -17,
+              18,
+              20
+            ],
+            "rounded_after_dividing_by_scale": [
+              1,
+              -1,
+              1,
+              0,
+              -2,
+              -1,
+              1,
+              1
+            ]
+          },
+          "compare_rounded_to_input": {
+            "exact": false,
+            "max_abs_err": 2,
+            "l1_err": 8,
+            "diff": [
+              1,
+              -1,
+              1,
+              0,
+              -2,
+              -1,
+              1,
+              1
+            ]
+          },
+          "scaled_domain_residual": {
+            "residual": [
+              17,
+              -9,
+              12,
+              -4,
+              -24,
+              -17,
+              18,
+              20
+            ],
+            "residual_max_abs": 24,
+            "residual_l1": 121
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 16,
+          "scaled_input_row": [
+            16,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "compress": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_compress": {
+            "ok": true,
+            "error": null,
+            "raw_decoded_scaled_domain": [
+              13,
+              21,
+              -12,
+              6,
+              25,
+              12,
+              25,
+              4
+            ],
+            "rounded_after_dividing_by_scale": [
+              1,
+              1,
+              -1,
+              0,
+              2,
+              1,
+              2,
+              0
+            ]
+          },
+          "compare_rounded_to_input": {
+            "exact": false,
+            "max_abs_err": 2,
+            "l1_err": 7,
+            "diff": [
+              0,
+              1,
+              -1,
+              0,
+              2,
+              1,
+              2,
+              0
+            ]
+          },
+          "scaled_domain_residual": {
+            "residual": [
+              -3,
+              21,
+              -12,
+              6,
+              25,
+              12,
+              25,
+              4
+            ],
+            "residual_max_abs": 25,
+            "residual_l1": 108
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 16,
+          "scaled_input_row": [
+            0,
+            16,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "compress": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_compress": {
+            "ok": true,
+            "error": null,
+            "raw_decoded_scaled_domain": [
+              11,
+              23,
+              20,
+              -11,
+              -8,
+              -12,
+              -1,
+              -11
+            ],
+            "rounded_after_dividing_by_scale": [
+              1,
+              1,
+              1,
+              -1,
+              0,
+              -1,
+              0,
+              -1
+            ]
+          },
+          "compare_rounded_to_input": {
+            "exact": false,
+            "max_abs_err": 1,
+            "l1_err": 5,
+            "diff": [
+              1,
+              0,
+              1,
+              -1,
+              0,
+              -1,
+              0,
+              -1
+            ]
+          },
+          "scaled_domain_residual": {
+            "residual": [
+              11,
+              7,
+              20,
+              -11,
+              -8,
+              -12,
+              -1,
+              -11
+            ],
+            "residual_max_abs": 20,
+            "residual_l1": 81
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 16,
+          "scaled_input_row": [
+            0,
+            0,
+            0,
+            16,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "compress": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_compress": {
+            "ok": true,
+            "error": null,
+            "raw_decoded_scaled_domain": [
+              6,
+              -11,
+              0,
+              -3,
+              -16,
+              -13,
+              21,
+              13
+            ],
+            "rounded_after_dividing_by_scale": [
+              0,
+              -1,
+              0,
+              0,
+              -1,
+              -1,
+              1,
+              1
+            ]
+          },
+          "compare_rounded_to_input": {
+            "exact": false,
+            "max_abs_err": 1,
+            "l1_err": 6,
+            "diff": [
+              0,
+              -1,
+              0,
+              -1,
+              -1,
+              -1,
+              1,
+              1
+            ]
+          },
+          "scaled_domain_residual": {
+            "residual": [
+              6,
+              -11,
+              0,
+              -19,
+              -16,
+              -13,
+              21,
+              13
+            ],
+            "residual_max_abs": 21,
+            "residual_l1": 99
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "scale": 16,
+          "scaled_input_row": [
+            -48,
+            -32,
+            -16,
+            0,
+            16,
+            32,
+            48,
+            64
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer -48 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "scale": 16,
+          "scaled_input_row": [
+            16,
+            -16,
+            16,
+            -16,
+            16,
+            -16,
+            16,
+            -16
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "compress": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_compress": {
+            "ok": true,
+            "error": null,
+            "raw_decoded_scaled_domain": [
+              -3,
+              7,
+              -7,
+              23,
+              -14,
+              24,
+              -17,
+              -10
+            ],
+            "rounded_after_dividing_by_scale": [
+              0,
+              0,
+              0,
+              1,
+              -1,
+              2,
+              -1,
+              -1
+            ]
+          },
+          "compare_rounded_to_input": {
+            "exact": false,
+            "max_abs_err": 3,
+            "l1_err": 12,
+            "diff": [
+              -1,
+              1,
+              -1,
+              2,
+              -2,
+              3,
+              -2,
+              0
+            ]
+          },
+          "scaled_domain_residual": {
+            "residual": [
+              -19,
+              23,
+              -23,
+              39,
+              -30,
+              40,
+              -33,
+              6
+            ],
+            "residual_max_abs": 40,
+            "residual_l1": 213
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "scale": 16,
+          "scaled_input_row": [
+            112,
+            0,
+            -80,
+            32,
+            -16,
+            0,
+            48,
+            -64
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 112 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        }
+      ],
+      "summary": {
+        "all_encrypt_ok": false,
+        "all_compress_ok": false,
+        "all_decrypt_after_compress_ok": false,
+        "all_rounded_exact": false,
+        "exact_count": 0,
+        "max_residual_abs_over_rows": 40
+      }
+    },
+    {
+      "scale": 256,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 256,
+          "scaled_input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "compress": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_compress": {
+            "ok": true,
+            "error": null,
+            "raw_decoded_scaled_domain": [
+              17,
+              6,
+              8,
+              -4,
+              21,
+              -9,
+              5,
+              -15
+            ],
+            "rounded_after_dividing_by_scale": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "compare_rounded_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "scaled_domain_residual": {
+            "residual": [
+              17,
+              6,
+              8,
+              -4,
+              21,
+              -9,
+              5,
+              -15
+            ],
+            "residual_max_abs": 21,
+            "residual_l1": 85
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 256,
+          "scaled_input_row": [
+            256,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 256 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 256,
+          "scaled_input_row": [
+            0,
+            256,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 256 at position 1 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 256,
+          "scaled_input_row": [
+            0,
+            0,
+            0,
+            256,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 256 at position 3 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "scale": 256,
+          "scaled_input_row": [
+            -768,
+            -512,
+            -256,
+            0,
+            256,
+            512,
+            768,
+            1024
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer -768 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "scale": 256,
+          "scaled_input_row": [
+            256,
+            -256,
+            256,
+            -256,
+            256,
+            -256,
+            256,
+            -256
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 256 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "scale": 256,
+          "scaled_input_row": [
+            1792,
+            0,
+            -1280,
+            512,
+            -256,
+            0,
+            768,
+            -1024
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 1792 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        }
+      ],
+      "summary": {
+        "all_encrypt_ok": false,
+        "all_compress_ok": false,
+        "all_decrypt_after_compress_ok": false,
+        "all_rounded_exact": false,
+        "exact_count": 1,
+        "max_residual_abs_over_rows": 21
+      }
+    },
+    {
+      "scale": 4096,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 4096,
+          "scaled_input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "compress": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_compress": {
+            "ok": true,
+            "error": null,
+            "raw_decoded_scaled_domain": [
+              24,
+              15,
+              -6,
+              -20,
+              0,
+              21,
+              11,
+              4
+            ],
+            "rounded_after_dividing_by_scale": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "compare_rounded_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "scaled_domain_residual": {
+            "residual": [
+              24,
+              15,
+              -6,
+              -20,
+              0,
+              21,
+              11,
+              4
+            ],
+            "residual_max_abs": 24,
+            "residual_l1": 101
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 4096,
+          "scaled_input_row": [
+            4096,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 4096 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 4096,
+          "scaled_input_row": [
+            0,
+            4096,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 4096 at position 1 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 4096,
+          "scaled_input_row": [
+            0,
+            0,
+            0,
+            4096,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 4096 at position 3 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "scale": 4096,
+          "scaled_input_row": [
+            -12288,
+            -8192,
+            -4096,
+            0,
+            4096,
+            8192,
+            12288,
+            16384
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer -12288 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "scale": 4096,
+          "scaled_input_row": [
+            4096,
+            -4096,
+            4096,
+            -4096,
+            4096,
+            -4096,
+            4096,
+            -4096
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 4096 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "scale": 4096,
+          "scaled_input_row": [
+            28672,
+            0,
+            -20480,
+            8192,
+            -4096,
+            0,
+            12288,
+            -16384
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 28672 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        }
+      ],
+      "summary": {
+        "all_encrypt_ok": false,
+        "all_compress_ok": false,
+        "all_decrypt_after_compress_ok": false,
+        "all_rounded_exact": false,
+        "exact_count": 1,
+        "max_residual_abs_over_rows": 24
+      }
+    },
+    {
+      "scale": 65536,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 65536,
+          "scaled_input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "compress": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_compress": {
+            "ok": true,
+            "error": null,
+            "raw_decoded_scaled_domain": [
+              5,
+              13,
+              -22,
+              20,
+              15,
+              -12,
+              24,
+              16
+            ],
+            "rounded_after_dividing_by_scale": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "compare_rounded_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "scaled_domain_residual": {
+            "residual": [
+              5,
+              13,
+              -22,
+              20,
+              15,
+              -12,
+              24,
+              16
+            ],
+            "residual_max_abs": 24,
+            "residual_l1": 127
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 65536,
+          "scaled_input_row": [
+            65536,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 65536 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 65536,
+          "scaled_input_row": [
+            0,
+            65536,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 65536 at position 1 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 65536,
+          "scaled_input_row": [
+            0,
+            0,
+            0,
+            65536,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 65536 at position 3 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "scale": 65536,
+          "scaled_input_row": [
+            -196608,
+            -131072,
+            -65536,
+            0,
+            65536,
+            131072,
+            196608,
+            262144
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer -196608 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "scale": 65536,
+          "scaled_input_row": [
+            65536,
+            -65536,
+            65536,
+            -65536,
+            65536,
+            -65536,
+            65536,
+            -65536
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 65536 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "scale": 65536,
+          "scaled_input_row": [
+            458752,
+            0,
+            -327680,
+            131072,
+            -65536,
+            0,
+            196608,
+            -262144
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 458752 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        }
+      ],
+      "summary": {
+        "all_encrypt_ok": false,
+        "all_compress_ok": false,
+        "all_decrypt_after_compress_ok": false,
+        "all_rounded_exact": false,
+        "exact_count": 1,
+        "max_residual_abs_over_rows": 24
+      }
+    },
+    {
+      "scale": 1048576,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 1048576,
+          "scaled_input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "compress": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_compress": {
+            "ok": true,
+            "error": null,
+            "raw_decoded_scaled_domain": [
+              -10,
+              5,
+              2,
+              -13,
+              -1,
+              -22,
+              -3,
+              -23
+            ],
+            "rounded_after_dividing_by_scale": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "compare_rounded_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "scaled_domain_residual": {
+            "residual": [
+              -10,
+              5,
+              2,
+              -13,
+              -1,
+              -22,
+              -3,
+              -23
+            ],
+            "residual_max_abs": 23,
+            "residual_l1": 79
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 1048576,
+          "scaled_input_row": [
+            1048576,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 1048576 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 1048576,
+          "scaled_input_row": [
+            0,
+            1048576,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 1048576 at position 1 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 1048576,
+          "scaled_input_row": [
+            0,
+            0,
+            0,
+            1048576,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 1048576 at position 3 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "scale": 1048576,
+          "scaled_input_row": [
+            -3145728,
+            -2097152,
+            -1048576,
+            0,
+            1048576,
+            2097152,
+            3145728,
+            4194304
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer -3145728 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "scale": 1048576,
+          "scaled_input_row": [
+            1048576,
+            -1048576,
+            1048576,
+            -1048576,
+            1048576,
+            -1048576,
+            1048576,
+            -1048576
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 1048576 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "scale": 1048576,
+          "scaled_input_row": [
+            7340032,
+            0,
+            -5242880,
+            2097152,
+            -1048576,
+            0,
+            3145728,
+            -4194304
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 7340032 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        }
+      ],
+      "summary": {
+        "all_encrypt_ok": false,
+        "all_compress_ok": false,
+        "all_decrypt_after_compress_ok": false,
+        "all_rounded_exact": false,
+        "exact_count": 1,
+        "max_residual_abs_over_rows": 23
+      }
+    },
+    {
+      "scale": 16777216,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 16777216,
+          "scaled_input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "compress": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_compress": {
+            "ok": true,
+            "error": null,
+            "raw_decoded_scaled_domain": [
+              5,
+              14,
+              4,
+              -5,
+              21,
+              12,
+              -8,
+              17
+            ],
+            "rounded_after_dividing_by_scale": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "compare_rounded_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "scaled_domain_residual": {
+            "residual": [
+              5,
+              14,
+              4,
+              -5,
+              21,
+              12,
+              -8,
+              17
+            ],
+            "residual_max_abs": 21,
+            "residual_l1": 86
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 16777216,
+          "scaled_input_row": [
+            16777216,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 16777216 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 16777216,
+          "scaled_input_row": [
+            0,
+            16777216,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 16777216 at position 1 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 16777216,
+          "scaled_input_row": [
+            0,
+            0,
+            0,
+            16777216,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 16777216 at position 3 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "scale": 16777216,
+          "scaled_input_row": [
+            -50331648,
+            -33554432,
+            -16777216,
+            0,
+            16777216,
+            33554432,
+            50331648,
+            67108864
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer -50331648 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "scale": 16777216,
+          "scaled_input_row": [
+            16777216,
+            -16777216,
+            16777216,
+            -16777216,
+            16777216,
+            -16777216,
+            16777216,
+            -16777216
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 16777216 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "scale": 16777216,
+          "scaled_input_row": [
+            117440512,
+            0,
+            -83886080,
+            33554432,
+            -16777216,
+            0,
+            50331648,
+            -67108864
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 117440512 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        }
+      ],
+      "summary": {
+        "all_encrypt_ok": false,
+        "all_compress_ok": false,
+        "all_decrypt_after_compress_ok": false,
+        "all_rounded_exact": false,
+        "exact_count": 1,
+        "max_residual_abs_over_rows": 21
+      }
+    },
+    {
+      "scale": 268435456,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 268435456,
+          "scaled_input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "compress": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_compress": {
+            "ok": true,
+            "error": null,
+            "raw_decoded_scaled_domain": [
+              -6,
+              0,
+              -12,
+              -5,
+              15,
+              -14,
+              -20,
+              -6
+            ],
+            "rounded_after_dividing_by_scale": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "compare_rounded_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "scaled_domain_residual": {
+            "residual": [
+              -6,
+              0,
+              -12,
+              -5,
+              15,
+              -14,
+              -20,
+              -6
+            ],
+            "residual_max_abs": 20,
+            "residual_l1": 78
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 268435456,
+          "scaled_input_row": [
+            268435456,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 268435456 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 268435456,
+          "scaled_input_row": [
+            0,
+            268435456,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 268435456 at position 1 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 268435456,
+          "scaled_input_row": [
+            0,
+            0,
+            0,
+            268435456,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 268435456 at position 3 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "scale": 268435456,
+          "scaled_input_row": [
+            -805306368,
+            -536870912,
+            -268435456,
+            0,
+            268435456,
+            536870912,
+            805306368,
+            1073741824
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer -805306368 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "scale": 268435456,
+          "scaled_input_row": [
+            268435456,
+            -268435456,
+            268435456,
+            -268435456,
+            268435456,
+            -268435456,
+            268435456,
+            -268435456
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 268435456 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "scale": 268435456,
+          "scaled_input_row": [
+            1879048192,
+            0,
+            -1342177280,
+            536870912,
+            -268435456,
+            0,
+            805306368,
+            -1073741824
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 1879048192 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        }
+      ],
+      "summary": {
+        "all_encrypt_ok": false,
+        "all_compress_ok": false,
+        "all_decrypt_after_compress_ok": false,
+        "all_rounded_exact": false,
+        "exact_count": 1,
+        "max_residual_abs_over_rows": 20
+      }
+    },
+    {
+      "scale": 4294967296,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 4294967296,
+          "scaled_input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "compress": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_compress": {
+            "ok": true,
+            "error": null,
+            "raw_decoded_scaled_domain": [
+              -18,
+              20,
+              19,
+              7,
+              16,
+              6,
+              -3,
+              -21
+            ],
+            "rounded_after_dividing_by_scale": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "compare_rounded_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "scaled_domain_residual": {
+            "residual": [
+              -18,
+              20,
+              19,
+              7,
+              16,
+              6,
+              -3,
+              -21
+            ],
+            "residual_max_abs": 21,
+            "residual_l1": 110
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 4294967296,
+          "scaled_input_row": [
+            4294967296,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 4294967296 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 4294967296,
+          "scaled_input_row": [
+            0,
+            4294967296,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 4294967296 at position 1 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 4294967296,
+          "scaled_input_row": [
+            0,
+            0,
+            0,
+            4294967296,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 4294967296 at position 3 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "scale": 4294967296,
+          "scaled_input_row": [
+            -12884901888,
+            -8589934592,
+            -4294967296,
+            0,
+            4294967296,
+            8589934592,
+            12884901888,
+            17179869184
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer -12884901888 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "scale": 4294967296,
+          "scaled_input_row": [
+            4294967296,
+            -4294967296,
+            4294967296,
+            -4294967296,
+            4294967296,
+            -4294967296,
+            4294967296,
+            -4294967296
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 4294967296 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "scale": 4294967296,
+          "scaled_input_row": [
+            30064771072,
+            0,
+            -21474836480,
+            8589934592,
+            -4294967296,
+            0,
+            12884901888,
+            -17179869184
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 30064771072 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        }
+      ],
+      "summary": {
+        "all_encrypt_ok": false,
+        "all_compress_ok": false,
+        "all_decrypt_after_compress_ok": false,
+        "all_rounded_exact": false,
+        "exact_count": 1,
+        "max_residual_abs_over_rows": 21
+      }
+    },
+    {
+      "scale": 68719476736,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 68719476736,
+          "scaled_input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "compress": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_compress": {
+            "ok": true,
+            "error": null,
+            "raw_decoded_scaled_domain": [
+              8,
+              8,
+              6,
+              1,
+              -16,
+              -13,
+              0,
+              -2
+            ],
+            "rounded_after_dividing_by_scale": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "compare_rounded_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "scaled_domain_residual": {
+            "residual": [
+              8,
+              8,
+              6,
+              1,
+              -16,
+              -13,
+              0,
+              -2
+            ],
+            "residual_max_abs": 16,
+            "residual_l1": 54
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 68719476736,
+          "scaled_input_row": [
+            68719476736,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 68719476736 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 68719476736,
+          "scaled_input_row": [
+            0,
+            68719476736,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 68719476736 at position 1 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "scale": 68719476736,
+          "scaled_input_row": [
+            0,
+            0,
+            0,
+            68719476736,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 68719476736 at position 3 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "scale": 68719476736,
+          "scaled_input_row": [
+            -206158430208,
+            -137438953472,
+            -68719476736,
+            0,
+            68719476736,
+            137438953472,
+            206158430208,
+            274877906944
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer -206158430208 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "scale": 68719476736,
+          "scaled_input_row": [
+            68719476736,
+            -68719476736,
+            68719476736,
+            -68719476736,
+            68719476736,
+            -68719476736,
+            68719476736,
+            -68719476736
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 68719476736 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "scale": 68719476736,
+          "scaled_input_row": [
+            481036337152,
+            0,
+            -343597383680,
+            137438953472,
+            -68719476736,
+            0,
+            206158430208,
+            -274877906944
+          ],
+          "encrypt": {
+            "ok": false,
+            "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/encoding/coefpackedencoding.cpp:l.50:encodeVec<lbcrypto::PolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > >(): Cannot encode integer 481036337152 at position 0 because it is out of range of plaintext modulus 50')"
+          }
+        }
+      ],
+      "summary": {
+        "all_encrypt_ok": false,
+        "all_compress_ok": false,
+        "all_decrypt_after_compress_ok": false,
+        "all_rounded_exact": false,
+        "exact_count": 1,
+        "max_residual_abs_over_rows": 16
+      }
+    }
+  ],
+  "checks": {
+    "any_scale_roundtrip_all_exact（是否存在某个 scale 使所有 row roundtrip 精确）": false,
+    "successful_scales（所有通过的 scale）": [],
+    "best_scale_by_exact_count（按 exact_count 排序的 scale）": [
+      {
+        "scale": 68719476736,
+        "exact_count": 1,
+        "max_residual_abs_over_rows": 16,
+        "all_rounded_exact": false
+      },
+      {
+        "scale": 268435456,
+        "exact_count": 1,
+        "max_residual_abs_over_rows": 20,
+        "all_rounded_exact": false
+      },
+      {
+        "scale": 256,
+        "exact_count": 1,
+        "max_residual_abs_over_rows": 21,
+        "all_rounded_exact": false
+      },
+      {
+        "scale": 16777216,
+        "exact_count": 1,
+        "max_residual_abs_over_rows": 21,
+        "all_rounded_exact": false
+      },
+      {
+        "scale": 4294967296,
+        "exact_count": 1,
+        "max_residual_abs_over_rows": 21,
+        "all_rounded_exact": false
+      },
+      {
+        "scale": 1048576,
+        "exact_count": 1,
+        "max_residual_abs_over_rows": 23,
+        "all_rounded_exact": false
+      },
+      {
+        "scale": 4096,
+        "exact_count": 1,
+        "max_residual_abs_over_rows": 24,
+        "all_rounded_exact": false
+      },
+      {
+        "scale": 65536,
+        "exact_count": 1,
+        "max_residual_abs_over_rows": 24,
+        "all_rounded_exact": false
+      },
+      {
+        "scale": 1,
+        "exact_count": 0,
+        "max_residual_abs_over_rows": 23,
+        "all_rounded_exact": false
+      },
+      {
+        "scale": 16,
+        "exact_count": 0,
+        "max_residual_abs_over_rows": 40,
+        "all_rounded_exact": false
+      }
+    ]
+  },
+  "global_decision": {
+    "value": "scaled_coeff_row_encryption_still_fails",
+    "recommended_scale": null,
+    "next_step": "WP4-Y2d",
+    "next_goal": "Bypass current encrypt_coeff_row_i64 and implement a controlled RLWE/SK coefficient-row encryption probe.",
+    "zh": "即使 scale 放大也不能 roundtrip，下一步才绕开当前 high-level coefficient encrypt。"
+  }
+}

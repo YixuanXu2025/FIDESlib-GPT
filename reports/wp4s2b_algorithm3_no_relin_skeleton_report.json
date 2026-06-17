@@ -1,0 +1,799 @@
+{
+  "experiment": "wp4s2b_algorithm3_no_relin_skeleton",
+  "purpose": "Construct real Park-2025 Algorithm 3 no-relinearization skeleton: right C-MT plus pairwise 2-component×2-component ciphertext multiplication.",
+  "status": "algorithm3_skeleton_only_no_relin_no_rescale_no_final_decrypt",
+  "input_U_i64": [
+    [
+      0,
+      1,
+      -2,
+      -2
+    ],
+    [
+      -3,
+      3,
+      -1,
+      0
+    ],
+    [
+      3,
+      -2,
+      1,
+      0
+    ],
+    [
+      3,
+      2,
+      -2,
+      -2
+    ]
+  ],
+  "input_V_i64": [
+    [
+      0,
+      2,
+      2,
+      1
+    ],
+    [
+      0,
+      1,
+      1,
+      3
+    ],
+    [
+      -1,
+      1,
+      2,
+      -2
+    ],
+    [
+      2,
+      3,
+      -1,
+      -2
+    ]
+  ],
+  "reference_U_matmul_V_plain": [
+    [
+      -2,
+      -7,
+      -1,
+      11
+    ],
+    [
+      1,
+      -4,
+      -5,
+      8
+    ],
+    [
+      -1,
+      5,
+      6,
+      -5
+    ],
+    [
+      -2,
+      0,
+      6,
+      17
+    ]
+  ],
+  "formula": {
+    "right_cmt": {
+      "value": "V_cmt = C-MT(V)",
+      "zh": "先把右矩阵 V 从 row-wise bundle 变换成 C-MT 后的 column-like/transformed bundle"
+    },
+    "no_relin_product": {
+      "value": "W_no_relin[i][j] = mul_no_relin(U.rows[i], V_cmt[j])",
+      "zh": "每个输出位置先生成一个三分量 before-relinearization ciphertext"
+    }
+  },
+  "U_bundle": {
+    "shape": [
+      4,
+      4
+    ],
+    "ring_dim": 16384,
+    "encoding_type": {
+      "value": 1,
+      "zh": "OpenFHE coefficient encoding 类型；1 表示 coefficient-style encoding"
+    },
+    "num_parts": {
+      "value": 2,
+      "zh": "每个 RLWE ciphertext 的 component 数量；应为 2，即 c0 和 c1"
+    },
+    "num_towers": {
+      "value": 4,
+      "zh": "每个 DCRTPoly component 的 RNS tower 数量"
+    },
+    "orientation": {
+      "value": "rowwise",
+      "zh": "当前 bundle 是 row-wise，每个 ciphertext 加密矩阵的一行"
+    },
+    "mapping": {
+      "value": "B=c0/GetElements()[0], A=c1/GetElements()[1]",
+      "zh": "论文映射：B 是 c0，A 是 c1，因此 A·sk+B 近似表示明文矩阵"
+    }
+  },
+  "V_bundle": {
+    "shape": [
+      4,
+      4
+    ],
+    "ring_dim": 16384,
+    "encoding_type": {
+      "value": 1,
+      "zh": "OpenFHE coefficient encoding 类型；1 表示 coefficient-style encoding"
+    },
+    "num_parts": {
+      "value": 2,
+      "zh": "每个 RLWE ciphertext 的 component 数量；应为 2，即 c0 和 c1"
+    },
+    "num_towers": {
+      "value": 4,
+      "zh": "每个 DCRTPoly component 的 RNS tower 数量"
+    },
+    "orientation": {
+      "value": "rowwise",
+      "zh": "当前 bundle 是 row-wise，每个 ciphertext 加密矩阵的一行"
+    },
+    "mapping": {
+      "value": "B=c0/GetElements()[0], A=c1/GetElements()[1]",
+      "zh": "论文映射：B 是 c0，A 是 c1，因此 A·sk+B 近似表示明文矩阵"
+    }
+  },
+  "algorithm3_trace": {
+    "right_cmt": {
+      "tweak": [
+        {
+          "j": 0,
+          "terms": [
+            {
+              "i": 0,
+              "j": 0,
+              "exp": 0,
+              "formula": "2*i*j*ring_dim/n",
+              "zh": "第 j=0 个输出中，第 i=0 行乘以 X^0"
+            },
+            {
+              "i": 1,
+              "j": 0,
+              "exp": 0,
+              "formula": "2*i*j*ring_dim/n",
+              "zh": "第 j=0 个输出中，第 i=1 行乘以 X^0"
+            },
+            {
+              "i": 2,
+              "j": 0,
+              "exp": 0,
+              "formula": "2*i*j*ring_dim/n",
+              "zh": "第 j=0 个输出中，第 i=2 行乘以 X^0"
+            },
+            {
+              "i": 3,
+              "j": 0,
+              "exp": 0,
+              "formula": "2*i*j*ring_dim/n",
+              "zh": "第 j=0 个输出中，第 i=3 行乘以 X^0"
+            }
+          ],
+          "zh": "输出 ct_prime[0] 是所有 i 项 X^(2*i*j*N/n)·ct_i 的和"
+        },
+        {
+          "j": 1,
+          "terms": [
+            {
+              "i": 0,
+              "j": 1,
+              "exp": 0,
+              "formula": "2*i*j*ring_dim/n",
+              "zh": "第 j=1 个输出中，第 i=0 行乘以 X^0"
+            },
+            {
+              "i": 1,
+              "j": 1,
+              "exp": 8192,
+              "formula": "2*i*j*ring_dim/n",
+              "zh": "第 j=1 个输出中，第 i=1 行乘以 X^8192"
+            },
+            {
+              "i": 2,
+              "j": 1,
+              "exp": 16384,
+              "formula": "2*i*j*ring_dim/n",
+              "zh": "第 j=1 个输出中，第 i=2 行乘以 X^16384"
+            },
+            {
+              "i": 3,
+              "j": 1,
+              "exp": 24576,
+              "formula": "2*i*j*ring_dim/n",
+              "zh": "第 j=1 个输出中，第 i=3 行乘以 X^24576"
+            }
+          ],
+          "zh": "输出 ct_prime[1] 是所有 i 项 X^(2*i*j*N/n)·ct_i 的和"
+        },
+        {
+          "j": 2,
+          "terms": [
+            {
+              "i": 0,
+              "j": 2,
+              "exp": 0,
+              "formula": "2*i*j*ring_dim/n",
+              "zh": "第 j=2 个输出中，第 i=0 行乘以 X^0"
+            },
+            {
+              "i": 1,
+              "j": 2,
+              "exp": 16384,
+              "formula": "2*i*j*ring_dim/n",
+              "zh": "第 j=2 个输出中，第 i=1 行乘以 X^16384"
+            },
+            {
+              "i": 2,
+              "j": 2,
+              "exp": 32768,
+              "formula": "2*i*j*ring_dim/n",
+              "zh": "第 j=2 个输出中，第 i=2 行乘以 X^32768"
+            },
+            {
+              "i": 3,
+              "j": 2,
+              "exp": 49152,
+              "formula": "2*i*j*ring_dim/n",
+              "zh": "第 j=2 个输出中，第 i=3 行乘以 X^49152"
+            }
+          ],
+          "zh": "输出 ct_prime[2] 是所有 i 项 X^(2*i*j*N/n)·ct_i 的和"
+        },
+        {
+          "j": 3,
+          "terms": [
+            {
+              "i": 0,
+              "j": 3,
+              "exp": 0,
+              "formula": "2*i*j*ring_dim/n",
+              "zh": "第 j=3 个输出中，第 i=0 行乘以 X^0"
+            },
+            {
+              "i": 1,
+              "j": 3,
+              "exp": 24576,
+              "formula": "2*i*j*ring_dim/n",
+              "zh": "第 j=3 个输出中，第 i=1 行乘以 X^24576"
+            },
+            {
+              "i": 2,
+              "j": 3,
+              "exp": 49152,
+              "formula": "2*i*j*ring_dim/n",
+              "zh": "第 j=3 个输出中，第 i=2 行乘以 X^49152"
+            },
+            {
+              "i": 3,
+              "j": 3,
+              "exp": 73728,
+              "formula": "2*i*j*ring_dim/n",
+              "zh": "第 j=3 个输出中，第 i=3 行乘以 X^73728"
+            }
+          ],
+          "zh": "输出 ct_prime[3] 是所有 i 项 X^(2*i*j*N/n)·ct_i 的和"
+        }
+      ],
+      "auto": [
+        {
+          "j": 0,
+          "alpha": 1,
+          "formula": "2*j + 1",
+          "zh": "对 Tweak 输出 ct_prime[0] 执行 Auto(ct; 1)"
+        },
+        {
+          "j": 1,
+          "alpha": 3,
+          "formula": "2*j + 1",
+          "zh": "对 Tweak 输出 ct_prime[1] 执行 Auto(ct; 3)"
+        },
+        {
+          "j": 2,
+          "alpha": 5,
+          "formula": "2*j + 1",
+          "zh": "对 Tweak 输出 ct_prime[2] 执行 Auto(ct; 5)"
+        },
+        {
+          "j": 3,
+          "alpha": 7,
+          "formula": "2*j + 1",
+          "zh": "对 Tweak 输出 ct_prime[3] 执行 Auto(ct; 7)"
+        }
+      ],
+      "zh": "Algorithm 2 C-MT = Algorithm 1 Tweak 后，对每个 j 执行 Auto(ct_prime[j]; 2j+1)"
+    },
+    "products": [
+      [
+        {
+          "i": 0,
+          "j": 0,
+          "left_row": 0,
+          "right_cmt_index": 0,
+          "operation": "mul_coeff_ct_no_relin(left_bundle.rows[i], right_cmt[j])",
+          "zh": "输出 W_no_relin[0][0] = 左矩阵第 0 行密文 × 右矩阵 C-MT 后第 0 个密文，结果为三分量密文"
+        },
+        {
+          "i": 0,
+          "j": 1,
+          "left_row": 0,
+          "right_cmt_index": 1,
+          "operation": "mul_coeff_ct_no_relin(left_bundle.rows[i], right_cmt[j])",
+          "zh": "输出 W_no_relin[0][1] = 左矩阵第 0 行密文 × 右矩阵 C-MT 后第 1 个密文，结果为三分量密文"
+        },
+        {
+          "i": 0,
+          "j": 2,
+          "left_row": 0,
+          "right_cmt_index": 2,
+          "operation": "mul_coeff_ct_no_relin(left_bundle.rows[i], right_cmt[j])",
+          "zh": "输出 W_no_relin[0][2] = 左矩阵第 0 行密文 × 右矩阵 C-MT 后第 2 个密文，结果为三分量密文"
+        },
+        {
+          "i": 0,
+          "j": 3,
+          "left_row": 0,
+          "right_cmt_index": 3,
+          "operation": "mul_coeff_ct_no_relin(left_bundle.rows[i], right_cmt[j])",
+          "zh": "输出 W_no_relin[0][3] = 左矩阵第 0 行密文 × 右矩阵 C-MT 后第 3 个密文，结果为三分量密文"
+        }
+      ],
+      [
+        {
+          "i": 1,
+          "j": 0,
+          "left_row": 1,
+          "right_cmt_index": 0,
+          "operation": "mul_coeff_ct_no_relin(left_bundle.rows[i], right_cmt[j])",
+          "zh": "输出 W_no_relin[1][0] = 左矩阵第 1 行密文 × 右矩阵 C-MT 后第 0 个密文，结果为三分量密文"
+        },
+        {
+          "i": 1,
+          "j": 1,
+          "left_row": 1,
+          "right_cmt_index": 1,
+          "operation": "mul_coeff_ct_no_relin(left_bundle.rows[i], right_cmt[j])",
+          "zh": "输出 W_no_relin[1][1] = 左矩阵第 1 行密文 × 右矩阵 C-MT 后第 1 个密文，结果为三分量密文"
+        },
+        {
+          "i": 1,
+          "j": 2,
+          "left_row": 1,
+          "right_cmt_index": 2,
+          "operation": "mul_coeff_ct_no_relin(left_bundle.rows[i], right_cmt[j])",
+          "zh": "输出 W_no_relin[1][2] = 左矩阵第 1 行密文 × 右矩阵 C-MT 后第 2 个密文，结果为三分量密文"
+        },
+        {
+          "i": 1,
+          "j": 3,
+          "left_row": 1,
+          "right_cmt_index": 3,
+          "operation": "mul_coeff_ct_no_relin(left_bundle.rows[i], right_cmt[j])",
+          "zh": "输出 W_no_relin[1][3] = 左矩阵第 1 行密文 × 右矩阵 C-MT 后第 3 个密文，结果为三分量密文"
+        }
+      ],
+      [
+        {
+          "i": 2,
+          "j": 0,
+          "left_row": 2,
+          "right_cmt_index": 0,
+          "operation": "mul_coeff_ct_no_relin(left_bundle.rows[i], right_cmt[j])",
+          "zh": "输出 W_no_relin[2][0] = 左矩阵第 2 行密文 × 右矩阵 C-MT 后第 0 个密文，结果为三分量密文"
+        },
+        {
+          "i": 2,
+          "j": 1,
+          "left_row": 2,
+          "right_cmt_index": 1,
+          "operation": "mul_coeff_ct_no_relin(left_bundle.rows[i], right_cmt[j])",
+          "zh": "输出 W_no_relin[2][1] = 左矩阵第 2 行密文 × 右矩阵 C-MT 后第 1 个密文，结果为三分量密文"
+        },
+        {
+          "i": 2,
+          "j": 2,
+          "left_row": 2,
+          "right_cmt_index": 2,
+          "operation": "mul_coeff_ct_no_relin(left_bundle.rows[i], right_cmt[j])",
+          "zh": "输出 W_no_relin[2][2] = 左矩阵第 2 行密文 × 右矩阵 C-MT 后第 2 个密文，结果为三分量密文"
+        },
+        {
+          "i": 2,
+          "j": 3,
+          "left_row": 2,
+          "right_cmt_index": 3,
+          "operation": "mul_coeff_ct_no_relin(left_bundle.rows[i], right_cmt[j])",
+          "zh": "输出 W_no_relin[2][3] = 左矩阵第 2 行密文 × 右矩阵 C-MT 后第 3 个密文，结果为三分量密文"
+        }
+      ],
+      [
+        {
+          "i": 3,
+          "j": 0,
+          "left_row": 3,
+          "right_cmt_index": 0,
+          "operation": "mul_coeff_ct_no_relin(left_bundle.rows[i], right_cmt[j])",
+          "zh": "输出 W_no_relin[3][0] = 左矩阵第 3 行密文 × 右矩阵 C-MT 后第 0 个密文，结果为三分量密文"
+        },
+        {
+          "i": 3,
+          "j": 1,
+          "left_row": 3,
+          "right_cmt_index": 1,
+          "operation": "mul_coeff_ct_no_relin(left_bundle.rows[i], right_cmt[j])",
+          "zh": "输出 W_no_relin[3][1] = 左矩阵第 3 行密文 × 右矩阵 C-MT 后第 1 个密文，结果为三分量密文"
+        },
+        {
+          "i": 3,
+          "j": 2,
+          "left_row": 3,
+          "right_cmt_index": 2,
+          "operation": "mul_coeff_ct_no_relin(left_bundle.rows[i], right_cmt[j])",
+          "zh": "输出 W_no_relin[3][2] = 左矩阵第 3 行密文 × 右矩阵 C-MT 后第 2 个密文，结果为三分量密文"
+        },
+        {
+          "i": 3,
+          "j": 3,
+          "left_row": 3,
+          "right_cmt_index": 3,
+          "operation": "mul_coeff_ct_no_relin(left_bundle.rows[i], right_cmt[j])",
+          "zh": "输出 W_no_relin[3][3] = 左矩阵第 3 行密文 × 右矩阵 C-MT 后第 3 个密文，结果为三分量密文"
+        }
+      ]
+    ],
+    "zh": "Algorithm 3 no-relin skeleton：先对右矩阵做 C-MT，再逐行逐列做 no-relin 密文乘法"
+  },
+  "W_no_relin_summary": {
+    "shape": {
+      "value": [
+        4,
+        4
+      ],
+      "zh": "no-relin 结果矩阵形状"
+    },
+    "num_ciphertexts": {
+      "value": 16,
+      "zh": "结果矩阵中的 ciphertext 总数"
+    },
+    "consistent_shape": {
+      "value": true,
+      "zh": "所有 no-relin 输出 ciphertext 的 component/tower/ring_dim 形状一致"
+    },
+    "expected_parts": {
+      "value": 3,
+      "zh": "每个 no-relin 输出 ciphertext 的 RLWE component 数量；应为 3"
+    },
+    "expected_towers": {
+      "value": 4,
+      "zh": "每个 DCRTPoly component 的 RNS tower 数量"
+    },
+    "expected_ring_dim": {
+      "value": 16384,
+      "zh": "输出 ciphertext 的 ring dimension"
+    },
+    "entries": [
+      {
+        "matrix_index": [
+          0,
+          0
+        ],
+        "flat_index": 0,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          0,
+          1
+        ],
+        "flat_index": 1,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          0,
+          2
+        ],
+        "flat_index": 2,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          0,
+          3
+        ],
+        "flat_index": 3,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          1,
+          0
+        ],
+        "flat_index": 4,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          1,
+          1
+        ],
+        "flat_index": 5,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          1,
+          2
+        ],
+        "flat_index": 6,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          1,
+          3
+        ],
+        "flat_index": 7,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          2,
+          0
+        ],
+        "flat_index": 8,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          2,
+          1
+        ],
+        "flat_index": 9,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          2,
+          2
+        ],
+        "flat_index": 10,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          2,
+          3
+        ],
+        "flat_index": 11,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          3,
+          0
+        ],
+        "flat_index": 12,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          3,
+          1
+        ],
+        "flat_index": 13,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          3,
+          2
+        ],
+        "flat_index": 14,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          3,
+          3
+        ],
+        "flat_index": 15,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      }
+    ]
+  },
+  "checks": {
+    "output_matrix_shape_is_4x4（no-relin 输出矩阵形状是 4x4）": true,
+    "output_has_16_ciphertexts（no-relin 输出共有 16 个 ciphertext）": true,
+    "output_consistent_shape（所有 no-relin 输出 component/tower/ring_dim 形状一致）": true,
+    "output_has_three_rlwe_parts（每个 no-relin 输出有 c0/c1/c2 三个 RLWE component）": true,
+    "output_uses_coef_encoding（每个 no-relin 输出仍是 coefficient encoding）": true,
+    "output_ring_dim_16384（no-relin 输出 ring_dim 仍是 16384）": true,
+    "right_cmt_auto_alphas_are_expected（右矩阵 C-MT 的 Auto alpha 符合 2*j+1）": true
+  }
+}

@@ -1,0 +1,233 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+WP4-R1b native automorphism coefficient ciphertext probe
+{
+  "experiment": "wp4r1b_native_auto_probe",
+  "purpose": "Probe native OpenFHE EvalAutomorphism(ct, alpha) on coefficient ciphertext.",
+  "status": "single_auto_probe_no_full_cmt",
+  "input_row_i64": [
+    1,
+    -2,
+    3,
+    -1
+  ],
+  "alphas": [
+    1,
+    3,
+    5,
+    7
+  ],
+  "current_state": {
+    "completed": [
+      "WP4-Q2 real row-wise coefficient ciphertext matrix bundle",
+      "WP4-R1a API availability probe"
+    ],
+    "this_step": "native Auto(ct; alpha) smoke test"
+  },
+  "before": {
+    "ok": true,
+    "value": {
+      "valid": true,
+      "fides_loaded": false,
+      "openfhe_level": 0,
+      "openfhe_noise_scale_deg": 1,
+      "openfhe_scaling_factor": 1.0,
+      "openfhe_slots": 0,
+      "openfhe_encoding_type": 1,
+      "num_parts": 2,
+      "num_towers_part0": 4,
+      "ring_dim_part0_tower0": 16384,
+      "tower0_coeff_head_part0": [
+        685882037180276760,
+        823178200175582621,
+        521778920394707396,
+        1127049707358593574,
+        138601027417488211,
+        543453607318078506,
+        96303507405486749,
+        823262902316153103
+      ]
+    }
+  },
+  "cases": [
+    {
+      "alpha": 1,
+      "auto_call": {
+        "ok": true,
+        "error": null
+      },
+      "after": {
+        "ok": true,
+        "value": {
+          "valid": true,
+          "fides_loaded": false,
+          "openfhe_level": 0,
+          "openfhe_noise_scale_deg": 1,
+          "openfhe_scaling_factor": 1.0,
+          "openfhe_slots": 0,
+          "openfhe_encoding_type": 1,
+          "num_parts": 2,
+          "num_towers_part0": 4,
+          "ring_dim_part0_tower0": 16384,
+          "tower0_coeff_head_part0": [
+            256563709174419958,
+            435158215910502437,
+            459968389489785761,
+            4295434466780337,
+            548651195512805286,
+            321329585884381284,
+            443301587377781813,
+            371049375503893388
+          ]
+        }
+      },
+      "checks": {
+        "auto_output_is_valid（Auto 输出密文有效）": true,
+        "auto_output_is_coef_encoding_type_1（Auto 输出仍是 coefficient encoding 类型 1）": true,
+        "auto_output_has_two_rlwe_parts（Auto 输出仍有 c0/c1 两个 RLWE component）": true,
+        "auto_output_ring_dim_16384（Auto 输出 ring_dim 仍是 16384）": true
+      }
+    },
+    {
+      "alpha": 3,
+      "auto_call": {
+        "ok": true,
+        "error": null
+      },
+      "after": {
+        "ok": true,
+        "value": {
+          "valid": true,
+          "fides_loaded": false,
+          "openfhe_level": 0,
+          "openfhe_noise_scale_deg": 1,
+          "openfhe_scaling_factor": 1.0,
+          "openfhe_slots": 0,
+          "openfhe_encoding_type": 1,
+          "num_parts": 2,
+          "num_towers_part0": 4,
+          "ring_dim_part0_tower0": 16384,
+          "tower0_coeff_head_part0": [
+            61098778087621410,
+            400191404501195915,
+            760644168776121052,
+            793105868424324798,
+            393350626887884798,
+            22275323976249672,
+            945744014474631783,
+            771479834061781591
+          ]
+        }
+      },
+      "checks": {
+        "auto_output_is_valid（Auto 输出密文有效）": true,
+        "auto_output_is_coef_encoding_type_1（Auto 输出仍是 coefficient encoding 类型 1）": true,
+        "auto_output_has_two_rlwe_parts（Auto 输出仍有 c0/c1 两个 RLWE component）": true,
+        "auto_output_ring_dim_16384（Auto 输出 ring_dim 仍是 16384）": true
+      }
+    },
+    {
+      "alpha": 5,
+      "auto_call": {
+        "ok": true,
+        "error": null
+      },
+      "after": {
+        "ok": true,
+        "value": {
+          "valid": true,
+          "fides_loaded": false,
+          "openfhe_level": 0,
+          "openfhe_noise_scale_deg": 1,
+          "openfhe_scaling_factor": 1.0,
+          "openfhe_slots": 0,
+          "openfhe_encoding_type": 1,
+          "num_parts": 2,
+          "num_towers_part0": 4,
+          "ring_dim_part0_tower0": 16384,
+          "tower0_coeff_head_part0": [
+            469741021407413744,
+            349685650954160686,
+            359019340921661140,
+            637135314136554779,
+            248450211165205321,
+            134287338476342342,
+            987986856478221283,
+            483174790748743706
+          ]
+        }
+      },
+      "checks": {
+        "auto_output_is_valid（Auto 输出密文有效）": true,
+        "auto_output_is_coef_encoding_type_1（Auto 输出仍是 coefficient encoding 类型 1）": true,
+        "auto_output_has_two_rlwe_parts（Auto 输出仍有 c0/c1 两个 RLWE component）": true,
+        "auto_output_ring_dim_16384（Auto 输出 ring_dim 仍是 16384）": true
+      }
+    },
+    {
+      "alpha": 7,
+      "auto_call": {
+        "ok": true,
+        "error": null
+      },
+      "after": {
+        "ok": true,
+        "value": {
+          "valid": true,
+          "fides_loaded": false,
+          "openfhe_level": 0,
+          "openfhe_noise_scale_deg": 1,
+          "openfhe_scaling_factor": 1.0,
+          "openfhe_slots": 0,
+          "openfhe_encoding_type": 1,
+          "num_parts": 2,
+          "num_towers_part0": 4,
+          "ring_dim_part0_tower0": 16384,
+          "tower0_coeff_head_part0": [
+            123021245601649238,
+            843377348425304362,
+            215567433379419556,
+            614454273662115583,
+            290925954226015595,
+            1126571970962589768,
+            1058406804372186441,
+            99224552605576536
+          ]
+        }
+      },
+      "checks": {
+        "auto_output_is_valid（Auto 输出密文有效）": true,
+        "auto_output_is_coef_encoding_type_1（Auto 输出仍是 coefficient encoding 类型 1）": true,
+        "auto_output_has_two_rlwe_parts（Auto 输出仍有 c0/c1 两个 RLWE component）": true,
+        "auto_output_ring_dim_16384（Auto 输出 ring_dim 仍是 16384）": true
+      }
+    }
+  ],
+  "summary": {
+    "all_auto_calls_ok（所有 Auto 调用都成功）": true,
+    "successful_alphas（成功执行 Auto 的 alpha 列表）": [
+      1,
+      3,
+      5,
+      7
+    ]
+  }
+}
+====================================================================================================
+saved: /workspace/FIDESlib-GPT/reports/wp4r1b_native_auto_probe_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

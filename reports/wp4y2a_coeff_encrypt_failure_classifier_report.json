@@ -1,0 +1,5437 @@
+{
+  "experiment": "wp4y2a_coeff_encrypt_failure_classifier",
+  "purpose": "Classify why real encrypt_coeff_row_i64 -> decrypt_coeff_row_i64 does not roundtrip. This separates sign/order/rotation convention bugs from scale/noise/encryption-path bugs.",
+  "status": "diagnostic_before_fixing_real_coeff_row_encryption",
+  "cases": [
+    {
+      "param_set": "default_depth2_first60_scale50",
+      "cfg_kwargs_requested": {
+        "ring_dim": 16384,
+        "multiplicative_depth": 2,
+        "first_mod_size": 60,
+        "scaling_mod_size": 50,
+        "num_large_digits": 2,
+        "batch_size": 8,
+        "devices": [
+          0
+        ],
+        "plaintext_autoload": true,
+        "ciphertext_autoload": true,
+        "with_mult_key": true
+      },
+      "rows": [
+        {
+          "name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 4!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                0,
+                -6,
+                -7,
+                25,
+                18,
+                -17,
+                1,
+                17
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "anti_cyclic_shift_0",
+                "max_abs_err": 25,
+                "l1_err": 91,
+                "candidate": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              },
+              "top5": [
+                {
+                  "name": "anti_cyclic_shift_0",
+                  "max_abs_err": 25,
+                  "l1_err": 91,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_1",
+                  "max_abs_err": 25,
+                  "l1_err": 91,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_2",
+                  "max_abs_err": 25,
+                  "l1_err": 91,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_3",
+                  "max_abs_err": 25,
+                  "l1_err": 91,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_4",
+                  "max_abs_err": 25,
+                  "l1_err": 91,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 25,
+            "after_compress_l1_err_to_input": 91
+          }
+        },
+        {
+          "name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 4!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                -16,
+                -21,
+                16,
+                -14,
+                -21,
+                12,
+                14,
+                4
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "anti_cyclic_shift_2",
+                "max_abs_err": 21,
+                "l1_err": 117,
+                "candidate": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              },
+              "top5": [
+                {
+                  "name": "anti_cyclic_shift_2",
+                  "max_abs_err": 21,
+                  "l1_err": 117,
+                  "candidate": [
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_5",
+                  "max_abs_err": 21,
+                  "l1_err": 117,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_6",
+                  "max_abs_err": 21,
+                  "l1_err": 117,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_7",
+                  "max_abs_err": 21,
+                  "l1_err": 117,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_0",
+                  "max_abs_err": 21,
+                  "l1_err": 117,
+                  "candidate": [
+                    -1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 21,
+            "after_compress_l1_err_to_input": 119
+          }
+        },
+        {
+          "name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 4!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                23,
+                -19,
+                7,
+                21,
+                -19,
+                20,
+                -8,
+                8
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "neg_anti_cyclic_shift_7",
+                "max_abs_err": 22,
+                "l1_err": 124,
+                "candidate": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              },
+              "top5": [
+                {
+                  "name": "neg_anti_cyclic_shift_7",
+                  "max_abs_err": 22,
+                  "l1_err": 124,
+                  "candidate": [
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "rot_left_1",
+                  "max_abs_err": 22,
+                  "l1_err": 124,
+                  "candidate": [
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_1",
+                  "max_abs_err": 23,
+                  "l1_err": 124,
+                  "candidate": [
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_2",
+                  "max_abs_err": 23,
+                  "l1_err": 124,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_4",
+                  "max_abs_err": 23,
+                  "l1_err": 124,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 23,
+            "after_compress_l1_err_to_input": 126
+          }
+        },
+        {
+          "name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 4!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                -6,
+                -24,
+                -23,
+                -7,
+                -1,
+                20,
+                24,
+                -1
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "anti_cyclic_shift_2",
+                "max_abs_err": 24,
+                "l1_err": 105,
+                "candidate": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ]
+              },
+              "top5": [
+                {
+                  "name": "anti_cyclic_shift_2",
+                  "max_abs_err": 24,
+                  "l1_err": 105,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_3",
+                  "max_abs_err": 24,
+                  "l1_err": 105,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_5",
+                  "max_abs_err": 24,
+                  "l1_err": 105,
+                  "candidate": [
+                    -1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_6",
+                  "max_abs_err": 24,
+                  "l1_err": 105,
+                  "candidate": [
+                    0,
+                    -1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_7",
+                  "max_abs_err": 24,
+                  "l1_err": 105,
+                  "candidate": [
+                    0,
+                    0,
+                    -1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 24,
+            "after_compress_l1_err_to_input": 107
+          }
+        },
+        {
+          "name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 4!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                25,
+                7,
+                12,
+                -22,
+                -20,
+                25,
+                -16,
+                -4
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "rot_left_7",
+                "max_abs_err": 24,
+                "l1_err": 135,
+                "candidate": [
+                  4,
+                  -3,
+                  -2,
+                  -1,
+                  0,
+                  1,
+                  2,
+                  3
+                ]
+              },
+              "top5": [
+                {
+                  "name": "rot_left_7",
+                  "max_abs_err": 24,
+                  "l1_err": 135,
+                  "candidate": [
+                    4,
+                    -3,
+                    -2,
+                    -1,
+                    0,
+                    1,
+                    2,
+                    3
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_2",
+                  "max_abs_err": 25,
+                  "l1_err": 121,
+                  "candidate": [
+                    3,
+                    4,
+                    3,
+                    2,
+                    1,
+                    0,
+                    -1,
+                    -2
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_3",
+                  "max_abs_err": 25,
+                  "l1_err": 125,
+                  "candidate": [
+                    2,
+                    3,
+                    4,
+                    3,
+                    2,
+                    1,
+                    0,
+                    -1
+                  ]
+                },
+                {
+                  "name": "neg_rot_left_3",
+                  "max_abs_err": 25,
+                  "l1_err": 127,
+                  "candidate": [
+                    0,
+                    -1,
+                    -2,
+                    -3,
+                    -4,
+                    3,
+                    2,
+                    1
+                  ]
+                },
+                {
+                  "name": "rot_left_6",
+                  "max_abs_err": 25,
+                  "l1_err": 127,
+                  "candidate": [
+                    3,
+                    4,
+                    -3,
+                    -2,
+                    -1,
+                    0,
+                    1,
+                    2
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 28,
+            "after_compress_l1_err_to_input": 143
+          }
+        },
+        {
+          "name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 4!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                22,
+                1,
+                -2,
+                -9,
+                8,
+                -14,
+                -3,
+                -5
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "anti_cyclic_shift_0",
+                "max_abs_err": 21,
+                "l1_err": 62,
+                "candidate": [
+                  1,
+                  -1,
+                  1,
+                  -1,
+                  1,
+                  -1,
+                  1,
+                  -1
+                ]
+              },
+              "top5": [
+                {
+                  "name": "anti_cyclic_shift_0",
+                  "max_abs_err": 21,
+                  "l1_err": 62,
+                  "candidate": [
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1
+                  ]
+                },
+                {
+                  "name": "identity",
+                  "max_abs_err": 21,
+                  "l1_err": 62,
+                  "candidate": [
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_6",
+                  "max_abs_err": 21,
+                  "l1_err": 62,
+                  "candidate": [
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    -1,
+                    1
+                  ]
+                },
+                {
+                  "name": "neg_reverse",
+                  "max_abs_err": 21,
+                  "l1_err": 62,
+                  "candidate": [
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1
+                  ]
+                },
+                {
+                  "name": "neg_rot_left_1",
+                  "max_abs_err": 21,
+                  "l1_err": 62,
+                  "candidate": [
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 21,
+            "after_compress_l1_err_to_input": 62
+          }
+        },
+        {
+          "name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 4!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                -1,
+                21,
+                7,
+                0,
+                -14,
+                11,
+                -24,
+                8
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "neg_anti_cyclic_shift_6",
+                "max_abs_err": 19,
+                "l1_err": 88,
+                "candidate": [
+                  -5,
+                  2,
+                  -1,
+                  0,
+                  3,
+                  -4,
+                  -7,
+                  0
+                ]
+              },
+              "top5": [
+                {
+                  "name": "neg_anti_cyclic_shift_6",
+                  "max_abs_err": 19,
+                  "l1_err": 88,
+                  "candidate": [
+                    -5,
+                    2,
+                    -1,
+                    0,
+                    3,
+                    -4,
+                    -7,
+                    0
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_0",
+                  "max_abs_err": 21,
+                  "l1_err": 82,
+                  "candidate": [
+                    -7,
+                    0,
+                    5,
+                    -2,
+                    1,
+                    0,
+                    -3,
+                    4
+                  ]
+                },
+                {
+                  "name": "neg_identity",
+                  "max_abs_err": 21,
+                  "l1_err": 82,
+                  "candidate": [
+                    -7,
+                    0,
+                    5,
+                    -2,
+                    1,
+                    0,
+                    -3,
+                    4
+                  ]
+                },
+                {
+                  "name": "neg_rot_left_0",
+                  "max_abs_err": 21,
+                  "l1_err": 82,
+                  "candidate": [
+                    -7,
+                    0,
+                    5,
+                    -2,
+                    1,
+                    0,
+                    -3,
+                    4
+                  ]
+                },
+                {
+                  "name": "rot_left_4",
+                  "max_abs_err": 21,
+                  "l1_err": 86,
+                  "candidate": [
+                    -1,
+                    0,
+                    3,
+                    -4,
+                    7,
+                    0,
+                    -5,
+                    2
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 27,
+            "after_compress_l1_err_to_input": 106
+          }
+        }
+      ],
+      "context_init": {
+        "ok": true,
+        "error": null
+      }
+    },
+    {
+      "param_set": "depth0_first60_scale50",
+      "cfg_kwargs_requested": {
+        "ring_dim": 16384,
+        "multiplicative_depth": 0,
+        "first_mod_size": 60,
+        "scaling_mod_size": 50,
+        "num_large_digits": 2,
+        "batch_size": 8,
+        "devices": [
+          0
+        ],
+        "plaintext_autoload": true,
+        "ciphertext_autoload": true,
+        "with_mult_key": true
+      },
+      "rows": [
+        {
+          "name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 2!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                -17,
+                -24,
+                15,
+                15,
+                -19,
+                -14,
+                7,
+                15
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "anti_cyclic_shift_0",
+                "max_abs_err": 24,
+                "l1_err": 126,
+                "candidate": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              },
+              "top5": [
+                {
+                  "name": "anti_cyclic_shift_0",
+                  "max_abs_err": 24,
+                  "l1_err": 126,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_1",
+                  "max_abs_err": 24,
+                  "l1_err": 126,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_2",
+                  "max_abs_err": 24,
+                  "l1_err": 126,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_3",
+                  "max_abs_err": 24,
+                  "l1_err": 126,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_4",
+                  "max_abs_err": 24,
+                  "l1_err": 126,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 24,
+            "after_compress_l1_err_to_input": 126
+          }
+        },
+        {
+          "name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 2!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                -17,
+                13,
+                2,
+                16,
+                -14,
+                25,
+                -7,
+                0
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "anti_cyclic_shift_5",
+                "max_abs_err": 24,
+                "l1_err": 93,
+                "candidate": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ]
+              },
+              "top5": [
+                {
+                  "name": "anti_cyclic_shift_5",
+                  "max_abs_err": 24,
+                  "l1_err": 93,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "rot_left_3",
+                  "max_abs_err": 24,
+                  "l1_err": 93,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_1",
+                  "max_abs_err": 25,
+                  "l1_err": 93,
+                  "candidate": [
+                    0,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_2",
+                  "max_abs_err": 25,
+                  "l1_err": 93,
+                  "candidate": [
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_3",
+                  "max_abs_err": 25,
+                  "l1_err": 93,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 25,
+            "after_compress_l1_err_to_input": 95
+          }
+        },
+        {
+          "name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 2!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                18,
+                -20,
+                0,
+                13,
+                -16,
+                24,
+                -21,
+                20
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "anti_cyclic_shift_4",
+                "max_abs_err": 23,
+                "l1_err": 131,
+                "candidate": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ]
+              },
+              "top5": [
+                {
+                  "name": "anti_cyclic_shift_4",
+                  "max_abs_err": 23,
+                  "l1_err": 131,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "rot_left_4",
+                  "max_abs_err": 23,
+                  "l1_err": 131,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_2",
+                  "max_abs_err": 24,
+                  "l1_err": 131,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_6",
+                  "max_abs_err": 24,
+                  "l1_err": 131,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_0",
+                  "max_abs_err": 24,
+                  "l1_err": 131,
+                  "candidate": [
+                    0,
+                    -1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 24,
+            "after_compress_l1_err_to_input": 133
+          }
+        },
+        {
+          "name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 2!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                20,
+                5,
+                -24,
+                -1,
+                -19,
+                -14,
+                -12,
+                8
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "anti_cyclic_shift_7",
+                "max_abs_err": 23,
+                "l1_err": 102,
+                "candidate": [
+                  0,
+                  0,
+                  -1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              },
+              "top5": [
+                {
+                  "name": "anti_cyclic_shift_7",
+                  "max_abs_err": 23,
+                  "l1_err": 102,
+                  "candidate": [
+                    0,
+                    0,
+                    -1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "neg_rot_left_1",
+                  "max_abs_err": 23,
+                  "l1_err": 102,
+                  "candidate": [
+                    0,
+                    0,
+                    -1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_4",
+                  "max_abs_err": 24,
+                  "l1_err": 102,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_0",
+                  "max_abs_err": 24,
+                  "l1_err": 102,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    -1,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_1",
+                  "max_abs_err": 24,
+                  "l1_err": 102,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    -1,
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 24,
+            "after_compress_l1_err_to_input": 104
+          }
+        },
+        {
+          "name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 2!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                18,
+                -14,
+                3,
+                24,
+                12,
+                -16,
+                -11,
+                14
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "neg_anti_cyclic_shift_4",
+                "max_abs_err": 20,
+                "l1_err": 106,
+                "candidate": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  3,
+                  2,
+                  1,
+                  0
+                ]
+              },
+              "top5": [
+                {
+                  "name": "neg_anti_cyclic_shift_4",
+                  "max_abs_err": 20,
+                  "l1_err": 106,
+                  "candidate": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    3,
+                    2,
+                    1,
+                    0
+                  ]
+                },
+                {
+                  "name": "rot_left_4",
+                  "max_abs_err": 20,
+                  "l1_err": 106,
+                  "candidate": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    -3,
+                    -2,
+                    -1,
+                    0
+                  ]
+                },
+                {
+                  "name": "rot_left_3",
+                  "max_abs_err": 21,
+                  "l1_err": 100,
+                  "candidate": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    -3,
+                    -2,
+                    -1
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_3",
+                  "max_abs_err": 21,
+                  "l1_err": 108,
+                  "candidate": [
+                    2,
+                    3,
+                    4,
+                    3,
+                    2,
+                    1,
+                    0,
+                    -1
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_5",
+                  "max_abs_err": 21,
+                  "l1_err": 108,
+                  "candidate": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    3,
+                    2,
+                    1
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 24,
+            "after_compress_l1_err_to_input": 114
+          }
+        },
+        {
+          "name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 2!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                -5,
+                20,
+                -17,
+                -13,
+                -20,
+                -12,
+                17,
+                -10
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "neg_anti_cyclic_shift_5",
+                "max_abs_err": 19,
+                "l1_err": 108,
+                "candidate": [
+                  -1,
+                  1,
+                  -1,
+                  1,
+                  -1,
+                  -1,
+                  1,
+                  -1
+                ]
+              },
+              "top5": [
+                {
+                  "name": "neg_anti_cyclic_shift_5",
+                  "max_abs_err": 19,
+                  "l1_err": 108,
+                  "candidate": [
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    -1,
+                    1,
+                    -1
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_6",
+                  "max_abs_err": 19,
+                  "l1_err": 110,
+                  "candidate": [
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    1,
+                    -1
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_7",
+                  "max_abs_err": 19,
+                  "l1_err": 112,
+                  "candidate": [
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    -1
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_0",
+                  "max_abs_err": 19,
+                  "l1_err": 114,
+                  "candidate": [
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1
+                  ]
+                },
+                {
+                  "name": "neg_identity",
+                  "max_abs_err": 19,
+                  "l1_err": 114,
+                  "candidate": [
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 21,
+            "after_compress_l1_err_to_input": 114
+          }
+        },
+        {
+          "name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 2!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                13,
+                -17,
+                -17,
+                -11,
+                6,
+                16,
+                11,
+                -22
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "neg_reverse",
+                "max_abs_err": 17,
+                "l1_err": 97,
+                "candidate": [
+                  4,
+                  -3,
+                  0,
+                  1,
+                  -2,
+                  5,
+                  0,
+                  -7
+                ]
+              },
+              "top5": [
+                {
+                  "name": "neg_reverse",
+                  "max_abs_err": 17,
+                  "l1_err": 97,
+                  "candidate": [
+                    4,
+                    -3,
+                    0,
+                    1,
+                    -2,
+                    5,
+                    0,
+                    -7
+                  ]
+                },
+                {
+                  "name": "rot_left_3",
+                  "max_abs_err": 17,
+                  "l1_err": 105,
+                  "candidate": [
+                    2,
+                    -1,
+                    0,
+                    3,
+                    -4,
+                    7,
+                    0,
+                    -5
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_0",
+                  "max_abs_err": 18,
+                  "l1_err": 97,
+                  "candidate": [
+                    7,
+                    0,
+                    -5,
+                    2,
+                    -1,
+                    0,
+                    3,
+                    -4
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_5",
+                  "max_abs_err": 18,
+                  "l1_err": 97,
+                  "candidate": [
+                    -2,
+                    1,
+                    0,
+                    -3,
+                    4,
+                    7,
+                    0,
+                    -5
+                  ]
+                },
+                {
+                  "name": "identity",
+                  "max_abs_err": 18,
+                  "l1_err": 97,
+                  "candidate": [
+                    7,
+                    0,
+                    -5,
+                    2,
+                    -1,
+                    0,
+                    3,
+                    -4
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 18,
+            "after_compress_l1_err_to_input": 97
+          }
+        }
+      ],
+      "context_init": {
+        "ok": true,
+        "error": null
+      }
+    },
+    {
+      "param_set": "depth1_first60_scale50",
+      "cfg_kwargs_requested": {
+        "ring_dim": 16384,
+        "multiplicative_depth": 1,
+        "first_mod_size": 60,
+        "scaling_mod_size": 50,
+        "num_large_digits": 2,
+        "batch_size": 8,
+        "devices": [
+          0
+        ],
+        "plaintext_autoload": true,
+        "ciphertext_autoload": true,
+        "with_mult_key": true
+      },
+      "rows": [
+        {
+          "name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 3!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                -19,
+                -9,
+                25,
+                22,
+                11,
+                -9,
+                -4,
+                -18
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "anti_cyclic_shift_0",
+                "max_abs_err": 25,
+                "l1_err": 117,
+                "candidate": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              },
+              "top5": [
+                {
+                  "name": "anti_cyclic_shift_0",
+                  "max_abs_err": 25,
+                  "l1_err": 117,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_1",
+                  "max_abs_err": 25,
+                  "l1_err": 117,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_2",
+                  "max_abs_err": 25,
+                  "l1_err": 117,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_3",
+                  "max_abs_err": 25,
+                  "l1_err": 117,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_4",
+                  "max_abs_err": 25,
+                  "l1_err": 117,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 25,
+            "after_compress_l1_err_to_input": 117
+          }
+        },
+        {
+          "name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 3!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                3,
+                -18,
+                -15,
+                15,
+                12,
+                13,
+                15,
+                23
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "anti_cyclic_shift_7",
+                "max_abs_err": 22,
+                "l1_err": 113,
+                "candidate": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              },
+              "top5": [
+                {
+                  "name": "anti_cyclic_shift_7",
+                  "max_abs_err": 22,
+                  "l1_err": 113,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "name": "reverse",
+                  "max_abs_err": 22,
+                  "l1_err": 113,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "name": "rot_left_1",
+                  "max_abs_err": 22,
+                  "l1_err": 113,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_0",
+                  "max_abs_err": 23,
+                  "l1_err": 113,
+                  "candidate": [
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_3",
+                  "max_abs_err": 23,
+                  "l1_err": 113,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 23,
+            "after_compress_l1_err_to_input": 113
+          }
+        },
+        {
+          "name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 3!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                18,
+                -1,
+                25,
+                -23,
+                19,
+                -15,
+                11,
+                -4
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "anti_cyclic_shift_1",
+                "max_abs_err": 24,
+                "l1_err": 115,
+                "candidate": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              },
+              "top5": [
+                {
+                  "name": "anti_cyclic_shift_1",
+                  "max_abs_err": 24,
+                  "l1_err": 115,
+                  "candidate": [
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "rot_left_7",
+                  "max_abs_err": 24,
+                  "l1_err": 115,
+                  "candidate": [
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_3",
+                  "max_abs_err": 25,
+                  "l1_err": 115,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_5",
+                  "max_abs_err": 25,
+                  "l1_err": 115,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_0",
+                  "max_abs_err": 25,
+                  "l1_err": 115,
+                  "candidate": [
+                    0,
+                    -1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 25,
+            "after_compress_l1_err_to_input": 117
+          }
+        },
+        {
+          "name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 3!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                -24,
+                -21,
+                5,
+                0,
+                -4,
+                -9,
+                -20,
+                -3
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "anti_cyclic_shift_5",
+                "max_abs_err": 23,
+                "l1_err": 85,
+                "candidate": [
+                  -1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              },
+              "top5": [
+                {
+                  "name": "anti_cyclic_shift_5",
+                  "max_abs_err": 23,
+                  "l1_err": 85,
+                  "candidate": [
+                    -1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "neg_rot_left_3",
+                  "max_abs_err": 23,
+                  "l1_err": 85,
+                  "candidate": [
+                    -1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_6",
+                  "max_abs_err": 24,
+                  "l1_err": 85,
+                  "candidate": [
+                    0,
+                    -1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_1",
+                  "max_abs_err": 24,
+                  "l1_err": 85,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    -1,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_2",
+                  "max_abs_err": 24,
+                  "l1_err": 85,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    -1,
+                    0,
+                    0
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 24,
+            "after_compress_l1_err_to_input": 87
+          }
+        },
+        {
+          "name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 3!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                6,
+                -3,
+                -2,
+                -14,
+                0,
+                25,
+                -15,
+                24
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "neg_anti_cyclic_shift_7",
+                "max_abs_err": 22,
+                "l1_err": 91,
+                "candidate": [
+                  -2,
+                  -1,
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  3
+                ]
+              },
+              "top5": [
+                {
+                  "name": "neg_anti_cyclic_shift_7",
+                  "max_abs_err": 22,
+                  "l1_err": 91,
+                  "candidate": [
+                    -2,
+                    -1,
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    3
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_6",
+                  "max_abs_err": 22,
+                  "l1_err": 93,
+                  "candidate": [
+                    -1,
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    3,
+                    2
+                  ]
+                },
+                {
+                  "name": "neg_rot_left_3",
+                  "max_abs_err": 23,
+                  "l1_err": 85,
+                  "candidate": [
+                    0,
+                    -1,
+                    -2,
+                    -3,
+                    -4,
+                    3,
+                    2,
+                    1
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_0",
+                  "max_abs_err": 23,
+                  "l1_err": 87,
+                  "candidate": [
+                    -3,
+                    -2,
+                    -1,
+                    0,
+                    1,
+                    2,
+                    3,
+                    4
+                  ]
+                },
+                {
+                  "name": "identity",
+                  "max_abs_err": 23,
+                  "l1_err": 87,
+                  "candidate": [
+                    -3,
+                    -2,
+                    -1,
+                    0,
+                    1,
+                    2,
+                    3,
+                    4
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 23,
+            "after_compress_l1_err_to_input": 87
+          }
+        },
+        {
+          "name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 3!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                24,
+                -22,
+                5,
+                -24,
+                2,
+                5,
+                -16,
+                22
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "anti_cyclic_shift_5",
+                "max_abs_err": 23,
+                "l1_err": 112,
+                "candidate": [
+                  1,
+                  -1,
+                  1,
+                  -1,
+                  1,
+                  1,
+                  -1,
+                  1
+                ]
+              },
+              "top5": [
+                {
+                  "name": "anti_cyclic_shift_5",
+                  "max_abs_err": 23,
+                  "l1_err": 112,
+                  "candidate": [
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    1,
+                    -1,
+                    1
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_4",
+                  "max_abs_err": 23,
+                  "l1_err": 114,
+                  "candidate": [
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    -1,
+                    1,
+                    -1,
+                    1
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_6",
+                  "max_abs_err": 23,
+                  "l1_err": 114,
+                  "candidate": [
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    -1,
+                    1
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_7",
+                  "max_abs_err": 23,
+                  "l1_err": 116,
+                  "candidate": [
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    1
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_0",
+                  "max_abs_err": 23,
+                  "l1_err": 118,
+                  "candidate": [
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 23,
+            "after_compress_l1_err_to_input": 118
+          }
+        },
+        {
+          "name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 3!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                2,
+                9,
+                -11,
+                -1,
+                10,
+                -20,
+                9,
+                16
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "neg_rot_left_3",
+                "max_abs_err": 13,
+                "l1_err": 64,
+                "candidate": [
+                  -2,
+                  1,
+                  0,
+                  -3,
+                  4,
+                  -7,
+                  0,
+                  5
+                ]
+              },
+              "top5": [
+                {
+                  "name": "neg_rot_left_3",
+                  "max_abs_err": 13,
+                  "l1_err": 64,
+                  "candidate": [
+                    -2,
+                    1,
+                    0,
+                    -3,
+                    4,
+                    -7,
+                    0,
+                    5
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_5",
+                  "max_abs_err": 14,
+                  "l1_err": 72,
+                  "candidate": [
+                    2,
+                    -1,
+                    0,
+                    3,
+                    -4,
+                    -7,
+                    0,
+                    5
+                  ]
+                },
+                {
+                  "name": "reverse",
+                  "max_abs_err": 15,
+                  "l1_err": 64,
+                  "candidate": [
+                    -4,
+                    3,
+                    0,
+                    -1,
+                    2,
+                    -5,
+                    0,
+                    7
+                  ]
+                },
+                {
+                  "name": "rot_left_2",
+                  "max_abs_err": 16,
+                  "l1_err": 66,
+                  "candidate": [
+                    -5,
+                    2,
+                    -1,
+                    0,
+                    3,
+                    -4,
+                    7,
+                    0
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_6",
+                  "max_abs_err": 16,
+                  "l1_err": 80,
+                  "candidate": [
+                    -5,
+                    2,
+                    -1,
+                    0,
+                    3,
+                    -4,
+                    -7,
+                    0
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 20,
+            "after_compress_l1_err_to_input": 80
+          }
+        }
+      ],
+      "context_init": {
+        "ok": true,
+        "error": null
+      }
+    },
+    {
+      "param_set": "default_depth2_first55_scale50",
+      "cfg_kwargs_requested": {
+        "ring_dim": 16384,
+        "multiplicative_depth": 2,
+        "first_mod_size": 55,
+        "scaling_mod_size": 50,
+        "num_large_digits": 2,
+        "batch_size": 8,
+        "devices": [
+          0
+        ],
+        "plaintext_autoload": true,
+        "ciphertext_autoload": true,
+        "with_mult_key": true
+      },
+      "rows": [
+        {
+          "name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 4!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                1,
+                8,
+                -11,
+                -10,
+                -22,
+                14,
+                -7,
+                13
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "anti_cyclic_shift_0",
+                "max_abs_err": 22,
+                "l1_err": 86,
+                "candidate": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              },
+              "top5": [
+                {
+                  "name": "anti_cyclic_shift_0",
+                  "max_abs_err": 22,
+                  "l1_err": 86,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_1",
+                  "max_abs_err": 22,
+                  "l1_err": 86,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_2",
+                  "max_abs_err": 22,
+                  "l1_err": 86,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_3",
+                  "max_abs_err": 22,
+                  "l1_err": 86,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_4",
+                  "max_abs_err": 22,
+                  "l1_err": 86,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 22,
+            "after_compress_l1_err_to_input": 86
+          }
+        },
+        {
+          "name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 4!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                8,
+                -11,
+                -23,
+                -8,
+                12,
+                -24,
+                -2,
+                -15
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "neg_anti_cyclic_shift_5",
+                "max_abs_err": 23,
+                "l1_err": 102,
+                "candidate": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -1,
+                  0,
+                  0
+                ]
+              },
+              "top5": [
+                {
+                  "name": "neg_anti_cyclic_shift_5",
+                  "max_abs_err": 23,
+                  "l1_err": 102,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    -1,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "neg_rot_left_3",
+                  "max_abs_err": 23,
+                  "l1_err": 102,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    -1,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_0",
+                  "max_abs_err": 24,
+                  "l1_err": 102,
+                  "candidate": [
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_4",
+                  "max_abs_err": 24,
+                  "l1_err": 102,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "identity",
+                  "max_abs_err": 24,
+                  "l1_err": 102,
+                  "candidate": [
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 24,
+            "after_compress_l1_err_to_input": 102
+          }
+        },
+        {
+          "name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 4!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                -8,
+                -1,
+                -10,
+                -4,
+                -22,
+                -13,
+                0,
+                14
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "neg_anti_cyclic_shift_3",
+                "max_abs_err": 21,
+                "l1_err": 71,
+                "candidate": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  -1,
+                  0,
+                  0,
+                  0
+                ]
+              },
+              "top5": [
+                {
+                  "name": "neg_anti_cyclic_shift_3",
+                  "max_abs_err": 21,
+                  "l1_err": 71,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    -1,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "neg_rot_left_5",
+                  "max_abs_err": 21,
+                  "l1_err": 71,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    -1,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_6",
+                  "max_abs_err": 22,
+                  "l1_err": 71,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_7",
+                  "max_abs_err": 22,
+                  "l1_err": 71,
+                  "candidate": [
+                    -1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_0",
+                  "max_abs_err": 22,
+                  "l1_err": 71,
+                  "candidate": [
+                    0,
+                    -1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 22,
+            "after_compress_l1_err_to_input": 73
+          }
+        },
+        {
+          "name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 4!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                5,
+                7,
+                25,
+                -19,
+                -14,
+                19,
+                25,
+                8
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "anti_cyclic_shift_2",
+                "max_abs_err": 25,
+                "l1_err": 121,
+                "candidate": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ]
+              },
+              "top5": [
+                {
+                  "name": "anti_cyclic_shift_2",
+                  "max_abs_err": 25,
+                  "l1_err": 121,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_3",
+                  "max_abs_err": 25,
+                  "l1_err": 121,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0
+                  ]
+                },
+                {
+                  "name": "anti_cyclic_shift_4",
+                  "max_abs_err": 25,
+                  "l1_err": 121,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_0",
+                  "max_abs_err": 25,
+                  "l1_err": 121,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    -1,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_1",
+                  "max_abs_err": 25,
+                  "l1_err": 121,
+                  "candidate": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    -1,
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 25,
+            "after_compress_l1_err_to_input": 123
+          }
+        },
+        {
+          "name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 4!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                18,
+                1,
+                -1,
+                20,
+                8,
+                1,
+                22,
+                -12
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "neg_anti_cyclic_shift_6",
+                "max_abs_err": 19,
+                "l1_err": 81,
+                "candidate": [
+                  -1,
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  3,
+                  2
+                ]
+              },
+              "top5": [
+                {
+                  "name": "neg_anti_cyclic_shift_6",
+                  "max_abs_err": 19,
+                  "l1_err": 81,
+                  "candidate": [
+                    -1,
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    3,
+                    2
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_5",
+                  "max_abs_err": 20,
+                  "l1_err": 77,
+                  "candidate": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    3,
+                    2,
+                    1
+                  ]
+                },
+                {
+                  "name": "rot_left_1",
+                  "max_abs_err": 20,
+                  "l1_err": 77,
+                  "candidate": [
+                    -2,
+                    -1,
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    -3
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_7",
+                  "max_abs_err": 20,
+                  "l1_err": 83,
+                  "candidate": [
+                    -2,
+                    -1,
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    3
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_4",
+                  "max_abs_err": 21,
+                  "l1_err": 77,
+                  "candidate": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    3,
+                    2,
+                    1,
+                    0
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 21,
+            "after_compress_l1_err_to_input": 87
+          }
+        },
+        {
+          "name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 4!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                18,
+                12,
+                -17,
+                10,
+                18,
+                -5,
+                -14,
+                -1
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "anti_cyclic_shift_0",
+                "max_abs_err": 18,
+                "l1_err": 95,
+                "candidate": [
+                  1,
+                  -1,
+                  1,
+                  -1,
+                  1,
+                  -1,
+                  1,
+                  -1
+                ]
+              },
+              "top5": [
+                {
+                  "name": "anti_cyclic_shift_0",
+                  "max_abs_err": 18,
+                  "l1_err": 95,
+                  "candidate": [
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1
+                  ]
+                },
+                {
+                  "name": "identity",
+                  "max_abs_err": 18,
+                  "l1_err": 95,
+                  "candidate": [
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_6",
+                  "max_abs_err": 18,
+                  "l1_err": 95,
+                  "candidate": [
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    -1,
+                    1
+                  ]
+                },
+                {
+                  "name": "neg_reverse",
+                  "max_abs_err": 18,
+                  "l1_err": 95,
+                  "candidate": [
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1
+                  ]
+                },
+                {
+                  "name": "neg_rot_left_1",
+                  "max_abs_err": 18,
+                  "l1_err": 95,
+                  "candidate": [
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1,
+                    1,
+                    -1
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 18,
+            "after_compress_l1_err_to_input": 95
+          }
+        },
+        {
+          "name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "encrypt": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt": {
+            "direct": {
+              "ok": false,
+              "value": null,
+              "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 4!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+            },
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "after_compress": {
+              "ok": true,
+              "value": [
+                -7,
+                -22,
+                -18,
+                -4,
+                8,
+                5,
+                12,
+                25
+              ],
+              "error": null
+            }
+          },
+          "classification": {
+            "direct": {
+              "best_match": null,
+              "exact_identity": false,
+              "best_max_abs_err": null,
+              "best_l1_err": null
+            },
+            "after_compress": {
+              "exact_identity": false,
+              "best_match": {
+                "name": "rot_left_1",
+                "max_abs_err": 20,
+                "l1_err": 91,
+                "candidate": [
+                  0,
+                  -5,
+                  2,
+                  -1,
+                  0,
+                  3,
+                  -4,
+                  7
+                ]
+              },
+              "top5": [
+                {
+                  "name": "rot_left_1",
+                  "max_abs_err": 20,
+                  "l1_err": 91,
+                  "candidate": [
+                    0,
+                    -5,
+                    2,
+                    -1,
+                    0,
+                    3,
+                    -4,
+                    7
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_5",
+                  "max_abs_err": 21,
+                  "l1_err": 111,
+                  "candidate": [
+                    2,
+                    -1,
+                    0,
+                    3,
+                    -4,
+                    -7,
+                    0,
+                    5
+                  ]
+                },
+                {
+                  "name": "neg_anti_cyclic_shift_0",
+                  "max_abs_err": 23,
+                  "l1_err": 95,
+                  "candidate": [
+                    -7,
+                    0,
+                    5,
+                    -2,
+                    1,
+                    0,
+                    -3,
+                    4
+                  ]
+                },
+                {
+                  "name": "neg_identity",
+                  "max_abs_err": 23,
+                  "l1_err": 95,
+                  "candidate": [
+                    -7,
+                    0,
+                    5,
+                    -2,
+                    1,
+                    0,
+                    -3,
+                    4
+                  ]
+                },
+                {
+                  "name": "neg_rot_left_0",
+                  "max_abs_err": 23,
+                  "l1_err": 95,
+                  "candidate": [
+                    -7,
+                    0,
+                    5,
+                    -2,
+                    1,
+                    0,
+                    -3,
+                    4
+                  ]
+                }
+              ]
+            }
+          },
+          "errors": {
+            "direct_max_abs_err_to_input": null,
+            "direct_l1_err_to_input": null,
+            "after_compress_max_abs_err_to_input": 29,
+            "after_compress_l1_err_to_input": 107
+          }
+        }
+      ],
+      "context_init": {
+        "ok": true,
+        "error": null
+      }
+    }
+  ],
+  "checks": {
+    "all_encrypt_calls_ok（所有 encrypt_coeff_row_i64 调用成功）": true,
+    "all_after_compress_decrypt_calls_ok（所有 compress 后 decrypt 调用成功）": true,
+    "all_after_compress_roundtrip_exact（所有 compress 后 roundtrip 精确）": false
+  },
+  "diagnostic_summary": {
+    "best_matches_after_compress": [
+      {
+        "param_set": "default_depth2_first60_scale50",
+        "name": "zero8",
+        "best_after_compress": {
+          "name": "anti_cyclic_shift_0",
+          "max_abs_err": 25,
+          "l1_err": 91,
+          "candidate": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "decoded_after_compress": [
+          0,
+          -6,
+          -7,
+          25,
+          18,
+          -17,
+          1,
+          17
+        ],
+        "input_row": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "param_set": "default_depth2_first60_scale50",
+        "name": "basis0",
+        "best_after_compress": {
+          "name": "anti_cyclic_shift_2",
+          "max_abs_err": 21,
+          "l1_err": 117,
+          "candidate": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "decoded_after_compress": [
+          -16,
+          -21,
+          16,
+          -14,
+          -21,
+          12,
+          14,
+          4
+        ],
+        "input_row": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "param_set": "default_depth2_first60_scale50",
+        "name": "basis1",
+        "best_after_compress": {
+          "name": "neg_anti_cyclic_shift_7",
+          "max_abs_err": 22,
+          "l1_err": 124,
+          "candidate": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "decoded_after_compress": [
+          23,
+          -19,
+          7,
+          21,
+          -19,
+          20,
+          -8,
+          8
+        ],
+        "input_row": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "param_set": "default_depth2_first60_scale50",
+        "name": "basis3",
+        "best_after_compress": {
+          "name": "anti_cyclic_shift_2",
+          "max_abs_err": 24,
+          "l1_err": 105,
+          "candidate": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        "decoded_after_compress": [
+          -6,
+          -24,
+          -23,
+          -7,
+          -1,
+          20,
+          24,
+          -1
+        ],
+        "input_row": [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "param_set": "default_depth2_first60_scale50",
+        "name": "small_mixed",
+        "best_after_compress": {
+          "name": "rot_left_7",
+          "max_abs_err": 24,
+          "l1_err": 135,
+          "candidate": [
+            4,
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "decoded_after_compress": [
+          25,
+          7,
+          12,
+          -22,
+          -20,
+          25,
+          -16,
+          -4
+        ],
+        "input_row": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "param_set": "default_depth2_first60_scale50",
+        "name": "alternating",
+        "best_after_compress": {
+          "name": "anti_cyclic_shift_0",
+          "max_abs_err": 21,
+          "l1_err": 62,
+          "candidate": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ]
+        },
+        "decoded_after_compress": [
+          22,
+          1,
+          -2,
+          -9,
+          8,
+          -14,
+          -3,
+          -5
+        ],
+        "input_row": [
+          1,
+          -1,
+          1,
+          -1,
+          1,
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "param_set": "default_depth2_first60_scale50",
+        "name": "large_small_mix",
+        "best_after_compress": {
+          "name": "neg_anti_cyclic_shift_6",
+          "max_abs_err": 19,
+          "l1_err": 88,
+          "candidate": [
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4,
+            -7,
+            0
+          ]
+        },
+        "decoded_after_compress": [
+          -1,
+          21,
+          7,
+          0,
+          -14,
+          11,
+          -24,
+          8
+        ],
+        "input_row": [
+          7,
+          0,
+          -5,
+          2,
+          -1,
+          0,
+          3,
+          -4
+        ]
+      },
+      {
+        "param_set": "depth0_first60_scale50",
+        "name": "zero8",
+        "best_after_compress": {
+          "name": "anti_cyclic_shift_0",
+          "max_abs_err": 24,
+          "l1_err": 126,
+          "candidate": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "decoded_after_compress": [
+          -17,
+          -24,
+          15,
+          15,
+          -19,
+          -14,
+          7,
+          15
+        ],
+        "input_row": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "param_set": "depth0_first60_scale50",
+        "name": "basis0",
+        "best_after_compress": {
+          "name": "anti_cyclic_shift_5",
+          "max_abs_err": 24,
+          "l1_err": 93,
+          "candidate": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        "decoded_after_compress": [
+          -17,
+          13,
+          2,
+          16,
+          -14,
+          25,
+          -7,
+          0
+        ],
+        "input_row": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "param_set": "depth0_first60_scale50",
+        "name": "basis1",
+        "best_after_compress": {
+          "name": "anti_cyclic_shift_4",
+          "max_abs_err": 23,
+          "l1_err": 131,
+          "candidate": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        "decoded_after_compress": [
+          18,
+          -20,
+          0,
+          13,
+          -16,
+          24,
+          -21,
+          20
+        ],
+        "input_row": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "param_set": "depth0_first60_scale50",
+        "name": "basis3",
+        "best_after_compress": {
+          "name": "anti_cyclic_shift_7",
+          "max_abs_err": 23,
+          "l1_err": 102,
+          "candidate": [
+            0,
+            0,
+            -1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "decoded_after_compress": [
+          20,
+          5,
+          -24,
+          -1,
+          -19,
+          -14,
+          -12,
+          8
+        ],
+        "input_row": [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "param_set": "depth0_first60_scale50",
+        "name": "small_mixed",
+        "best_after_compress": {
+          "name": "neg_anti_cyclic_shift_4",
+          "max_abs_err": 20,
+          "l1_err": 106,
+          "candidate": [
+            1,
+            2,
+            3,
+            4,
+            3,
+            2,
+            1,
+            0
+          ]
+        },
+        "decoded_after_compress": [
+          18,
+          -14,
+          3,
+          24,
+          12,
+          -16,
+          -11,
+          14
+        ],
+        "input_row": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "param_set": "depth0_first60_scale50",
+        "name": "alternating",
+        "best_after_compress": {
+          "name": "neg_anti_cyclic_shift_5",
+          "max_abs_err": 19,
+          "l1_err": 108,
+          "candidate": [
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            -1,
+            1,
+            -1
+          ]
+        },
+        "decoded_after_compress": [
+          -5,
+          20,
+          -17,
+          -13,
+          -20,
+          -12,
+          17,
+          -10
+        ],
+        "input_row": [
+          1,
+          -1,
+          1,
+          -1,
+          1,
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "param_set": "depth0_first60_scale50",
+        "name": "large_small_mix",
+        "best_after_compress": {
+          "name": "neg_reverse",
+          "max_abs_err": 17,
+          "l1_err": 97,
+          "candidate": [
+            4,
+            -3,
+            0,
+            1,
+            -2,
+            5,
+            0,
+            -7
+          ]
+        },
+        "decoded_after_compress": [
+          13,
+          -17,
+          -17,
+          -11,
+          6,
+          16,
+          11,
+          -22
+        ],
+        "input_row": [
+          7,
+          0,
+          -5,
+          2,
+          -1,
+          0,
+          3,
+          -4
+        ]
+      },
+      {
+        "param_set": "depth1_first60_scale50",
+        "name": "zero8",
+        "best_after_compress": {
+          "name": "anti_cyclic_shift_0",
+          "max_abs_err": 25,
+          "l1_err": 117,
+          "candidate": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "decoded_after_compress": [
+          -19,
+          -9,
+          25,
+          22,
+          11,
+          -9,
+          -4,
+          -18
+        ],
+        "input_row": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "param_set": "depth1_first60_scale50",
+        "name": "basis0",
+        "best_after_compress": {
+          "name": "anti_cyclic_shift_7",
+          "max_abs_err": 22,
+          "l1_err": 113,
+          "candidate": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ]
+        },
+        "decoded_after_compress": [
+          3,
+          -18,
+          -15,
+          15,
+          12,
+          13,
+          15,
+          23
+        ],
+        "input_row": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "param_set": "depth1_first60_scale50",
+        "name": "basis1",
+        "best_after_compress": {
+          "name": "anti_cyclic_shift_1",
+          "max_abs_err": 24,
+          "l1_err": 115,
+          "candidate": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "decoded_after_compress": [
+          18,
+          -1,
+          25,
+          -23,
+          19,
+          -15,
+          11,
+          -4
+        ],
+        "input_row": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "param_set": "depth1_first60_scale50",
+        "name": "basis3",
+        "best_after_compress": {
+          "name": "anti_cyclic_shift_5",
+          "max_abs_err": 23,
+          "l1_err": 85,
+          "candidate": [
+            -1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "decoded_after_compress": [
+          -24,
+          -21,
+          5,
+          0,
+          -4,
+          -9,
+          -20,
+          -3
+        ],
+        "input_row": [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "param_set": "depth1_first60_scale50",
+        "name": "small_mixed",
+        "best_after_compress": {
+          "name": "neg_anti_cyclic_shift_7",
+          "max_abs_err": 22,
+          "l1_err": 91,
+          "candidate": [
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4,
+            3
+          ]
+        },
+        "decoded_after_compress": [
+          6,
+          -3,
+          -2,
+          -14,
+          0,
+          25,
+          -15,
+          24
+        ],
+        "input_row": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "param_set": "depth1_first60_scale50",
+        "name": "alternating",
+        "best_after_compress": {
+          "name": "anti_cyclic_shift_5",
+          "max_abs_err": 23,
+          "l1_err": 112,
+          "candidate": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            1,
+            -1,
+            1
+          ]
+        },
+        "decoded_after_compress": [
+          24,
+          -22,
+          5,
+          -24,
+          2,
+          5,
+          -16,
+          22
+        ],
+        "input_row": [
+          1,
+          -1,
+          1,
+          -1,
+          1,
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "param_set": "depth1_first60_scale50",
+        "name": "large_small_mix",
+        "best_after_compress": {
+          "name": "neg_rot_left_3",
+          "max_abs_err": 13,
+          "l1_err": 64,
+          "candidate": [
+            -2,
+            1,
+            0,
+            -3,
+            4,
+            -7,
+            0,
+            5
+          ]
+        },
+        "decoded_after_compress": [
+          2,
+          9,
+          -11,
+          -1,
+          10,
+          -20,
+          9,
+          16
+        ],
+        "input_row": [
+          7,
+          0,
+          -5,
+          2,
+          -1,
+          0,
+          3,
+          -4
+        ]
+      },
+      {
+        "param_set": "default_depth2_first55_scale50",
+        "name": "zero8",
+        "best_after_compress": {
+          "name": "anti_cyclic_shift_0",
+          "max_abs_err": 22,
+          "l1_err": 86,
+          "candidate": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "decoded_after_compress": [
+          1,
+          8,
+          -11,
+          -10,
+          -22,
+          14,
+          -7,
+          13
+        ],
+        "input_row": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "param_set": "default_depth2_first55_scale50",
+        "name": "basis0",
+        "best_after_compress": {
+          "name": "neg_anti_cyclic_shift_5",
+          "max_abs_err": 23,
+          "l1_err": 102,
+          "candidate": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            -1,
+            0,
+            0
+          ]
+        },
+        "decoded_after_compress": [
+          8,
+          -11,
+          -23,
+          -8,
+          12,
+          -24,
+          -2,
+          -15
+        ],
+        "input_row": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "param_set": "default_depth2_first55_scale50",
+        "name": "basis1",
+        "best_after_compress": {
+          "name": "neg_anti_cyclic_shift_3",
+          "max_abs_err": 21,
+          "l1_err": 71,
+          "candidate": [
+            0,
+            0,
+            0,
+            0,
+            -1,
+            0,
+            0,
+            0
+          ]
+        },
+        "decoded_after_compress": [
+          -8,
+          -1,
+          -10,
+          -4,
+          -22,
+          -13,
+          0,
+          14
+        ],
+        "input_row": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "param_set": "default_depth2_first55_scale50",
+        "name": "basis3",
+        "best_after_compress": {
+          "name": "anti_cyclic_shift_2",
+          "max_abs_err": 25,
+          "l1_err": 121,
+          "candidate": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        "decoded_after_compress": [
+          5,
+          7,
+          25,
+          -19,
+          -14,
+          19,
+          25,
+          8
+        ],
+        "input_row": [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "param_set": "default_depth2_first55_scale50",
+        "name": "small_mixed",
+        "best_after_compress": {
+          "name": "neg_anti_cyclic_shift_6",
+          "max_abs_err": 19,
+          "l1_err": 81,
+          "candidate": [
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4,
+            3,
+            2
+          ]
+        },
+        "decoded_after_compress": [
+          18,
+          1,
+          -1,
+          20,
+          8,
+          1,
+          22,
+          -12
+        ],
+        "input_row": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "param_set": "default_depth2_first55_scale50",
+        "name": "alternating",
+        "best_after_compress": {
+          "name": "anti_cyclic_shift_0",
+          "max_abs_err": 18,
+          "l1_err": 95,
+          "candidate": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ]
+        },
+        "decoded_after_compress": [
+          18,
+          12,
+          -17,
+          10,
+          18,
+          -5,
+          -14,
+          -1
+        ],
+        "input_row": [
+          1,
+          -1,
+          1,
+          -1,
+          1,
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "param_set": "default_depth2_first55_scale50",
+        "name": "large_small_mix",
+        "best_after_compress": {
+          "name": "rot_left_1",
+          "max_abs_err": 20,
+          "l1_err": 91,
+          "candidate": [
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4,
+            7
+          ]
+        },
+        "decoded_after_compress": [
+          -7,
+          -22,
+          -18,
+          -4,
+          8,
+          5,
+          12,
+          25
+        ],
+        "input_row": [
+          7,
+          0,
+          -5,
+          2,
+          -1,
+          0,
+          3,
+          -4
+        ]
+      }
+    ],
+    "interpretation": {
+      "if_best_match_identity_small_error": "Likely rounding/noise/scale issue; inspect coefficient plaintext scale and modulus compression.",
+      "if_best_match_rotation_or_reverse": "Likely coefficient order / automorphism / anti-cyclic placement issue.",
+      "if_best_match_large_error_for_zero": "Encryption/decryption path is semantically broken even for zero.",
+      "if_zero_exact_but_basis_wrong": "Likely placement/encoding convention bug.",
+      "if_all_exact": "Real coefficient-row encryption baseline is fixed; proceed to logical-n C-MT real-design work."
+    },
+    "next_step": "WP4-Y2b",
+    "zh": "Y2a 先分类失败形态，再决定是修 encode/decode、修 compress/scale，还是绕开 OpenFHE high-level coefficient encrypt。"
+  }
+}

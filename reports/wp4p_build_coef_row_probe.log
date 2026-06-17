@@ -1,0 +1,12 @@
+[ 50%] Built target fideslib_gpt_minimal
+[ 66%] Building CXX object CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘CiphertextHandle FidesCKKSContext::encrypt_coeff_row_i64(const std::vector<long int>&)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:147:24: error: ‘using element_type = class fideslib::CryptoContextImpl<unsigned int>’ {aka ‘class fideslib::CryptoContextImpl<unsigned int>’} has no member named ‘MakeCoefPackedPlaintext’; did you mean ‘MakeCKKSPackedPlaintext’?
+  147 |         auto pt = cc_->MakeCoefPackedPlaintext(coeffs);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~
+      |                        MakeCKKSPackedPlaintext
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘std::vector<long int> FidesCKKSContext::decrypt_coeff_row_i64(CiphertextHandle&, std::size_t)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:167:40: error: ‘using element_type = class fideslib::PlaintextImpl’ {aka ‘class fideslib::PlaintextImpl’} has no member named ‘GetCoefPackedValue’; did you mean ‘GetCKKSPackedValue’?
+  167 |         const auto& vals_ref = pt_dec->GetCoefPackedValue();
+      |                                        ^~~~~~~~~~~~~~~~~~
+      |                                        GetCKKSPackedValue

@@ -14,6 +14,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <map>
 #include "/root/fideslib/deps/openfhe-install/include/openfhe/pke/openfhe.h"
 #ifdef duration
 #undef duration
@@ -48,18 +49,12 @@ private:
 class FidesCKKSContext;
 
     void require_valid() const {
-    // Cache CPU/OpenFHE template metadata for GPU-only chained component matmul.
-    // GPU-only outputs intentionally have cpu.reset(), but the next layer still needs
-    // modulus/slot/template metadata for raw-weight construction and optional final copyback.
-    std::optional<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>> g_gpu_chain_cpu_template;
-    std::vector<std::uint64_t> g_gpu_chain_moduli;
-    std::size_t g_gpu_chain_slots = 0;
-
-
         if (!ct_) {
             throw std::runtime_error("CiphertextHandle is empty");
         }
-    }
+    
+
+}
 
     Ciphertext<DCRTPoly> ct_;
 };
@@ -146,7 +141,940 @@ public:
         return CiphertextHandle(ct);
     }
 
-    std::vector<double> decrypt(CiphertextHandle& h, std::size_t logical_length = 0) {
+
+    std::vector<std::vector<std::uint64_t>> export_secret_key_coeff_u64(std::size_t coeff_count = 0) {
+        require_ready();
+
+        using OpenFHEPrivateKey = lbcrypto::PrivateKey<lbcrypto::DCRTPoly>;
+
+        auto* native_sk = std::any_cast<OpenFHEPrivateKey>(&sk_->pimpl);
+
+        if (native_sk == nullptr || !(*native_sk)) {
+            throw std::runtime_error(
+                "export_secret_key_coeff_u64(): sk_->pimpl is not lbcrypto::PrivateKey<lbcrypto::DCRTPoly>"
+            );
+        }
+
+        auto sk_poly = (*native_sk)->GetPrivateElement();
+        sk_poly.SetFormat(COEFFICIENT);
+
+        const std::size_t num_towers = sk_poly.GetNumOfElements();
+        if (num_towers == 0) {
+            throw std::runtime_error("export_secret_key_coeff_u64(): secret key has zero RNS towers");
+        }
+
+        const std::size_t ring_dim = sk_poly.GetElementAtIndex(0).GetLength();
+
+        if (coeff_count == 0 || coeff_count > ring_dim) {
+            coeff_count = ring_dim;
+        }
+
+        std::vector<std::vector<std::uint64_t>> out;
+        out.reserve(num_towers);
+
+        for (std::size_t t = 0; t < num_towers; ++t) {
+            const auto& tower = sk_poly.GetElementAtIndex(t);
+
+            std::vector<std::uint64_t> coeffs;
+            coeffs.reserve(coeff_count);
+
+            for (std::size_t i = 0; i < coeff_count; ++i) {
+                coeffs.push_back(static_cast<std::uint64_t>(tower[i].ConvertToInt()));
+            }
+
+            out.push_back(std::move(coeffs));
+        }
+
+        return out;
+    }
+
+    CiphertextHandle encrypt_coeff_row_i64(const std::vector<std::int64_t>& coeffs) {
+        require_ready();
+
+        using OpenFHEContext = lbcrypto::CryptoContext<lbcrypto::DCRTPoly>;
+        using OpenFHEPublicKey = lbcrypto::PublicKey<lbcrypto::DCRTPoly>;
+        using OpenFHECiphertext = lbcrypto::Ciphertext<lbcrypto::DCRTPoly>;
+
+        auto* native_cc = std::any_cast<OpenFHEContext>(&cc_->cpu);
+        auto* native_pk = std::any_cast<OpenFHEPublicKey>(&pk_->pimpl);
+
+        if (native_cc == nullptr || !(*native_cc)) {
+            throw std::runtime_error("encrypt_coeff_row_i64(): cc_->cpu is not lbcrypto::CryptoContext<lbcrypto::DCRTPoly>");
+        }
+        if (native_pk == nullptr || !(*native_pk)) {
+            throw std::runtime_error("encrypt_coeff_row_i64(): pk_->pimpl is not lbcrypto::PublicKey<lbcrypto::DCRTPoly>");
+        }
+
+        auto pt = (*native_cc)->MakeCoefPackedPlaintext(coeffs);
+        OpenFHECiphertext native_ct = (*native_cc)->Encrypt(*native_pk, pt);
+
+        auto out = std::make_shared<CiphertextImpl<DCRTPoly>>(CryptoContext<DCRTPoly>(cc_));
+        out->cpu = std::make_any<OpenFHECiphertext>(std::move(native_ct));
+        out->loaded = false;
+        out->parent_context = cc_;
+
+        return CiphertextHandle(out);
+    }
+
+
+    CiphertextHandle wrap_native_openfhe_ciphertext_for_coeff_ops(
+        lbcrypto::Ciphertext<lbcrypto::DCRTPoly> native_ct
+    ) {
+        auto out = std::make_shared<CiphertextImpl<DCRTPoly>>(CryptoContext<DCRTPoly>(cc_));
+        out->cpu = std::make_any<lbcrypto::Ciphertext<lbcrypto::DCRTPoly>>(std::move(native_ct));
+        out->loaded = false;
+        out->parent_context = cc_;
+        return CiphertextHandle(out);
+    }
+
+
+    CiphertextHandle add_coeff_ct(
+        CiphertextHandle& a,
+        CiphertextHandle& b
+    ) {
+        require_ready();
+        a.require_valid();
+        b.require_valid();
+
+        using OpenFHEContext = lbcrypto::CryptoContext<lbcrypto::DCRTPoly>;
+        using OpenFHECiphertext = lbcrypto::Ciphertext<lbcrypto::DCRTPoly>;
+
+        auto* native_cc = std::any_cast<OpenFHEContext>(&cc_->cpu);
+        auto* native_a = std::any_cast<OpenFHECiphertext>(&a.ct_->cpu);
+        auto* native_b = std::any_cast<OpenFHECiphertext>(&b.ct_->cpu);
+
+        if (native_cc == nullptr || !(*native_cc)) {
+            throw std::runtime_error("add_coeff_ct(): cc_->cpu is not native OpenFHE context");
+        }
+        if (native_a == nullptr || !(*native_a) || native_b == nullptr || !(*native_b)) {
+            throw std::runtime_error("add_coeff_ct(): input ciphertext cpu is not native OpenFHE ciphertext");
+        }
+
+        auto out_native = (*native_cc)->EvalAdd(*native_a, *native_b);
+        return wrap_native_openfhe_ciphertext_for_coeff_ops(std::move(out_native));
+    }
+
+
+    CiphertextHandle monomial_mul_coeff_ct(
+        CiphertextHandle& h,
+        std::uint32_t exp
+    ) {
+        require_ready();
+        h.require_valid();
+
+        using OpenFHECiphertext = lbcrypto::Ciphertext<lbcrypto::DCRTPoly>;
+
+        auto* native_ct = std::any_cast<OpenFHECiphertext>(&h.ct_->cpu);
+        if (native_ct == nullptr || !(*native_ct)) {
+            throw std::runtime_error("monomial_mul_coeff_ct(): ciphertext cpu is not native OpenFHE ciphertext");
+        }
+
+        auto out_native = (*native_ct)->Clone();
+
+        auto elems = out_native->GetElements();
+        if (elems.empty()) {
+            throw std::runtime_error("monomial_mul_coeff_ct(): empty ciphertext elements");
+        }
+
+        // Build monomial X^exp modulo X^N + 1 as a DCRTPoly in COEFFICIENT format.
+        // For exp >= N, X^(N+t) = -X^t.
+        auto params = elems[0].GetParams();
+        const std::uint32_t N = elems[0].GetRingDimension();
+
+        std::vector<int64_t> mono(N, 0);
+        std::uint32_t e = exp % (2u * N);
+        bool neg = false;
+        if (e >= N) {
+            e -= N;
+            neg = true;
+        }
+        mono[e] = neg ? -1 : 1;
+
+        lbcrypto::DCRTPoly monomial(params, COEFFICIENT, true);
+        monomial = mono;
+        monomial.SetFormat(EVALUATION);
+
+        for (auto& elem : elems) {
+            elem.SetFormat(EVALUATION);
+            elem *= monomial;
+        }
+
+        out_native->SetElements(std::move(elems));
+        return wrap_native_openfhe_ciphertext_for_coeff_ops(std::move(out_native));
+    }
+
+
+
+
+    py::dict export_component_coeff_matrix_u64(
+        std::vector<CiphertextHandle> rows,
+        std::uint32_t part,
+        std::uint32_t coeff_count = 0
+    ) {
+        require_ready();
+
+        using OpenFHECiphertext = lbcrypto::Ciphertext<lbcrypto::DCRTPoly>;
+
+        if (rows.empty()) {
+            throw std::runtime_error("export_component_coeff_matrix_u64(): rows is empty");
+        }
+
+        py::list py_rows;
+        std::uint32_t expected_towers = 0;
+        std::uint32_t expected_ring_dim = 0;
+        py::list moduli;
+
+        for (std::size_t row_idx = 0; row_idx < rows.size(); ++row_idx) {
+            auto& h = rows[row_idx];
+            h.require_valid();
+
+            auto* native_ct = std::any_cast<OpenFHECiphertext>(&h.ct_->cpu);
+            if (native_ct == nullptr || !(*native_ct)) {
+                throw std::runtime_error("export_component_coeff_matrix_u64(): input is not native OpenFHE ciphertext");
+            }
+
+            const auto& elems = (*native_ct)->GetElements();
+            if (part >= elems.size()) {
+                throw std::runtime_error("export_component_coeff_matrix_u64(): part out of range");
+            }
+
+            auto poly = elems[part];
+            poly.SetFormat(COEFFICIENT);
+
+            const auto& towers = poly.GetAllElements();
+            if (towers.empty()) {
+                throw std::runtime_error("export_component_coeff_matrix_u64(): component has no RNS towers");
+            }
+
+            if (row_idx == 0) {
+                expected_towers = static_cast<std::uint32_t>(towers.size());
+                expected_ring_dim = static_cast<std::uint32_t>(towers[0].GetValues().GetLength());
+
+                for (std::size_t t = 0; t < towers.size(); ++t) {
+                    moduli.append(static_cast<std::uint64_t>(towers[t].GetModulus().ConvertToInt()));
+                }
+
+                if (coeff_count == 0) {
+                    coeff_count = expected_ring_dim;
+                }
+
+                if (coeff_count > expected_ring_dim) {
+                    throw std::runtime_error("export_component_coeff_matrix_u64(): coeff_count exceeds ring dimension");
+                }
+            } else {
+                if (towers.size() != expected_towers) {
+                    throw std::runtime_error("export_component_coeff_matrix_u64(): inconsistent tower count");
+                }
+                if (towers[0].GetValues().GetLength() != expected_ring_dim) {
+                    throw std::runtime_error("export_component_coeff_matrix_u64(): inconsistent ring dimension");
+                }
+            }
+
+            py::list tower_list;
+
+            for (std::size_t t = 0; t < towers.size(); ++t) {
+                const auto& tower = towers[t];
+                const auto& vals = tower.GetValues();
+
+                py::list coeffs;
+                for (std::uint32_t k = 0; k < coeff_count; ++k) {
+                    coeffs.append(static_cast<std::uint64_t>(vals[k].ConvertToInt()));
+                }
+
+                py::dict tower_entry;
+                tower_entry["tower_index"] = static_cast<std::uint32_t>(t);
+                tower_entry["modulus_u64"] = static_cast<std::uint64_t>(tower.GetModulus().ConvertToInt());
+                tower_entry["coeffs_u64"] = coeffs;
+                tower_list.append(tower_entry);
+            }
+
+            py::dict row_entry;
+            row_entry["row_index"] = static_cast<std::uint32_t>(row_idx);
+            row_entry["part"] = part;
+            row_entry["towers"] = tower_list;
+            py_rows.append(row_entry);
+        }
+
+        py::dict out;
+        out["num_rows"] = static_cast<std::uint32_t>(rows.size());
+        out["part"] = part;
+        out["num_towers"] = expected_towers;
+        out["ring_dim"] = expected_ring_dim;
+        out["coeff_count"] = coeff_count;
+        out["moduli_u64"] = moduli;
+        out["rows"] = py_rows;
+        out["format"] = "COEFFICIENT";
+        out["zh"] = "rows × towers × coeffs 的 raw RNS coefficient matrix 导出结果";
+        return out;
+    }
+
+
+    CiphertextHandle import_1part_coeff_u64(
+        CiphertextHandle& template_ct,
+        py::list towers_coeffs
+    ) {
+        require_ready();
+        template_ct.require_valid();
+
+        using OpenFHECiphertext = lbcrypto::Ciphertext<lbcrypto::DCRTPoly>;
+
+        auto* native_template = std::any_cast<OpenFHECiphertext>(&template_ct.ct_->cpu);
+        if (native_template == nullptr || !(*native_template)) {
+            throw std::runtime_error("import_1part_coeff_u64(): template is not native OpenFHE ciphertext");
+        }
+
+        const auto& elems = (*native_template)->GetElements();
+        if (elems.empty()) {
+            throw std::runtime_error("import_1part_coeff_u64(): template has no elements");
+        }
+
+        auto poly_out = elems[0];
+        poly_out.SetFormat(COEFFICIENT);
+        poly_out.SetValuesToZero();
+
+        auto& out_towers = poly_out.GetAllElements();
+
+        if (towers_coeffs.size() > out_towers.size()) {
+            throw std::runtime_error("import_1part_coeff_u64(): too many tower coefficient arrays");
+        }
+
+        for (std::size_t tower_idx = 0; tower_idx < towers_coeffs.size(); ++tower_idx) {
+            py::list coeffs = py::cast<py::list>(towers_coeffs[tower_idx]);
+
+            auto tower = out_towers[tower_idx];
+            tower.SetFormat(COEFFICIENT);
+
+            const std::size_t ring_dim = tower.GetValues().GetLength();
+            if (coeffs.size() > ring_dim) {
+                throw std::runtime_error("import_1part_coeff_u64(): coeff list exceeds ring dimension");
+            }
+
+            const auto modulus = tower.GetModulus();
+            const std::uint64_t modulus_u64 = static_cast<std::uint64_t>(modulus.ConvertToInt());
+
+            lbcrypto::NativeVector vals(static_cast<usint>(ring_dim), modulus);
+
+            for (std::size_t k = 0; k < ring_dim; ++k) {
+                vals[k] = lbcrypto::NativeInteger(0);
+            }
+
+            for (std::size_t k = 0; k < coeffs.size(); ++k) {
+                std::uint64_t raw = coeffs[k].cast<std::uint64_t>();
+                vals[k] = lbcrypto::NativeInteger(raw % modulus_u64);
+            }
+
+            tower.SetValues(std::move(vals), COEFFICIENT);
+            poly_out.SetElementAtIndex(static_cast<usint>(tower_idx), std::move(tower));
+        }
+
+        auto out_native = (*native_template)->Clone();
+        out_native->SetElements(std::vector<lbcrypto::DCRTPoly>{std::move(poly_out)});
+
+        return wrap_native_openfhe_ciphertext_for_coeff_ops(std::move(out_native));
+    }
+
+    CiphertextHandle component_mul_part_coeff_ct(
+        CiphertextHandle& a,
+        std::uint32_t part_a,
+        CiphertextHandle& b,
+        std::uint32_t part_b
+    ) {
+        require_ready();
+        a.require_valid();
+        b.require_valid();
+
+        using OpenFHECiphertext = lbcrypto::Ciphertext<lbcrypto::DCRTPoly>;
+
+        auto* native_a = std::any_cast<OpenFHECiphertext>(&a.ct_->cpu);
+        auto* native_b = std::any_cast<OpenFHECiphertext>(&b.ct_->cpu);
+
+        if (native_a == nullptr || !(*native_a)) {
+            throw std::runtime_error("component_mul_part_coeff_ct(): first input is not native OpenFHE ciphertext");
+        }
+        if (native_b == nullptr || !(*native_b)) {
+            throw std::runtime_error("component_mul_part_coeff_ct(): second input is not native OpenFHE ciphertext");
+        }
+
+        const auto& elems_a = (*native_a)->GetElements();
+        const auto& elems_b = (*native_b)->GetElements();
+
+        if (part_a >= elems_a.size()) {
+            throw std::runtime_error("component_mul_part_coeff_ct(): part_a out of range");
+        }
+        if (part_b >= elems_b.size()) {
+            throw std::runtime_error("component_mul_part_coeff_ct(): part_b out of range");
+        }
+
+        auto pa = elems_a[part_a];
+        auto pb = elems_b[part_b];
+
+        pa.SetFormat(EVALUATION);
+        pb.SetFormat(EVALUATION);
+
+        lbcrypto::DCRTPoly prod = pa * pb;
+
+        auto out_native = (*native_a)->Clone();
+        out_native->SetElements(std::vector<lbcrypto::DCRTPoly>{std::move(prod)});
+
+        return wrap_native_openfhe_ciphertext_for_coeff_ops(std::move(out_native));
+    }
+
+
+    CiphertextHandle component_add_1part_coeff_ct(
+        CiphertextHandle& a,
+        CiphertextHandle& b
+    ) {
+        require_ready();
+        a.require_valid();
+        b.require_valid();
+
+        using OpenFHECiphertext = lbcrypto::Ciphertext<lbcrypto::DCRTPoly>;
+
+        auto* native_a = std::any_cast<OpenFHECiphertext>(&a.ct_->cpu);
+        auto* native_b = std::any_cast<OpenFHECiphertext>(&b.ct_->cpu);
+
+        if (native_a == nullptr || !(*native_a)) {
+            throw std::runtime_error("component_add_1part_coeff_ct(): first input is not native OpenFHE ciphertext");
+        }
+        if (native_b == nullptr || !(*native_b)) {
+            throw std::runtime_error("component_add_1part_coeff_ct(): second input is not native OpenFHE ciphertext");
+        }
+
+        const auto& elems_a = (*native_a)->GetElements();
+        const auto& elems_b = (*native_b)->GetElements();
+
+        if (elems_a.size() != 1 || elems_b.size() != 1) {
+            throw std::runtime_error(
+                "component_add_1part_coeff_ct(): expected both inputs to have exactly one component"
+            );
+        }
+
+        auto ea = elems_a[0];
+        auto eb = elems_b[0];
+
+        ea.SetFormat(EVALUATION);
+        eb.SetFormat(EVALUATION);
+
+        lbcrypto::DCRTPoly sum = ea + eb;
+
+        auto out_native = (*native_a)->Clone();
+        out_native->SetElements(std::vector<lbcrypto::DCRTPoly>{std::move(sum)});
+
+        return wrap_native_openfhe_ciphertext_for_coeff_ops(std::move(out_native));
+    }
+
+
+
+    CiphertextHandle assemble_2part_from_1parts_coeff_ct(
+        CiphertextHandle& c0,
+        CiphertextHandle& c1
+    ) {
+        require_ready();
+        c0.require_valid();
+        c1.require_valid();
+
+        using OpenFHECiphertext = lbcrypto::Ciphertext<lbcrypto::DCRTPoly>;
+
+        auto* native_c0 = std::any_cast<OpenFHECiphertext>(&c0.ct_->cpu);
+        auto* native_c1 = std::any_cast<OpenFHECiphertext>(&c1.ct_->cpu);
+
+        if (native_c0 == nullptr || !(*native_c0)) {
+            throw std::runtime_error("assemble_2part_from_1parts_coeff_ct(): c0 is not native OpenFHE ciphertext");
+        }
+        if (native_c1 == nullptr || !(*native_c1)) {
+            throw std::runtime_error("assemble_2part_from_1parts_coeff_ct(): c1 is not native OpenFHE ciphertext");
+        }
+
+        const auto& e0s = (*native_c0)->GetElements();
+        const auto& e1s = (*native_c1)->GetElements();
+
+        if (e0s.size() != 1 || e1s.size() != 1) {
+            throw std::runtime_error(
+                "assemble_2part_from_1parts_coeff_ct(): expected both inputs to have exactly one component"
+            );
+        }
+
+        auto out_native = (*native_c0)->Clone();
+        out_native->SetElements(std::vector<lbcrypto::DCRTPoly>{
+            e0s[0],
+            e1s[0],
+        });
+
+        return wrap_native_openfhe_ciphertext_for_coeff_ops(std::move(out_native));
+    }
+
+    CiphertextHandle assemble_3part_from_1parts_coeff_ct(
+        CiphertextHandle& c0,
+        CiphertextHandle& c1,
+        CiphertextHandle& c2
+    ) {
+        require_ready();
+        c0.require_valid();
+        c1.require_valid();
+        c2.require_valid();
+
+        using OpenFHECiphertext = lbcrypto::Ciphertext<lbcrypto::DCRTPoly>;
+
+        auto* native_c0 = std::any_cast<OpenFHECiphertext>(&c0.ct_->cpu);
+        auto* native_c1 = std::any_cast<OpenFHECiphertext>(&c1.ct_->cpu);
+        auto* native_c2 = std::any_cast<OpenFHECiphertext>(&c2.ct_->cpu);
+
+        if (native_c0 == nullptr || !(*native_c0)) {
+            throw std::runtime_error("assemble_3part_from_1parts_coeff_ct(): c0 is not native OpenFHE ciphertext");
+        }
+        if (native_c1 == nullptr || !(*native_c1)) {
+            throw std::runtime_error("assemble_3part_from_1parts_coeff_ct(): c1 is not native OpenFHE ciphertext");
+        }
+        if (native_c2 == nullptr || !(*native_c2)) {
+            throw std::runtime_error("assemble_3part_from_1parts_coeff_ct(): c2 is not native OpenFHE ciphertext");
+        }
+
+        const auto& e0s = (*native_c0)->GetElements();
+        const auto& e1s = (*native_c1)->GetElements();
+        const auto& e2s = (*native_c2)->GetElements();
+
+        if (e0s.size() != 1 || e1s.size() != 1 || e2s.size() != 1) {
+            throw std::runtime_error(
+                "assemble_3part_from_1parts_coeff_ct(): expected all inputs to have exactly one component"
+            );
+        }
+
+        auto out_native = (*native_c0)->Clone();
+        out_native->SetElements(std::vector<lbcrypto::DCRTPoly>{
+            e0s[0],
+            e1s[0],
+            e2s[0],
+        });
+
+        return wrap_native_openfhe_ciphertext_for_coeff_ops(std::move(out_native));
+    }
+
+    CiphertextHandle mul_coeff_ct_no_relin(
+        CiphertextHandle& a,
+        CiphertextHandle& b
+    ) {
+        require_ready();
+        a.require_valid();
+        b.require_valid();
+
+        using OpenFHECiphertext = lbcrypto::Ciphertext<lbcrypto::DCRTPoly>;
+
+        auto* native_a = std::any_cast<OpenFHECiphertext>(&a.ct_->cpu);
+        auto* native_b = std::any_cast<OpenFHECiphertext>(&b.ct_->cpu);
+
+        if (native_a == nullptr || !(*native_a)) {
+            throw std::runtime_error("mul_coeff_ct_no_relin(): first input is not native OpenFHE ciphertext");
+        }
+        if (native_b == nullptr || !(*native_b)) {
+            throw std::runtime_error("mul_coeff_ct_no_relin(): second input is not native OpenFHE ciphertext");
+        }
+
+        const auto& elems_a_const = (*native_a)->GetElements();
+        const auto& elems_b_const = (*native_b)->GetElements();
+
+        if (elems_a_const.size() != 2 || elems_b_const.size() != 2) {
+            throw std::runtime_error(
+                "mul_coeff_ct_no_relin(): expected both inputs to have exactly two RLWE components"
+            );
+        }
+
+        auto a0 = elems_a_const[0];
+        auto a1 = elems_a_const[1];
+        auto b0 = elems_b_const[0];
+        auto b1 = elems_b_const[1];
+
+        // DCRTPoly multiplication is supported in EVALUATION format.
+        a0.SetFormat(EVALUATION);
+        a1.SetFormat(EVALUATION);
+        b0.SetFormat(EVALUATION);
+        b1.SetFormat(EVALUATION);
+
+        lbcrypto::DCRTPoly e0 = a0 * b0;
+        lbcrypto::DCRTPoly e1 = a0 * b1 + a1 * b0;
+        lbcrypto::DCRTPoly e2 = a1 * b1;
+
+        auto out_native = (*native_a)->Clone();
+        out_native->SetElements(std::vector<lbcrypto::DCRTPoly>{
+            std::move(e0),
+            std::move(e1),
+            std::move(e2),
+        });
+
+        return wrap_native_openfhe_ciphertext_for_coeff_ops(std::move(out_native));
+    }
+
+
+    CiphertextHandle relinearize_coeff_ct(
+        CiphertextHandle& h
+    ) {
+        require_ready();
+        h.require_valid();
+
+        using OpenFHEContext = lbcrypto::CryptoContext<lbcrypto::DCRTPoly>;
+        using OpenFHECiphertext = lbcrypto::Ciphertext<lbcrypto::DCRTPoly>;
+
+        auto* native_cc = std::any_cast<OpenFHEContext>(&cc_->cpu);
+        auto* native_ct = std::any_cast<OpenFHECiphertext>(&h.ct_->cpu);
+
+        if (native_cc == nullptr || !(*native_cc)) {
+            throw std::runtime_error("relinearize_coeff_ct(): cc_->cpu is not native OpenFHE context");
+        }
+        if (native_ct == nullptr || !(*native_ct)) {
+            throw std::runtime_error("relinearize_coeff_ct(): ciphertext cpu is not native OpenFHE ciphertext");
+        }
+
+        const auto& elems = (*native_ct)->GetElements();
+        if (elems.size() < 3) {
+            throw std::runtime_error(
+                "relinearize_coeff_ct(): expected a ciphertext with at least three RLWE components"
+            );
+        }
+
+        auto out_native = (*native_cc)->Relinearize(*native_ct);
+
+        return wrap_native_openfhe_ciphertext_for_coeff_ops(std::move(out_native));
+    }
+
+
+    CiphertextHandle compress_coeff_ct(
+        CiphertextHandle& h,
+        std::uint32_t towers_left = 1
+    ) {
+        require_ready();
+        h.require_valid();
+
+        using OpenFHEContext = lbcrypto::CryptoContext<lbcrypto::DCRTPoly>;
+        using OpenFHECiphertext = lbcrypto::Ciphertext<lbcrypto::DCRTPoly>;
+
+        auto* native_cc = std::any_cast<OpenFHEContext>(&cc_->cpu);
+        auto* native_ct = std::any_cast<OpenFHECiphertext>(&h.ct_->cpu);
+
+        if (native_cc == nullptr || !(*native_cc)) {
+            throw std::runtime_error("compress_coeff_ct(): cc_->cpu is not native OpenFHE context");
+        }
+        if (native_ct == nullptr || !(*native_ct)) {
+            throw std::runtime_error("compress_coeff_ct(): ciphertext cpu is not native OpenFHE ciphertext");
+        }
+
+        if (towers_left == 0) {
+            throw std::runtime_error("compress_coeff_ct(): towers_left must be >= 1");
+        }
+
+        auto out_native = (*native_cc)->Compress(*native_ct, towers_left);
+
+        return wrap_native_openfhe_ciphertext_for_coeff_ops(std::move(out_native));
+    }
+
+    CiphertextHandle eval_automorphism_coeff_ct(
+        CiphertextHandle& h,
+        std::uint32_t alpha
+    ) {
+        require_ready();
+        h.require_valid();
+
+        using OpenFHEContext = lbcrypto::CryptoContext<lbcrypto::DCRTPoly>;
+        using OpenFHEPrivateKey = lbcrypto::PrivateKey<lbcrypto::DCRTPoly>;
+        using OpenFHECiphertext = lbcrypto::Ciphertext<lbcrypto::DCRTPoly>;
+
+        auto* native_cc = std::any_cast<OpenFHEContext>(&cc_->cpu);
+        auto* native_sk = std::any_cast<OpenFHEPrivateKey>(&sk_->pimpl);
+        auto* native_ct = std::any_cast<OpenFHECiphertext>(&h.ct_->cpu);
+
+        if (native_cc == nullptr || !(*native_cc)) {
+            throw std::runtime_error(
+                "eval_automorphism_coeff_ct(): cc_->cpu is not lbcrypto::CryptoContext<lbcrypto::DCRTPoly>"
+            );
+        }
+        if (native_sk == nullptr || !(*native_sk)) {
+            throw std::runtime_error(
+                "eval_automorphism_coeff_ct(): sk_->pimpl is not lbcrypto::PrivateKey<lbcrypto::DCRTPoly>"
+            );
+        }
+        if (native_ct == nullptr || !(*native_ct)) {
+            throw std::runtime_error(
+                "eval_automorphism_coeff_ct(): ciphertext cpu is not lbcrypto::Ciphertext<lbcrypto::DCRTPoly>"
+            );
+        }
+
+        if ((alpha % 2u) == 0u) {
+            throw std::runtime_error(
+                "eval_automorphism_coeff_ct(): alpha must be odd for X -> X^alpha"
+            );
+        }
+
+        // Auto(ct; 1) is the identity automorphism X -> X.
+        // OpenFHE may generate an empty automorphism key map for alpha=1,
+        // so bypass EvalAutomorphism and return a cloned ciphertext directly.
+        if (alpha == 1u) {
+            auto out_native = (*native_ct)->Clone();
+            return wrap_native_openfhe_ciphertext_for_coeff_ops(std::move(out_native));
+        }
+
+        std::vector<std::uint32_t> index_list = {alpha};
+
+        // Generate automorphism key for this alpha.
+        //
+        // Important:
+        // Some OpenFHE paths may return an empty map while storing the generated
+        // evaluation keys in the CryptoContext registry. Therefore:
+        //   1. Try the returned map first.
+        //   2. If empty/missing alpha, fetch the registered key map by ciphertext keyTag.
+        auto eval_keys = (*native_cc)->EvalAutomorphismKeyGen(*native_sk, index_list);
+
+        OpenFHECiphertext out_native;
+
+        if (
+            eval_keys != nullptr
+            && !eval_keys->empty()
+            && eval_keys->find(alpha) != eval_keys->end()
+        ) {
+            out_native = (*native_cc)->EvalAutomorphism(*native_ct, alpha, *eval_keys);
+        } else {
+            auto registered_keys = (*native_cc)->GetEvalAutomorphismKeyMap((*native_ct)->GetKeyTag());
+
+            if (
+                registered_keys.empty()
+                || registered_keys.find(alpha) == registered_keys.end()
+            ) {
+                throw std::runtime_error(
+                    "eval_automorphism_coeff_ct(): empty/missing automorphism key map after EvalAutomorphismKeyGen and registry lookup"
+                );
+            }
+
+            out_native = (*native_cc)->EvalAutomorphism(*native_ct, alpha, registered_keys);
+        }
+
+        auto out = std::make_shared<CiphertextImpl<DCRTPoly>>(CryptoContext<DCRTPoly>(cc_));
+        out->cpu = std::make_any<OpenFHECiphertext>(std::move(out_native));
+        out->loaded = false;
+        out->parent_context = cc_;
+
+        return CiphertextHandle(out);
+    }
+
+
+    std::vector<std::int64_t> decrypt_coeff_row_i64(
+        CiphertextHandle& h,
+        std::size_t logical_length = 0
+    ) {
+        require_ready();
+        h.require_valid();
+
+        using OpenFHEContext = lbcrypto::CryptoContext<lbcrypto::DCRTPoly>;
+        using OpenFHEPrivateKey = lbcrypto::PrivateKey<lbcrypto::DCRTPoly>;
+        using OpenFHECiphertext = lbcrypto::Ciphertext<lbcrypto::DCRTPoly>;
+
+        auto* native_cc = std::any_cast<OpenFHEContext>(&cc_->cpu);
+        auto* native_sk = std::any_cast<OpenFHEPrivateKey>(&sk_->pimpl);
+        auto* native_ct = std::any_cast<OpenFHECiphertext>(&h.ct_->cpu);
+
+        if (native_cc == nullptr || !(*native_cc)) {
+            throw std::runtime_error("decrypt_coeff_row_i64(): cc_->cpu is not lbcrypto::CryptoContext<lbcrypto::DCRTPoly>");
+        }
+        if (native_sk == nullptr || !(*native_sk)) {
+            throw std::runtime_error("decrypt_coeff_row_i64(): sk_->pimpl is not lbcrypto::PrivateKey<lbcrypto::DCRTPoly>");
+        }
+        if (native_ct == nullptr || !(*native_ct)) {
+            throw std::runtime_error("decrypt_coeff_row_i64(): ciphertext cpu is not lbcrypto::Ciphertext<lbcrypto::DCRTPoly>");
+        }
+
+        lbcrypto::Plaintext pt_dec;
+        auto dec_res = (*native_cc)->Decrypt(*native_sk, *native_ct, &pt_dec);
+        if (!dec_res.isValid) {
+            throw std::runtime_error("decrypt_coeff_row_i64(): native OpenFHE Decrypt failed");
+        }
+
+        const auto& vals_ref = pt_dec->GetCoefPackedValue();
+        std::vector<std::int64_t> out(vals_ref.begin(), vals_ref.end());
+
+        if (logical_length > 0 && logical_length < out.size()) {
+            out.resize(logical_length);
+        }
+
+        return out;
+    }
+
+    std::vector<std::int64_t> manual_decrypt_coeff_row_i64(
+        CiphertextHandle& h,
+        std::size_t logical_length = 0
+    ) {
+        require_ready();
+        h.require_valid();
+
+        using OpenFHEPrivateKey = lbcrypto::PrivateKey<lbcrypto::DCRTPoly>;
+        using OpenFHECiphertext = lbcrypto::Ciphertext<lbcrypto::DCRTPoly>;
+
+        auto* native_sk = std::any_cast<OpenFHEPrivateKey>(&sk_->pimpl);
+        auto* native_ct = std::any_cast<OpenFHECiphertext>(&h.ct_->cpu);
+
+        if (native_sk == nullptr || !(*native_sk)) {
+            throw std::runtime_error(
+                "manual_decrypt_coeff_row_i64(): sk_->pimpl is not lbcrypto::PrivateKey<lbcrypto::DCRTPoly>"
+            );
+        }
+        if (native_ct == nullptr || !(*native_ct)) {
+            throw std::runtime_error(
+                "manual_decrypt_coeff_row_i64(): ciphertext cpu is not lbcrypto::Ciphertext<lbcrypto::DCRTPoly>"
+            );
+        }
+
+        const auto& elems = (*native_ct)->GetElements();
+        if (elems.size() < 2) {
+            throw std::runtime_error(
+                "manual_decrypt_coeff_row_i64(): expected at least two ciphertext elements"
+            );
+        }
+
+        // OpenFHE/FIDESlib convention:
+        //   elems[0] = c0
+        //   elems[1] = c1
+        // RLWE phase:
+        //   phase = c0 + c1 * sk
+        auto c0 = elems[0];
+        auto c1 = elems[1];
+        auto sk_poly = (*native_sk)->GetPrivateElement();
+
+        c0.SetFormat(EVALUATION);
+        c1.SetFormat(EVALUATION);
+        sk_poly.SetFormat(EVALUATION);
+
+        lbcrypto::DCRTPoly phase = c0 + c1 * sk_poly;
+        phase.SetFormat(COEFFICIENT);
+
+        auto native_poly = phase.CRTInterpolate();
+        const auto& modulus = native_poly.GetModulus();
+        auto half = modulus / 2;
+
+        std::size_t n = native_poly.GetLength();
+        if (logical_length > 0 && logical_length < n) {
+            n = logical_length;
+        }
+
+        std::vector<std::int64_t> out;
+        out.reserve(n);
+
+        for (std::size_t i = 0; i < n; ++i) {
+            auto v = native_poly[i];
+
+            if (v > half) {
+                auto signed_abs = modulus - v;
+                std::uint64_t u = signed_abs.ConvertToInt();
+                out.push_back(-static_cast<std::int64_t>(u));
+            } else {
+                std::uint64_t u = v.ConvertToInt();
+                out.push_back(static_cast<std::int64_t>(u));
+            }
+        }
+
+        return out;
+    }
+
+    std::map<std::string, std::vector<std::int64_t>> manual_decrypt_coeff_row_i64_variants(
+        CiphertextHandle& h,
+        std::size_t logical_length = 0
+    ) {
+        require_ready();
+        h.require_valid();
+
+        using OpenFHEPrivateKey = lbcrypto::PrivateKey<lbcrypto::DCRTPoly>;
+        using OpenFHECiphertext = lbcrypto::Ciphertext<lbcrypto::DCRTPoly>;
+
+        auto* native_sk = std::any_cast<OpenFHEPrivateKey>(&sk_->pimpl);
+        auto* native_ct = std::any_cast<OpenFHECiphertext>(&h.ct_->cpu);
+
+        if (native_sk == nullptr || !(*native_sk)) {
+            throw std::runtime_error(
+                "manual_decrypt_coeff_row_i64_variants(): sk_->pimpl is not lbcrypto::PrivateKey<lbcrypto::DCRTPoly>"
+            );
+        }
+        if (native_ct == nullptr || !(*native_ct)) {
+            throw std::runtime_error(
+                "manual_decrypt_coeff_row_i64_variants(): ciphertext cpu is not lbcrypto::Ciphertext<lbcrypto::DCRTPoly>"
+            );
+        }
+
+        const auto& elems = (*native_ct)->GetElements();
+        if (elems.size() < 2) {
+            throw std::runtime_error(
+                "manual_decrypt_coeff_row_i64_variants(): expected at least two ciphertext elements"
+            );
+        }
+
+        auto c0 = elems[0];
+        auto c1 = elems[1];
+        auto sk_poly = (*native_sk)->GetPrivateElement();
+
+        auto to_signed_coeffs = [&](lbcrypto::DCRTPoly poly) {
+            poly.SetFormat(COEFFICIENT);
+            auto native_poly = poly.CRTInterpolate();
+
+            const auto& modulus = native_poly.GetModulus();
+            auto half = modulus / 2;
+
+            std::size_t n = native_poly.GetLength();
+            if (logical_length > 0 && logical_length < n) {
+                n = logical_length;
+            }
+
+            std::vector<std::int64_t> out;
+            out.reserve(n);
+
+            for (std::size_t i = 0; i < n; ++i) {
+                auto v = native_poly[i];
+
+                if (v > half) {
+                    auto signed_abs = modulus - v;
+                    std::uint64_t u = signed_abs.ConvertToInt();
+                    out.push_back(-static_cast<std::int64_t>(u));
+                } else {
+                    std::uint64_t u = v.ConvertToInt();
+                    out.push_back(static_cast<std::int64_t>(u));
+                }
+            }
+
+            return out;
+        };
+
+        std::map<std::string, std::vector<std::int64_t>> out;
+
+        // Multiplication should normally happen in EVALUATION format.
+        auto c0e = c0;
+        auto c1e = c1;
+        auto ske = sk_poly;
+        c0e.SetFormat(EVALUATION);
+        c1e.SetFormat(EVALUATION);
+        ske.SetFormat(EVALUATION);
+
+        out["eval_c0_plus_c1s"]  = to_signed_coeffs(c0e + c1e * ske);
+        out["eval_c0_minus_c1s"] = to_signed_coeffs(c0e - c1e * ske);
+        out["eval_c1_plus_c0s"]  = to_signed_coeffs(c1e + c0e * ske);
+        out["eval_c1_minus_c0s"] = to_signed_coeffs(c1e - c0e * ske);
+
+        out["eval_neg_c0_minus_c1s"] = to_signed_coeffs(-c0e - c1e * ske);
+        out["eval_neg_c0_plus_c1s"]  = to_signed_coeffs(-c0e + c1e * ske);
+        out["eval_neg_c1_minus_c0s"] = to_signed_coeffs(-c1e - c0e * ske);
+        out["eval_neg_c1_plus_c0s"]  = to_signed_coeffs(-c1e + c0e * ske);
+
+        // Also test coefficient-format multiplication, in case current operator semantics differ.
+        auto c0c = c0;
+        auto c1c = c1;
+        auto skc = sk_poly;
+        c0c.SetFormat(COEFFICIENT);
+        c1c.SetFormat(COEFFICIENT);
+        skc.SetFormat(COEFFICIENT);
+
+        out["coef_c0_plus_c1s"]  = to_signed_coeffs(c0c + c1c * skc);
+        out["coef_c0_minus_c1s"] = to_signed_coeffs(c0c - c1c * skc);
+        out["coef_c1_plus_c0s"]  = to_signed_coeffs(c1c + c0c * skc);
+        out["coef_c1_minus_c0s"] = to_signed_coeffs(c1c - c0c * skc);
+
+        return out;
+    }
+
+
+
+
+std::vector<double> decrypt(CiphertextHandle& h, std::size_t logical_length = 0) {
         require_ready();
         h.require_valid();
 
@@ -313,6 +1241,123 @@ public:
         out["parts"] = parts;
         return out;
     }
+
+    py::dict inspect_coeff_row_component_matrix(
+        const std::vector<CiphertextHandle>& rows,
+        std::size_t coeff_sample = 8
+    ) {
+        require_ready();
+
+        using OpenFHECiphertext = lbcrypto::Ciphertext<lbcrypto::DCRTPoly>;
+
+        py::dict report;
+        report["num_rows"] = rows.size();
+        report["coeff_sample"] = coeff_sample;
+
+        py::list row_reports;
+
+        std::size_t expected_parts = 0;
+        std::size_t expected_towers = 0;
+        std::size_t expected_ring_dim = 0;
+        bool consistent = true;
+
+        for (std::size_t r = 0; r < rows.size(); ++r) {
+            auto h = rows[r];
+            h.require_valid();
+
+            auto* native_ct = std::any_cast<OpenFHECiphertext>(&h.ct_->cpu);
+            if (native_ct == nullptr || !(*native_ct)) {
+                throw std::runtime_error(
+                    "inspect_coeff_row_component_matrix(): row ciphertext cpu is not lbcrypto::Ciphertext<lbcrypto::DCRTPoly>"
+                );
+            }
+
+            const auto& elems = (*native_ct)->GetElements();
+
+            py::dict rr;
+            rr["row_index"] = r;
+            rr["num_parts"] = elems.size();
+            rr["level"] = (*native_ct)->GetLevel();
+            rr["noise_scale_deg"] = (*native_ct)->GetNoiseScaleDeg();
+            rr["scaling_factor"] = (*native_ct)->GetScalingFactor();
+            rr["slots"] = (*native_ct)->GetSlots();
+            rr["encoding_type"] = static_cast<int>((*native_ct)->GetEncodingType());
+            rr["key_tag"] = (*native_ct)->GetKeyTag();
+
+            if (r == 0) {
+                expected_parts = elems.size();
+            } else if (elems.size() != expected_parts) {
+                consistent = false;
+            }
+
+            py::list parts;
+
+            for (std::size_t part_idx = 0; part_idx < elems.size(); ++part_idx) {
+                auto elem = elems[part_idx];
+                elem.SetFormat(COEFFICIENT);
+
+                const auto& towers = elem.GetAllElements();
+
+                if (r == 0 && part_idx == 0) {
+                    expected_towers = towers.size();
+                    expected_ring_dim = elem.GetLength();
+                } else {
+                    if (towers.size() != expected_towers || elem.GetLength() != expected_ring_dim) {
+                        consistent = false;
+                    }
+                }
+
+                py::dict pr;
+                pr["part_index"] = part_idx;
+                pr["num_towers"] = towers.size();
+                pr["ring_dim"] = elem.GetLength();
+
+                py::list tower_reports;
+
+                for (std::size_t t = 0; t < towers.size(); ++t) {
+                    const auto& tower = towers[t];
+                    const auto& vals = tower.GetValues();
+
+                    py::dict tr;
+                    tr["tower_index"] = t;
+                    tr["modulus_u64"] = tower.GetModulus().ConvertToInt();
+                    tr["length"] = tower.GetLength();
+
+                    py::list head;
+                    std::size_t n = vals.GetLength();
+                    std::size_t take = coeff_sample < n ? coeff_sample : n;
+
+                    for (std::size_t i = 0; i < take; ++i) {
+                        head.append(vals[i].ConvertToInt());
+                    }
+
+                    tr["coeff_head_u64"] = head;
+                    tower_reports.append(tr);
+                }
+
+                pr["towers"] = tower_reports;
+                parts.append(pr);
+            }
+
+            rr["parts"] = parts;
+            row_reports.append(rr);
+        }
+
+        report["consistent_shape"] = consistent;
+        report["expected_parts"] = expected_parts;
+        report["expected_towers"] = expected_towers;
+        report["expected_ring_dim"] = expected_ring_dim;
+        report["rows"] = row_reports;
+
+        // Paper mapping convention for row-wise bundle:
+        //   A[row, :] = component part 1 / c1
+        //   B[row, :] = component part 0 / c0
+        // because OpenFHE ciphertext decrypt convention is c0 + c1*s.
+        report["paper_mapping"] = "rowwise: B = GetElements()[0] / c0, A = GetElements()[1] / c1";
+
+        return report;
+    }
+
 
 
     CiphertextHandle roundtrip_rlwe_components_cpu(const CiphertextHandle& h) {
@@ -1132,7 +2177,23 @@ public:
 
                 out->cpu = std::make_any<OpenFHECiphertext>(std::move(cpu_out));
             } else {
-                out->cpu.reset();
+                // GPU-only intermediate:
+                // keep CPU-side OpenFHE metadata/template so the next layer can
+                // std::any_cast<OpenFHECiphertext>(&ct_->cpu) and recover slots,
+                // scale, level, key tag, and modulus structure.
+                //
+                // Numerical ciphertext data is NOT copied back here; it remains
+                // in out_gpu and is registered below via out->gpu.
+                OpenFHECiphertext cpu_meta =
+                    std::make_shared<lbcrypto::CiphertextImpl<lbcrypto::DCRTPoly>>(*cpu_template);
+
+                cpu_meta->SetLevel(cpu_template->GetLevel());
+                cpu_meta->SetScalingFactor(cpu_template->GetScalingFactor());
+                cpu_meta->SetNoiseScaleDeg(cpu_template->GetNoiseScaleDeg());
+                cpu_meta->SetKeyTag(cpu_template->GetKeyTag());
+                cpu_meta->SetSlots(cpu_template->GetSlots());
+
+                out->cpu = std::make_any<OpenFHECiphertext>(std::move(cpu_meta));
             }
 
             std::shared_ptr<void> out_opaque = std::static_pointer_cast<void>(out_gpu);
@@ -1213,6 +2274,26 @@ public:
 
         return CiphertextHandle(out);
     }
+
+    CiphertextHandle materialize_gpu_ciphertext(const CiphertextHandle& h) {
+        // Formal API for GPU -> CPU/OpenFHE materialization.
+        // REV=1 was validated in WP4-E/WP4-I as the correct GPU->CPU component order.
+        return gpu_copyback_cpu_debug(h, 1);
+    }
+
+    std::vector<CiphertextHandle> materialize_gpu_ciphertexts(
+        const std::vector<CiphertextHandle>& hs
+    ) {
+        std::vector<CiphertextHandle> out;
+        out.reserve(hs.size());
+
+        for (const auto& h : hs) {
+            out.emplace_back(materialize_gpu_ciphertext(h));
+        }
+
+        return out;
+    }
+
 
     std::vector<double> roundtrip(const std::vector<double>& x) {
         auto ct = encrypt(x);
@@ -1318,8 +2399,47 @@ PYBIND11_MODULE(_fideslib, m) {
              py::arg("ciphertext"), py::arg("rev") = 0)
         .def("component_linear_wsum_gpu_fused_raw", &FidesCKKSContext::component_linear_wsum_gpu_fused_raw,
              py::arg("rows"), py::arg("weights"))
+        .def("materialize_gpu_ciphertext", &FidesCKKSContext::materialize_gpu_ciphertext,
+             py::arg("ciphertext"))
+        .def("materialize_gpu_ciphertexts", &FidesCKKSContext::materialize_gpu_ciphertexts,
+             py::arg("ciphertexts"))
         .def("component_linear_matmul_gpu_fused_raw", &FidesCKKSContext::component_linear_matmul_gpu_fused_raw,
              py::arg("rows"), py::arg("U"), py::arg("copyback") = true)
+        .def("export_secret_key_coeff_u64", &FidesCKKSContext::export_secret_key_coeff_u64, py::arg("coeff_count") = 0)
+        .def("encrypt_coeff_row_i64", &FidesCKKSContext::encrypt_coeff_row_i64,
+             py::arg("coeffs"))
+        .def("decrypt_coeff_row_i64", &FidesCKKSContext::decrypt_coeff_row_i64,
+             py::arg("ciphertext"), py::arg("logical_length") = 0)
+        .def("manual_decrypt_coeff_row_i64", &FidesCKKSContext::manual_decrypt_coeff_row_i64,
+             py::arg("ciphertext"), py::arg("logical_length") = 0)
+        .def("manual_decrypt_coeff_row_i64_variants", &FidesCKKSContext::manual_decrypt_coeff_row_i64_variants,
+             py::arg("ciphertext"), py::arg("logical_length") = 0)
+        .def("inspect_coeff_row_component_matrix", &FidesCKKSContext::inspect_coeff_row_component_matrix,
+             py::arg("rows"), py::arg("coeff_sample") = 8)
+        .def("eval_automorphism_coeff_ct", &FidesCKKSContext::eval_automorphism_coeff_ct,
+             py::arg("ciphertext"), py::arg("alpha"))
+        .def("add_coeff_ct", &FidesCKKSContext::add_coeff_ct,
+             py::arg("a"), py::arg("b"))
+        .def("mul_coeff_ct_no_relin", &FidesCKKSContext::mul_coeff_ct_no_relin,
+             py::arg("a"), py::arg("b"))
+        .def("component_mul_part_coeff_ct", &FidesCKKSContext::component_mul_part_coeff_ct,
+             py::arg("a"), py::arg("part_a"), py::arg("b"), py::arg("part_b"))
+        .def("export_component_coeff_matrix_u64", &FidesCKKSContext::export_component_coeff_matrix_u64,
+             py::arg("rows"), py::arg("part"), py::arg("coeff_count") = 0)
+        .def("import_1part_coeff_u64", &FidesCKKSContext::import_1part_coeff_u64,
+             py::arg("template_ct"), py::arg("towers_coeffs"))
+        .def("component_add_1part_coeff_ct", &FidesCKKSContext::component_add_1part_coeff_ct,
+             py::arg("a"), py::arg("b"))
+        .def("assemble_3part_from_1parts_coeff_ct", &FidesCKKSContext::assemble_3part_from_1parts_coeff_ct,
+             py::arg("c0"), py::arg("c1"), py::arg("c2"))
+        .def("assemble_2part_from_1parts_coeff_ct", &FidesCKKSContext::assemble_2part_from_1parts_coeff_ct,
+             py::arg("c0"), py::arg("c1"))
+        .def("relinearize_coeff_ct", &FidesCKKSContext::relinearize_coeff_ct,
+             py::arg("ciphertext"))
+        .def("compress_coeff_ct", &FidesCKKSContext::compress_coeff_ct,
+             py::arg("ciphertext"), py::arg("towers_left") = 1)
+        .def("monomial_mul_coeff_ct", &FidesCKKSContext::monomial_mul_coeff_ct,
+             py::arg("ciphertext"), py::arg("exp"))
         .def("roundtrip", &FidesCKKSContext::roundtrip)
         .def("eval_add", &FidesCKKSContext::eval_add)
         .def("eval_mult_scalar", &FidesCKKSContext::eval_mult_scalar)

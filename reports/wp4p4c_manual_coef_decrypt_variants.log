@@ -1,0 +1,44 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+WP4-P4c manual coefficient decrypt variants
+{
+  "experiment": "wp4p4c_manual_coef_decrypt_variants",
+  "purpose": "Test RLWE phase formula/component-order/sign variants for coefficient-row ciphertext.",
+  "status": "debug_probe_only",
+  "input_row_i64": [
+    -3,
+    -2,
+    -1,
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "coef_encrypt": {
+    "ok": true,
+    "error": null
+  },
+  "variants_call": {
+    "ok": false,
+    "error": "RuntimeError('/root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/default/dcrtpoly.h:l.178:Times(): operator* for DCRTPolyImpl supported only in Format::EVALUATION')"
+  }
+}
+====================================================================================================
+saved: /workspace/FIDESlib-GPT/reports/wp4p4c_manual_coef_decrypt_variants_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

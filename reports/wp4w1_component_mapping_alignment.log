@@ -1,0 +1,21 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+WP4-W1 component mapping alignment done
+checks={"U_bundle_has_4_rows（U 有 4 个 row-wise ciphertext）":true,"V_bundle_has_4_rows（V 有 4 个 row-wise ciphertext）":true,"V_cmt_has_4_rows（C-MT(V) 有 4 个 transformed ciphertext）":true,"U_rows_have_two_parts（U 每行都有 c0/c1 两个 component）":true,"V_cmt_rows_have_two_parts（C-MT(V) 每行都有 c0/c1 两个 component）":true,"V_cmt_auto_alphas_expected（C-MT 的 Auto alpha 是 [1,3,5,7]）":true,"paper_mapping_declared（已明确 Algorithm 3 的 L0/L1/R0/R1 到 C0/C1/C2 映射）":true,"whole_ct_skeleton_rejected（不再使用 whole ciphertext positionwise skeleton）":true}
+summary={"next_step":"WP4-W2","next_step_goal":"Implement/probe PP-MM over DCRTPoly component matrices, starting with component-level zero/clone/add/mul primitives rather than whole ciphertext multiplication.","zh":"下一步实现 DCRTPoly component matrix 乘法 primitive，之后再按 C0/C1/C2 公式组装三分量 ciphertext。"}
+saved=/workspace/FIDESlib-GPT/reports/wp4w1_component_mapping_alignment_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

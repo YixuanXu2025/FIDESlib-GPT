@@ -1,0 +1,4449 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+WP4-Y2h phase-aware logical-n C-MT oracle probe
+{
+  "experiment": "wp4y2h_phase_aware_cmt_oracle_probe",
+  "purpose": "Test a phase-aware logical-n C-MT oracle for controlled RLWE c1!=0 inputs. Unlike raw component transpose, this oracle decrypts the phase, transposes plaintext, and re-encodes controlled RLWE rows.",
+  "status": "debug_phase_aware_cmt_oracle_not_secure",
+  "n": 4,
+  "warning": {
+    "value": "This oracle decrypts and re-encrypts with secret key. It is not secure and not homomorphic.",
+    "zh": "该 oracle 使用 secret key 解密再重构，只用于定位语义，不是最终 C-MT。"
+  },
+  "cases": [
+    {
+      "name": "basis_E00",
+      "a_scalar": 1,
+      "input_U": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_phase_aware_cmt_output_U_transpose": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 1,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          1152921504606748672,
+          1
+        ]
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "phase_aware_cmt_trace": {
+        "input_plaintext_matrix": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "output_plaintext_transpose": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "a_scalar": 1,
+        "warning": "debug-only decrypt-transpose-reencrypt oracle; not secure/homomorphic"
+      },
+      "phase_aware_cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "phase_aware_cmt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "name": "basis_E01",
+      "a_scalar": 1,
+      "input_U": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_phase_aware_cmt_output_U_transpose": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 1,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          1152921504606748672,
+          1
+        ]
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "phase_aware_cmt_trace": {
+        "input_plaintext_matrix": [
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "output_plaintext_transpose": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "a_scalar": 1,
+        "warning": "debug-only decrypt-transpose-reencrypt oracle; not secure/homomorphic"
+      },
+      "phase_aware_cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "phase_aware_cmt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "name": "basis_E23",
+      "a_scalar": 1,
+      "input_U": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_phase_aware_cmt_output_U_transpose": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 1,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          1152921504606748672,
+          1
+        ]
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "phase_aware_cmt_trace": {
+        "input_plaintext_matrix": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "output_plaintext_transpose": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ]
+        ],
+        "a_scalar": 1,
+        "warning": "debug-only decrypt-transpose-reencrypt oracle; not secure/homomorphic"
+      },
+      "phase_aware_cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "phase_aware_cmt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "name": "random_small",
+      "a_scalar": 1,
+      "input_U": [
+        [
+          0,
+          -1,
+          -2,
+          -2
+        ],
+        [
+          -2,
+          -1,
+          1,
+          -2
+        ],
+        [
+          -2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          -2,
+          1,
+          -2,
+          -1
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          0,
+          -1,
+          -2,
+          -2
+        ],
+        [
+          -2,
+          -1,
+          1,
+          -2
+        ],
+        [
+          -2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          -2,
+          1,
+          -2,
+          -1
+        ]
+      ],
+      "expected_phase_aware_cmt_output_U_transpose": [
+        [
+          0,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          -1,
+          -1,
+          1,
+          1
+        ],
+        [
+          -2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          -2,
+          -2,
+          -2,
+          -1
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 1,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          1152921504606748672,
+          1
+        ]
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            -1,
+            -2,
+            -2
+          ],
+          [
+            -2,
+            -1,
+            1,
+            -2
+          ],
+          [
+            -2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            -2,
+            1,
+            -2,
+            -1
+          ]
+        ]
+      },
+      "phase_aware_cmt_trace": {
+        "input_plaintext_matrix": [
+          [
+            0,
+            -1,
+            -2,
+            -2
+          ],
+          [
+            -2,
+            -1,
+            1,
+            -2
+          ],
+          [
+            -2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            -2,
+            1,
+            -2,
+            -1
+          ]
+        ],
+        "output_plaintext_transpose": [
+          [
+            0,
+            -2,
+            -2,
+            -2
+          ],
+          [
+            -1,
+            -1,
+            1,
+            1
+          ],
+          [
+            -2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            -2,
+            -2,
+            -2,
+            -1
+          ]
+        ],
+        "a_scalar": 1,
+        "warning": "debug-only decrypt-transpose-reencrypt oracle; not secure/homomorphic"
+      },
+      "phase_aware_cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            -2,
+            -2,
+            -2
+          ],
+          [
+            -1,
+            -1,
+            1,
+            1
+          ],
+          [
+            -2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            -2,
+            -2,
+            -2,
+            -1
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "phase_aware_cmt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "name": "basis_E00",
+      "a_scalar": 3,
+      "input_U": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_phase_aware_cmt_output_U_transpose": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 3,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          1152921504606748672,
+          1
+        ]
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "phase_aware_cmt_trace": {
+        "input_plaintext_matrix": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "output_plaintext_transpose": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "a_scalar": 3,
+        "warning": "debug-only decrypt-transpose-reencrypt oracle; not secure/homomorphic"
+      },
+      "phase_aware_cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "phase_aware_cmt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "name": "basis_E01",
+      "a_scalar": 3,
+      "input_U": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_phase_aware_cmt_output_U_transpose": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 3,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          1152921504606748672,
+          1
+        ]
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "phase_aware_cmt_trace": {
+        "input_plaintext_matrix": [
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "output_plaintext_transpose": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "a_scalar": 3,
+        "warning": "debug-only decrypt-transpose-reencrypt oracle; not secure/homomorphic"
+      },
+      "phase_aware_cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "phase_aware_cmt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "name": "basis_E23",
+      "a_scalar": 3,
+      "input_U": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_phase_aware_cmt_output_U_transpose": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 3,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          1152921504606748672,
+          1
+        ]
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "phase_aware_cmt_trace": {
+        "input_plaintext_matrix": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "output_plaintext_transpose": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ]
+        ],
+        "a_scalar": 3,
+        "warning": "debug-only decrypt-transpose-reencrypt oracle; not secure/homomorphic"
+      },
+      "phase_aware_cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "phase_aware_cmt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "name": "random_small",
+      "a_scalar": 3,
+      "input_U": [
+        [
+          0,
+          -1,
+          -2,
+          -2
+        ],
+        [
+          -2,
+          -1,
+          1,
+          -2
+        ],
+        [
+          -2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          -2,
+          1,
+          -2,
+          -1
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          0,
+          -1,
+          -2,
+          -2
+        ],
+        [
+          -2,
+          -1,
+          1,
+          -2
+        ],
+        [
+          -2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          -2,
+          1,
+          -2,
+          -1
+        ]
+      ],
+      "expected_phase_aware_cmt_output_U_transpose": [
+        [
+          0,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          -1,
+          -1,
+          1,
+          1
+        ],
+        [
+          -2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          -2,
+          -2,
+          -2,
+          -1
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 3,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          1152921504606748672,
+          1
+        ]
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            -1,
+            -2,
+            -2
+          ],
+          [
+            -2,
+            -1,
+            1,
+            -2
+          ],
+          [
+            -2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            -2,
+            1,
+            -2,
+            -1
+          ]
+        ]
+      },
+      "phase_aware_cmt_trace": {
+        "input_plaintext_matrix": [
+          [
+            0,
+            -1,
+            -2,
+            -2
+          ],
+          [
+            -2,
+            -1,
+            1,
+            -2
+          ],
+          [
+            -2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            -2,
+            1,
+            -2,
+            -1
+          ]
+        ],
+        "output_plaintext_transpose": [
+          [
+            0,
+            -2,
+            -2,
+            -2
+          ],
+          [
+            -1,
+            -1,
+            1,
+            1
+          ],
+          [
+            -2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            -2,
+            -2,
+            -2,
+            -1
+          ]
+        ],
+        "a_scalar": 3,
+        "warning": "debug-only decrypt-transpose-reencrypt oracle; not secure/homomorphic"
+      },
+      "phase_aware_cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            -2,
+            -2,
+            -2
+          ],
+          [
+            -1,
+            -1,
+            1,
+            1
+          ],
+          [
+            -2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            -2,
+            -2,
+            -2,
+            -1
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "phase_aware_cmt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "name": "basis_E00",
+      "a_scalar": 7,
+      "input_U": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_phase_aware_cmt_output_U_transpose": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 7,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          1152921504606748672,
+          1
+        ]
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "phase_aware_cmt_trace": {
+        "input_plaintext_matrix": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "output_plaintext_transpose": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "a_scalar": 7,
+        "warning": "debug-only decrypt-transpose-reencrypt oracle; not secure/homomorphic"
+      },
+      "phase_aware_cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "phase_aware_cmt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "name": "basis_E01",
+      "a_scalar": 7,
+      "input_U": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_phase_aware_cmt_output_U_transpose": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 7,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          1152921504606748672,
+          1
+        ]
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "phase_aware_cmt_trace": {
+        "input_plaintext_matrix": [
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "output_plaintext_transpose": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "a_scalar": 7,
+        "warning": "debug-only decrypt-transpose-reencrypt oracle; not secure/homomorphic"
+      },
+      "phase_aware_cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "phase_aware_cmt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "name": "basis_E23",
+      "a_scalar": 7,
+      "input_U": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_phase_aware_cmt_output_U_transpose": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 7,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          1152921504606748672,
+          1
+        ]
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "phase_aware_cmt_trace": {
+        "input_plaintext_matrix": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "output_plaintext_transpose": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ]
+        ],
+        "a_scalar": 7,
+        "warning": "debug-only decrypt-transpose-reencrypt oracle; not secure/homomorphic"
+      },
+      "phase_aware_cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "phase_aware_cmt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "name": "random_small",
+      "a_scalar": 7,
+      "input_U": [
+        [
+          0,
+          -1,
+          -2,
+          -2
+        ],
+        [
+          -2,
+          -1,
+          1,
+          -2
+        ],
+        [
+          -2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          -2,
+          1,
+          -2,
+          -1
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          0,
+          -1,
+          -2,
+          -2
+        ],
+        [
+          -2,
+          -1,
+          1,
+          -2
+        ],
+        [
+          -2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          -2,
+          1,
+          -2,
+          -1
+        ]
+      ],
+      "expected_phase_aware_cmt_output_U_transpose": [
+        [
+          0,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          -1,
+          -1,
+          1,
+          1
+        ],
+        [
+          -2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          -2,
+          -2,
+          -2,
+          -1
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 7,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          1152921504606748672,
+          1
+        ]
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            -1,
+            -2,
+            -2
+          ],
+          [
+            -2,
+            -1,
+            1,
+            -2
+          ],
+          [
+            -2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            -2,
+            1,
+            -2,
+            -1
+          ]
+        ]
+      },
+      "phase_aware_cmt_trace": {
+        "input_plaintext_matrix": [
+          [
+            0,
+            -1,
+            -2,
+            -2
+          ],
+          [
+            -2,
+            -1,
+            1,
+            -2
+          ],
+          [
+            -2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            -2,
+            1,
+            -2,
+            -1
+          ]
+        ],
+        "output_plaintext_transpose": [
+          [
+            0,
+            -2,
+            -2,
+            -2
+          ],
+          [
+            -1,
+            -1,
+            1,
+            1
+          ],
+          [
+            -2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            -2,
+            -2,
+            -2,
+            -1
+          ]
+        ],
+        "a_scalar": 7,
+        "warning": "debug-only decrypt-transpose-reencrypt oracle; not secure/homomorphic"
+      },
+      "phase_aware_cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            -2,
+            -2,
+            -2
+          ],
+          [
+            -1,
+            -1,
+            1,
+            1
+          ],
+          [
+            -2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            -2,
+            -2,
+            -2,
+            -1
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "phase_aware_cmt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      }
+    }
+  ],
+  "checks": {
+    "all_controlled_inputs_decrypt_exact（所有 controlled RLWE 输入都能解密回 U）": true,
+    "all_phase_aware_cmt_outputs_equal_transpose（phase-aware C-MT oracle 全部等于 U^T）": true,
+    "any_phase_aware_cmt_case_passes（至少一个 phase-aware C-MT case 正确）": true,
+    "failed_cases（失败 case 摘要）": []
+  },
+  "global_decision": {
+    "value": "phase_aware_logical_n_cmt_oracle_works",
+    "next_step": "WP4-Y2i",
+    "next_goal": "Use controlled RLWE inputs + phase-aware C-MT oracle in full CCMM oracle pipeline.",
+    "zh": "phase-aware C-MT oracle 对非透明 RLWE 输入成立；下一步接入完整 CCMM oracle pipeline。"
+  }
+}
+====================================================================================================
+saved: /workspace/FIDESlib-GPT/reports/wp4y2h_phase_aware_cmt_oracle_probe_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

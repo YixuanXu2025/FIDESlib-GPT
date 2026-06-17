@@ -1,0 +1,166 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+[phase] encrypt columns
+[phase] GPU-only right-multiply chain via rt.component_linear_transform_gpu(cols, U.T)
+[component_linear_transform_gpu] layer=0 name=U3
+[component_linear_transform_gpu] layer=1 name=U2
+[phase] explicit materialize via rt.materialize_gpu_ciphertexts
+[phase] decrypt materialized columns
+====================================================================================================
+WP4-J PCMM right-chain report
+{
+  "experiment": "wp4j_PCMM_right_chain",
+  "purpose": "Validate M @ U3 @ U2 @ U1 @ U0 using column-encrypted component-linear-transform GPU backend.",
+  "matrix_shape": "64x768 @ 768x768 repeated 2 layers",
+  "layout": "column_encrypted",
+  "rows_count": 64,
+  "dim": 768,
+  "layers": 2,
+  "slots": 64,
+  "seed": 205701,
+  "U_order": [
+    "U3",
+    "U2",
+    "U1",
+    "U0"
+  ],
+  "semantics": "M @ U3 @ U2 @ U1 @ U0",
+  "timing_us": {
+    "encrypt_columns": 34687795.990234375,
+    "gpu_only_compute_layer_times": [
+      39039248.94140625,
+      77143685.70751953
+    ],
+    "explicit_materialize_all_columns": 173560521.11083984,
+    "decrypt_materialized_columns": 8705575.655273438,
+    "gpu_only_compute_total": 116182934.64892578
+  },
+  "states": {
+    "gpu_only_compute_states_first2_each_layer": [
+      [
+        {
+          "valid": true,
+          "loaded": true,
+          "gpu": 1538,
+          "has_cpu": true,
+          "level": 4294967295,
+          "noise_scale_deg": 2,
+          "original_level": 5
+        },
+        {
+          "valid": true,
+          "loaded": true,
+          "gpu": 1540,
+          "has_cpu": true,
+          "level": 4294967295,
+          "noise_scale_deg": 2,
+          "original_level": 5
+        }
+      ],
+      [
+        {
+          "valid": true,
+          "loaded": true,
+          "gpu": 3074,
+          "has_cpu": true,
+          "level": 4294967295,
+          "noise_scale_deg": 2,
+          "original_level": 5
+        },
+        {
+          "valid": true,
+          "loaded": true,
+          "gpu": 3076,
+          "has_cpu": true,
+          "level": 4294967295,
+          "noise_scale_deg": 2,
+          "original_level": 5
+        }
+      ]
+    ],
+    "materialized_states_first2": [
+      {
+        "valid": true,
+        "loaded": false,
+        "gpu": 0,
+        "has_cpu": true,
+        "level": 4294967295,
+        "noise_scale_deg": 2,
+        "original_level": 5
+      },
+      {
+        "valid": true,
+        "loaded": false,
+        "gpu": 0,
+        "has_cpu": true,
+        "level": 4294967295,
+        "noise_scale_deg": 2,
+        "original_level": 5
+      }
+    ]
+  },
+  "errors": {
+    "component_linear_transform_to_ref_max_abs_err": 9.059419880941277e-13
+  },
+  "Y_ref_first_row_first16": [
+    -0.2337448756981635,
+    -0.8665131407868022,
+    0.6091422057848845,
+    9.540368226043928,
+    -0.2272861354191724,
+    1.3780009415634238,
+    1.3208256086921915,
+    0.3893803199015551,
+    6.16649314661194,
+    -3.2012559808338166,
+    1.2971254781673494,
+    0.5381780080406269,
+    4.189498305245003,
+    8.073822588592744,
+    0.584422216554513,
+    -3.7426207452841664
+  ],
+  "dec_first_row_first16": [
+    -0.2337448756980789,
+    -0.8665131407870191,
+    0.6091422057845225,
+    9.540368226044267,
+    -0.2272861354190998,
+    1.3780009415634162,
+    1.3208256086919095,
+    0.38938031990176736,
+    6.1664931466123125,
+    -3.2012559808340066,
+    1.2971254781670551,
+    0.5381780080406544,
+    4.189498305245026,
+    8.073822588592765,
+    0.5844222165548746,
+    -3.742620745284267
+  ],
+  "Y_ref_shape": [
+    64,
+    768
+  ],
+  "dec_shape": [
+    64,
+    768
+  ]
+}
+====================================================================================================
+saved: /workspace/FIDESlib-GPT/reports/wp4j_PCMM_right_chain.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

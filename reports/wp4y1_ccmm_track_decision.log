@@ -1,0 +1,362 @@
+====================================================================================================
+WP4-Y1 CCMM track decision report
+{
+  "experiment": "wp4y1_ccmm_track_decision",
+  "purpose": "Freeze the current CCMM debugging conclusions and choose the next implementation track. This separates PCMM, debug/oracle CCMM algebra, and real secure CCMM implementation work.",
+  "status": "track_decision_report_no_code_change",
+  "source_reports": {
+    "X7d_coeff_row_roundtrip": {
+      "exists": true,
+      "path": "/workspace/FIDESlib-GPT/reports/wp4x7d_coeff_row_roundtrip_baseline_report.json",
+      "error": null
+    },
+    "X7e_transparent_coeff_baseline": {
+      "exists": true,
+      "path": "/workspace/FIDESlib-GPT/reports/wp4x7e_transparent_coeff_row_baseline_report.json",
+      "error": null
+    },
+    "X7f_logical_n_cmt_oracle": {
+      "exists": true,
+      "path": "/workspace/FIDESlib-GPT/reports/wp4x7f_logical_n_cmt_oracle_report.json",
+      "error": null
+    },
+    "X7k_raw_rns_add_line6": {
+      "exists": true,
+      "path": "/workspace/FIDESlib-GPT/reports/wp4x7k_raw_rns_add_line6_probe_report.json",
+      "error": null
+    },
+    "X7l_oracle_helper_smoke": {
+      "exists": true,
+      "path": "/workspace/FIDESlib-GPT/reports/wp4x7l_oracle_helper_smoke_report.json",
+      "error": null
+    }
+  },
+  "milestones": {
+    "PCMM_preserved": {
+      "value": true,
+      "zh": "原本 PCMM / rt.ccmm_gpu_fused_raw 改名后的路线保留，不作为真实 CCMM。"
+    },
+    "debug_oracle_algebra_validated": {
+      "value": true,
+      "evidence": "X7l all_cases_equal_U_T_matmul_V",
+      "zh": "logical-n C-MT oracle + raw RNS PP-MM + raw RNS line6 add 的 debug/oracle 代数链条已稳定。"
+    },
+    "transparent_coeff_baseline_valid": {
+      "value": true,
+      "evidence": "X7e transparent_input_rows_decrypt_exact",
+      "zh": "transparent c0=row,c1=0 可以正确表达 coefficient-row 明文语义。"
+    },
+    "real_coeff_row_encryption_broken": {
+      "value": true,
+      "evidence": "X7d coeff_after_compress_roundtrip_all_exact",
+      "zh": "真实 encrypt_coeff_row_i64/decrypt_coeff_row_i64 roundtrip 仍不正确。"
+    },
+    "real_cmt_dimension_contract_broken_for_n4": {
+      "value": true,
+      "evidence": "X7e real C-MT fails but X7f logical-n oracle passes",
+      "zh": "当前真实 C-MT 在 n=4, ring_dim=16384 下不满足 logical-n transpose 语义。"
+    },
+    "line6_add_requires_raw_rns_add_in_debug_path": {
+      "value": true,
+      "evidence": "X7j showed add_coeff_ct order dependence; X7k raw RNS add passed",
+      "zh": "debug/oracle 路径中 line6 应使用 raw RNS component add，而不是 add_coeff_ct。"
+    }
+  },
+  "tracks": {
+    "track_A_debug_oracle": {
+      "name": "Debug/oracle CCMM algebra track",
+      "status": "available",
+      "description": "Use transparent coefficient rows, logical-n C-MT oracle, raw RNS PP-MM, and raw RNS add to validate Algorithm 3 algebra and produce deterministic diagnostics.",
+      "security": "not secure / not homomorphic",
+      "recommended_use": [
+        "debug Park-2025 Algorithm 3 algebra",
+        "unit-test PP-MM / component formulas",
+        "compare implementation traces against plaintext expectations"
+      ],
+      "zh": "可用于代数验证，但不能作为最终安全 CCMM。"
+    },
+    "track_B_real_small_n_ccmm": {
+      "name": "Real secure small-n CCMM track",
+      "status": "blocked",
+      "blockers": [
+        "real coefficient-row encryption semantics are not correct",
+        "current homomorphic C-MT is ring-dimension C-MT, not logical-n C-MT for n=4",
+        "line6 add path must be revisited under real ciphertext semantics"
+      ],
+      "required_next_steps": [
+        "fix encrypt_coeff_row_i64/decrypt_coeff_row_i64 roundtrip",
+        "design logical-n homomorphic C-MT for n << ring_dim, or block/pad the matrix representation",
+        "then replace debug raw add with secure homomorphic equivalent"
+      ],
+      "zh": "这是最终想要的真实小矩阵 CCMM，但当前被 coefficient encryption 和 logical-n C-MT 卡住。"
+    },
+    "track_C_dimension_compatible_benchmark": {
+      "name": "Dimension-compatible Park C-MT benchmark track",
+      "status": "theoretically aligned but impractical for current toy",
+      "description": "Use matrix dimension equal to the ring dimension so that Park C-MT contract matches directly.",
+      "issue": "ring_dim=16384 would imply very large row count and matrix size for a direct test",
+      "zh": "理论上最贴论文，但当前直接做 16384×16384 不适合作为短期实验。"
+    },
+    "track_D_PCMM": {
+      "name": "PCMM / plaintext-matrix comparison track",
+      "status": "preserved",
+      "description": "Keep the previous GPU fused primitive as PCMM / ciphertext-by-plaintext-matrix comparison path.",
+      "zh": "保留原 PCMM，用于后续和 JKSL/BSGS 的速率对比。"
+    }
+  },
+  "recommendation": {
+    "short_term": {
+      "track": "track_A_debug_oracle + track_D_PCMM",
+      "reason": "Track A gives a stable algebra oracle for CCMM debugging; Track D preserves the PCMM performance path.",
+      "zh": "短期保留 PCMM，同时用 oracle CCMM 固定算法语义。"
+    },
+    "real_ccmm_next": {
+      "track": "track_B_real_small_n_ccmm",
+      "first_blocker_to_attack": "coefficient-row encryption roundtrip",
+      "second_blocker_to_attack": "logical-n homomorphic C-MT",
+      "zh": "真实 CCMM 下一步优先修 coefficient-row 加解密，然后再设计 logical-n C-MT。"
+    }
+  },
+  "next_step": {
+    "name": "WP4-Y2",
+    "goal": "Fix real coefficient-row encryption/decryption semantics. Target: encrypt_coeff_row_i64(row) -> compress -> decrypt_coeff_row_i64 returns row exactly.",
+    "zh": "下一步建议先修真实 coefficient-row 加解密，而不是继续调 Algorithm 3。"
+  },
+  "raw_source_checks": {
+    "X7d_coeff_row_roundtrip": {
+      "coeff_encrypt_all_ok（encrypt_coeff_row_i64 全部调用成功）": true,
+      "coeff_direct_decrypt_all_ok（不 compress 直接 decrypt_coeff_row_i64 全部成功）": false,
+      "coeff_direct_roundtrip_all_exact（不 compress 直接 roundtrip 全部精确）": false,
+      "coeff_compress_all_ok（compress(towers_left=1) 全部成功）": true,
+      "coeff_after_compress_decrypt_all_ok（compress 后 decrypt_coeff_row_i64 全部成功）": true,
+      "coeff_after_compress_roundtrip_all_exact（compress 后 roundtrip 全部精确）": false,
+      "standard_ckks_control_all_ok（普通 CKKS slot 加解密对照全部成功）": true,
+      "standard_ckks_control_rounds_to_input（普通 CKKS slot 解密四舍五入后等于输入）": true
+    },
+    "X7e_transparent_coeff_baseline": {
+      "transparent_input_rows_decrypt_exact（transparent c0=row,c1=0 输入能正确解密回 U）": true,
+      "transparent_cmt_outputs_equal_transpose（transparent 输入下 C-MT 输出等于 U^T）": false,
+      "all_cmt_auto_alphas_expected（所有 C-MT alpha 都是 [1,3,5,7]）": true,
+      "any_transparent_cmt_case_passes（是否至少有一个 transparent C-MT case 语义正确）": false,
+      "transparent_cmt_failure_nonzero_summary（transparent C-MT 失败时的非零数量诊断）": [
+        {
+          "name": "basis_E00",
+          "expected_nonzero_count": 1,
+          "got_nonzero_count": 4,
+          "expected_nonzero_positions": [
+            [
+              0,
+              0,
+              1
+            ]
+          ],
+          "got_nonzero_positions": [
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              1,
+              0,
+              1
+            ],
+            [
+              2,
+              0,
+              1
+            ],
+            [
+              3,
+              0,
+              1
+            ]
+          ]
+        },
+        {
+          "name": "basis_E01",
+          "expected_nonzero_count": 1,
+          "got_nonzero_count": 2,
+          "expected_nonzero_positions": [
+            [
+              1,
+              0,
+              1
+            ]
+          ],
+          "got_nonzero_positions": [
+            [
+              0,
+              1,
+              1
+            ],
+            [
+              1,
+              3,
+              1
+            ]
+          ]
+        },
+        {
+          "name": "basis_E23",
+          "expected_nonzero_count": 1,
+          "got_nonzero_count": 1,
+          "expected_nonzero_positions": [
+            [
+              3,
+              2,
+              1
+            ]
+          ],
+          "got_nonzero_positions": [
+            [
+              0,
+              3,
+              1
+            ]
+          ]
+        },
+        {
+          "name": "random_small",
+          "expected_nonzero_count": 12,
+          "got_nonzero_count": 8,
+          "expected_nonzero_positions": [
+            [
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              2,
+              2
+            ],
+            [
+              0,
+              3,
+              1
+            ],
+            [
+              1,
+              1,
+              -1
+            ],
+            [
+              1,
+              2,
+              -1
+            ],
+            [
+              1,
+              3,
+              -1
+            ],
+            [
+              2,
+              0,
+              -2
+            ],
+            [
+              2,
+              1,
+              -2
+            ],
+            [
+              2,
+              2,
+              -1
+            ],
+            [
+              3,
+              0,
+              -2
+            ],
+            [
+              3,
+              2,
+              -2
+            ],
+            [
+              3,
+              3,
+              1
+            ]
+          ],
+          "got_nonzero_positions": [
+            [
+              0,
+              0,
+              4
+            ],
+            [
+              0,
+              1,
+              -3
+            ],
+            [
+              0,
+              2,
+              -5
+            ],
+            [
+              0,
+              3,
+              -3
+            ],
+            [
+              1,
+              0,
+              -1
+            ],
+            [
+              1,
+              3,
+              1
+            ],
+            [
+              2,
+              0,
+              2
+            ],
+            [
+              3,
+              0,
+              -1
+            ]
+          ]
+        }
+      ]
+    },
+    "X7f_logical_n_cmt_oracle": {
+      "transparent_input_rows_decrypt_exact（transparent 输入能正确解密回 U）": true,
+      "logical_n_cmt_oracle_outputs_equal_transpose（logical-n C-MT oracle 输出等于 U^T）": true,
+      "any_logical_n_cmt_case_passes（是否至少有一个 logical-n C-MT case 正确）": true,
+      "failure_summary（失败时的非零数量诊断）": []
+    },
+    "X7k_raw_rns_add_line6": {
+      "bonly_equals_U_T_matmul_V（bonly_equals_U_T_matmul_V）": true,
+      "line5_is_zero（line5_is_zero）": true,
+      "T01_is_zero（T01_is_zero）": true,
+      "raw_bonly_plus_line5_equals_bonly（raw_bonly_plus_line5_equals_bonly）": true,
+      "raw_line5_plus_bonly_equals_bonly（raw_line5_plus_bonly_equals_bonly）": true,
+      "raw_bonly_plus_T01_equals_bonly（raw_bonly_plus_T01_equals_bonly）": true,
+      "raw_T01_plus_bonly_equals_bonly（raw_T01_plus_bonly_equals_bonly）": true,
+      "raw_line5_plus_T01_is_zero（raw_line5_plus_T01_is_zero）": true,
+      "raw_T01_plus_line5_is_zero（raw_T01_plus_line5_is_zero）": true,
+      "raw_full_left_assoc_equals_bonly（raw_full_left_assoc_equals_bonly）": true,
+      "raw_full_zero_first_equals_bonly（raw_full_zero_first_equals_bonly）": true,
+      "raw_full_paper_order_equals_bonly（raw_full_paper_order_equals_bonly）": true,
+      "raw_full_paper_order_equals_U_T_matmul_V（raw_full_paper_order_equals_U_T_matmul_V）": true,
+      "all_raw_full_rows_are_2part（raw-add full rows 均为二分量）": true,
+      "all_line5_ks_inputs_are_3part（line5 KS inputs 均为三分量）": true
+    },
+    "X7l_oracle_helper_smoke": {
+      "all_cases_decrypted（所有 helper smoke case 都成功解密）": true,
+      "all_cases_equal_U_T_matmul_V（所有 helper smoke case 都等于 U.T@V）": true,
+      "all_line5_ks_inputs_are_3part（line5 KS inputs 均为三分量）": true,
+      "all_raw_full_rows_are_2part（raw-add full rows 均为二分量）": true
+    }
+  }
+}
+====================================================================================================
+saved: /workspace/FIDESlib-GPT/reports/wp4y1_ccmm_track_decision_report.json

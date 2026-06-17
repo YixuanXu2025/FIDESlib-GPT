@@ -1,0 +1,2550 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+WP4-X7h B-only oracle invariant probe
+{
+  "experiment": "wp4x7h_bonly_oracle_invariant_probe",
+  "purpose": "Isolate transparent-input B-only algebra under logical-n C-MT oracle. For c0=row,c1=0 inputs, Algorithm 3 should reduce to M11=B_U@B_V=U.T@V. Also verify zero C-MT/relinearize/add invariants.",
+  "status": "debug_oracle_bonly_and_zero_invariant_probe",
+  "n": 4,
+  "cases": [
+    {
+      "name": "basis_E00_times_E00",
+      "zh": "B-only transparent expected = U.T @ V",
+      "input_U": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "input_V": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_B_only_U_transpose_matmul_V": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "result": {
+        "B_U_summary": {
+          "row0_tower0_coeffs": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "B_V_summary": {
+          "row0_tower0_coeffs": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "M11_summary": {
+          "row0_tower0_coeffs": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "row1_tower0_coeffs": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "reduced_rows_summary": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "final": {
+          "compress_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decrypt_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decoded": [
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      },
+      "comparison_to_U_transpose_matmul_V": {
+        "all_rows_decrypted": true,
+        "exact": true,
+        "max_abs_err": 0,
+        "l1_err": 0,
+        "diff": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "got_nonzero_positions": [
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "expected_nonzero_positions": [
+        [
+          0,
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "name": "basis_E01_times_E10",
+      "zh": "B-only transparent expected = U.T @ V",
+      "input_U": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "input_V": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_B_only_U_transpose_matmul_V": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "result": {
+        "B_U_summary": {
+          "row0_tower0_coeffs": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "B_V_summary": {
+          "row0_tower0_coeffs": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "M11_summary": {
+          "row0_tower0_coeffs": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "row1_tower0_coeffs": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "reduced_rows_summary": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "final": {
+          "compress_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decrypt_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decoded": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      },
+      "comparison_to_U_transpose_matmul_V": {
+        "all_rows_decrypted": true,
+        "exact": true,
+        "max_abs_err": 0,
+        "l1_err": 0,
+        "diff": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "got_nonzero_positions": [],
+      "expected_nonzero_positions": []
+    },
+    {
+      "name": "basis_E01_times_E12",
+      "zh": "B-only transparent expected = U.T @ V",
+      "input_U": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "input_V": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_B_only_U_transpose_matmul_V": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "result": {
+        "B_U_summary": {
+          "row0_tower0_coeffs": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "B_V_summary": {
+          "row0_tower0_coeffs": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "M11_summary": {
+          "row0_tower0_coeffs": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "row1_tower0_coeffs": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "reduced_rows_summary": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "final": {
+          "compress_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decrypt_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decoded": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      },
+      "comparison_to_U_transpose_matmul_V": {
+        "all_rows_decrypted": true,
+        "exact": true,
+        "max_abs_err": 0,
+        "l1_err": 0,
+        "diff": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "got_nonzero_positions": [],
+      "expected_nonzero_positions": []
+    },
+    {
+      "name": "basis_E23_times_E31",
+      "zh": "B-only transparent expected = U.T @ V",
+      "input_U": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "input_V": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ]
+      ],
+      "expected_B_only_U_transpose_matmul_V": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "result": {
+        "B_U_summary": {
+          "row0_tower0_coeffs": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "B_V_summary": {
+          "row0_tower0_coeffs": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "M11_summary": {
+          "row0_tower0_coeffs": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "row1_tower0_coeffs": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "reduced_rows_summary": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "final": {
+          "compress_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decrypt_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decoded": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      },
+      "comparison_to_U_transpose_matmul_V": {
+        "all_rows_decrypted": true,
+        "exact": true,
+        "max_abs_err": 0,
+        "l1_err": 0,
+        "diff": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "got_nonzero_positions": [],
+      "expected_nonzero_positions": []
+    },
+    {
+      "name": "identity_times_random_small",
+      "zh": "B-only transparent expected = I.T @ V = V",
+      "input_U": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "input_V": [
+        [
+          -2,
+          -1,
+          -1,
+          -2
+        ],
+        [
+          2,
+          -1,
+          -1,
+          1
+        ],
+        [
+          2,
+          0,
+          2,
+          -1
+        ],
+        [
+          1,
+          1,
+          0,
+          -1
+        ]
+      ],
+      "expected_B_only_U_transpose_matmul_V": [
+        [
+          -2,
+          -1,
+          -1,
+          -2
+        ],
+        [
+          2,
+          -1,
+          -1,
+          1
+        ],
+        [
+          2,
+          0,
+          2,
+          -1
+        ],
+        [
+          1,
+          1,
+          0,
+          -1
+        ]
+      ],
+      "result": {
+        "B_U_summary": {
+          "row0_tower0_coeffs": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "B_V_summary": {
+          "row0_tower0_coeffs": [
+            1152921504606748671,
+            1152921504606748672,
+            1152921504606748672,
+            1152921504606748671
+          ],
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "M11_summary": {
+          "row0_tower0_coeffs": [
+            1152921504606748671,
+            1152921504606748672,
+            1152921504606748672,
+            1152921504606748671
+          ],
+          "row1_tower0_coeffs": [
+            2,
+            1152921504606748672,
+            1152921504606748672,
+            1
+          ]
+        },
+        "reduced_rows_summary": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "final": {
+          "compress_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decrypt_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decoded": [
+            [
+              -2,
+              -1,
+              -1,
+              -2
+            ],
+            [
+              2,
+              -1,
+              -1,
+              1
+            ],
+            [
+              2,
+              0,
+              2,
+              -1
+            ],
+            [
+              1,
+              1,
+              0,
+              -1
+            ]
+          ]
+        }
+      },
+      "comparison_to_U_transpose_matmul_V": {
+        "all_rows_decrypted": true,
+        "exact": true,
+        "max_abs_err": 0,
+        "l1_err": 0,
+        "diff": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "got_nonzero_positions": [
+        [
+          0,
+          0,
+          -2
+        ],
+        [
+          0,
+          1,
+          -1
+        ],
+        [
+          0,
+          2,
+          -1
+        ],
+        [
+          0,
+          3,
+          -2
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          1,
+          1,
+          -1
+        ],
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          1,
+          3,
+          1
+        ],
+        [
+          2,
+          0,
+          2
+        ],
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          -1
+        ],
+        [
+          3,
+          0,
+          1
+        ],
+        [
+          3,
+          1,
+          1
+        ],
+        [
+          3,
+          3,
+          -1
+        ]
+      ],
+      "expected_nonzero_positions": [
+        [
+          0,
+          0,
+          -2
+        ],
+        [
+          0,
+          1,
+          -1
+        ],
+        [
+          0,
+          2,
+          -1
+        ],
+        [
+          0,
+          3,
+          -2
+        ],
+        [
+          1,
+          0,
+          2
+        ],
+        [
+          1,
+          1,
+          -1
+        ],
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          1,
+          3,
+          1
+        ],
+        [
+          2,
+          0,
+          2
+        ],
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          -1
+        ],
+        [
+          3,
+          0,
+          1
+        ],
+        [
+          3,
+          1,
+          1
+        ],
+        [
+          3,
+          3,
+          -1
+        ]
+      ]
+    },
+    {
+      "name": "random_small_times_identity",
+      "zh": "B-only transparent expected = U.T @ I = U.T",
+      "input_U": [
+        [
+          2,
+          -1,
+          1,
+          -1
+        ],
+        [
+          -1,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          2,
+          0,
+          -2
+        ],
+        [
+          -1,
+          -2,
+          0,
+          -1
+        ]
+      ],
+      "input_V": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "expected_B_only_U_transpose_matmul_V": [
+        [
+          2,
+          -1,
+          0,
+          -1
+        ],
+        [
+          -1,
+          0,
+          2,
+          -2
+        ],
+        [
+          1,
+          1,
+          0,
+          0
+        ],
+        [
+          -1,
+          1,
+          -2,
+          -1
+        ]
+      ],
+      "result": {
+        "B_U_summary": {
+          "row0_tower0_coeffs": [
+            2,
+            1152921504606748672,
+            0,
+            1152921504606748672
+          ],
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "B_V_summary": {
+          "row0_tower0_coeffs": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "M11_summary": {
+          "row0_tower0_coeffs": [
+            2,
+            1152921504606748672,
+            0,
+            1152921504606748672
+          ],
+          "row1_tower0_coeffs": [
+            1152921504606748672,
+            0,
+            2,
+            1152921504606748671
+          ]
+        },
+        "reduced_rows_summary": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "final": {
+          "compress_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decrypt_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decoded": [
+            [
+              2,
+              -1,
+              0,
+              -1
+            ],
+            [
+              -1,
+              0,
+              2,
+              -2
+            ],
+            [
+              1,
+              1,
+              0,
+              0
+            ],
+            [
+              -1,
+              1,
+              -2,
+              -1
+            ]
+          ]
+        }
+      },
+      "comparison_to_U_transpose_matmul_V": {
+        "all_rows_decrypted": true,
+        "exact": true,
+        "max_abs_err": 0,
+        "l1_err": 0,
+        "diff": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "got_nonzero_positions": [
+        [
+          0,
+          0,
+          2
+        ],
+        [
+          0,
+          1,
+          -1
+        ],
+        [
+          0,
+          3,
+          -1
+        ],
+        [
+          1,
+          0,
+          -1
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          1,
+          3,
+          -2
+        ],
+        [
+          2,
+          0,
+          1
+        ],
+        [
+          2,
+          1,
+          1
+        ],
+        [
+          3,
+          0,
+          -1
+        ],
+        [
+          3,
+          1,
+          1
+        ],
+        [
+          3,
+          2,
+          -2
+        ],
+        [
+          3,
+          3,
+          -1
+        ]
+      ],
+      "expected_nonzero_positions": [
+        [
+          0,
+          0,
+          2
+        ],
+        [
+          0,
+          1,
+          -1
+        ],
+        [
+          0,
+          3,
+          -1
+        ],
+        [
+          1,
+          0,
+          -1
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          1,
+          3,
+          -2
+        ],
+        [
+          2,
+          0,
+          1
+        ],
+        [
+          2,
+          1,
+          1
+        ],
+        [
+          3,
+          0,
+          -1
+        ],
+        [
+          3,
+          1,
+          1
+        ],
+        [
+          3,
+          2,
+          -2
+        ],
+        [
+          3,
+          3,
+          -1
+        ]
+      ]
+    }
+  ],
+  "zero_invariants": {
+    "template_info": {
+      "template_num_towers": 4,
+      "template_ring_dim": 16384,
+      "moduli_u64": [
+        1152921504606748673,
+        1125899904679937,
+        1125899908022273,
+        557057
+      ]
+    },
+    "zero_pair_summary": {
+      "num_rows": 4,
+      "consistent_shape": true,
+      "expected_parts": 2,
+      "expected_towers": 4,
+      "expected_ring_dim": 16384,
+      "rows": [
+        {
+          "row_index": 0,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 1,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 2,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 3,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        }
+      ]
+    },
+    "zero_cmt_summary": {
+      "num_rows": 4,
+      "consistent_shape": true,
+      "expected_parts": 2,
+      "expected_towers": 4,
+      "expected_ring_dim": 16384,
+      "rows": [
+        {
+          "row_index": 0,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 1,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 2,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 3,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        }
+      ]
+    },
+    "zero_3part_summary": {
+      "num_rows": 4,
+      "consistent_shape": true,
+      "expected_parts": 3,
+      "expected_towers": 4,
+      "expected_ring_dim": 16384,
+      "rows": [
+        {
+          "row_index": 0,
+          "encoding_type": 1,
+          "num_parts": 3,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 1,
+          "encoding_type": 1,
+          "num_parts": 3,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 2,
+          "encoding_type": 1,
+          "num_parts": 3,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 3,
+          "encoding_type": 1,
+          "num_parts": 3,
+          "level": 0,
+          "slots": 0
+        }
+      ]
+    },
+    "zero_relin_summary": {
+      "num_rows": 4,
+      "consistent_shape": true,
+      "expected_parts": 2,
+      "expected_towers": 4,
+      "expected_ring_dim": 16384,
+      "rows": [
+        {
+          "row_index": 0,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 1,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 2,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 3,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        }
+      ]
+    },
+    "zero_sum_summary": {
+      "num_rows": 4,
+      "consistent_shape": true,
+      "expected_parts": 2,
+      "expected_towers": 4,
+      "expected_ring_dim": 16384,
+      "rows": [
+        {
+          "row_index": 0,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 1,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 2,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 3,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        }
+      ]
+    },
+    "decrypt_zero_pair": {
+      "compress_reports": [
+        {
+          "row_index": 0,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 1,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 2,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 3,
+          "ok": true,
+          "error": null
+        }
+      ],
+      "decrypt_reports": [
+        {
+          "row_index": 0,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 1,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 2,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 3,
+          "ok": true,
+          "error": null
+        }
+      ],
+      "decoded": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    "decrypt_zero_cmt": {
+      "compress_reports": [
+        {
+          "row_index": 0,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 1,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 2,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 3,
+          "ok": true,
+          "error": null
+        }
+      ],
+      "decrypt_reports": [
+        {
+          "row_index": 0,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 1,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 2,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 3,
+          "ok": true,
+          "error": null
+        }
+      ],
+      "decoded": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    "decrypt_zero_relin": {
+      "compress_reports": [
+        {
+          "row_index": 0,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 1,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 2,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 3,
+          "ok": true,
+          "error": null
+        }
+      ],
+      "decrypt_reports": [
+        {
+          "row_index": 0,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 1,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 2,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 3,
+          "ok": true,
+          "error": null
+        }
+      ],
+      "decoded": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    "decrypt_zero_sum": {
+      "compress_reports": [
+        {
+          "row_index": 0,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 1,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 2,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 3,
+          "ok": true,
+          "error": null
+        }
+      ],
+      "decrypt_reports": [
+        {
+          "row_index": 0,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 1,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 2,
+          "ok": true,
+          "error": null
+        },
+        {
+          "row_index": 3,
+          "ok": true,
+          "error": null
+        }
+      ],
+      "decoded": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    "comparisons": {
+      "zero_pair_exact": {
+        "all_rows_decrypted": true,
+        "exact": true,
+        "max_abs_err": 0,
+        "l1_err": 0,
+        "diff": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "zero_cmt_exact": {
+        "all_rows_decrypted": true,
+        "exact": true,
+        "max_abs_err": 0,
+        "l1_err": 0,
+        "diff": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "zero_relin_exact": {
+        "all_rows_decrypted": true,
+        "exact": true,
+        "max_abs_err": 0,
+        "l1_err": 0,
+        "diff": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "zero_sum_exact": {
+        "all_rows_decrypted": true,
+        "exact": true,
+        "max_abs_err": 0,
+        "l1_err": 0,
+        "diff": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      }
+    }
+  },
+  "checks": {
+    "zero_pair_decrypts_to_zero（zero pair 解密为 0）": true,
+    "zero_cmt_decrypts_to_zero（oracle C-MT(zero) 解密为 0）": true,
+    "zero_relin_decrypts_to_zero（relinearize(zero 3part) 解密为 0）": true,
+    "zero_add_decrypts_to_zero（zero CMT + zero relin 解密为 0）": true,
+    "bonly_all_cases_decrypted（B-only reduced pipeline 全部成功解密）": true,
+    "bonly_all_cases_match_U_transpose_matmul_V（B-only reduced pipeline 全部等于 U.T@V）": true,
+    "bonly_exact_case_count（B-only reduced pipeline 等于 U.T@V 的 case 数）": 6
+  },
+  "summary": {
+    "if_bonly_passes_and_zero_passes": "Raw PP-MM/import/decode and zero invariants are correct. The remaining full-pipeline mismatch is likely line5/line6 placement for nonzero A components, or the transparent-input expected reference was wrong.",
+    "if_bonly_fails": "The raw PP-MM orientation/import/decode is still wrong even before line5/line6. Fix M11 path first.",
+    "if_zero_fails": "Zero C-MT/relinearize/add contaminates full pipeline. Fix zero construction or relinearize/add path before continuing.",
+    "next_step": "WP4-X7i",
+    "zh": "X7h 先把问题切成 M11 B-only 与 zero contamination 两块。"
+  }
+}
+====================================================================================================
+saved: /workspace/FIDESlib-GPT/reports/wp4x7h_bonly_oracle_invariant_probe_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

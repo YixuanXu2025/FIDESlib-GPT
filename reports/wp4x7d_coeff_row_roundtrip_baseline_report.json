@@ -1,0 +1,1129 @@
+{
+  "experiment": "wp4x7d_coeff_row_roundtrip_baseline",
+  "purpose": "Verify the semantic baseline for coefficient-row encryption/decryption. X7c showed that even input row-wise ciphertexts do not decrypt back exactly, so CCMM/C-MT debugging must pause until this path is fixed.",
+  "status": "coefficient_row_baseline_probe_no_ccmm",
+  "n": 4,
+  "rows": [
+    [
+      1,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      1,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      1
+    ],
+    [
+      -2,
+      -1,
+      0,
+      1
+    ],
+    [
+      2,
+      -2,
+      1,
+      0
+    ]
+  ],
+  "paths": {
+    "current_coeff_path": "encrypt_coeff_row_i64 -> compress(towers_left=1) -> decrypt_coeff_row_i64",
+    "standard_ckks_control": "rt.encrypt -> rt.decrypt"
+  },
+  "cases": [
+    {
+      "input_row": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "current_coeff_path": {
+        "input_row": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "path": "encrypt_coeff_row_i64 -> optional compress -> decrypt_coeff_row_i64",
+        "encrypt": {
+          "ok": true,
+          "error": null
+        },
+        "inspect_after_encrypt": {
+          "ok": true,
+          "value": {
+            "valid": true,
+            "openfhe_level": 0,
+            "openfhe_noise_scale_deg": 1,
+            "openfhe_scaling_factor": 1.0,
+            "openfhe_slots": 0,
+            "openfhe_encoding_type": 1,
+            "num_parts": 2,
+            "parts_summary": [
+              {
+                "part_index": 0,
+                "num_towers": 4,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  676464521863485774,
+                  1028558996397067107,
+                  181983971313249617,
+                  167546166107045607,
+                  1021201300773241237,
+                  1050683743862996473,
+                  1047336387952040329,
+                  1049357437280647556
+                ]
+              },
+              {
+                "part_index": 1,
+                "num_towers": 4,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  21891739288625791,
+                  845545197589378920,
+                  651005141389948974,
+                  513334690305262108,
+                  390261339709046302,
+                  600545719660231464,
+                  938427987701481482,
+                  642454550667743127
+                ]
+              }
+            ]
+          }
+        },
+        "decrypt_direct": {
+          "ok": false,
+          "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 4!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')",
+          "value": null
+        },
+        "decrypt_direct_compare": {
+          "exact": false,
+          "max_abs_err": null,
+          "diff": null
+        },
+        "compress": {
+          "ok": true,
+          "error": null
+        },
+        "inspect_after_compress": {
+          "ok": true,
+          "value": {
+            "valid": true,
+            "openfhe_level": 3,
+            "openfhe_noise_scale_deg": 1,
+            "openfhe_scaling_factor": 1.0,
+            "openfhe_slots": 0,
+            "openfhe_encoding_type": 1,
+            "num_parts": 2,
+            "parts_summary": [
+              {
+                "part_index": 0,
+                "num_towers": 1,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  676464521863485774,
+                  1028558996397067107,
+                  181983971313249617,
+                  167546166107045607,
+                  1021201300773241237,
+                  1050683743862996473,
+                  1047336387952040329,
+                  1049357437280647556
+                ]
+              },
+              {
+                "part_index": 1,
+                "num_towers": 1,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  21891739288625791,
+                  845545197589378920,
+                  651005141389948974,
+                  513334690305262108,
+                  390261339709046302,
+                  600545719660231464,
+                  938427987701481482,
+                  642454550667743127
+                ]
+              }
+            ]
+          }
+        },
+        "decrypt_after_compress": {
+          "ok": true,
+          "error": null,
+          "value": [
+            -19,
+            -4,
+            23,
+            7
+          ]
+        },
+        "decrypt_after_compress_compare": {
+          "exact": false,
+          "max_abs_err": 23,
+          "diff": [
+            -20,
+            -4,
+            23,
+            7
+          ]
+        }
+      },
+      "standard_ckks_control": {
+        "input_row": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "path": "standard CKKS slot encrypt/decrypt control path",
+        "zh": "用于确认普通 CKKS slot 加解密是否正常；它不是 paper coefficient encoding。",
+        "encrypt": {
+          "ok": true,
+          "error": null
+        },
+        "decrypt": {
+          "ok": true,
+          "error": null,
+          "value": [
+            0.9999999999999811,
+            -8.585742292512428e-15,
+            4.0837417628378827e-14,
+            1.188747417058107e-13
+          ]
+        },
+        "compare": {
+          "max_abs_err": 1.188747417058107e-13,
+          "approx_exact_int_after_round": true,
+          "rounded_value": [
+            1,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "input_row": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "current_coeff_path": {
+        "input_row": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "path": "encrypt_coeff_row_i64 -> optional compress -> decrypt_coeff_row_i64",
+        "encrypt": {
+          "ok": true,
+          "error": null
+        },
+        "inspect_after_encrypt": {
+          "ok": true,
+          "value": {
+            "valid": true,
+            "openfhe_level": 0,
+            "openfhe_noise_scale_deg": 1,
+            "openfhe_scaling_factor": 1.0,
+            "openfhe_slots": 0,
+            "openfhe_encoding_type": 1,
+            "num_parts": 2,
+            "parts_summary": [
+              {
+                "part_index": 0,
+                "num_towers": 4,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  790061785354491106,
+                  945016951641880029,
+                  443162718761390959,
+                  837776253546017020,
+                  1094599681391984645,
+                  1047850091928814277,
+                  385450895747412256,
+                  897962613642699889
+                ]
+              },
+              {
+                "part_index": 1,
+                "num_towers": 4,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  1148012382424923326,
+                  451252410347412030,
+                  1140935510623912714,
+                  147352586068053013,
+                  401641783717364907,
+                  270933630902683205,
+                  691782095848009528,
+                  675813850223261303
+                ]
+              }
+            ]
+          }
+        },
+        "decrypt_direct": {
+          "ok": false,
+          "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 4!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')",
+          "value": null
+        },
+        "decrypt_direct_compare": {
+          "exact": false,
+          "max_abs_err": null,
+          "diff": null
+        },
+        "compress": {
+          "ok": true,
+          "error": null
+        },
+        "inspect_after_compress": {
+          "ok": true,
+          "value": {
+            "valid": true,
+            "openfhe_level": 3,
+            "openfhe_noise_scale_deg": 1,
+            "openfhe_scaling_factor": 1.0,
+            "openfhe_slots": 0,
+            "openfhe_encoding_type": 1,
+            "num_parts": 2,
+            "parts_summary": [
+              {
+                "part_index": 0,
+                "num_towers": 1,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  790061785354491106,
+                  945016951641880029,
+                  443162718761390959,
+                  837776253546017020,
+                  1094599681391984645,
+                  1047850091928814277,
+                  385450895747412256,
+                  897962613642699889
+                ]
+              },
+              {
+                "part_index": 1,
+                "num_towers": 1,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  1148012382424923326,
+                  451252410347412030,
+                  1140935510623912714,
+                  147352586068053013,
+                  401641783717364907,
+                  270933630902683205,
+                  691782095848009528,
+                  675813850223261303
+                ]
+              }
+            ]
+          }
+        },
+        "decrypt_after_compress": {
+          "ok": true,
+          "error": null,
+          "value": [
+            -14,
+            22,
+            -5,
+            -6
+          ]
+        },
+        "decrypt_after_compress_compare": {
+          "exact": false,
+          "max_abs_err": 21,
+          "diff": [
+            -14,
+            21,
+            -5,
+            -6
+          ]
+        }
+      },
+      "standard_ckks_control": {
+        "input_row": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "path": "standard CKKS slot encrypt/decrypt control path",
+        "zh": "用于确认普通 CKKS slot 加解密是否正常；它不是 paper coefficient encoding。",
+        "encrypt": {
+          "ok": true,
+          "error": null
+        },
+        "decrypt": {
+          "ok": true,
+          "error": null,
+          "value": [
+            8.012726619292594e-15,
+            0.999999999999947,
+            -6.404569405633221e-14,
+            -6.535752405480199e-15
+          ]
+        },
+        "compare": {
+          "max_abs_err": 6.404569405633221e-14,
+          "approx_exact_int_after_round": true,
+          "rounded_value": [
+            0,
+            1,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "input_row": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "current_coeff_path": {
+        "input_row": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "path": "encrypt_coeff_row_i64 -> optional compress -> decrypt_coeff_row_i64",
+        "encrypt": {
+          "ok": true,
+          "error": null
+        },
+        "inspect_after_encrypt": {
+          "ok": true,
+          "value": {
+            "valid": true,
+            "openfhe_level": 0,
+            "openfhe_noise_scale_deg": 1,
+            "openfhe_scaling_factor": 1.0,
+            "openfhe_slots": 0,
+            "openfhe_encoding_type": 1,
+            "num_parts": 2,
+            "parts_summary": [
+              {
+                "part_index": 0,
+                "num_towers": 4,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  383054521026218902,
+                  241370000407931638,
+                  951527669387108639,
+                  449938876607073609,
+                  579746389013356789,
+                  1097282502022531195,
+                  219885463024622604,
+                  1094943674661010780
+                ]
+              },
+              {
+                "part_index": 1,
+                "num_towers": 4,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  586813756032416853,
+                  982111205967641031,
+                  428804233339512161,
+                  515424761880981971,
+                  589979605789547468,
+                  786605257064988303,
+                  818494997601311492,
+                  163737972949502869
+                ]
+              }
+            ]
+          }
+        },
+        "decrypt_direct": {
+          "ok": false,
+          "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 4!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')",
+          "value": null
+        },
+        "decrypt_direct_compare": {
+          "exact": false,
+          "max_abs_err": null,
+          "diff": null
+        },
+        "compress": {
+          "ok": true,
+          "error": null
+        },
+        "inspect_after_compress": {
+          "ok": true,
+          "value": {
+            "valid": true,
+            "openfhe_level": 3,
+            "openfhe_noise_scale_deg": 1,
+            "openfhe_scaling_factor": 1.0,
+            "openfhe_slots": 0,
+            "openfhe_encoding_type": 1,
+            "num_parts": 2,
+            "parts_summary": [
+              {
+                "part_index": 0,
+                "num_towers": 1,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  383054521026218902,
+                  241370000407931638,
+                  951527669387108639,
+                  449938876607073609,
+                  579746389013356789,
+                  1097282502022531195,
+                  219885463024622604,
+                  1094943674661010780
+                ]
+              },
+              {
+                "part_index": 1,
+                "num_towers": 1,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  586813756032416853,
+                  982111205967641031,
+                  428804233339512161,
+                  515424761880981971,
+                  589979605789547468,
+                  786605257064988303,
+                  818494997601311492,
+                  163737972949502869
+                ]
+              }
+            ]
+          }
+        },
+        "decrypt_after_compress": {
+          "ok": true,
+          "error": null,
+          "value": [
+            -6,
+            11,
+            2,
+            -14
+          ]
+        },
+        "decrypt_after_compress_compare": {
+          "exact": false,
+          "max_abs_err": 14,
+          "diff": [
+            -6,
+            11,
+            1,
+            -14
+          ]
+        }
+      },
+      "standard_ckks_control": {
+        "input_row": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "path": "standard CKKS slot encrypt/decrypt control path",
+        "zh": "用于确认普通 CKKS slot 加解密是否正常；它不是 paper coefficient encoding。",
+        "encrypt": {
+          "ok": true,
+          "error": null
+        },
+        "decrypt": {
+          "ok": true,
+          "error": null,
+          "value": [
+            1.692222987201914e-14,
+            3.566527299924695e-14,
+            1.0000000000000406,
+            2.4326415183605442e-14
+          ]
+        },
+        "compare": {
+          "max_abs_err": 4.063416270128073e-14,
+          "approx_exact_int_after_round": true,
+          "rounded_value": [
+            0,
+            0,
+            1,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "input_row": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "current_coeff_path": {
+        "input_row": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "path": "encrypt_coeff_row_i64 -> optional compress -> decrypt_coeff_row_i64",
+        "encrypt": {
+          "ok": true,
+          "error": null
+        },
+        "inspect_after_encrypt": {
+          "ok": true,
+          "value": {
+            "valid": true,
+            "openfhe_level": 0,
+            "openfhe_noise_scale_deg": 1,
+            "openfhe_scaling_factor": 1.0,
+            "openfhe_slots": 0,
+            "openfhe_encoding_type": 1,
+            "num_parts": 2,
+            "parts_summary": [
+              {
+                "part_index": 0,
+                "num_towers": 4,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  1044023817678404230,
+                  560590798949392386,
+                  76758697945500983,
+                  354225484162257,
+                  112071647946055173,
+                  45827149216856759,
+                  634371246436750727,
+                  573902329851828351
+                ]
+              },
+              {
+                "part_index": 1,
+                "num_towers": 4,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  17709150380299070,
+                  257165911363395721,
+                  217177335428666223,
+                  427033424872893631,
+                  556895112002672755,
+                  501542585403459673,
+                  105243533779869224,
+                  1017277703396196852
+                ]
+              }
+            ]
+          }
+        },
+        "decrypt_direct": {
+          "ok": false,
+          "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 4!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')",
+          "value": null
+        },
+        "decrypt_direct_compare": {
+          "exact": false,
+          "max_abs_err": null,
+          "diff": null
+        },
+        "compress": {
+          "ok": true,
+          "error": null
+        },
+        "inspect_after_compress": {
+          "ok": true,
+          "value": {
+            "valid": true,
+            "openfhe_level": 3,
+            "openfhe_noise_scale_deg": 1,
+            "openfhe_scaling_factor": 1.0,
+            "openfhe_slots": 0,
+            "openfhe_encoding_type": 1,
+            "num_parts": 2,
+            "parts_summary": [
+              {
+                "part_index": 0,
+                "num_towers": 1,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  1044023817678404230,
+                  560590798949392386,
+                  76758697945500983,
+                  354225484162257,
+                  112071647946055173,
+                  45827149216856759,
+                  634371246436750727,
+                  573902329851828351
+                ]
+              },
+              {
+                "part_index": 1,
+                "num_towers": 1,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  17709150380299070,
+                  257165911363395721,
+                  217177335428666223,
+                  427033424872893631,
+                  556895112002672755,
+                  501542585403459673,
+                  105243533779869224,
+                  1017277703396196852
+                ]
+              }
+            ]
+          }
+        },
+        "decrypt_after_compress": {
+          "ok": true,
+          "error": null,
+          "value": [
+            -12,
+            14,
+            19,
+            -20
+          ]
+        },
+        "decrypt_after_compress_compare": {
+          "exact": false,
+          "max_abs_err": 21,
+          "diff": [
+            -12,
+            14,
+            19,
+            -21
+          ]
+        }
+      },
+      "standard_ckks_control": {
+        "input_row": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "path": "standard CKKS slot encrypt/decrypt control path",
+        "zh": "用于确认普通 CKKS slot 加解密是否正常；它不是 paper coefficient encoding。",
+        "encrypt": {
+          "ok": true,
+          "error": null
+        },
+        "decrypt": {
+          "ok": true,
+          "error": null,
+          "value": [
+            -1.1460931797569181e-13,
+            -2.2290707783358327e-14,
+            2.7538165579114893e-14,
+            1.0000000000000675
+          ]
+        },
+        "compare": {
+          "max_abs_err": 1.1460931797569181e-13,
+          "approx_exact_int_after_round": true,
+          "rounded_value": [
+            0,
+            0,
+            0,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "input_row": [
+        -2,
+        -1,
+        0,
+        1
+      ],
+      "current_coeff_path": {
+        "input_row": [
+          -2,
+          -1,
+          0,
+          1
+        ],
+        "path": "encrypt_coeff_row_i64 -> optional compress -> decrypt_coeff_row_i64",
+        "encrypt": {
+          "ok": true,
+          "error": null
+        },
+        "inspect_after_encrypt": {
+          "ok": true,
+          "value": {
+            "valid": true,
+            "openfhe_level": 0,
+            "openfhe_noise_scale_deg": 1,
+            "openfhe_scaling_factor": 1.0,
+            "openfhe_slots": 0,
+            "openfhe_encoding_type": 1,
+            "num_parts": 2,
+            "parts_summary": [
+              {
+                "part_index": 0,
+                "num_towers": 4,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  1035460062838522047,
+                  169675017128990998,
+                  113024000657890105,
+                  352044039197404810,
+                  982044251876150746,
+                  257831537837823457,
+                  676855016117032831,
+                  404604153768730194
+                ]
+              },
+              {
+                "part_index": 1,
+                "num_towers": 4,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  843940907730907896,
+                  364893192362234946,
+                  742447824228841426,
+                  701183870431064263,
+                  351180772827147546,
+                  938074757759027523,
+                  158574136084113424,
+                  42644588122008551
+                ]
+              }
+            ]
+          }
+        },
+        "decrypt_direct": {
+          "ok": false,
+          "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 4!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')",
+          "value": null
+        },
+        "decrypt_direct_compare": {
+          "exact": false,
+          "max_abs_err": null,
+          "diff": null
+        },
+        "compress": {
+          "ok": true,
+          "error": null
+        },
+        "inspect_after_compress": {
+          "ok": true,
+          "value": {
+            "valid": true,
+            "openfhe_level": 3,
+            "openfhe_noise_scale_deg": 1,
+            "openfhe_scaling_factor": 1.0,
+            "openfhe_slots": 0,
+            "openfhe_encoding_type": 1,
+            "num_parts": 2,
+            "parts_summary": [
+              {
+                "part_index": 0,
+                "num_towers": 1,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  1035460062838522047,
+                  169675017128990998,
+                  113024000657890105,
+                  352044039197404810,
+                  982044251876150746,
+                  257831537837823457,
+                  676855016117032831,
+                  404604153768730194
+                ]
+              },
+              {
+                "part_index": 1,
+                "num_towers": 1,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  843940907730907896,
+                  364893192362234946,
+                  742447824228841426,
+                  701183870431064263,
+                  351180772827147546,
+                  938074757759027523,
+                  158574136084113424,
+                  42644588122008551
+                ]
+              }
+            ]
+          }
+        },
+        "decrypt_after_compress": {
+          "ok": true,
+          "error": null,
+          "value": [
+            -24,
+            -21,
+            -19,
+            -13
+          ]
+        },
+        "decrypt_after_compress_compare": {
+          "exact": false,
+          "max_abs_err": 22,
+          "diff": [
+            -22,
+            -20,
+            -19,
+            -14
+          ]
+        }
+      },
+      "standard_ckks_control": {
+        "input_row": [
+          -2,
+          -1,
+          0,
+          1
+        ],
+        "path": "standard CKKS slot encrypt/decrypt control path",
+        "zh": "用于确认普通 CKKS slot 加解密是否正常；它不是 paper coefficient encoding。",
+        "encrypt": {
+          "ok": true,
+          "error": null
+        },
+        "decrypt": {
+          "ok": true,
+          "error": null,
+          "value": [
+            -2.000000000000043,
+            -0.9999999999999254,
+            2.9230117392202504e-14,
+            1.0000000000000524
+          ]
+        },
+        "compare": {
+          "max_abs_err": 7.460698725481052e-14,
+          "approx_exact_int_after_round": true,
+          "rounded_value": [
+            -2,
+            -1,
+            0,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "input_row": [
+        2,
+        -2,
+        1,
+        0
+      ],
+      "current_coeff_path": {
+        "input_row": [
+          2,
+          -2,
+          1,
+          0
+        ],
+        "path": "encrypt_coeff_row_i64 -> optional compress -> decrypt_coeff_row_i64",
+        "encrypt": {
+          "ok": true,
+          "error": null
+        },
+        "inspect_after_encrypt": {
+          "ok": true,
+          "value": {
+            "valid": true,
+            "openfhe_level": 0,
+            "openfhe_noise_scale_deg": 1,
+            "openfhe_scaling_factor": 1.0,
+            "openfhe_slots": 0,
+            "openfhe_encoding_type": 1,
+            "num_parts": 2,
+            "parts_summary": [
+              {
+                "part_index": 0,
+                "num_towers": 4,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  670972629636354705,
+                  873753037312788109,
+                  1022334010388640340,
+                  380420774389699628,
+                  768957454234871512,
+                  525897449148520806,
+                  822344032259673766,
+                  447010274130150319
+                ]
+              },
+              {
+                "part_index": 1,
+                "num_towers": 4,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  502171974873035505,
+                  1003256982667805063,
+                  305370806040481425,
+                  723399058145131173,
+                  1072155275999673284,
+                  648836079740052330,
+                  816987261922610818,
+                  950237447663144544
+                ]
+              }
+            ]
+          }
+        },
+        "decrypt_direct": {
+          "ok": false,
+          "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 4!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')",
+          "value": null
+        },
+        "decrypt_direct_compare": {
+          "exact": false,
+          "max_abs_err": null,
+          "diff": null
+        },
+        "compress": {
+          "ok": true,
+          "error": null
+        },
+        "inspect_after_compress": {
+          "ok": true,
+          "value": {
+            "valid": true,
+            "openfhe_level": 3,
+            "openfhe_noise_scale_deg": 1,
+            "openfhe_scaling_factor": 1.0,
+            "openfhe_slots": 0,
+            "openfhe_encoding_type": 1,
+            "num_parts": 2,
+            "parts_summary": [
+              {
+                "part_index": 0,
+                "num_towers": 1,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  670972629636354705,
+                  873753037312788109,
+                  1022334010388640340,
+                  380420774389699628,
+                  768957454234871512,
+                  525897449148520806,
+                  822344032259673766,
+                  447010274130150319
+                ]
+              },
+              {
+                "part_index": 1,
+                "num_towers": 1,
+                "tower0_ring_dim": 16384,
+                "tower0_coeff_head": [
+                  502171974873035505,
+                  1003256982667805063,
+                  305370806040481425,
+                  723399058145131173,
+                  1072155275999673284,
+                  648836079740052330,
+                  816987261922610818,
+                  950237447663144544
+                ]
+              }
+            ]
+          }
+        },
+        "decrypt_after_compress": {
+          "ok": true,
+          "error": null,
+          "value": [
+            -9,
+            17,
+            12,
+            18
+          ]
+        },
+        "decrypt_after_compress_compare": {
+          "exact": false,
+          "max_abs_err": 19,
+          "diff": [
+            -11,
+            19,
+            11,
+            18
+          ]
+        }
+      },
+      "standard_ckks_control": {
+        "input_row": [
+          2,
+          -2,
+          1,
+          0
+        ],
+        "path": "standard CKKS slot encrypt/decrypt control path",
+        "zh": "用于确认普通 CKKS slot 加解密是否正常；它不是 paper coefficient encoding。",
+        "encrypt": {
+          "ok": true,
+          "error": null
+        },
+        "decrypt": {
+          "ok": true,
+          "error": null,
+          "value": [
+            2.0000000000000586,
+            -2.0000000000000098,
+            1.000000000000033,
+            4.413555126600731e-14
+          ]
+        },
+        "compare": {
+          "max_abs_err": 5.861977570020827e-14,
+          "approx_exact_int_after_round": true,
+          "rounded_value": [
+            2,
+            -2,
+            1,
+            0
+          ]
+        }
+      }
+    }
+  ],
+  "checks": {
+    "coeff_encrypt_all_ok（encrypt_coeff_row_i64 全部调用成功）": true,
+    "coeff_direct_decrypt_all_ok（不 compress 直接 decrypt_coeff_row_i64 全部成功）": false,
+    "coeff_direct_roundtrip_all_exact（不 compress 直接 roundtrip 全部精确）": false,
+    "coeff_compress_all_ok（compress(towers_left=1) 全部成功）": true,
+    "coeff_after_compress_decrypt_all_ok（compress 后 decrypt_coeff_row_i64 全部成功）": true,
+    "coeff_after_compress_roundtrip_all_exact（compress 后 roundtrip 全部精确）": false,
+    "standard_ckks_control_all_ok（普通 CKKS slot 加解密对照全部成功）": true,
+    "standard_ckks_control_rounds_to_input（普通 CKKS slot 解密四舍五入后等于输入）": true
+  },
+  "summary": {
+    "if_coeff_roundtrip_fails": "Stop CCMM/C-MT work. Fix coefficient-row encode/decode first. The current C-MT and PP-MM diagnostics are invalid if inputs cannot decrypt to their rows.",
+    "if_standard_ckks_passes_but_coeff_fails": "The HE runtime is fine, but the custom coefficient-row path is semantically wrong.",
+    "next_step": "WP4-X7e",
+    "next_step_goal": "Depending on X7d result, either implement a correct coefficient plaintext encode/decode path, or switch the toy semantic tests to a plaintext/open-key debug mode before returning to CCMM.",
+    "zh": "X7d 是分水岭：如果 coefficient row 自身不能 roundtrip，就必须先修加解码，不能继续调 CCMM。"
+  }
+}

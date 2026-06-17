@@ -1,0 +1,190 @@
+{
+  "experiment": "wp4s1_mul_no_relin_probe",
+  "purpose": "Smoke test true component-level ciphertext-ciphertext multiply: (c0,c1)*(d0,d1)->(e0,e1,e2), before relinearization.",
+  "status": "primitive_probe_only_no_relin_no_rescale_no_full_ccmm",
+  "input_row_a_i64": [
+    1,
+    -2,
+    3,
+    -1
+  ],
+  "input_row_b_i64": [
+    2,
+    1,
+    -1,
+    0
+  ],
+  "formula": {
+    "e0": {
+      "value": "a0*b0",
+      "zh": "三分量乘法结果的第 0 个 component"
+    },
+    "e1": {
+      "value": "a0*b1 + a1*b0",
+      "zh": "三分量乘法结果的第 1 个 component"
+    },
+    "e2": {
+      "value": "a1*b1",
+      "zh": "三分量乘法结果的第 2 个 component；后续 relinearization 会处理这一项"
+    }
+  },
+  "input_a": {
+    "ok": true,
+    "value": {
+      "valid": true,
+      "openfhe_level": 0,
+      "openfhe_noise_scale_deg": 1,
+      "openfhe_scaling_factor": 1.0,
+      "openfhe_slots": 0,
+      "openfhe_encoding_type": 1,
+      "num_parts": 2,
+      "parts_summary": [
+        {
+          "part_index": 0,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            94815055542394801,
+            14645846082837495,
+            104344908720144351,
+            1128991589424998295,
+            1095700112618986653,
+            467245292344008895,
+            9116318080444140,
+            866148814176340757
+          ]
+        },
+        {
+          "part_index": 1,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            309176982654932140,
+            477269615174155963,
+            387539332717748306,
+            838980547952737662,
+            441860640613814659,
+            1019601367413333945,
+            850075297439801293,
+            50558411828415920
+          ]
+        }
+      ]
+    }
+  },
+  "input_b": {
+    "ok": true,
+    "value": {
+      "valid": true,
+      "openfhe_level": 0,
+      "openfhe_noise_scale_deg": 1,
+      "openfhe_scaling_factor": 1.0,
+      "openfhe_slots": 0,
+      "openfhe_encoding_type": 1,
+      "num_parts": 2,
+      "parts_summary": [
+        {
+          "part_index": 0,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            1077262423886436496,
+            994652539071428848,
+            59753637510720372,
+            587631624921850854,
+            931456682978638012,
+            329727350542024754,
+            877643862062822808,
+            528625847007094335
+          ]
+        },
+        {
+          "part_index": 1,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            910682598653216741,
+            1097925614386653640,
+            212805624895892013,
+            558690964110306810,
+            732883338820648682,
+            214625703821006949,
+            507614916763347720,
+            958790801430077298
+          ]
+        }
+      ]
+    }
+  },
+  "mul_call": {
+    "ok": true,
+    "error": null
+  },
+  "mul_output": {
+    "ok": true,
+    "value": {
+      "valid": true,
+      "openfhe_level": 0,
+      "openfhe_noise_scale_deg": 1,
+      "openfhe_scaling_factor": 1.0,
+      "openfhe_slots": 0,
+      "openfhe_encoding_type": 1,
+      "num_parts": 3,
+      "parts_summary": [
+        {
+          "part_index": 0,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            182624338936872009,
+            71818501694976866,
+            1032310115384873170,
+            333898864523561530,
+            721682357470046824,
+            437881897754559922,
+            49638814000773290,
+            212576052976793220
+          ]
+        },
+        {
+          "part_index": 1,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            62491117251806500,
+            1151301167841983564,
+            52610119061284659,
+            935924312476090232,
+            1087595688289334123,
+            704940422185584453,
+            930057996898893044,
+            1076760556202722997
+          ]
+        },
+        {
+          "part_index": 2,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            557636819255667288,
+            705984531317705651,
+            1151628716559332515,
+            465121168482427012,
+            92420063370011890,
+            734554349866392484,
+            748064686033947686,
+            132955770024072989
+          ]
+        }
+      ]
+    }
+  },
+  "checks": {
+    "mul_call_ok（2-component×2-component 乘法调用成功）": true,
+    "mul_output_valid（乘法输出密文有效）": true,
+    "mul_output_uses_coef_encoding（乘法输出仍是 coefficient encoding）": true,
+    "mul_output_has_three_rlwe_parts（乘法输出有 c0/c1/c2 三个 RLWE component）": true,
+    "mul_output_all_parts_have_4_towers（输出每个 component 都有 4 个 RNS towers）": true,
+    "mul_output_all_parts_ring_dim_16384（输出每个 component 的 ring_dim 都是 16384）": true
+  }
+}

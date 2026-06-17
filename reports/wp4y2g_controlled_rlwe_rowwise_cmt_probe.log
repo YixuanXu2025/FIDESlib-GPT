@@ -1,0 +1,5938 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+WP4-Y2g controlled RLWE rowwise C-MT probe
+{
+  "experiment": "wp4y2g_controlled_rlwe_rowwise_cmt_probe",
+  "purpose": "Wrap Y2f controlled RLWE coefficient rows into rowwise bundles and test whether logical-n raw C-MT oracle still preserves matrix transpose for non-transparent c1!=0 inputs.",
+  "status": "controlled_rlwe_rowwise_probe",
+  "n": 4,
+  "cases": [
+    {
+      "name": "basis_E00",
+      "a_scalar": 1,
+      "input_U": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_cmt_output_U_transpose": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 1,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "row0_build_trace": {
+          "a_scalar": 1,
+          "c0_tower0_coeffs": [
+            1,
+            0,
+            0,
+            1152921504606748672
+          ],
+          "c1_tower0_coeffs": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "sk_tower0_coeffs": [
+            0,
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "input_component_prefix": {
+        "c0_row0_tower0": [
+          1,
+          0,
+          0,
+          1152921504606748672
+        ],
+        "c1_row0_tower0": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "cmt_component_prefix": {
+        "c0_row0_tower0": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "c1_row0_tower0": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "cmt_decrypt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": false,
+          "max_abs_err": 1,
+          "l1_err": 6,
+          "diff": [
+            [
+              -1,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              -1,
+              -1,
+              -1,
+              -1
+            ]
+          ]
+        },
+        "expected_nonzero_positions": [
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            3,
+            1
+          ],
+          [
+            3,
+            0,
+            -1
+          ],
+          [
+            3,
+            1,
+            -1
+          ],
+          [
+            3,
+            2,
+            -1
+          ],
+          [
+            3,
+            3,
+            -1
+          ]
+        ]
+      }
+    },
+    {
+      "name": "basis_E01",
+      "a_scalar": 1,
+      "input_U": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_cmt_output_U_transpose": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 1,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "row0_build_trace": {
+          "a_scalar": 1,
+          "c0_tower0_coeffs": [
+            0,
+            1,
+            0,
+            1152921504606748672
+          ],
+          "c1_tower0_coeffs": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "sk_tower0_coeffs": [
+            0,
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "input_component_prefix": {
+        "c0_row0_tower0": [
+          0,
+          1,
+          0,
+          1152921504606748672
+        ],
+        "c1_row0_tower0": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "cmt_component_prefix": {
+        "c0_row0_tower0": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "c1_row0_tower0": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            -1,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "cmt_decrypt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": false,
+          "max_abs_err": 1,
+          "l1_err": 6,
+          "diff": [
+            [
+              -1,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              -1,
+              -1,
+              -1,
+              -1
+            ]
+          ]
+        },
+        "expected_nonzero_positions": [
+          [
+            1,
+            0,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -1
+          ],
+          [
+            0,
+            3,
+            1
+          ],
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            3,
+            0,
+            -1
+          ],
+          [
+            3,
+            1,
+            -1
+          ],
+          [
+            3,
+            2,
+            -1
+          ],
+          [
+            3,
+            3,
+            -1
+          ]
+        ]
+      }
+    },
+    {
+      "name": "basis_E23",
+      "a_scalar": 1,
+      "input_U": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_cmt_output_U_transpose": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 1,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "row0_build_trace": {
+          "a_scalar": 1,
+          "c0_tower0_coeffs": [
+            0,
+            0,
+            0,
+            1152921504606748672
+          ],
+          "c1_tower0_coeffs": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "sk_tower0_coeffs": [
+            0,
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "input_component_prefix": {
+        "c0_row0_tower0": [
+          0,
+          0,
+          0,
+          1152921504606748672
+        ],
+        "c1_row0_tower0": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "cmt_component_prefix": {
+        "c0_row0_tower0": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "c1_row0_tower0": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            -1,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            -1,
+            -1,
+            0,
+            -1
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "cmt_decrypt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": false,
+          "max_abs_err": 1,
+          "l1_err": 6,
+          "diff": [
+            [
+              -1,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              -1,
+              -1,
+              -1,
+              -1
+            ]
+          ]
+        },
+        "expected_nonzero_positions": [
+          [
+            3,
+            2,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -1
+          ],
+          [
+            0,
+            3,
+            1
+          ],
+          [
+            3,
+            0,
+            -1
+          ],
+          [
+            3,
+            1,
+            -1
+          ],
+          [
+            3,
+            3,
+            -1
+          ]
+        ]
+      }
+    },
+    {
+      "name": "random_small",
+      "a_scalar": 1,
+      "input_U": [
+        [
+          2,
+          2,
+          0,
+          1
+        ],
+        [
+          -1,
+          0,
+          -2,
+          0
+        ],
+        [
+          -2,
+          2,
+          2,
+          1
+        ],
+        [
+          2,
+          0,
+          1,
+          1
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          2,
+          2,
+          0,
+          1
+        ],
+        [
+          -1,
+          0,
+          -2,
+          0
+        ],
+        [
+          -2,
+          2,
+          2,
+          1
+        ],
+        [
+          2,
+          0,
+          1,
+          1
+        ]
+      ],
+      "expected_cmt_output_U_transpose": [
+        [
+          2,
+          -1,
+          -2,
+          2
+        ],
+        [
+          2,
+          0,
+          2,
+          0
+        ],
+        [
+          0,
+          -2,
+          2,
+          1
+        ],
+        [
+          1,
+          0,
+          1,
+          1
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 1,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "row0_build_trace": {
+          "a_scalar": 1,
+          "c0_tower0_coeffs": [
+            2,
+            2,
+            0,
+            0
+          ],
+          "c1_tower0_coeffs": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "sk_tower0_coeffs": [
+            0,
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "input_component_prefix": {
+        "c0_row0_tower0": [
+          2,
+          2,
+          0,
+          0
+        ],
+        "c1_row0_tower0": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "cmt_component_prefix": {
+        "c0_row0_tower0": [
+          2,
+          1152921504606748672,
+          1152921504606748671,
+          2
+        ],
+        "c1_row0_tower0": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            2,
+            2,
+            0,
+            1
+          ],
+          [
+            -1,
+            0,
+            -2,
+            0
+          ],
+          [
+            -2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            0,
+            1,
+            1
+          ]
+        ]
+      },
+      "cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            1,
+            -1,
+            -2,
+            3
+          ],
+          [
+            2,
+            0,
+            2,
+            0
+          ],
+          [
+            0,
+            -2,
+            2,
+            1
+          ],
+          [
+            0,
+            -1,
+            0,
+            0
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "cmt_decrypt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": false,
+          "max_abs_err": 1,
+          "l1_err": 6,
+          "diff": [
+            [
+              -1,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              -1,
+              -1,
+              -1,
+              -1
+            ]
+          ]
+        },
+        "expected_nonzero_positions": [
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            1,
+            -1
+          ],
+          [
+            0,
+            2,
+            -2
+          ],
+          [
+            0,
+            3,
+            2
+          ],
+          [
+            1,
+            0,
+            2
+          ],
+          [
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            1,
+            -2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            3,
+            1
+          ],
+          [
+            3,
+            0,
+            1
+          ],
+          [
+            3,
+            2,
+            1
+          ],
+          [
+            3,
+            3,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            -1
+          ],
+          [
+            0,
+            2,
+            -2
+          ],
+          [
+            0,
+            3,
+            3
+          ],
+          [
+            1,
+            0,
+            2
+          ],
+          [
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            1,
+            -2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            3,
+            1
+          ],
+          [
+            3,
+            1,
+            -1
+          ]
+        ]
+      }
+    },
+    {
+      "name": "basis_E00",
+      "a_scalar": 3,
+      "input_U": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_cmt_output_U_transpose": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 3,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "row0_build_trace": {
+          "a_scalar": 3,
+          "c0_tower0_coeffs": [
+            1,
+            0,
+            0,
+            1152921504606748670
+          ],
+          "c1_tower0_coeffs": [
+            3,
+            0,
+            0,
+            0
+          ],
+          "sk_tower0_coeffs": [
+            0,
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "input_component_prefix": {
+        "c0_row0_tower0": [
+          1,
+          0,
+          0,
+          1152921504606748670
+        ],
+        "c1_row0_tower0": [
+          3,
+          0,
+          0,
+          0
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "cmt_component_prefix": {
+        "c0_row0_tower0": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "c1_row0_tower0": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            -2,
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            -3,
+            -3,
+            -3,
+            -3
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "cmt_decrypt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": false,
+          "max_abs_err": 3,
+          "l1_err": 18,
+          "diff": [
+            [
+              -3,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              -3,
+              -3,
+              -3,
+              -3
+            ]
+          ]
+        },
+        "expected_nonzero_positions": [
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -2
+          ],
+          [
+            0,
+            3,
+            3
+          ],
+          [
+            3,
+            0,
+            -3
+          ],
+          [
+            3,
+            1,
+            -3
+          ],
+          [
+            3,
+            2,
+            -3
+          ],
+          [
+            3,
+            3,
+            -3
+          ]
+        ]
+      }
+    },
+    {
+      "name": "basis_E01",
+      "a_scalar": 3,
+      "input_U": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_cmt_output_U_transpose": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 3,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "row0_build_trace": {
+          "a_scalar": 3,
+          "c0_tower0_coeffs": [
+            0,
+            1,
+            0,
+            1152921504606748670
+          ],
+          "c1_tower0_coeffs": [
+            3,
+            0,
+            0,
+            0
+          ],
+          "sk_tower0_coeffs": [
+            0,
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "input_component_prefix": {
+        "c0_row0_tower0": [
+          0,
+          1,
+          0,
+          1152921504606748670
+        ],
+        "c1_row0_tower0": [
+          3,
+          0,
+          0,
+          0
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "cmt_component_prefix": {
+        "c0_row0_tower0": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "c1_row0_tower0": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            -3,
+            0,
+            0,
+            3
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            -3,
+            -3,
+            -3,
+            -3
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "cmt_decrypt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": false,
+          "max_abs_err": 3,
+          "l1_err": 18,
+          "diff": [
+            [
+              -3,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              -3,
+              -3,
+              -3,
+              -3
+            ]
+          ]
+        },
+        "expected_nonzero_positions": [
+          [
+            1,
+            0,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -3
+          ],
+          [
+            0,
+            3,
+            3
+          ],
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            3,
+            0,
+            -3
+          ],
+          [
+            3,
+            1,
+            -3
+          ],
+          [
+            3,
+            2,
+            -3
+          ],
+          [
+            3,
+            3,
+            -3
+          ]
+        ]
+      }
+    },
+    {
+      "name": "basis_E23",
+      "a_scalar": 3,
+      "input_U": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_cmt_output_U_transpose": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 3,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "row0_build_trace": {
+          "a_scalar": 3,
+          "c0_tower0_coeffs": [
+            0,
+            0,
+            0,
+            1152921504606748670
+          ],
+          "c1_tower0_coeffs": [
+            3,
+            0,
+            0,
+            0
+          ],
+          "sk_tower0_coeffs": [
+            0,
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "input_component_prefix": {
+        "c0_row0_tower0": [
+          0,
+          0,
+          0,
+          1152921504606748670
+        ],
+        "c1_row0_tower0": [
+          3,
+          0,
+          0,
+          0
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "cmt_component_prefix": {
+        "c0_row0_tower0": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "c1_row0_tower0": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            -3,
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            -3,
+            -3,
+            -2,
+            -3
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "cmt_decrypt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": false,
+          "max_abs_err": 3,
+          "l1_err": 18,
+          "diff": [
+            [
+              -3,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              -3,
+              -3,
+              -3,
+              -3
+            ]
+          ]
+        },
+        "expected_nonzero_positions": [
+          [
+            3,
+            2,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -3
+          ],
+          [
+            0,
+            3,
+            3
+          ],
+          [
+            3,
+            0,
+            -3
+          ],
+          [
+            3,
+            1,
+            -3
+          ],
+          [
+            3,
+            2,
+            -2
+          ],
+          [
+            3,
+            3,
+            -3
+          ]
+        ]
+      }
+    },
+    {
+      "name": "random_small",
+      "a_scalar": 3,
+      "input_U": [
+        [
+          2,
+          2,
+          0,
+          1
+        ],
+        [
+          -1,
+          0,
+          -2,
+          0
+        ],
+        [
+          -2,
+          2,
+          2,
+          1
+        ],
+        [
+          2,
+          0,
+          1,
+          1
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          2,
+          2,
+          0,
+          1
+        ],
+        [
+          -1,
+          0,
+          -2,
+          0
+        ],
+        [
+          -2,
+          2,
+          2,
+          1
+        ],
+        [
+          2,
+          0,
+          1,
+          1
+        ]
+      ],
+      "expected_cmt_output_U_transpose": [
+        [
+          2,
+          -1,
+          -2,
+          2
+        ],
+        [
+          2,
+          0,
+          2,
+          0
+        ],
+        [
+          0,
+          -2,
+          2,
+          1
+        ],
+        [
+          1,
+          0,
+          1,
+          1
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 3,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "row0_build_trace": {
+          "a_scalar": 3,
+          "c0_tower0_coeffs": [
+            2,
+            2,
+            0,
+            1152921504606748671
+          ],
+          "c1_tower0_coeffs": [
+            3,
+            0,
+            0,
+            0
+          ],
+          "sk_tower0_coeffs": [
+            0,
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "input_component_prefix": {
+        "c0_row0_tower0": [
+          2,
+          2,
+          0,
+          1152921504606748671
+        ],
+        "c1_row0_tower0": [
+          3,
+          0,
+          0,
+          0
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "cmt_component_prefix": {
+        "c0_row0_tower0": [
+          2,
+          1152921504606748672,
+          1152921504606748671,
+          2
+        ],
+        "c1_row0_tower0": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            2,
+            2,
+            0,
+            1
+          ],
+          [
+            -1,
+            0,
+            -2,
+            0
+          ],
+          [
+            -2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            0,
+            1,
+            1
+          ]
+        ]
+      },
+      "cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            -1,
+            -1,
+            -2,
+            5
+          ],
+          [
+            2,
+            0,
+            2,
+            0
+          ],
+          [
+            0,
+            -2,
+            2,
+            1
+          ],
+          [
+            -2,
+            -3,
+            -2,
+            -2
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "cmt_decrypt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": false,
+          "max_abs_err": 3,
+          "l1_err": 18,
+          "diff": [
+            [
+              -3,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              -3,
+              -3,
+              -3,
+              -3
+            ]
+          ]
+        },
+        "expected_nonzero_positions": [
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            1,
+            -1
+          ],
+          [
+            0,
+            2,
+            -2
+          ],
+          [
+            0,
+            3,
+            2
+          ],
+          [
+            1,
+            0,
+            2
+          ],
+          [
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            1,
+            -2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            3,
+            1
+          ],
+          [
+            3,
+            0,
+            1
+          ],
+          [
+            3,
+            2,
+            1
+          ],
+          [
+            3,
+            3,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -1
+          ],
+          [
+            0,
+            1,
+            -1
+          ],
+          [
+            0,
+            2,
+            -2
+          ],
+          [
+            0,
+            3,
+            5
+          ],
+          [
+            1,
+            0,
+            2
+          ],
+          [
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            1,
+            -2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            3,
+            1
+          ],
+          [
+            3,
+            0,
+            -2
+          ],
+          [
+            3,
+            1,
+            -3
+          ],
+          [
+            3,
+            2,
+            -2
+          ],
+          [
+            3,
+            3,
+            -2
+          ]
+        ]
+      }
+    },
+    {
+      "name": "basis_E00",
+      "a_scalar": 7,
+      "input_U": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_cmt_output_U_transpose": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 7,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "row0_build_trace": {
+          "a_scalar": 7,
+          "c0_tower0_coeffs": [
+            1,
+            0,
+            0,
+            1152921504606748666
+          ],
+          "c1_tower0_coeffs": [
+            7,
+            0,
+            0,
+            0
+          ],
+          "sk_tower0_coeffs": [
+            0,
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "input_component_prefix": {
+        "c0_row0_tower0": [
+          1,
+          0,
+          0,
+          1152921504606748666
+        ],
+        "c1_row0_tower0": [
+          7,
+          0,
+          0,
+          0
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "cmt_component_prefix": {
+        "c0_row0_tower0": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "c1_row0_tower0": [
+          7,
+          7,
+          7,
+          7
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            -6,
+            0,
+            0,
+            7
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            -7,
+            -7,
+            -7,
+            -7
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "cmt_decrypt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": false,
+          "max_abs_err": 7,
+          "l1_err": 42,
+          "diff": [
+            [
+              -7,
+              0,
+              0,
+              7
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              -7,
+              -7,
+              -7,
+              -7
+            ]
+          ]
+        },
+        "expected_nonzero_positions": [
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -6
+          ],
+          [
+            0,
+            3,
+            7
+          ],
+          [
+            3,
+            0,
+            -7
+          ],
+          [
+            3,
+            1,
+            -7
+          ],
+          [
+            3,
+            2,
+            -7
+          ],
+          [
+            3,
+            3,
+            -7
+          ]
+        ]
+      }
+    },
+    {
+      "name": "basis_E01",
+      "a_scalar": 7,
+      "input_U": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_cmt_output_U_transpose": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 7,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "row0_build_trace": {
+          "a_scalar": 7,
+          "c0_tower0_coeffs": [
+            0,
+            1,
+            0,
+            1152921504606748666
+          ],
+          "c1_tower0_coeffs": [
+            7,
+            0,
+            0,
+            0
+          ],
+          "sk_tower0_coeffs": [
+            0,
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "input_component_prefix": {
+        "c0_row0_tower0": [
+          0,
+          1,
+          0,
+          1152921504606748666
+        ],
+        "c1_row0_tower0": [
+          7,
+          0,
+          0,
+          0
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "cmt_component_prefix": {
+        "c0_row0_tower0": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "c1_row0_tower0": [
+          7,
+          7,
+          7,
+          7
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            -7,
+            0,
+            0,
+            7
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            -7,
+            -7,
+            -7,
+            -7
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "cmt_decrypt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": false,
+          "max_abs_err": 7,
+          "l1_err": 42,
+          "diff": [
+            [
+              -7,
+              0,
+              0,
+              7
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              -7,
+              -7,
+              -7,
+              -7
+            ]
+          ]
+        },
+        "expected_nonzero_positions": [
+          [
+            1,
+            0,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -7
+          ],
+          [
+            0,
+            3,
+            7
+          ],
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            3,
+            0,
+            -7
+          ],
+          [
+            3,
+            1,
+            -7
+          ],
+          [
+            3,
+            2,
+            -7
+          ],
+          [
+            3,
+            3,
+            -7
+          ]
+        ]
+      }
+    },
+    {
+      "name": "basis_E23",
+      "a_scalar": 7,
+      "input_U": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_cmt_output_U_transpose": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 7,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "row0_build_trace": {
+          "a_scalar": 7,
+          "c0_tower0_coeffs": [
+            0,
+            0,
+            0,
+            1152921504606748666
+          ],
+          "c1_tower0_coeffs": [
+            7,
+            0,
+            0,
+            0
+          ],
+          "sk_tower0_coeffs": [
+            0,
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "input_component_prefix": {
+        "c0_row0_tower0": [
+          0,
+          0,
+          0,
+          1152921504606748666
+        ],
+        "c1_row0_tower0": [
+          7,
+          0,
+          0,
+          0
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "cmt_component_prefix": {
+        "c0_row0_tower0": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "c1_row0_tower0": [
+          7,
+          7,
+          7,
+          7
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            -7,
+            0,
+            0,
+            7
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            -7,
+            -7,
+            -6,
+            -7
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "cmt_decrypt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": false,
+          "max_abs_err": 7,
+          "l1_err": 42,
+          "diff": [
+            [
+              -7,
+              0,
+              0,
+              7
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              -7,
+              -7,
+              -7,
+              -7
+            ]
+          ]
+        },
+        "expected_nonzero_positions": [
+          [
+            3,
+            2,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -7
+          ],
+          [
+            0,
+            3,
+            7
+          ],
+          [
+            3,
+            0,
+            -7
+          ],
+          [
+            3,
+            1,
+            -7
+          ],
+          [
+            3,
+            2,
+            -6
+          ],
+          [
+            3,
+            3,
+            -7
+          ]
+        ]
+      }
+    },
+    {
+      "name": "random_small",
+      "a_scalar": 7,
+      "input_U": [
+        [
+          2,
+          2,
+          0,
+          1
+        ],
+        [
+          -1,
+          0,
+          -2,
+          0
+        ],
+        [
+          -2,
+          2,
+          2,
+          1
+        ],
+        [
+          2,
+          0,
+          1,
+          1
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          2,
+          2,
+          0,
+          1
+        ],
+        [
+          -1,
+          0,
+          -2,
+          0
+        ],
+        [
+          -2,
+          2,
+          2,
+          1
+        ],
+        [
+          2,
+          0,
+          1,
+          1
+        ]
+      ],
+      "expected_cmt_output_U_transpose": [
+        [
+          2,
+          -1,
+          -2,
+          2
+        ],
+        [
+          2,
+          0,
+          2,
+          0
+        ],
+        [
+          0,
+          -2,
+          2,
+          1
+        ],
+        [
+          1,
+          0,
+          1,
+          1
+        ]
+      ],
+      "build_info": {
+        "a_scalar": 7,
+        "template_ring_dim": 16384,
+        "template_num_towers": 4,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "sk_num_towers": 4,
+        "sk_coeff_count": 4,
+        "sk_tower0_coeffs": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "row0_build_trace": {
+          "a_scalar": 7,
+          "c0_tower0_coeffs": [
+            2,
+            2,
+            0,
+            1152921504606748667
+          ],
+          "c1_tower0_coeffs": [
+            7,
+            0,
+            0,
+            0
+          ],
+          "sk_tower0_coeffs": [
+            0,
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "input_component_prefix": {
+        "c0_row0_tower0": [
+          2,
+          2,
+          0,
+          1152921504606748667
+        ],
+        "c1_row0_tower0": [
+          7,
+          0,
+          0,
+          0
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "cmt_component_prefix": {
+        "c0_row0_tower0": [
+          2,
+          1152921504606748672,
+          1152921504606748671,
+          2
+        ],
+        "c1_row0_tower0": [
+          7,
+          7,
+          7,
+          7
+        ],
+        "c0_num_towers": 4,
+        "c1_num_towers": 4
+      },
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            2,
+            2,
+            0,
+            1
+          ],
+          [
+            -1,
+            0,
+            -2,
+            0
+          ],
+          [
+            -2,
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            0,
+            1,
+            1
+          ]
+        ]
+      },
+      "cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            -5,
+            -1,
+            -2,
+            9
+          ],
+          [
+            2,
+            0,
+            2,
+            0
+          ],
+          [
+            0,
+            -2,
+            2,
+            1
+          ],
+          [
+            -6,
+            -7,
+            -6,
+            -6
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "cmt_decrypt_equals_U_transpose": {
+          "all_rows_decrypted": true,
+          "exact": false,
+          "max_abs_err": 7,
+          "l1_err": 42,
+          "diff": [
+            [
+              -7,
+              0,
+              0,
+              7
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              -7,
+              -7,
+              -7,
+              -7
+            ]
+          ]
+        },
+        "expected_nonzero_positions": [
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            1,
+            -1
+          ],
+          [
+            0,
+            2,
+            -2
+          ],
+          [
+            0,
+            3,
+            2
+          ],
+          [
+            1,
+            0,
+            2
+          ],
+          [
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            1,
+            -2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            3,
+            1
+          ],
+          [
+            3,
+            0,
+            1
+          ],
+          [
+            3,
+            2,
+            1
+          ],
+          [
+            3,
+            3,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -5
+          ],
+          [
+            0,
+            1,
+            -1
+          ],
+          [
+            0,
+            2,
+            -2
+          ],
+          [
+            0,
+            3,
+            9
+          ],
+          [
+            1,
+            0,
+            2
+          ],
+          [
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            1,
+            -2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            3,
+            1
+          ],
+          [
+            3,
+            0,
+            -6
+          ],
+          [
+            3,
+            1,
+            -7
+          ],
+          [
+            3,
+            2,
+            -6
+          ],
+          [
+            3,
+            3,
+            -6
+          ]
+        ]
+      }
+    }
+  ],
+  "checks": {
+    "all_controlled_inputs_decrypt_exact（所有 controlled RLWE 输入 bundle 都能解密回 U）": true,
+    "all_logical_n_cmt_outputs_equal_transpose（controlled 输入下 logical-n C-MT oracle 全部等于 U^T）": false,
+    "any_logical_n_cmt_controlled_case_passes（至少一个 controlled C-MT case 正确）": false,
+    "failed_cmt_cases（C-MT 失败 case 摘要）": [
+      {
+        "name": "basis_E00",
+        "a_scalar": 1,
+        "max_abs_err": 1,
+        "l1_err": 6,
+        "expected_nonzero_positions": [
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            3,
+            1
+          ],
+          [
+            3,
+            0,
+            -1
+          ],
+          [
+            3,
+            1,
+            -1
+          ],
+          [
+            3,
+            2,
+            -1
+          ],
+          [
+            3,
+            3,
+            -1
+          ]
+        ]
+      },
+      {
+        "name": "basis_E01",
+        "a_scalar": 1,
+        "max_abs_err": 1,
+        "l1_err": 6,
+        "expected_nonzero_positions": [
+          [
+            1,
+            0,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -1
+          ],
+          [
+            0,
+            3,
+            1
+          ],
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            3,
+            0,
+            -1
+          ],
+          [
+            3,
+            1,
+            -1
+          ],
+          [
+            3,
+            2,
+            -1
+          ],
+          [
+            3,
+            3,
+            -1
+          ]
+        ]
+      },
+      {
+        "name": "basis_E23",
+        "a_scalar": 1,
+        "max_abs_err": 1,
+        "l1_err": 6,
+        "expected_nonzero_positions": [
+          [
+            3,
+            2,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -1
+          ],
+          [
+            0,
+            3,
+            1
+          ],
+          [
+            3,
+            0,
+            -1
+          ],
+          [
+            3,
+            1,
+            -1
+          ],
+          [
+            3,
+            3,
+            -1
+          ]
+        ]
+      },
+      {
+        "name": "random_small",
+        "a_scalar": 1,
+        "max_abs_err": 1,
+        "l1_err": 6,
+        "expected_nonzero_positions": [
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            1,
+            -1
+          ],
+          [
+            0,
+            2,
+            -2
+          ],
+          [
+            0,
+            3,
+            2
+          ],
+          [
+            1,
+            0,
+            2
+          ],
+          [
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            1,
+            -2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            3,
+            1
+          ],
+          [
+            3,
+            0,
+            1
+          ],
+          [
+            3,
+            2,
+            1
+          ],
+          [
+            3,
+            3,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            -1
+          ],
+          [
+            0,
+            2,
+            -2
+          ],
+          [
+            0,
+            3,
+            3
+          ],
+          [
+            1,
+            0,
+            2
+          ],
+          [
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            1,
+            -2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            3,
+            1
+          ],
+          [
+            3,
+            1,
+            -1
+          ]
+        ]
+      },
+      {
+        "name": "basis_E00",
+        "a_scalar": 3,
+        "max_abs_err": 3,
+        "l1_err": 18,
+        "expected_nonzero_positions": [
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -2
+          ],
+          [
+            0,
+            3,
+            3
+          ],
+          [
+            3,
+            0,
+            -3
+          ],
+          [
+            3,
+            1,
+            -3
+          ],
+          [
+            3,
+            2,
+            -3
+          ],
+          [
+            3,
+            3,
+            -3
+          ]
+        ]
+      },
+      {
+        "name": "basis_E01",
+        "a_scalar": 3,
+        "max_abs_err": 3,
+        "l1_err": 18,
+        "expected_nonzero_positions": [
+          [
+            1,
+            0,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -3
+          ],
+          [
+            0,
+            3,
+            3
+          ],
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            3,
+            0,
+            -3
+          ],
+          [
+            3,
+            1,
+            -3
+          ],
+          [
+            3,
+            2,
+            -3
+          ],
+          [
+            3,
+            3,
+            -3
+          ]
+        ]
+      },
+      {
+        "name": "basis_E23",
+        "a_scalar": 3,
+        "max_abs_err": 3,
+        "l1_err": 18,
+        "expected_nonzero_positions": [
+          [
+            3,
+            2,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -3
+          ],
+          [
+            0,
+            3,
+            3
+          ],
+          [
+            3,
+            0,
+            -3
+          ],
+          [
+            3,
+            1,
+            -3
+          ],
+          [
+            3,
+            2,
+            -2
+          ],
+          [
+            3,
+            3,
+            -3
+          ]
+        ]
+      },
+      {
+        "name": "random_small",
+        "a_scalar": 3,
+        "max_abs_err": 3,
+        "l1_err": 18,
+        "expected_nonzero_positions": [
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            1,
+            -1
+          ],
+          [
+            0,
+            2,
+            -2
+          ],
+          [
+            0,
+            3,
+            2
+          ],
+          [
+            1,
+            0,
+            2
+          ],
+          [
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            1,
+            -2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            3,
+            1
+          ],
+          [
+            3,
+            0,
+            1
+          ],
+          [
+            3,
+            2,
+            1
+          ],
+          [
+            3,
+            3,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -1
+          ],
+          [
+            0,
+            1,
+            -1
+          ],
+          [
+            0,
+            2,
+            -2
+          ],
+          [
+            0,
+            3,
+            5
+          ],
+          [
+            1,
+            0,
+            2
+          ],
+          [
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            1,
+            -2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            3,
+            1
+          ],
+          [
+            3,
+            0,
+            -2
+          ],
+          [
+            3,
+            1,
+            -3
+          ],
+          [
+            3,
+            2,
+            -2
+          ],
+          [
+            3,
+            3,
+            -2
+          ]
+        ]
+      },
+      {
+        "name": "basis_E00",
+        "a_scalar": 7,
+        "max_abs_err": 7,
+        "l1_err": 42,
+        "expected_nonzero_positions": [
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -6
+          ],
+          [
+            0,
+            3,
+            7
+          ],
+          [
+            3,
+            0,
+            -7
+          ],
+          [
+            3,
+            1,
+            -7
+          ],
+          [
+            3,
+            2,
+            -7
+          ],
+          [
+            3,
+            3,
+            -7
+          ]
+        ]
+      },
+      {
+        "name": "basis_E01",
+        "a_scalar": 7,
+        "max_abs_err": 7,
+        "l1_err": 42,
+        "expected_nonzero_positions": [
+          [
+            1,
+            0,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -7
+          ],
+          [
+            0,
+            3,
+            7
+          ],
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            3,
+            0,
+            -7
+          ],
+          [
+            3,
+            1,
+            -7
+          ],
+          [
+            3,
+            2,
+            -7
+          ],
+          [
+            3,
+            3,
+            -7
+          ]
+        ]
+      },
+      {
+        "name": "basis_E23",
+        "a_scalar": 7,
+        "max_abs_err": 7,
+        "l1_err": 42,
+        "expected_nonzero_positions": [
+          [
+            3,
+            2,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -7
+          ],
+          [
+            0,
+            3,
+            7
+          ],
+          [
+            3,
+            0,
+            -7
+          ],
+          [
+            3,
+            1,
+            -7
+          ],
+          [
+            3,
+            2,
+            -6
+          ],
+          [
+            3,
+            3,
+            -7
+          ]
+        ]
+      },
+      {
+        "name": "random_small",
+        "a_scalar": 7,
+        "max_abs_err": 7,
+        "l1_err": 42,
+        "expected_nonzero_positions": [
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            1,
+            -1
+          ],
+          [
+            0,
+            2,
+            -2
+          ],
+          [
+            0,
+            3,
+            2
+          ],
+          [
+            1,
+            0,
+            2
+          ],
+          [
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            1,
+            -2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            3,
+            1
+          ],
+          [
+            3,
+            0,
+            1
+          ],
+          [
+            3,
+            2,
+            1
+          ],
+          [
+            3,
+            3,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -5
+          ],
+          [
+            0,
+            1,
+            -1
+          ],
+          [
+            0,
+            2,
+            -2
+          ],
+          [
+            0,
+            3,
+            9
+          ],
+          [
+            1,
+            0,
+            2
+          ],
+          [
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            1,
+            -2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            3,
+            1
+          ],
+          [
+            3,
+            0,
+            -6
+          ],
+          [
+            3,
+            1,
+            -7
+          ],
+          [
+            3,
+            2,
+            -6
+          ],
+          [
+            3,
+            3,
+            -6
+          ]
+        ]
+      }
+    ]
+  },
+  "global_decision": {
+    "value": "controlled_rlwe_input_works_but_logical_n_raw_cmt_oracle_fails",
+    "next_step": "WP4-Y2h",
+    "next_goal": "Design real logical-n C-MT/key-switch semantics for non-transparent RLWE c1!=0 inputs. The raw component transpose oracle is only valid for transparent c1=0 diagnostics.",
+    "zh": "controlled 输入自身正确，但 raw 逐 component 转置 oracle 对非透明 RLWE 不成立；下一步处理 C-MT/key-switch 语义。"
+  }
+}
+====================================================================================================
+saved: /workspace/FIDESlib-GPT/reports/wp4y2g_controlled_rlwe_rowwise_cmt_probe_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

@@ -1,0 +1,119 @@
+{
+  "experiment": "wp4p4a_single_limb_coef_decrypt_probe",
+  "purpose": "Test whether native OpenFHE coefficient-row decrypt works when CKKS ciphertext has one RNS limb / sizeQl == 1.",
+  "status": "probe_only",
+  "cases": [
+    {
+      "multiplicative_depth": 0,
+      "first_mod_size": 60,
+      "scaling_mod_size": 50,
+      "input_row": [
+        -3,
+        -2,
+        -1,
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "coef_encrypt": {
+        "ok": true,
+        "error": null
+      },
+      "coef_inspect_summary": {
+        "openfhe_level": 0,
+        "openfhe_noise_scale_deg": 1,
+        "openfhe_scaling_factor": 1.0,
+        "openfhe_slots": 0,
+        "openfhe_encoding_type": 1,
+        "num_parts": 2,
+        "num_towers_part0": 2
+      },
+      "coef_decrypt": {
+        "ok": false,
+        "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 2!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+      },
+      "errors": {
+        "roundtrip_exact": false,
+        "roundtrip_max_abs_err": null
+      }
+    },
+    {
+      "multiplicative_depth": 1,
+      "first_mod_size": 60,
+      "scaling_mod_size": 50,
+      "input_row": [
+        -3,
+        -2,
+        -1,
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "coef_encrypt": {
+        "ok": true,
+        "error": null
+      },
+      "coef_inspect_summary": {
+        "openfhe_level": 0,
+        "openfhe_noise_scale_deg": 1,
+        "openfhe_scaling_factor": 1.0,
+        "openfhe_slots": 0,
+        "openfhe_encoding_type": 1,
+        "num_parts": 2,
+        "num_towers_part0": 3
+      },
+      "coef_decrypt": {
+        "ok": false,
+        "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 3!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+      },
+      "errors": {
+        "roundtrip_exact": false,
+        "roundtrip_max_abs_err": null
+      }
+    },
+    {
+      "multiplicative_depth": 2,
+      "first_mod_size": 60,
+      "scaling_mod_size": 50,
+      "input_row": [
+        -3,
+        -2,
+        -1,
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "coef_encrypt": {
+        "ok": true,
+        "error": null
+      },
+      "coef_inspect_summary": {
+        "openfhe_level": 0,
+        "openfhe_noise_scale_deg": 1,
+        "openfhe_scaling_factor": 1.0,
+        "openfhe_slots": 0,
+        "openfhe_encoding_type": 1,
+        "num_parts": 2,
+        "num_towers_part0": 4
+      },
+      "coef_decrypt": {
+        "ok": false,
+        "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 4!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+      },
+      "errors": {
+        "roundtrip_exact": false,
+        "roundtrip_max_abs_err": null
+      }
+    }
+  ],
+  "summary": {
+    "any_roundtrip_exact": false,
+    "successful_depths": []
+  }
+}

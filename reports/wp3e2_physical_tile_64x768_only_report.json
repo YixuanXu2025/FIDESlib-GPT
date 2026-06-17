@@ -1,0 +1,113 @@
+{
+  "experiment（实验）": "matrix_block_physical_tile_64x768_he_pcmm",
+  "method（方法）": "legacy physical row tile route using component HE backend",
+  "target（目标）": "Y = X(64x768) @ W(768x768)",
+  "X_shape（X形状）": [
+    64,
+    768
+  ],
+  "W_shape（W形状）": [
+    768,
+    768
+  ],
+  "Y_shape（Y形状）": [
+    64,
+    768
+  ],
+  "logical_block_shape（逻辑块形状）": [
+    128,
+    128
+  ],
+  "physical_tile_shape（物理tile形状）": [
+    64,
+    128
+  ],
+  "num_mid_blocks（中间维度块数）": 6,
+  "num_out_blocks（输出维度块数）": 6,
+  "nonzero_physical_tile_products（非零物理tile乘法数）": 36,
+  "skipped_zero_physical_tile_products（跳过的全零物理tile乘法数）": 36,
+  "plain_reference_us（明文参考用时）": 1146.0,
+  "encrypt_us_total（总加密用时）": 76677207.28417969,
+  "component_compute_us_total（总HE核心计算用时）": 111337544.11523438,
+  "he_add_partial_us_total（partial结果HE加法总用时）": 3312875.3198242188,
+  "materialize_us_total（总materialize用时）": 330392781.18652344,
+  "decrypt_us_total（总解密用时）": 4893560.952636719,
+  "total_he_us（HE总用时）": 526613968.85839844,
+  "max_abs_err（最大绝对误差）": 7.58504370423907e-12,
+  "output_block_reports（各输出块报告）": [
+    {
+      "output_block_index（输出块编号）": 0,
+      "num_partial_products（partial乘法数量）": 6,
+      "Y_block_shape（输出块形状）": [
+        64,
+        128
+      ],
+      "max_abs_err（最大绝对误差）": 7.489120434911456e-12
+    },
+    {
+      "output_block_index（输出块编号）": 1,
+      "num_partial_products（partial乘法数量）": 6,
+      "Y_block_shape（输出块形状）": [
+        64,
+        128
+      ],
+      "max_abs_err（最大绝对误差）": 6.743938740783051e-12
+    },
+    {
+      "output_block_index（输出块编号）": 2,
+      "num_partial_products（partial乘法数量）": 6,
+      "Y_block_shape（输出块形状）": [
+        64,
+        128
+      ],
+      "max_abs_err（最大绝对误差）": 6.59383658785373e-12
+    },
+    {
+      "output_block_index（输出块编号）": 3,
+      "num_partial_products（partial乘法数量）": 6,
+      "Y_block_shape（输出块形状）": [
+        64,
+        128
+      ],
+      "max_abs_err（最大绝对误差）": 6.835421118012164e-12
+    },
+    {
+      "output_block_index（输出块编号）": 4,
+      "num_partial_products（partial乘法数量）": 6,
+      "Y_block_shape（输出块形状）": [
+        64,
+        128
+      ],
+      "max_abs_err（最大绝对误差）": 6.629363724641735e-12
+    },
+    {
+      "output_block_index（输出块编号）": 5,
+      "num_partial_products（partial乘法数量）": 6,
+      "Y_block_shape（输出块形状）": [
+        64,
+        128
+      ],
+      "max_abs_err（最大绝对误差）": 7.58504370423907e-12
+    }
+  ],
+  "Y_ref_first_row_first8（明文首行前8个）": [
+    81.0,
+    -30.0,
+    61.0,
+    1.0,
+    -35.0,
+    -7.0,
+    29.0,
+    -13.0
+  ],
+  "Y_dec_first_row_first8（解密首行前8个）": [
+    80.99999999999996,
+    -30.00000000000215,
+    60.99999999999974,
+    0.9999999999972278,
+    -35.00000000000067,
+    -6.999999999998675,
+    28.999999999998856,
+    -13.000000000000757
+  ]
+}

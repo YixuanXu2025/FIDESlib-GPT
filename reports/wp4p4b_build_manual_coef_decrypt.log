@@ -1,0 +1,33 @@
+[ 50%] Built target fideslib_gpt_minimal
+[ 66%] Building CXX object CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘std::vector<long int> FidesCKKSContext::manual_decrypt_coeff_row_i64(CiphertextHandle&, std::size_t)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:250:32: error: ‘EVALUATION’ is not a member of ‘lbcrypto’; did you mean ‘EXEC_EVALUATION’?
+  250 |         c0.SetFormat(lbcrypto::EVALUATION);
+      |                                ^~~~~~~~~~
+      |                                EXEC_EVALUATION
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:251:32: error: ‘EVALUATION’ is not a member of ‘lbcrypto’; did you mean ‘EXEC_EVALUATION’?
+  251 |         c1.SetFormat(lbcrypto::EVALUATION);
+      |                                ^~~~~~~~~~
+      |                                EXEC_EVALUATION
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:252:37: error: ‘EVALUATION’ is not a member of ‘lbcrypto’; did you mean ‘EXEC_EVALUATION’?
+  252 |         sk_poly.SetFormat(lbcrypto::EVALUATION);
+      |                                     ^~~~~~~~~~
+      |                                     EXEC_EVALUATION
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:255:35: error: ‘COEFFICIENT’ is not a member of ‘lbcrypto’; did you mean ‘COEFFICIENT’?
+  255 |         phase.SetFormat(lbcrypto::COEFFICIENT);
+      |                                   ^~~~~~~~~~~
+In file included from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/vector.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/math-hal.h:47,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/elemparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/default/ilparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/lat-backend.h:49,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/lat-hal.h:35,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/openfhecore.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/pke/openfhe.h:40,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:17:
+/root/fideslib/deps/openfhe-install/include/openfhe/core/utils/inttypes.h:65:31: note: ‘COEFFICIENT’ declared here
+   65 | enum Format { EVALUATION = 0, COEFFICIENT = 1 };
+      |                               ^~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/_fideslib.dir/build.make:79: CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:90: CMakeFiles/_fideslib.dir/all] Error 2
+gmake: *** [Makefile:91: all] Error 2

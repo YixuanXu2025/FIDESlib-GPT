@@ -1,0 +1,176 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+[phase] encrypt rows
+[phase] GPU-only component linear transform chain via rt.component_linear_transform_gpu
+[component_linear_transform_gpu] layer=0
+[component_linear_transform_gpu] layer=1
+[component_linear_transform_gpu] layer=2
+[component_linear_transform_gpu] layer=3
+[phase] explicit materialize via rt.materialize_gpu_ciphertexts
+[phase] decrypt materialized rows
+====================================================================================================
+WP4-J component linear transform API report
+{
+  "experiment": "wp4j_component_linear_transform_api",
+  "purpose": "Validate formal GPU-only component-linear-transform / materialize / decrypt API layering.",
+  "n": 8,
+  "layers": 4,
+  "slots": 8,
+  "seed": 205700,
+  "timing_us": {
+    "encrypt_rows": 124732.66796875,
+    "gpu_only_compute_layer_times": [
+      25388.1630859375,
+      21774.57275390625,
+      22320.544921875,
+      22882.09619140625
+    ],
+    "explicit_materialize_all_rows": 88309.724609375,
+    "decrypt_materialized_rows": 37645.4482421875,
+    "gpu_only_compute_total": 92365.376953125
+  },
+  "states": {
+    "gpu_only_compute_states_first2_each_layer": [
+      [
+        {
+          "valid": true,
+          "loaded": true,
+          "gpu": 18,
+          "has_cpu": true,
+          "level": 4294967295,
+          "noise_scale_deg": 2,
+          "original_level": 3
+        },
+        {
+          "valid": true,
+          "loaded": true,
+          "gpu": 20,
+          "has_cpu": true,
+          "level": 4294967295,
+          "noise_scale_deg": 2,
+          "original_level": 3
+        }
+      ],
+      [
+        {
+          "valid": true,
+          "loaded": true,
+          "gpu": 34,
+          "has_cpu": true,
+          "level": 4294967295,
+          "noise_scale_deg": 2,
+          "original_level": 3
+        },
+        {
+          "valid": true,
+          "loaded": true,
+          "gpu": 36,
+          "has_cpu": true,
+          "level": 4294967295,
+          "noise_scale_deg": 2,
+          "original_level": 3
+        }
+      ],
+      [
+        {
+          "valid": true,
+          "loaded": true,
+          "gpu": 50,
+          "has_cpu": true,
+          "level": 4294967295,
+          "noise_scale_deg": 2,
+          "original_level": 3
+        },
+        {
+          "valid": true,
+          "loaded": true,
+          "gpu": 52,
+          "has_cpu": true,
+          "level": 4294967295,
+          "noise_scale_deg": 2,
+          "original_level": 3
+        }
+      ],
+      [
+        {
+          "valid": true,
+          "loaded": true,
+          "gpu": 66,
+          "has_cpu": true,
+          "level": 4294967295,
+          "noise_scale_deg": 2,
+          "original_level": 3
+        },
+        {
+          "valid": true,
+          "loaded": true,
+          "gpu": 68,
+          "has_cpu": true,
+          "level": 4294967295,
+          "noise_scale_deg": 2,
+          "original_level": 3
+        }
+      ]
+    ],
+    "materialized_states_first2": [
+      {
+        "valid": true,
+        "loaded": false,
+        "gpu": 0,
+        "has_cpu": true,
+        "level": 4294967295,
+        "noise_scale_deg": 2,
+        "original_level": 3
+      },
+      {
+        "valid": true,
+        "loaded": false,
+        "gpu": 0,
+        "has_cpu": true,
+        "level": 4294967295,
+        "noise_scale_deg": 2,
+        "original_level": 3
+      }
+    ]
+  },
+  "errors": {
+    "component_linear_transform_to_ref_max_abs_err": 1.8177126470675375e-13
+  },
+  "Y_ref_first_row": [
+    0.11698030746127665,
+    0.5977208232787778,
+    -0.09771706378500157,
+    -0.10333245917302783,
+    -0.5074234543075586,
+    -0.40475268974134404,
+    0.332240204334647,
+    -0.041823664846656096
+  ],
+  "dec_first_row": [
+    0.11698030746135848,
+    0.5977208232788171,
+    -0.09771706378496897,
+    -0.10333245917312517,
+    -0.507423454307488,
+    -0.4047526897413878,
+    0.33224020433455204,
+    -0.04182366484665711
+  ]
+}
+====================================================================================================
+saved: /workspace/FIDESlib-GPT/reports/wp4j_component_linear_transform_api_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

@@ -1,0 +1,13 @@
+[ 50%] Built target fideslib_gpt_minimal
+[ 66%] Building CXX object CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘void CiphertextHandle::require_valid() const’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:57:99: error: a function-definition is not allowed here before ‘{’ token
+   57 |     std::vector<std::vector<uint64_t>> export_secret_key_coeff_u64(std::size_t coeff_count) const {
+      |                                                                                                   ^
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In function ‘void pybind11_init__fideslib(pybind11::module_&)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:2395:64: error: ‘export_secret_key_coeff_u64’ is not a member of ‘FidesCKKSContext’
+ 2395 |         .def("export_secret_key_coeff_u64", &FidesCKKSContext::export_secret_key_coeff_u64, py::arg("coeff_count") = 0)
+      |                                                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/_fideslib.dir/build.make:79: CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:90: CMakeFiles/_fideslib.dir/all] Error 2
+gmake: *** [Makefile:91: all] Error 2

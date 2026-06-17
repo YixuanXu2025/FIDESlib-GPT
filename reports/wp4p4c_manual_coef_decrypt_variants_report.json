@@ -1,0 +1,23 @@
+{
+  "experiment": "wp4p4c_manual_coef_decrypt_variants",
+  "purpose": "Test RLWE phase formula/component-order/sign variants for coefficient-row ciphertext.",
+  "status": "debug_probe_only",
+  "input_row_i64": [
+    -3,
+    -2,
+    -1,
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "coef_encrypt": {
+    "ok": true,
+    "error": null
+  },
+  "variants_call": {
+    "ok": false,
+    "error": "RuntimeError('/root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/default/dcrtpoly.h:l.178:Times(): operator* for DCRTPolyImpl supported only in Format::EVALUATION')"
+  }
+}

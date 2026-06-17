@@ -1,0 +1,46 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+总体信息
+输入大小: (64, 64)
+W大小: (64, 64)
+连续轮数: 5
+rotation sigma: 1
+实际生成的 rotation key 数量: 15
+仅首次加密一次(us): 888331.669
+仅最后解密一次(us): 669371.446
+====================================================================================================
+单输入密文 + 连续5轮同一W + 最后解密（BSGS-only）
+轮次         cache构建(us)      命中      新建          核心(us)     pMult均值(us)     add均值(us)    rotate均值(us)
+----------------------------------------------------------------------------------------------------
+1           133209.187       0       1    26944616.687      199117.296      9984.228       12950.377
+2              112.982       1       0    26624510.395      197973.033      9466.763        9284.892
+3              111.340       1       0    26516898.908      197381.558      9259.522        9158.909
+4              112.647       1       0    26370083.925      196543.377      8940.953        9161.414
+5              112.797       1       0    26627751.575      198220.937      9280.969        9216.001
+----------------------------------------------------------------------------------------------------
+第2轮及以后中位数:
+  cache构建(us): 112.722
+  核心计算(us):  26570704.651
+  pMult均值(us): 197677.295
+  add均值(us):   9270.245
+  rotate均值(us): 9188.708
+最终一次解密后的误差(max_abs_err): 6.448175e-13
+====================================================================================================
+报告已保存
+JSON路径: /workspace/FIDESlib-GPT/reports/wp3c_square_block_bsgs_5round_single_ct_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

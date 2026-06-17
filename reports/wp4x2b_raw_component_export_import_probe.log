@@ -1,0 +1,402 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+WP4-X2b raw component export/import probe
+{
+  "experiment": "wp4x2b_raw_component_export_import_probe",
+  "purpose": "Verify raw component export/import for DCRTPoly RNS coefficient matrices. This is the required IO layer before implementing paper PP-MM.",
+  "status": "raw_component_export_import_probe_only_no_ppmm",
+  "input_U_i64": [
+    [
+      2,
+      0,
+      2,
+      -1
+    ],
+    [
+      -1,
+      1,
+      2,
+      -1
+    ],
+    [
+      1,
+      1,
+      -1,
+      2
+    ],
+    [
+      0,
+      2,
+      1,
+      1
+    ]
+  ],
+  "input_V_i64": [
+    [
+      -2,
+      -1,
+      -1,
+      1
+    ],
+    [
+      2,
+      -2,
+      2,
+      1
+    ],
+    [
+      0,
+      2,
+      0,
+      -2
+    ],
+    [
+      -2,
+      0,
+      -2,
+      2
+    ]
+  ],
+  "reference_U_matmul_V_i64": [
+    [
+      -2,
+      2,
+      0,
+      -4
+    ],
+    [
+      6,
+      3,
+      5,
+      -6
+    ],
+    [
+      -4,
+      -5,
+      -3,
+      8
+    ],
+    [
+      2,
+      -2,
+      2,
+      2
+    ]
+  ],
+  "coeff_count": 8,
+  "component_mapping": {
+    "part0": "c0 / B",
+    "part1": "c1 / A",
+    "Algorithm3_sources": {
+      "A_U": "C-MT(U).part1",
+      "B_U": "C-MT(U).part0",
+      "A_V": "V.rowwise.part1",
+      "B_V": "V.rowwise.part0"
+    }
+  },
+  "exports": {
+    "A_U": {
+      "ok": true,
+      "error": null,
+      "summary": {
+        "num_rows": 4,
+        "part": 1,
+        "num_towers": 4,
+        "ring_dim": 16384,
+        "coeff_count": 8,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "row0_tower0_coeffs_u64": [
+          796584912897779322,
+          1061346766920977021,
+          929923117273343480,
+          14097753919734773,
+          932085606375324540,
+          811120035097076609,
+          950856315780314725,
+          974901346208365901
+        ]
+      }
+    },
+    "B_U": {
+      "ok": true,
+      "error": null,
+      "summary": {
+        "num_rows": 4,
+        "part": 0,
+        "num_towers": 4,
+        "ring_dim": 16384,
+        "coeff_count": 8,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "row0_tower0_coeffs_u64": [
+          11921247918296126,
+          1132460056074410640,
+          617873095174765743,
+          302630267825448537,
+          410448839037479802,
+          322151765826096855,
+          1023736291053520894,
+          687090455445490095
+        ]
+      }
+    },
+    "A_V": {
+      "ok": true,
+      "error": null,
+      "summary": {
+        "num_rows": 4,
+        "part": 1,
+        "num_towers": 4,
+        "ring_dim": 16384,
+        "coeff_count": 8,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "row0_tower0_coeffs_u64": [
+          549674776959932863,
+          704712542984762898,
+          529303941133740503,
+          654140945493259243,
+          157941322517911846,
+          360879816998162257,
+          723782123040825112,
+          102782328422793100
+        ]
+      }
+    },
+    "B_V": {
+      "ok": true,
+      "error": null,
+      "summary": {
+        "num_rows": 4,
+        "part": 0,
+        "num_towers": 4,
+        "ring_dim": 16384,
+        "coeff_count": 8,
+        "moduli_u64": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ],
+        "row0_tower0_coeffs_u64": [
+          518761655595591928,
+          691298346333269608,
+          497648965537349829,
+          850404301190502786,
+          254094862437955016,
+          590051733254549235,
+          601901663862335233,
+          567571306415488771
+        ]
+      }
+    }
+  },
+  "roundtrip_A_U_row0": {
+    "source": "A_U row 0",
+    "steps": [
+      "export C-MT(U).part1 row0",
+      "import as one-component ciphertext-like handle",
+      "export imported handle part0",
+      "compare prefix coefficients tower-by-tower"
+    ],
+    "import_call": {
+      "ok": true,
+      "error": null
+    },
+    "imported_inspect": {
+      "ok": true,
+      "value": {
+        "valid": true,
+        "openfhe_encoding_type": 1,
+        "num_parts": 1,
+        "parts_summary": [
+          {
+            "part_index": 0,
+            "num_towers": 4,
+            "tower0_ring_dim": 16384,
+            "tower0_coeff_head": [
+              796584912897779322,
+              1061346766920977021,
+              929923117273343480,
+              14097753919734773,
+              932085606375324540,
+              811120035097076609,
+              950856315780314725,
+              974901346208365901
+            ]
+          }
+        ]
+      }
+    },
+    "reexport_call": {
+      "ok": true,
+      "error": null
+    },
+    "compare": {
+      "equal_all_towers": true,
+      "per_tower": [
+        {
+          "tower_index": 0,
+          "equal": true,
+          "a": [
+            796584912897779322,
+            1061346766920977021,
+            929923117273343480,
+            14097753919734773,
+            932085606375324540,
+            811120035097076609,
+            950856315780314725,
+            974901346208365901
+          ],
+          "b": [
+            796584912897779322,
+            1061346766920977021,
+            929923117273343480,
+            14097753919734773,
+            932085606375324540,
+            811120035097076609,
+            950856315780314725,
+            974901346208365901
+          ]
+        },
+        {
+          "tower_index": 1,
+          "equal": true,
+          "a": [
+            757486179854566,
+            1113107430546128,
+            238263784428074,
+            811241819962692,
+            908498987700249,
+            320297980254908,
+            1034348526024131,
+            151587292513973
+          ],
+          "b": [
+            757486179854566,
+            1113107430546128,
+            238263784428074,
+            811241819962692,
+            908498987700249,
+            320297980254908,
+            1034348526024131,
+            151587292513973
+          ]
+        },
+        {
+          "tower_index": 2,
+          "equal": true,
+          "a": [
+            278927695555786,
+            577834762637758,
+            30590878383666,
+            24150618851986,
+            505436906728657,
+            459487963824856,
+            820907325386609,
+            798275295807381
+          ],
+          "b": [
+            278927695555786,
+            577834762637758,
+            30590878383666,
+            24150618851986,
+            505436906728657,
+            459487963824856,
+            820907325386609,
+            798275295807381
+          ]
+        },
+        {
+          "tower_index": 3,
+          "equal": true,
+          "a": [
+            73696,
+            375512,
+            381624,
+            175996,
+            373904,
+            391853,
+            177973,
+            169914
+          ],
+          "b": [
+            73696,
+            375512,
+            381624,
+            175996,
+            373904,
+            391853,
+            177973,
+            169914
+          ]
+        }
+      ]
+    },
+    "reexport_summary": {
+      "num_rows": 1,
+      "part": 0,
+      "num_towers": 4,
+      "ring_dim": 16384,
+      "coeff_count": 8,
+      "row0_tower0_coeffs_u64": [
+        796584912897779322,
+        1061346766920977021,
+        929923117273343480,
+        14097753919734773,
+        932085606375324540,
+        811120035097076609,
+        950856315780314725,
+        974901346208365901
+      ]
+    }
+  },
+  "checks": {
+    "all_four_sources_export_ok（A_U/B_U/A_V/B_V 四个 component source 都能导出）": true,
+    "exports_have_4_rows（导出的 component matrix 都有 4 行）": true,
+    "exports_have_4_towers（导出的每个 component 都有 4 个 RNS tower）": true,
+    "exports_coeff_count_8（每个 tower 导出前 8 个 coefficient）": true,
+    "import_A_U_row0_ok（A_U row0 可以 import 成 1-component ciphertext-like handle）": true,
+    "imported_handle_is_1part（import 后 handle 只有 1 个 component）": true,
+    "reexport_imported_ok（import 后可以再次 export）": true,
+    "roundtrip_prefix_equal_all_towers（导出-import-再导出的 prefix coefficient 每个 tower 完全一致）": true,
+    "ready_for_X3_raw_ppmm（已具备 raw component PP-MM 的导出/导入基础）": true,
+    "U_cmt_auto_alphas_expected（C-MT(U) Auto alpha 是 [1,3,5,7]）": true
+  },
+  "summary": {
+    "next_step": "WP4-X3",
+    "next_step_goal": "Implement CPU toy-size raw RNS PP-MM over exported component matrices: M00=A_U@A_V, M01=A_U@B_V, M10=B_U@A_V, M11=B_U@B_V, mod each tower modulus.",
+    "zh": "如果 X2b 通过，下一步开始真正做 raw coefficient/RNS matrix multiplication，而不是 DCRTPoly polynomial multiplication。"
+  }
+}
+====================================================================================================
+saved: /workspace/FIDESlib-GPT/reports/wp4x2b_raw_component_export_import_probe_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

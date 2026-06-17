@@ -1,0 +1,273 @@
+====================================================================================================
+WP4-L Park-2025 CC-MM toy algebra report
+{
+  "experiment": "wp4l_ccmm_paper2025_toy",
+  "purpose": "Validate paper-aligned Algorithm 3 algebra for ciphertext-ciphertext matrix multiplication using toy/oracle C-MT and oracle relinearization.",
+  "status": "toy_algebra_only_not_real_he",
+  "N": 4,
+  "sk": [
+    1.0,
+    -1.0,
+    0.0,
+    1.0
+  ],
+  "Toep_sk": [
+    [
+      1.0,
+      -1.0,
+      0.0,
+      1.0
+    ],
+    [
+      -1.0,
+      1.0,
+      -1.0,
+      0.0
+    ],
+    [
+      -0.0,
+      -1.0,
+      1.0,
+      -1.0
+    ],
+    [
+      1.0,
+      -0.0,
+      -1.0,
+      1.0
+    ]
+  ],
+  "Toep_skf": [
+    [
+      1.0,
+      -1.0,
+      -0.0,
+      1.0
+    ],
+    [
+      -1.0,
+      1.0,
+      -1.0,
+      -0.0
+    ],
+    [
+      0.0,
+      -1.0,
+      1.0,
+      -1.0
+    ],
+    [
+      1.0,
+      0.0,
+      -1.0,
+      1.0
+    ]
+  ],
+  "U": [
+    [
+      2.0,
+      -1.0,
+      2.0,
+      -2.0
+    ],
+    [
+      0.0,
+      2.0,
+      2.0,
+      1.0
+    ],
+    [
+      -2.0,
+      1.0,
+      -2.0,
+      1.0
+    ],
+    [
+      0.0,
+      0.0,
+      2.0,
+      0.0
+    ]
+  ],
+  "V": [
+    [
+      -1.0,
+      1.0,
+      1.0,
+      2.0
+    ],
+    [
+      -2.0,
+      -2.0,
+      -1.0,
+      1.0
+    ],
+    [
+      -2.0,
+      0.0,
+      2.0,
+      -1.0
+    ],
+    [
+      0.0,
+      -2.0,
+      -2.0,
+      0.0
+    ]
+  ],
+  "U_rec": [
+    [
+      2.0,
+      -1.0,
+      2.0,
+      -2.0
+    ],
+    [
+      0.0,
+      2.0,
+      2.0,
+      1.0
+    ],
+    [
+      -2.0,
+      1.0,
+      -2.0,
+      1.0
+    ],
+    [
+      0.0,
+      0.0,
+      2.0,
+      0.0
+    ]
+  ],
+  "V_rec": [
+    [
+      -1.0,
+      1.0,
+      1.0,
+      2.0
+    ],
+    [
+      -2.0,
+      -2.0,
+      -1.0,
+      1.0
+    ],
+    [
+      -2.0,
+      0.0,
+      2.0,
+      -1.0
+    ],
+    [
+      0.0,
+      -2.0,
+      -2.0,
+      0.0
+    ]
+  ],
+  "W_ref_UV": [
+    [
+      -4.0,
+      8.0,
+      11.0,
+      1.0
+    ],
+    [
+      -8.0,
+      -6.0,
+      0.0,
+      0.0
+    ],
+    [
+      4.0,
+      -6.0,
+      -9.0,
+      -1.0
+    ],
+    [
+      -4.0,
+      0.0,
+      4.0,
+      -2.0
+    ]
+  ],
+  "W_rec_from_toy_ccmm": [
+    [
+      -4.0,
+      8.0,
+      11.0,
+      1.0
+    ],
+    [
+      -8.0,
+      -6.0,
+      0.0,
+      0.0
+    ],
+    [
+      4.0,
+      -6.0,
+      -9.0,
+      -1.0
+    ],
+    [
+      -4.0,
+      0.0,
+      4.0,
+      -2.0
+    ]
+  ],
+  "errors": {
+    "rowwise_U_reconstruct_max_abs_err": 0.0,
+    "rowwise_V_reconstruct_max_abs_err": 0.0,
+    "toy_ccmm_to_UV_max_abs_err": 0.0
+  },
+  "algorithm3_shapes": {
+    "M00": [
+      4,
+      4
+    ],
+    "M01": [
+      4,
+      4
+    ],
+    "M10": [
+      4,
+      4
+    ],
+    "M11": [
+      4,
+      4
+    ],
+    "C2_before_relin": [
+      4,
+      4
+    ],
+    "C1_before_relin": [
+      4,
+      4
+    ],
+    "C0_before_relin": [
+      4,
+      4
+    ],
+    "output_AW": [
+      4,
+      4
+    ],
+    "output_BW": [
+      4,
+      4
+    ]
+  },
+  "notes": [
+    "This implements Algorithm 3 matrix-form algebra only.",
+    "C-MT is an oracle toy conversion, not Algorithm 2 yet.",
+    "Relinearization and rescale are oracle/identity toy steps.",
+    "The old GPU component_linear_transform primitive is not used as CC-MM here."
+  ]
+}
+====================================================================================================
+saved: /workspace/FIDESlib-GPT/reports/wp4l_ccmm_paper2025_toy_report.json

@@ -1,0 +1,150 @@
+{
+  "experiment": "wp3d_bsgs_block_parallel_1worker_1gpu_probe",
+  "gpu_groups": [
+    [
+      0
+    ]
+  ],
+  "parallel_wall_us": 151505805.01367188,
+  "sum_worker_wall_us": 150925521.54541016,
+  "estimated_throughput_speedup": 0.996169892841998,
+  "max_err": 6.439293542825908e-13,
+  "results": [
+    {
+      "task_id": 0,
+      "pid": 190414,
+      "physical_devices": [
+        0
+      ],
+      "local_devices": [
+        0
+      ],
+      "cuda_visible_devices": "0",
+      "seed": 204000,
+      "runtime_info": {
+        "ring_dim": 131072,
+        "cyclotomic_order": 262144
+      },
+      "input_shape": [
+        64,
+        64
+      ],
+      "weight_shape": [
+        64,
+        64
+      ],
+      "num_rounds": 5,
+      "rotation_steps_count": 15,
+      "encrypt_once_us": 923314.908203125,
+      "decrypt_once_us": 671201.0576171875,
+      "worker_wall_us": 150925521.54541016,
+      "final_max_abs_err": 6.439293542825908e-13,
+      "rounds": [
+        {
+          "round_idx": 1,
+          "cache_build_us": 139828.0380859375,
+          "cache_hits": 0,
+          "cache_misses": 1,
+          "core_us": 27208231.376953125,
+          "primitive_stats": {
+            "pMult_count": 127,
+            "pMult_total_us": 25504364.955078125,
+            "add_count": 126,
+            "add_total_us": 1370833.6479492188,
+            "rotate_count": 29,
+            "rotate_total_us": 309390.052734375,
+            "pMult_avg_us": 200821.77129982776,
+            "add_avg_us": 10879.632126581102,
+            "rotate_avg_us": 10668.622508081897
+          }
+        },
+        {
+          "round_idx": 2,
+          "cache_build_us": 106.3994140625,
+          "cache_hits": 1,
+          "cache_misses": 0,
+          "core_us": 26710186.494140625,
+          "primitive_stats": {
+            "pMult_count": 127,
+            "pMult_total_us": 25211009.123046875,
+            "add_count": 126,
+            "add_total_us": 1201648.9008789062,
+            "rotate_count": 29,
+            "rotate_total_us": 280649.8369140625,
+            "pMult_avg_us": 198511.88285863682,
+            "add_avg_us": 9536.896038721477,
+            "rotate_avg_us": 9677.580583243534
+          }
+        },
+        {
+          "round_idx": 3,
+          "cache_build_us": 103.30615234375,
+          "cache_hits": 1,
+          "cache_misses": 0,
+          "core_us": 26465542.361816406,
+          "primitive_stats": {
+            "pMult_count": 127,
+            "pMult_total_us": 25058859.453125,
+            "add_count": 126,
+            "add_total_us": 1130990.7314453125,
+            "rotate_count": 29,
+            "rotate_total_us": 259325.90576171875,
+            "pMult_avg_us": 197313.85396161416,
+            "add_avg_us": 8976.116916232639,
+            "rotate_avg_us": 8942.27261247306
+          }
+        },
+        {
+          "round_idx": 4,
+          "cache_build_us": 111.95166015625,
+          "cache_hits": 1,
+          "cache_misses": 0,
+          "core_us": 26693991.124023438,
+          "primitive_stats": {
+            "pMult_count": 127,
+            "pMult_total_us": 25216661.26171875,
+            "add_count": 126,
+            "add_total_us": 1200361.681640625,
+            "rotate_count": 29,
+            "rotate_total_us": 259113.3740234375,
+            "pMult_avg_us": 198556.3878875492,
+            "add_avg_us": 9526.680013020834,
+            "rotate_avg_us": 8934.943931842672
+          }
+        },
+        {
+          "round_idx": 5,
+          "cache_build_us": 104.7109375,
+          "cache_hits": 1,
+          "cache_misses": 0,
+          "core_us": 26503205.080078125,
+          "primitive_stats": {
+            "pMult_count": 127,
+            "pMult_total_us": 25082690.802246094,
+            "add_count": 126,
+            "add_total_us": 1141621.86328125,
+            "rotate_count": 29,
+            "rotate_total_us": 262243.06103515625,
+            "pMult_avg_us": 197501.5023798905,
+            "add_avg_us": 9060.490978422618,
+            "rotate_avg_us": 9042.864173626078
+          }
+        }
+      ],
+      "post_round2_summary": {
+        "cache_build_us_median": 105.55517578125,
+        "core_us_median": 26598598.10205078,
+        "pmult_avg_us_median": 198006.69261926366,
+        "add_avg_us_median": 9293.585495721727,
+        "rotate_avg_us_median": 8992.568393049569
+      }
+    }
+  ],
+  "env": {
+    "NCCL_DEBUG": "INFO",
+    "NCCL_P2P_DISABLE": "1",
+    "CUDA_LAUNCH_BLOCKING": null,
+    "PYTHONPATH": "/workspace/FIDESlib-GPT/python:/workspace/FIDESlib-GPT/build:/workspace/FIDESlib-GPT/python:/workspace/FIDESlib-GPT/build:/workspace/FIDESlib-GPT/python:/workspace/FIDESlib-GPT/build:/workspace/FIDESlib-GPT/python:/workspace/FIDESlib-GPT/build:/workspace/FIDESlib-GPT/python:/workspace/FIDESlib-GPT/build:/workspace/FIDESlib-GPT/python:/workspace/FIDESlib-GPT/build:/workspace/FIDESlib-GPT/python:/workspace/FIDESlib-GPT/build:/workspace/FIDESlib-GPT/python:/workspace/FIDESlib-GPT/build",
+    "LD_LIBRARY_PATH": "/root/fideslib/deps/openfhe-install/lib:/usr/local/cuda/lib64:/root/fideslib/deps/openfhe-install/lib:/usr/local/cuda/lib64:/root/fideslib/deps/openfhe-install/lib:/usr/local/cuda/lib64:/root/fideslib/deps/openfhe-install/lib:/usr/local/cuda/lib64:/root/fideslib/deps/openfhe-install/lib:/usr/local/cuda/lib64:/root/fideslib/deps/openfhe-install/lib:/usr/local/cuda/lib64:/root/fideslib/deps/openfhe-install/lib:/usr/local/cuda/lib64:/root/fideslib/deps/openfhe-install/lib:/usr/local/cuda/lib64"
+  }
+}

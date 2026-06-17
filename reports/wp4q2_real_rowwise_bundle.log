@@ -1,0 +1,86 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+WP4-Q2 real row-wise coefficient ciphertext matrix bundle report
+{
+  "experiment": "wp4q2_real_rowwise_bundle",
+  "purpose": "Create a real Park-2025 row-wise coefficient ciphertext matrix bundle.",
+  "status": "bundle_api_only_no_cmt_no_ccmm",
+  "input_matrix_M_i64": [
+    [
+      -3,
+      0,
+      3,
+      2
+    ],
+    [
+      2,
+      -3,
+      1,
+      -3
+    ],
+    [
+      -2,
+      -2,
+      -1,
+      -3
+    ],
+    [
+      2,
+      1,
+      -1,
+      3
+    ]
+  ],
+  "bundle": {
+    "shape": [
+      4,
+      4
+    ],
+    "ring_dim": 16384,
+    "encoding_type": {
+      "value": 1,
+      "zh": "OpenFHE coefficient encoding 类型；1 表示 coefficient-style encoding"
+    },
+    "num_parts": {
+      "value": 2,
+      "zh": "每个 RLWE ciphertext 的 component 数量；应为 2，即 c0 和 c1"
+    },
+    "num_towers": {
+      "value": 4,
+      "zh": "每个 DCRTPoly component 的 RNS tower 数量"
+    },
+    "orientation": {
+      "value": "rowwise",
+      "zh": "当前 bundle 是 row-wise，每个 ciphertext 加密矩阵的一行"
+    },
+    "mapping": {
+      "value": "B=c0/GetElements()[0], A=c1/GetElements()[1]",
+      "zh": "论文映射：B 是 c0，A 是 c1，因此 A·sk+B 近似表示明文矩阵"
+    }
+  },
+  "checks": {
+    "bundle_is_rowwise（bundle 是按行加密的 row-wise 结构）": true,
+    "bundle_has_4_rows（bundle 有 4 个 row ciphertext）": true,
+    "bundle_shape_is_4x4（逻辑矩阵形状是 4x4）": true,
+    "bundle_uses_coef_encoding（使用 coefficient encoding）": true,
+    "bundle_has_two_rlwe_parts（每个密文有 c0/c1 两个 RLWE component）": true
+  }
+}
+====================================================================================================
+saved: /workspace/FIDESlib-GPT/reports/wp4q2_real_rowwise_bundle_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

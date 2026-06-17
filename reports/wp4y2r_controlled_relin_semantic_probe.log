@@ -1,0 +1,6024 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+WP4-Y2r controlled relinearization semantic probe
+{
+  "experiment": "wp4y2r_controlled_relin_semantic_probe",
+  "purpose": "Validate semantic correctness of OpenFHE/FIDESlib relinearization on controlled 3-part coefficient ciphertexts. This isolates Algorithm 3 line5 KS_{s^2->s}.",
+  "status": "debug_controlled_relin_probe_not_secure",
+  "warning": {
+    "value": "Uses secret key to construct c0 = m - c2*s^2. Not secure.",
+    "zh": "该脚本用 secret key 构造 3-part 输入，只用于验证 relinearization 语义。"
+  },
+  "n": 8,
+  "cases": [
+    {
+      "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+      "c2_scalar": 0,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 0,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 0,
+            "c0_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 0,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 0,
+            "c0_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 0,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 0,
+            "c0_tower0_coeffs": [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 0,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 0,
+            "c0_tower0_coeffs": [
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "c2_scalar": 0,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 0,
+            "c0_tower0_coeffs": [
+              1152921504606748670,
+              1152921504606748671,
+              1152921504606748672,
+              0,
+              1,
+              2,
+              3,
+              4
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -3,
+                -2,
+                -1,
+                0,
+                1,
+                2,
+                3,
+                4
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "c2_scalar": 0,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 0,
+            "c0_tower0_coeffs": [
+              1,
+              1152921504606748672,
+              1,
+              1152921504606748672,
+              1,
+              1152921504606748672,
+              1,
+              1152921504606748672
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                1,
+                -1,
+                1,
+                -1,
+                1,
+                -1,
+                1,
+                -1
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "c2_scalar": 0,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 0,
+            "c0_tower0_coeffs": [
+              7,
+              0,
+              1152921504606748668,
+              2,
+              1152921504606748672,
+              0,
+              3,
+              1152921504606748669
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                7,
+                0,
+                -5,
+                2,
+                -1,
+                0,
+                3,
+                -4
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      ],
+      "summary": {
+        "all_build_ok": true,
+        "all_relinearize_ok": true,
+        "all_decrypt_ok": true,
+        "all_exact": true,
+        "exact_count": 7,
+        "max_abs_err_over_rows": 0
+      }
+    },
+    {
+      "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+      "c2_scalar": 1,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 1,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 1,
+            "c0_tower0_coeffs": [
+              1152921504606748661,
+              1152921504606748611,
+              151,
+              30,
+              22,
+              162,
+              1152921504606748613,
+              96
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -18,
+                19,
+                -3,
+                18,
+                25,
+                0,
+                2,
+                22
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 25,
+            "l1_err": 107,
+            "diff": [
+              -18,
+              19,
+              -3,
+              18,
+              25,
+              0,
+              2,
+              22
+            ]
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 1,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 1,
+            "c0_tower0_coeffs": [
+              1152921504606748662,
+              1152921504606748611,
+              151,
+              30,
+              22,
+              162,
+              1152921504606748613,
+              96
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -17,
+                19,
+                -3,
+                18,
+                25,
+                0,
+                2,
+                22
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 25,
+            "l1_err": 107,
+            "diff": [
+              -18,
+              19,
+              -3,
+              18,
+              25,
+              0,
+              2,
+              22
+            ]
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 1,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 1,
+            "c0_tower0_coeffs": [
+              1152921504606748661,
+              1152921504606748612,
+              151,
+              30,
+              22,
+              162,
+              1152921504606748613,
+              96
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -18,
+                20,
+                -3,
+                18,
+                25,
+                0,
+                2,
+                22
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 25,
+            "l1_err": 107,
+            "diff": [
+              -18,
+              19,
+              -3,
+              18,
+              25,
+              0,
+              2,
+              22
+            ]
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 1,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 1,
+            "c0_tower0_coeffs": [
+              1152921504606748661,
+              1152921504606748611,
+              151,
+              31,
+              22,
+              162,
+              1152921504606748613,
+              96
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -18,
+                19,
+                -3,
+                19,
+                25,
+                0,
+                2,
+                22
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 25,
+            "l1_err": 107,
+            "diff": [
+              -18,
+              19,
+              -3,
+              18,
+              25,
+              0,
+              2,
+              22
+            ]
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "c2_scalar": 1,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 1,
+            "c0_tower0_coeffs": [
+              1152921504606748658,
+              1152921504606748609,
+              150,
+              30,
+              23,
+              164,
+              1152921504606748616,
+              100
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -21,
+                17,
+                -4,
+                18,
+                -24,
+                2,
+                5,
+                -24
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 28,
+            "l1_err": 113,
+            "diff": [
+              -18,
+              19,
+              -3,
+              18,
+              -25,
+              0,
+              2,
+              -28
+            ]
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "c2_scalar": 1,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 1,
+            "c0_tower0_coeffs": [
+              1152921504606748662,
+              1152921504606748610,
+              152,
+              29,
+              23,
+              161,
+              1152921504606748614,
+              95
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -17,
+                18,
+                -2,
+                17,
+                -24,
+                -1,
+                3,
+                21
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 25,
+            "l1_err": 107,
+            "diff": [
+              -18,
+              19,
+              -3,
+              18,
+              -25,
+              0,
+              2,
+              22
+            ]
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "c2_scalar": 1,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 1,
+            "c0_tower0_coeffs": [
+              1152921504606748668,
+              1152921504606748611,
+              146,
+              32,
+              21,
+              162,
+              1152921504606748616,
+              92
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -11,
+                19,
+                -8,
+                20,
+                24,
+                0,
+                5,
+                18
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 25,
+            "l1_err": 107,
+            "diff": [
+              -18,
+              19,
+              -3,
+              18,
+              25,
+              0,
+              2,
+              22
+            ]
+          }
+        }
+      ],
+      "summary": {
+        "all_build_ok": true,
+        "all_relinearize_ok": true,
+        "all_decrypt_ok": true,
+        "all_exact": false,
+        "exact_count": 0,
+        "max_abs_err_over_rows": 28
+      }
+    },
+    {
+      "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+      "c2_scalar": 3,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 3,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 3,
+            "c0_tower0_coeffs": [
+              1152921504606748637,
+              1152921504606748487,
+              453,
+              90,
+              66,
+              486,
+              1152921504606748493,
+              288
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                24,
+                5,
+                7,
+                -1,
+                14,
+                -20,
+                15,
+                -11
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 24,
+            "l1_err": 97,
+            "diff": [
+              24,
+              5,
+              7,
+              -1,
+              14,
+              -20,
+              15,
+              -11
+            ]
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 3,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 3,
+            "c0_tower0_coeffs": [
+              1152921504606748638,
+              1152921504606748487,
+              453,
+              90,
+              66,
+              486,
+              1152921504606748493,
+              288
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                25,
+                5,
+                7,
+                -1,
+                14,
+                -20,
+                15,
+                -11
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 24,
+            "l1_err": 97,
+            "diff": [
+              24,
+              5,
+              7,
+              -1,
+              14,
+              -20,
+              15,
+              -11
+            ]
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 3,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 3,
+            "c0_tower0_coeffs": [
+              1152921504606748637,
+              1152921504606748488,
+              453,
+              90,
+              66,
+              486,
+              1152921504606748493,
+              288
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                24,
+                6,
+                7,
+                -1,
+                14,
+                -20,
+                15,
+                -11
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 24,
+            "l1_err": 97,
+            "diff": [
+              24,
+              5,
+              7,
+              -1,
+              14,
+              -20,
+              15,
+              -11
+            ]
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 3,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 3,
+            "c0_tower0_coeffs": [
+              1152921504606748637,
+              1152921504606748487,
+              453,
+              91,
+              66,
+              486,
+              1152921504606748493,
+              288
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                24,
+                5,
+                7,
+                0,
+                14,
+                -20,
+                15,
+                -11
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 24,
+            "l1_err": 97,
+            "diff": [
+              24,
+              5,
+              7,
+              -1,
+              14,
+              -20,
+              15,
+              -11
+            ]
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "c2_scalar": 3,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 3,
+            "c0_tower0_coeffs": [
+              1152921504606748634,
+              1152921504606748485,
+              452,
+              90,
+              67,
+              488,
+              1152921504606748496,
+              292
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                21,
+                3,
+                6,
+                -1,
+                15,
+                -18,
+                18,
+                -7
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 24,
+            "l1_err": 97,
+            "diff": [
+              24,
+              5,
+              7,
+              -1,
+              14,
+              -20,
+              15,
+              -11
+            ]
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "c2_scalar": 3,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 3,
+            "c0_tower0_coeffs": [
+              1152921504606748638,
+              1152921504606748486,
+              454,
+              89,
+              67,
+              485,
+              1152921504606748494,
+              287
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                25,
+                4,
+                8,
+                -2,
+                15,
+                -21,
+                16,
+                -12
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 24,
+            "l1_err": 97,
+            "diff": [
+              24,
+              5,
+              7,
+              -1,
+              14,
+              -20,
+              15,
+              -11
+            ]
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "c2_scalar": 3,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 3,
+            "c0_tower0_coeffs": [
+              1152921504606748644,
+              1152921504606748487,
+              448,
+              92,
+              65,
+              486,
+              1152921504606748496,
+              284
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -19,
+                5,
+                2,
+                1,
+                13,
+                -20,
+                18,
+                -15
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 26,
+            "l1_err": 99,
+            "diff": [
+              -26,
+              5,
+              7,
+              -1,
+              14,
+              -20,
+              15,
+              -11
+            ]
+          }
+        }
+      ],
+      "summary": {
+        "all_build_ok": true,
+        "all_relinearize_ok": true,
+        "all_decrypt_ok": true,
+        "all_exact": false,
+        "exact_count": 0,
+        "max_abs_err_over_rows": 26
+      }
+    },
+    {
+      "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+      "c2_scalar": 7,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 7,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 7,
+            "c0_tower0_coeffs": [
+              1152921504606748589,
+              1152921504606748239,
+              1057,
+              210,
+              154,
+              1134,
+              1152921504606748253,
+              672
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -18,
+                -3,
+                -12,
+                -12,
+                -15,
+                -11,
+                -5,
+                -4
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 18,
+            "l1_err": 80,
+            "diff": [
+              -18,
+              -3,
+              -12,
+              -12,
+              -15,
+              -11,
+              -5,
+              -4
+            ]
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 7,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 7,
+            "c0_tower0_coeffs": [
+              1152921504606748590,
+              1152921504606748239,
+              1057,
+              210,
+              154,
+              1134,
+              1152921504606748253,
+              672
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -17,
+                -3,
+                -12,
+                -12,
+                -15,
+                -11,
+                -5,
+                -4
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 18,
+            "l1_err": 80,
+            "diff": [
+              -18,
+              -3,
+              -12,
+              -12,
+              -15,
+              -11,
+              -5,
+              -4
+            ]
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 7,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 7,
+            "c0_tower0_coeffs": [
+              1152921504606748589,
+              1152921504606748240,
+              1057,
+              210,
+              154,
+              1134,
+              1152921504606748253,
+              672
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -18,
+                -2,
+                -12,
+                -12,
+                -15,
+                -11,
+                -5,
+                -4
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 18,
+            "l1_err": 80,
+            "diff": [
+              -18,
+              -3,
+              -12,
+              -12,
+              -15,
+              -11,
+              -5,
+              -4
+            ]
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 7,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 7,
+            "c0_tower0_coeffs": [
+              1152921504606748589,
+              1152921504606748239,
+              1057,
+              211,
+              154,
+              1134,
+              1152921504606748253,
+              672
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -18,
+                -3,
+                -12,
+                -11,
+                -15,
+                -11,
+                -5,
+                -4
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 18,
+            "l1_err": 80,
+            "diff": [
+              -18,
+              -3,
+              -12,
+              -12,
+              -15,
+              -11,
+              -5,
+              -4
+            ]
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "c2_scalar": 7,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 7,
+            "c0_tower0_coeffs": [
+              1152921504606748586,
+              1152921504606748237,
+              1056,
+              210,
+              155,
+              1136,
+              1152921504606748256,
+              676
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -21,
+                -5,
+                -13,
+                -12,
+                -14,
+                -9,
+                -2,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 18,
+            "l1_err": 80,
+            "diff": [
+              -18,
+              -3,
+              -12,
+              -12,
+              -15,
+              -11,
+              -5,
+              -4
+            ]
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "c2_scalar": 7,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 7,
+            "c0_tower0_coeffs": [
+              1152921504606748590,
+              1152921504606748238,
+              1058,
+              209,
+              155,
+              1133,
+              1152921504606748254,
+              671
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -17,
+                -4,
+                -11,
+                -13,
+                -14,
+                -12,
+                -4,
+                -5
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 18,
+            "l1_err": 80,
+            "diff": [
+              -18,
+              -3,
+              -12,
+              -12,
+              -15,
+              -11,
+              -5,
+              -4
+            ]
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "c2_scalar": 7,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+            "c2_scalar": 7,
+            "c0_tower0_coeffs": [
+              1152921504606748596,
+              1152921504606748239,
+              1052,
+              212,
+              153,
+              1134,
+              1152921504606748256,
+              668
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -11,
+                -3,
+                -17,
+                -10,
+                -16,
+                -11,
+                -2,
+                -8
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 18,
+            "l1_err": 80,
+            "diff": [
+              -18,
+              -3,
+              -12,
+              -12,
+              -15,
+              -11,
+              -5,
+              -4
+            ]
+          }
+        }
+      ],
+      "summary": {
+        "all_build_ok": true,
+        "all_relinearize_ok": true,
+        "all_decrypt_ok": true,
+        "all_exact": false,
+        "exact_count": 0,
+        "max_abs_err_over_rows": 18
+      }
+    },
+    {
+      "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+      "c2_scalar": 0,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 0,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 0,
+            "c0_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 0,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 0,
+            "c0_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 0,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 0,
+            "c0_tower0_coeffs": [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 0,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 0,
+            "c0_tower0_coeffs": [
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "c2_scalar": 0,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 0,
+            "c0_tower0_coeffs": [
+              1152921504606748670,
+              1152921504606748671,
+              1152921504606748672,
+              0,
+              1,
+              2,
+              3,
+              4
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -3,
+                -2,
+                -1,
+                0,
+                1,
+                2,
+                3,
+                4
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "c2_scalar": 0,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 0,
+            "c0_tower0_coeffs": [
+              1,
+              1152921504606748672,
+              1,
+              1152921504606748672,
+              1,
+              1152921504606748672,
+              1,
+              1152921504606748672
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                1,
+                -1,
+                1,
+                -1,
+                1,
+                -1,
+                1,
+                -1
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "c2_scalar": 0,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 0,
+            "c0_tower0_coeffs": [
+              7,
+              0,
+              1152921504606748668,
+              2,
+              1152921504606748672,
+              0,
+              3,
+              1152921504606748669
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                7,
+                0,
+                -5,
+                2,
+                -1,
+                0,
+                3,
+                -4
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      ],
+      "summary": {
+        "all_build_ok": true,
+        "all_relinearize_ok": true,
+        "all_decrypt_ok": true,
+        "all_exact": true,
+        "exact_count": 7,
+        "max_abs_err_over_rows": 0
+      }
+    },
+    {
+      "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+      "c2_scalar": 1,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 1,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 1,
+            "c0_tower0_coeffs": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                6,
+                -7,
+                -5,
+                8,
+                -19,
+                -24,
+                22,
+                -20
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 24,
+            "l1_err": 111,
+            "diff": [
+              6,
+              -7,
+              -5,
+              8,
+              -19,
+              -24,
+              22,
+              -20
+            ]
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 1,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 1,
+            "c0_tower0_coeffs": [
+              13,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                7,
+                -7,
+                -5,
+                8,
+                -19,
+                -24,
+                22,
+                -20
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 24,
+            "l1_err": 111,
+            "diff": [
+              6,
+              -7,
+              -5,
+              8,
+              -19,
+              -24,
+              22,
+              -20
+            ]
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 1,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 1,
+            "c0_tower0_coeffs": [
+              12,
+              63,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                6,
+                -6,
+                -5,
+                8,
+                -19,
+                -24,
+                22,
+                -20
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 24,
+            "l1_err": 111,
+            "diff": [
+              6,
+              -7,
+              -5,
+              8,
+              -19,
+              -24,
+              22,
+              -20
+            ]
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 1,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 1,
+            "c0_tower0_coeffs": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748644,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                6,
+                -7,
+                -5,
+                9,
+                -19,
+                -24,
+                22,
+                -20
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 24,
+            "l1_err": 111,
+            "diff": [
+              6,
+              -7,
+              -5,
+              8,
+              -19,
+              -24,
+              22,
+              -20
+            ]
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "c2_scalar": 1,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 1,
+            "c0_tower0_coeffs": [
+              9,
+              60,
+              1152921504606748521,
+              1152921504606748643,
+              1152921504606748652,
+              1152921504606748513,
+              63,
+              1152921504606748581
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                3,
+                -9,
+                -6,
+                8,
+                -18,
+                -22,
+                25,
+                -16
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 24,
+            "l1_err": 111,
+            "diff": [
+              6,
+              -7,
+              -5,
+              8,
+              -19,
+              -24,
+              22,
+              -20
+            ]
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "c2_scalar": 1,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 1,
+            "c0_tower0_coeffs": [
+              13,
+              61,
+              1152921504606748523,
+              1152921504606748642,
+              1152921504606748652,
+              1152921504606748510,
+              61,
+              1152921504606748576
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                7,
+                -8,
+                -4,
+                7,
+                -18,
+                25,
+                23,
+                -21
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 26,
+            "l1_err": 113,
+            "diff": [
+              6,
+              -7,
+              -5,
+              8,
+              -19,
+              26,
+              22,
+              -20
+            ]
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "c2_scalar": 1,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 1,
+            "c0_tower0_coeffs": [
+              19,
+              62,
+              1152921504606748517,
+              1152921504606748645,
+              1152921504606748650,
+              1152921504606748511,
+              63,
+              1152921504606748573
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                13,
+                -7,
+                -10,
+                10,
+                -20,
+                -24,
+                25,
+                -24
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 24,
+            "l1_err": 111,
+            "diff": [
+              6,
+              -7,
+              -5,
+              8,
+              -19,
+              -24,
+              22,
+              -20
+            ]
+          }
+        }
+      ],
+      "summary": {
+        "all_build_ok": true,
+        "all_relinearize_ok": true,
+        "all_decrypt_ok": true,
+        "all_exact": false,
+        "exact_count": 0,
+        "max_abs_err_over_rows": 26
+      }
+    },
+    {
+      "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+      "c2_scalar": 3,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 3,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 3,
+            "c0_tower0_coeffs": [
+              36,
+              186,
+              1152921504606748220,
+              1152921504606748583,
+              1152921504606748607,
+              1152921504606748187,
+              180,
+              1152921504606748385
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -4,
+                -23,
+                1,
+                19,
+                -18,
+                8,
+                25,
+                13
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 25,
+            "l1_err": 111,
+            "diff": [
+              -4,
+              -23,
+              1,
+              19,
+              -18,
+              8,
+              25,
+              13
+            ]
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 3,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 3,
+            "c0_tower0_coeffs": [
+              37,
+              186,
+              1152921504606748220,
+              1152921504606748583,
+              1152921504606748607,
+              1152921504606748187,
+              180,
+              1152921504606748385
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -3,
+                -23,
+                1,
+                19,
+                -18,
+                8,
+                25,
+                13
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 25,
+            "l1_err": 111,
+            "diff": [
+              -4,
+              -23,
+              1,
+              19,
+              -18,
+              8,
+              25,
+              13
+            ]
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 3,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 3,
+            "c0_tower0_coeffs": [
+              36,
+              187,
+              1152921504606748220,
+              1152921504606748583,
+              1152921504606748607,
+              1152921504606748187,
+              180,
+              1152921504606748385
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -4,
+                -22,
+                1,
+                19,
+                -18,
+                8,
+                25,
+                13
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 25,
+            "l1_err": 111,
+            "diff": [
+              -4,
+              -23,
+              1,
+              19,
+              -18,
+              8,
+              25,
+              13
+            ]
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 3,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 3,
+            "c0_tower0_coeffs": [
+              36,
+              186,
+              1152921504606748220,
+              1152921504606748584,
+              1152921504606748607,
+              1152921504606748187,
+              180,
+              1152921504606748385
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -4,
+                -23,
+                1,
+                20,
+                -18,
+                8,
+                25,
+                13
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 25,
+            "l1_err": 111,
+            "diff": [
+              -4,
+              -23,
+              1,
+              19,
+              -18,
+              8,
+              25,
+              13
+            ]
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "c2_scalar": 3,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 3,
+            "c0_tower0_coeffs": [
+              33,
+              184,
+              1152921504606748219,
+              1152921504606748583,
+              1152921504606748608,
+              1152921504606748189,
+              183,
+              1152921504606748389
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -7,
+                25,
+                0,
+                19,
+                -17,
+                10,
+                -22,
+                17
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 27,
+            "l1_err": 115,
+            "diff": [
+              -4,
+              27,
+              1,
+              19,
+              -18,
+              8,
+              -25,
+              13
+            ]
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "c2_scalar": 3,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 3,
+            "c0_tower0_coeffs": [
+              37,
+              185,
+              1152921504606748221,
+              1152921504606748582,
+              1152921504606748608,
+              1152921504606748186,
+              181,
+              1152921504606748384
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -3,
+                -24,
+                2,
+                18,
+                -17,
+                7,
+                -24,
+                12
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 25,
+            "l1_err": 111,
+            "diff": [
+              -4,
+              -23,
+              1,
+              19,
+              -18,
+              8,
+              -25,
+              13
+            ]
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "c2_scalar": 3,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 3,
+            "c0_tower0_coeffs": [
+              43,
+              186,
+              1152921504606748215,
+              1152921504606748585,
+              1152921504606748606,
+              1152921504606748187,
+              183,
+              1152921504606748381
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                3,
+                -23,
+                -4,
+                21,
+                -19,
+                8,
+                -22,
+                9
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 25,
+            "l1_err": 111,
+            "diff": [
+              -4,
+              -23,
+              1,
+              19,
+              -18,
+              8,
+              -25,
+              13
+            ]
+          }
+        }
+      ],
+      "summary": {
+        "all_build_ok": true,
+        "all_relinearize_ok": true,
+        "all_decrypt_ok": true,
+        "all_exact": false,
+        "exact_count": 0,
+        "max_abs_err_over_rows": 27
+      }
+    },
+    {
+      "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+      "c2_scalar": 7,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 7,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 7,
+            "c0_tower0_coeffs": [
+              84,
+              434,
+              1152921504606747616,
+              1152921504606748463,
+              1152921504606748519,
+              1152921504606747539,
+              420,
+              1152921504606748001
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                15,
+                24,
+                18,
+                -23,
+                21,
+                -15,
+                2
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 24,
+            "l1_err": 118,
+            "diff": [
+              0,
+              15,
+              24,
+              18,
+              -23,
+              21,
+              -15,
+              2
+            ]
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 7,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 7,
+            "c0_tower0_coeffs": [
+              85,
+              434,
+              1152921504606747616,
+              1152921504606748463,
+              1152921504606748519,
+              1152921504606747539,
+              420,
+              1152921504606748001
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                1,
+                15,
+                24,
+                18,
+                -23,
+                21,
+                -15,
+                2
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 24,
+            "l1_err": 118,
+            "diff": [
+              0,
+              15,
+              24,
+              18,
+              -23,
+              21,
+              -15,
+              2
+            ]
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 7,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 7,
+            "c0_tower0_coeffs": [
+              84,
+              435,
+              1152921504606747616,
+              1152921504606748463,
+              1152921504606748519,
+              1152921504606747539,
+              420,
+              1152921504606748001
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                16,
+                24,
+                18,
+                -23,
+                21,
+                -15,
+                2
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 24,
+            "l1_err": 118,
+            "diff": [
+              0,
+              15,
+              24,
+              18,
+              -23,
+              21,
+              -15,
+              2
+            ]
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "c2_scalar": 7,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 7,
+            "c0_tower0_coeffs": [
+              84,
+              434,
+              1152921504606747616,
+              1152921504606748464,
+              1152921504606748519,
+              1152921504606747539,
+              420,
+              1152921504606748001
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                15,
+                24,
+                19,
+                -23,
+                21,
+                -15,
+                2
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 24,
+            "l1_err": 118,
+            "diff": [
+              0,
+              15,
+              24,
+              18,
+              -23,
+              21,
+              -15,
+              2
+            ]
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "c2_scalar": 7,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 7,
+            "c0_tower0_coeffs": [
+              81,
+              432,
+              1152921504606747615,
+              1152921504606748463,
+              1152921504606748520,
+              1152921504606747541,
+              423,
+              1152921504606748005
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -3,
+                13,
+                23,
+                18,
+                -22,
+                23,
+                -12,
+                6
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 24,
+            "l1_err": 118,
+            "diff": [
+              0,
+              15,
+              24,
+              18,
+              -23,
+              21,
+              -15,
+              2
+            ]
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "c2_scalar": 7,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 7,
+            "c0_tower0_coeffs": [
+              85,
+              433,
+              1152921504606747617,
+              1152921504606748462,
+              1152921504606748520,
+              1152921504606747538,
+              421,
+              1152921504606748000
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                1,
+                14,
+                25,
+                17,
+                -22,
+                20,
+                -14,
+                1
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 24,
+            "l1_err": 118,
+            "diff": [
+              0,
+              15,
+              24,
+              18,
+              -23,
+              21,
+              -15,
+              2
+            ]
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "c2_scalar": 7,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+            "c2_scalar": 7,
+            "c0_tower0_coeffs": [
+              91,
+              434,
+              1152921504606747611,
+              1152921504606748465,
+              1152921504606748518,
+              1152921504606747539,
+              423,
+              1152921504606747997
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c2_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk2_tower0_prefix": [
+              12,
+              62,
+              1152921504606748522,
+              1152921504606748643,
+              1152921504606748651,
+              1152921504606748511,
+              60,
+              1152921504606748577
+            ]
+          },
+          "relinearize": {
+            "ok": true,
+            "error": null
+          },
+          "decrypt_after_relin_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                7,
+                15,
+                19,
+                20,
+                -24,
+                21,
+                -12,
+                -2
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 24,
+            "l1_err": 118,
+            "diff": [
+              0,
+              15,
+              24,
+              18,
+              -23,
+              21,
+              -15,
+              2
+            ]
+          }
+        }
+      ],
+      "summary": {
+        "all_build_ok": true,
+        "all_relinearize_ok": true,
+        "all_decrypt_ok": true,
+        "all_exact": false,
+        "exact_count": 0,
+        "max_abs_err_over_rows": 24
+      }
+    }
+  ],
+  "context_summary": {
+    "num_moduli": 4,
+    "moduli_u64": [
+      1152921504606748673,
+      1125899904679937,
+      1125899908022273,
+      557057
+    ],
+    "template_ring_dim": 16384,
+    "template_num_towers": 4,
+    "sk_num_towers": 4,
+    "sk_coeff_count": 16384,
+    "sk_tower0_prefix": [
+      1152921504606748672,
+      0,
+      1,
+      0,
+      1,
+      1,
+      1,
+      0
+    ],
+    "sk2_tower0_prefix": [
+      12,
+      62,
+      1152921504606748522,
+      1152921504606748643,
+      1152921504606748651,
+      1152921504606748511,
+      60,
+      1152921504606748577
+    ]
+  },
+  "checks": {
+    "any_group_all_exact（是否存在任一公式/c2 组合全部精确）": true,
+    "any_nonzero_c2_group_all_exact（是否存在非零 c2 的组合全部精确）": false,
+    "successful_groups（全部精确的组合）": [
+      {
+        "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+        "c2_scalar": 0,
+        "summary": {
+          "all_build_ok": true,
+          "all_relinearize_ok": true,
+          "all_decrypt_ok": true,
+          "all_exact": true,
+          "exact_count": 7,
+          "max_abs_err_over_rows": 0
+        }
+      },
+      {
+        "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+        "c2_scalar": 0,
+        "summary": {
+          "all_build_ok": true,
+          "all_relinearize_ok": true,
+          "all_decrypt_ok": true,
+          "all_exact": true,
+          "exact_count": 7,
+          "max_abs_err_over_rows": 0
+        }
+      }
+    ],
+    "ranked_groups（按 exact_count 排序）": [
+      {
+        "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+        "c2_scalar": 0,
+        "summary": {
+          "all_build_ok": true,
+          "all_relinearize_ok": true,
+          "all_decrypt_ok": true,
+          "all_exact": true,
+          "exact_count": 7,
+          "max_abs_err_over_rows": 0
+        }
+      },
+      {
+        "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+        "c2_scalar": 0,
+        "summary": {
+          "all_build_ok": true,
+          "all_relinearize_ok": true,
+          "all_decrypt_ok": true,
+          "all_exact": true,
+          "exact_count": 7,
+          "max_abs_err_over_rows": 0
+        }
+      },
+      {
+        "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+        "c2_scalar": 7,
+        "summary": {
+          "all_build_ok": true,
+          "all_relinearize_ok": true,
+          "all_decrypt_ok": true,
+          "all_exact": false,
+          "exact_count": 0,
+          "max_abs_err_over_rows": 18
+        }
+      },
+      {
+        "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+        "c2_scalar": 7,
+        "summary": {
+          "all_build_ok": true,
+          "all_relinearize_ok": true,
+          "all_decrypt_ok": true,
+          "all_exact": false,
+          "exact_count": 0,
+          "max_abs_err_over_rows": 24
+        }
+      },
+      {
+        "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+        "c2_scalar": 1,
+        "summary": {
+          "all_build_ok": true,
+          "all_relinearize_ok": true,
+          "all_decrypt_ok": true,
+          "all_exact": false,
+          "exact_count": 0,
+          "max_abs_err_over_rows": 26
+        }
+      },
+      {
+        "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+        "c2_scalar": 3,
+        "summary": {
+          "all_build_ok": true,
+          "all_relinearize_ok": true,
+          "all_decrypt_ok": true,
+          "all_exact": false,
+          "exact_count": 0,
+          "max_abs_err_over_rows": 26
+        }
+      },
+      {
+        "formula": "minus_phase_c0_eq_m_plus_a_sk2",
+        "c2_scalar": 3,
+        "summary": {
+          "all_build_ok": true,
+          "all_relinearize_ok": true,
+          "all_decrypt_ok": true,
+          "all_exact": false,
+          "exact_count": 0,
+          "max_abs_err_over_rows": 27
+        }
+      },
+      {
+        "formula": "plus_phase_c0_eq_m_minus_a_sk2",
+        "c2_scalar": 1,
+        "summary": {
+          "all_build_ok": true,
+          "all_relinearize_ok": true,
+          "all_decrypt_ok": true,
+          "all_exact": false,
+          "exact_count": 0,
+          "max_abs_err_over_rows": 28
+        }
+      }
+    ]
+  },
+  "global_decision": {
+    "value": "only_c2_zero_works",
+    "next_step": "WP4-Y2s",
+    "next_goal": "Relinearization does not preserve nonzero c2 semantics; inspect relinearize_coeff_ct / key switching.",
+    "zh": "只有 c2=0 通过，说明 relinearize 对 raw-imported c2 语义不正确。"
+  }
+}
+====================================================================================================
+saved: /workspace/FIDESlib-GPT/reports/wp4y2r_controlled_relin_semantic_probe_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

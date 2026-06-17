@@ -1,0 +1,39 @@
+====================================================================================================
+Input X_flat = (64, 768)
+layout summary: {'rows': 64, 'cols': 768, 'ring_dim': 16384, 'slots_per_ct': 8192, 'block_rows': 128, 'block_cols': 128, 'tile_rows': 64, 'tile_cols': 128, 'logical_shape': (64, 768), 'padded_shape': (128, 768), 'logical_block_shape': (128, 128), 'physical_tile_shape': (64, 128), 'num_row_blocks': 1, 'num_col_blocks': 6, 'num_logical_blocks': 6, 'tiles_per_logical_block': 2, 'num_physical_tiles': 12, 'layout_kind': 'legacy_matrix_block_tile_row_major'}
+meta: {'orig_shape': (64, 768), 'padded_shape': (128, 768), 'block_shape': (128, 128)}
+tile stats: {'total_tiles': 12, 'zero_tiles': 6, 'nonzero_tiles': 6, 'materialized_cipher_tiles': 6, 'skip_zero_tiles': True}
+num cipher placeholders: 6
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+runtime info: {'ring_dim': 16384, 'cyclotomic_order': 32768}
+num encrypted ciphertext tiles: 6
+first encrypted tile summaries:
+  key = (0, 0, 0)
+  summary = {'name': 'x_b0_0_t0', 'shape': (64, 128), 'layout': 'matrix_block_tile_row_major', 'slots_used': 8192, 'level': None, 'scale': None, 'device': 0, 'has_cipher': True, 'padded_shape': (128, 768), 'logical_block_shape': (128, 128), 'physical_tile_shape': (64, 128), 'block_coord': (0, 0), 'tile_index': 0, 'logical_axes': ('row', 'col')}
+  key = (0, 1, 0)
+  summary = {'name': 'x_b0_1_t0', 'shape': (64, 128), 'layout': 'matrix_block_tile_row_major', 'slots_used': 8192, 'level': None, 'scale': None, 'device': 0, 'has_cipher': True, 'padded_shape': (128, 768), 'logical_block_shape': (128, 128), 'physical_tile_shape': (64, 128), 'block_coord': (0, 1), 'tile_index': 0, 'logical_axes': ('row', 'col')}
+  key = (0, 2, 0)
+  summary = {'name': 'x_b0_2_t0', 'shape': (64, 128), 'layout': 'matrix_block_tile_row_major', 'slots_used': 8192, 'level': None, 'scale': None, 'device': 0, 'has_cipher': True, 'padded_shape': (128, 768), 'logical_block_shape': (128, 128), 'physical_tile_shape': (64, 128), 'block_coord': (0, 2), 'tile_index': 0, 'logical_axes': ('row', 'col')}
+====================================================================================================
+recovered shape: (64, 768)
+max_abs_err: 8.731149137020111e-11
+shape check: OK
+first row first 8 values (orig): [0. 1. 2. 3. 4. 5. 6. 7.]
+first row first 8 values (recv): [-1.8189894e-12  1.0000000e+00  2.0000000e+00  3.0000000e+00
+  4.0000000e+00  5.0000000e+00  6.0000000e+00  7.0000000e+00]
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

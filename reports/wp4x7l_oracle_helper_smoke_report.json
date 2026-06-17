@@ -1,0 +1,2047 @@
+{
+  "experiment": "wp4x7l_oracle_helper_smoke",
+  "purpose": "Verify reusable ccmm_oracle_debug helpers after X7k. The oracle/raw-add pipeline should equal U.T @ V for transparent c0=row,c1=0 inputs.",
+  "status": "debug_helper_smoke_no_security_no_homomorphic_cmt",
+  "n": 4,
+  "cases": [
+    {
+      "name": "basis_E00_times_E00",
+      "input_U": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "input_V": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "result": {
+        "expected_U_T_matmul_V": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "final": {
+          "compress_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decrypt_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decoded": [
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "comparison_to_U_T_matmul_V": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "shape_summaries": {
+          "line5_ks_inputs": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 3,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          },
+          "line5_rows": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 2,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          },
+          "T01_rows": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 2,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          },
+          "raw_full_rows": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 2,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "basis_E01_times_E10",
+      "input_U": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "input_V": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "result": {
+        "expected_U_T_matmul_V": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "final": {
+          "compress_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decrypt_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decoded": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "comparison_to_U_T_matmul_V": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "shape_summaries": {
+          "line5_ks_inputs": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 3,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          },
+          "line5_rows": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 2,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          },
+          "T01_rows": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 2,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          },
+          "raw_full_rows": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 2,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "basis_E01_times_E12",
+      "input_U": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "input_V": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "result": {
+        "expected_U_T_matmul_V": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "final": {
+          "compress_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decrypt_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decoded": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "comparison_to_U_T_matmul_V": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "shape_summaries": {
+          "line5_ks_inputs": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 3,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          },
+          "line5_rows": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 2,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          },
+          "T01_rows": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 2,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          },
+          "raw_full_rows": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 2,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "basis_E23_times_E31",
+      "input_U": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "input_V": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ]
+      ],
+      "result": {
+        "expected_U_T_matmul_V": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "final": {
+          "compress_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decrypt_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decoded": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "comparison_to_U_T_matmul_V": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "shape_summaries": {
+          "line5_ks_inputs": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 3,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          },
+          "line5_rows": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 2,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          },
+          "T01_rows": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 2,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          },
+          "raw_full_rows": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 2,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "identity_times_random_small",
+      "input_U": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "input_V": [
+        [
+          0,
+          1,
+          -2,
+          -2
+        ],
+        [
+          2,
+          -2,
+          -2,
+          -1
+        ],
+        [
+          1,
+          2,
+          1,
+          -1
+        ],
+        [
+          1,
+          0,
+          2,
+          -2
+        ]
+      ],
+      "result": {
+        "expected_U_T_matmul_V": [
+          [
+            0,
+            1,
+            -2,
+            -2
+          ],
+          [
+            2,
+            -2,
+            -2,
+            -1
+          ],
+          [
+            1,
+            2,
+            1,
+            -1
+          ],
+          [
+            1,
+            0,
+            2,
+            -2
+          ]
+        ],
+        "final": {
+          "compress_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decrypt_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decoded": [
+            [
+              0,
+              1,
+              -2,
+              -2
+            ],
+            [
+              2,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              1,
+              2,
+              1,
+              -1
+            ],
+            [
+              1,
+              0,
+              2,
+              -2
+            ]
+          ]
+        },
+        "comparison_to_U_T_matmul_V": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "shape_summaries": {
+          "line5_ks_inputs": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 3,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          },
+          "line5_rows": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 2,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          },
+          "T01_rows": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 2,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          },
+          "raw_full_rows": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 2,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "random_small_times_identity",
+      "input_U": [
+        [
+          -2,
+          0,
+          1,
+          -2
+        ],
+        [
+          -1,
+          -2,
+          -1,
+          1
+        ],
+        [
+          2,
+          2,
+          2,
+          -2
+        ],
+        [
+          -1,
+          2,
+          1,
+          2
+        ]
+      ],
+      "input_V": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "result": {
+        "expected_U_T_matmul_V": [
+          [
+            -2,
+            -1,
+            2,
+            -1
+          ],
+          [
+            0,
+            -2,
+            2,
+            2
+          ],
+          [
+            1,
+            -1,
+            2,
+            1
+          ],
+          [
+            -2,
+            1,
+            -2,
+            2
+          ]
+        ],
+        "final": {
+          "compress_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decrypt_reports": [
+            {
+              "row_index": 0,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 1,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 2,
+              "ok": true,
+              "error": null
+            },
+            {
+              "row_index": 3,
+              "ok": true,
+              "error": null
+            }
+          ],
+          "decoded": [
+            [
+              -2,
+              -1,
+              2,
+              -1
+            ],
+            [
+              0,
+              -2,
+              2,
+              2
+            ],
+            [
+              1,
+              -1,
+              2,
+              1
+            ],
+            [
+              -2,
+              1,
+              -2,
+              2
+            ]
+          ]
+        },
+        "comparison_to_U_T_matmul_V": {
+          "all_rows_decrypted": true,
+          "exact": true,
+          "max_abs_err": 0,
+          "l1_err": 0,
+          "diff": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "shape_summaries": {
+          "line5_ks_inputs": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 3,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 3,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          },
+          "line5_rows": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 2,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          },
+          "T01_rows": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 2,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          },
+          "raw_full_rows": {
+            "num_rows": 4,
+            "consistent_shape": true,
+            "expected_parts": 2,
+            "expected_towers": 4,
+            "expected_ring_dim": 16384,
+            "rows": [
+              {
+                "row_index": 0,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 1,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 2,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              },
+              {
+                "row_index": 3,
+                "encoding_type": 1,
+                "num_parts": 2,
+                "level": 0,
+                "slots": 0
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "checks": {
+    "all_cases_decrypted（所有 helper smoke case 都成功解密）": true,
+    "all_cases_equal_U_T_matmul_V（所有 helper smoke case 都等于 U.T@V）": true,
+    "all_line5_ks_inputs_are_3part（line5 KS inputs 均为三分量）": true,
+    "all_raw_full_rows_are_2part（raw-add full rows 均为二分量）": true
+  },
+  "summary": {
+    "current_status": "Reusable debug/oracle helpers are installed if all checks pass. This does not implement secure CCMM; it validates raw-RNS Algorithm 3 algebra under logical-n C-MT oracle.",
+    "remaining_real_ccmm_tasks": {
+      "task1": "Implement or design real logical-n homomorphic C-MT for n << ring_dim, or run dimension-compatible experiments.",
+      "task2": "Fix real coefficient-row encryption semantics; transparent c0=row,c1=0 is debug-only.",
+      "task3": "Replace debug raw line6 add with a secure/homomorphic equivalent once real ciphertext semantics are restored."
+    },
+    "next_step": "WP4-Y1",
+    "next_step_goal": "Decide implementation track: logical-n C-MT design for small matrices, or dimension-compatible benchmark path. PCMM remains preserved and separate.",
+    "zh": "X7l 通过后，debug/oracle 代数链条已经收敛；下一阶段回到真实安全实现路线选择。"
+  }
+}

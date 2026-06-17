@@ -1,0 +1,561 @@
+{
+  "experiment": "wp4w1_component_mapping_alignment",
+  "purpose": "Align real coefficient ciphertext component matrices with Park-2025 Algorithm 3 mapping. This explicitly avoids the wrong whole-ciphertext positionwise skeleton diagnosed by WP4-V3.",
+  "status": "component_mapping_alignment_only_no_ppmm_yet",
+  "input_U_i64": [
+    [
+      -1,
+      0,
+      -2,
+      0
+    ],
+    [
+      0,
+      2,
+      1,
+      1
+    ],
+    [
+      2,
+      2,
+      2,
+      0
+    ],
+    [
+      0,
+      -2,
+      -1,
+      1
+    ]
+  ],
+  "input_V_i64": [
+    [
+      0,
+      -1,
+      2,
+      -2
+    ],
+    [
+      1,
+      0,
+      -1,
+      -2
+    ],
+    [
+      2,
+      1,
+      0,
+      1
+    ],
+    [
+      -2,
+      2,
+      0,
+      2
+    ]
+  ],
+  "reference_U_matmul_V_i64": [
+    [
+      -4,
+      -1,
+      -2,
+      0
+    ],
+    [
+      2,
+      3,
+      -2,
+      -1
+    ],
+    [
+      6,
+      0,
+      2,
+      -6
+    ],
+    [
+      -6,
+      1,
+      2,
+      5
+    ]
+  ],
+  "diagnosis_from_v3": {
+    "value": "whole ciphertext positionwise skeleton caused dense wrong outputs for one-hot tests",
+    "zh": "V3 已证明错误不是简单转置/placement，而是 Algorithm 3 映射层错误"
+  },
+  "component_bundles": {
+    "U_rowwise": {
+      "name": "U_rowwise",
+      "num_rows": 4,
+      "consistent_shape": true,
+      "expected_parts": 2,
+      "expected_towers": 4,
+      "expected_ring_dim": 16384,
+      "mapping": {
+        "B_c0": "GetElements()[0]",
+        "A_c1": "GetElements()[1]",
+        "zh": "每个 row ciphertext 的 c0/c1 component 映射；不是明文矩阵值，只是 DCRTPoly component 摘要"
+      },
+      "rows": [
+        {
+          "row_index": 0,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0,
+          "B_c0_GetElements0": {
+            "part_index": 0,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              838633712247630339,
+              1138670933277898199,
+              1075109508328272512,
+              313596599646049703
+            ]
+          },
+          "A_c1_GetElements1": {
+            "part_index": 1,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              586110830443702418,
+              274808607490727075,
+              897956427008532331,
+              986225137303358176
+            ]
+          }
+        },
+        {
+          "row_index": 1,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0,
+          "B_c0_GetElements0": {
+            "part_index": 0,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              520087784015379173,
+              586350308804587029,
+              876407124948572847,
+              109887543378141196
+            ]
+          },
+          "A_c1_GetElements1": {
+            "part_index": 1,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              236152390280736741,
+              270217886063659446,
+              471910257952176387,
+              371855659359181562
+            ]
+          }
+        },
+        {
+          "row_index": 2,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0,
+          "B_c0_GetElements0": {
+            "part_index": 0,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              730787234384298706,
+              916620484145390191,
+              972967726250437993,
+              537526464258473978
+            ]
+          },
+          "A_c1_GetElements1": {
+            "part_index": 1,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              669176290568742874,
+              183089218257618559,
+              159515255890938952,
+              950130326232775499
+            ]
+          }
+        },
+        {
+          "row_index": 3,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0,
+          "B_c0_GetElements0": {
+            "part_index": 0,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              571316006083726678,
+              293709348168971286,
+              1148034770217170903,
+              262499254971834251
+            ]
+          },
+          "A_c1_GetElements1": {
+            "part_index": 1,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              790031054761389337,
+              215250695939376848,
+              1082627529063236800,
+              227101088780123801
+            ]
+          }
+        }
+      ]
+    },
+    "V_rowwise_before_cmt": {
+      "name": "V_rowwise_before_cmt",
+      "num_rows": 4,
+      "consistent_shape": true,
+      "expected_parts": 2,
+      "expected_towers": 4,
+      "expected_ring_dim": 16384,
+      "mapping": {
+        "B_c0": "GetElements()[0]",
+        "A_c1": "GetElements()[1]",
+        "zh": "每个 row ciphertext 的 c0/c1 component 映射；不是明文矩阵值，只是 DCRTPoly component 摘要"
+      },
+      "rows": [
+        {
+          "row_index": 0,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0,
+          "B_c0_GetElements0": {
+            "part_index": 0,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              957588082523080762,
+              872407043164238555,
+              624706129981641208,
+              934630657456661996
+            ]
+          },
+          "A_c1_GetElements1": {
+            "part_index": 1,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              996895151306626436,
+              13761884663122959,
+              1058217229194936975,
+              1046605370474112851
+            ]
+          }
+        },
+        {
+          "row_index": 1,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0,
+          "B_c0_GetElements0": {
+            "part_index": 0,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              723472376728509375,
+              521167003679422645,
+              181860482071930783,
+              746353668889684388
+            ]
+          },
+          "A_c1_GetElements1": {
+            "part_index": 1,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              72850867775876307,
+              934509332701029752,
+              878918259128214965,
+              490910693571018521
+            ]
+          }
+        },
+        {
+          "row_index": 2,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0,
+          "B_c0_GetElements0": {
+            "part_index": 0,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              240431579436060073,
+              524953823797014152,
+              420148861130773284,
+              588013765576286028
+            ]
+          },
+          "A_c1_GetElements1": {
+            "part_index": 1,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              1144920710927898903,
+              995837356380479714,
+              527154993223741626,
+              391462499136091089
+            ]
+          }
+        },
+        {
+          "row_index": 3,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0,
+          "B_c0_GetElements0": {
+            "part_index": 0,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              131202838927430503,
+              364497082150962934,
+              123681232743513572,
+              997383794160601663
+            ]
+          },
+          "A_c1_GetElements1": {
+            "part_index": 1,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              975476280939108359,
+              685114591947140737,
+              221929515682416040,
+              1008970296492492095
+            ]
+          }
+        }
+      ]
+    },
+    "V_after_cmt_transformed": {
+      "name": "V_after_cmt_transformed",
+      "num_rows": 4,
+      "consistent_shape": true,
+      "expected_parts": 2,
+      "expected_towers": 4,
+      "expected_ring_dim": 16384,
+      "mapping": {
+        "B_c0": "GetElements()[0]",
+        "A_c1": "GetElements()[1]",
+        "zh": "每个 row ciphertext 的 c0/c1 component 映射；不是明文矩阵值，只是 DCRTPoly component 摘要"
+      },
+      "rows": [
+        {
+          "row_index": 0,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0,
+          "B_c0_GetElements0": {
+            "part_index": 0,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              899773373008332040,
+              1130103448184889613,
+              197475201321110174,
+              960538876869736729
+            ]
+          },
+          "A_c1_GetElements1": {
+            "part_index": 1,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              884300001736012659,
+              323380156478275816,
+              380376988015812260,
+              632105850460217210
+            ]
+          }
+        },
+        {
+          "row_index": 1,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0,
+          "B_c0_GetElements0": {
+            "part_index": 0,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              485764832354412572,
+              376530279954429896,
+              467701625195867524,
+              1072574987545825965
+            ]
+          },
+          "A_c1_GetElements1": {
+            "part_index": 1,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              127979372875781189,
+              726404775898087096,
+              498436643947704834,
+              532431042396784886
+            ]
+          }
+        },
+        {
+          "row_index": 2,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0,
+          "B_c0_GetElements0": {
+            "part_index": 0,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              144217607348189946,
+              169840783290250353,
+              44467342534253818,
+              903822633967985214
+            ]
+          },
+          "A_c1_GetElements1": {
+            "part_index": 1,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              1138057519007758405,
+              553519767099619073,
+              615205448947964952,
+              22092715956523356
+            ]
+          }
+        },
+        {
+          "row_index": 3,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0,
+          "B_c0_GetElements0": {
+            "part_index": 0,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              667055971929615575,
+              506111057352569732,
+              162942069397691652,
+              207558007748938378
+            ]
+          },
+          "A_c1_GetElements1": {
+            "part_index": 1,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              648506713307576452,
+              966820594522578664,
+              794062981770471054,
+              142004762071066855
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "algorithm3_component_mapping": {
+    "left_components": {
+      "L0": {
+        "value": "U_rowwise.B_c0 = U.rows[*].GetElements()[0]",
+        "zh": "左矩阵的 c0 component matrix"
+      },
+      "L1": {
+        "value": "U_rowwise.A_c1 = U.rows[*].GetElements()[1]",
+        "zh": "左矩阵的 c1 component matrix"
+      }
+    },
+    "right_components_after_cmt": {
+      "R0": {
+        "value": "CMT(V).B_c0 = V_cmt[*].GetElements()[0]",
+        "zh": "右矩阵 C-MT 后的 c0 component matrix"
+      },
+      "R1": {
+        "value": "CMT(V).A_c1 = V_cmt[*].GetElements()[1]",
+        "zh": "右矩阵 C-MT 后的 c1 component matrix"
+      }
+    },
+    "paper_formula": {
+      "C0": {
+        "value": "PP-MM(L0, R0)",
+        "zh": "输出 before-relin ciphertext 的 c0 component"
+      },
+      "C1": {
+        "value": "PP-MM(L0, R1) + PP-MM(L1, R0)",
+        "zh": "输出 before-relin ciphertext 的 c1 component"
+      },
+      "C2": {
+        "value": "PP-MM(L1, R1)",
+        "zh": "输出 before-relin ciphertext 的 c2 component"
+      }
+    },
+    "important_note": {
+      "value": "PP-MM is not whole ciphertext multiplication. It must multiply DCRTPoly component matrices.",
+      "zh": "PP-MM 不是整密文相乘，而是 DCRTPoly component matrix 层的结构化乘法"
+    }
+  },
+  "checks": {
+    "U_bundle_has_4_rows（U 有 4 个 row-wise ciphertext）": true,
+    "V_bundle_has_4_rows（V 有 4 个 row-wise ciphertext）": true,
+    "V_cmt_has_4_rows（C-MT(V) 有 4 个 transformed ciphertext）": true,
+    "U_rows_have_two_parts（U 每行都有 c0/c1 两个 component）": true,
+    "V_cmt_rows_have_two_parts（C-MT(V) 每行都有 c0/c1 两个 component）": true,
+    "V_cmt_auto_alphas_expected（C-MT 的 Auto alpha 是 [1,3,5,7]）": true,
+    "paper_mapping_declared（已明确 Algorithm 3 的 L0/L1/R0/R1 到 C0/C1/C2 映射）": true,
+    "whole_ct_skeleton_rejected（不再使用 whole ciphertext positionwise skeleton）": true
+  },
+  "summary": {
+    "next_step": "WP4-W2",
+    "next_step_goal": "Implement/probe PP-MM over DCRTPoly component matrices, starting with component-level zero/clone/add/mul primitives rather than whole ciphertext multiplication.",
+    "zh": "下一步实现 DCRTPoly component matrix 乘法 primitive，之后再按 C0/C1/C2 公式组装三分量 ciphertext。"
+  }
+}

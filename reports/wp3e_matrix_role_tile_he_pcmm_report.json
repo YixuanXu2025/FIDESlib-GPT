@@ -1,0 +1,158 @@
+{
+  "matrix_block_physical_tile_he_pcmm": {
+    "experiment（实验）": "matrix_block_physical_tile_he_pcmm",
+    "method（方法）": "legacy physical row tile: X 64x128 physical tiles, component HE backend",
+    "target（目标）": "Y = X_logical @ W_logical",
+    "X_logical_shape（X逻辑块形状）": [
+      128,
+      128
+    ],
+    "W_logical_shape（W逻辑块形状）": [
+      128,
+      128
+    ],
+    "Y_shape（Y形状）": [
+      128,
+      128
+    ],
+    "physical_tile_shape（物理tile形状）": [
+      64,
+      128
+    ],
+    "plain_reference_us（明文参考用时）": 233.076171875,
+    "encrypt_us_total（总加密用时）": 2153505.353515625,
+    "component_compute_us_total（总HE核心计算用时）": 619616.0126953125,
+    "materialize_us_total（总materialize用时）": 1968328.4243164062,
+    "decrypt_us_total（总解密用时）": 809149.03125,
+    "total_he_us（HE总用时）": 5550598.821777344,
+    "max_abs_err（最大绝对误差）": 7.986500349943526e-12,
+    "num_physical_tiles（物理tile总数）": 2,
+    "num_nonzero_physical_tiles（非零物理tile数）": 1,
+    "tile_reports（各tile报告）": [
+      {
+        "encrypted_input_rows": 128,
+        "encrypted_output_rows": 128,
+        "encrypt_us": 2153505.353515625,
+        "component_compute_us": 619616.0126953125,
+        "materialize_us": 1968328.4243164062,
+        "decrypt_us": 809149.03125,
+        "total_us": 5550598.821777344,
+        "tile_id": 0,
+        "row_range": [
+          0,
+          64
+        ],
+        "skipped_zero_tile": false,
+        "X_physical_tile_shape（X物理tile形状）": [
+          64,
+          128
+        ],
+        "W_logical_block_shape（W逻辑块形状）": [
+          128,
+          128
+        ],
+        "Y_physical_tile_shape（Y物理tile形状）": [
+          64,
+          128
+        ],
+        "max_abs_err（最大绝对误差）": 7.986500349943526e-12
+      },
+      {
+        "tile_id": 1,
+        "row_range": [
+          64,
+          128
+        ],
+        "skipped_zero_tile": true
+      }
+    ],
+    "Y_ref_first_row_first8（明文首行前8个）": [
+      21.0,
+      -56.0,
+      25.0,
+      -8.0,
+      -22.0,
+      80.0,
+      37.0,
+      49.0
+    ],
+    "Y_dec_first_row_first8（解密首行前8个）": [
+      21.000000000000266,
+      -56.000000000002174,
+      25.000000000000345,
+      -8.000000000003784,
+      -22.00000000000161,
+      80.00000000000276,
+      37.00000000000051,
+      48.99999999999942
+    ]
+  },
+  "role_specific_block_tiling_he_pcmm": {
+    "experiment（实验）": "role_specific_block_tiling_he_pcmm",
+    "method（方法）": "activation tiles 128x64, weight tiles 64x128, component HE backend, HE-add partials",
+    "target（目标）": "Y = X0@W0 + X1@W1 = X_logical @ W_logical",
+    "X_logical_shape（X逻辑块形状）": [
+      128,
+      128
+    ],
+    "W_logical_shape（W逻辑块形状）": [
+      128,
+      128
+    ],
+    "activation_tile_shapes（输入/激活tile形状）": [
+      [
+        128,
+        64
+      ],
+      [
+        128,
+        64
+      ]
+    ],
+    "weight_tile_shapes（权重tile形状）": [
+      [
+        64,
+        128
+      ],
+      [
+        64,
+        128
+      ]
+    ],
+    "Y_shape（Y形状）": [
+      128,
+      128
+    ],
+    "plain_reference_us（明文参考用时）": 175.453125,
+    "encrypt_us_total（总加密用时）": 2110457.703125,
+    "component_compute_us_total（总HE核心计算用时）": 1382218.0102539062,
+    "he_add_partial_us（partial结果HE加法用时）": 73452.59375,
+    "materialize_us_total（总materialize用时）": 3616028.4560546875,
+    "decrypt_us_total（总解密用时）": 835886.5029296875,
+    "total_he_us（HE总用时）": 8018043.266113281,
+    "max_abs_err（最大绝对误差）": 6.849631972727366e-12,
+    "encrypted_input_rows_total（输入密文row总数）": 128,
+    "encrypted_output_rows_before_add（加法前输出密文row总数）": 256,
+    "encrypted_output_rows_after_add（加法后输出密文row总数）": 128,
+    "Y_ref_first_row_first8（明文首行前8个）": [
+      21.0,
+      -56.0,
+      25.0,
+      -8.0,
+      -22.0,
+      80.0,
+      37.0,
+      49.0
+    ],
+    "Y_dec_first_row_first8（解密首行前8个）": [
+      21.000000000002508,
+      -56.00000000000064,
+      25.000000000001634,
+      -7.999999999998474,
+      -22.000000000002153,
+      80.00000000000168,
+      36.999999999998884,
+      49.000000000002046
+    ]
+  }
+}

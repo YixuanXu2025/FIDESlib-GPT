@@ -1,0 +1,514 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+WP4-Y2q PP-MM source/sign/orientation sweep
+{
+  "experiment": "wp4y2q_ppmm_source_sign_sweep",
+  "status": "debug_ppmm_source_sign_sweep",
+  "checks": {
+    "variants_tested（扫描 variant 数量）": 256,
+    "cases_per_variant（每个 variant 的 case 数量）": 4,
+    "any_variant_solves_U_matmul_V（是否有 variant 全部匹配 U@V）": false,
+    "any_variant_solves_any_reference（是否有 variant 全部匹配任一参考）": false,
+    "solved_variants（全部匹配的 variants）": [],
+    "best_variant": {
+      "variant_id": "q0188_L-swapped_R-normal_LT-1_RT-1_s-11-1-1",
+      "variant": {
+        "variant_id": "q0188_L-swapped_R-normal_LT-1_RT-1_s-11-1-1",
+        "source_map": {
+          "left": "swapped",
+          "right": "normal"
+        },
+        "ppmm_orientation": {
+          "left_T": true,
+          "right_T": true
+        },
+        "term_signs": {
+          "M00": -1,
+          "M01": 1,
+          "M10": -1,
+          "M11": -1
+        }
+      },
+      "summary": {
+        "num_cases_completed": 4,
+        "num_errors": 0,
+        "all_decrypted": true,
+        "all_line5_ks_inputs_are_3part": true,
+        "all_final_rows_are_2part": true,
+        "match_counts": {
+          "U_matmul_V": 0,
+          "U_T_matmul_V": 0,
+          "U_matmul_V_T": 0,
+          "V_matmul_U": 0,
+          "V_T_matmul_U": 0,
+          "U_T_matmul_V_T": 0
+        },
+        "total_l1": {
+          "U_matmul_V": 29,
+          "U_T_matmul_V": 28,
+          "U_matmul_V_T": 28,
+          "V_matmul_U": 29,
+          "V_T_matmul_U": 28,
+          "U_T_matmul_V_T": 29
+        }
+      }
+    },
+    "top10_variants": [
+      {
+        "variant_id": "q0188_L-swapped_R-normal_LT-1_RT-1_s-11-1-1",
+        "variant": {
+          "variant_id": "q0188_L-swapped_R-normal_LT-1_RT-1_s-11-1-1",
+          "source_map": {
+            "left": "swapped",
+            "right": "normal"
+          },
+          "ppmm_orientation": {
+            "left_T": true,
+            "right_T": true
+          },
+          "term_signs": {
+            "M00": -1,
+            "M01": 1,
+            "M10": -1,
+            "M11": -1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 29,
+            "U_T_matmul_V": 28,
+            "U_matmul_V_T": 28,
+            "V_matmul_U": 29,
+            "V_T_matmul_U": 28,
+            "U_T_matmul_V_T": 29
+          }
+        }
+      },
+      {
+        "variant_id": "q0181_L-swapped_R-normal_LT-1_RT-1_s1-111",
+        "variant": {
+          "variant_id": "q0181_L-swapped_R-normal_LT-1_RT-1_s1-111",
+          "source_map": {
+            "left": "swapped",
+            "right": "normal"
+          },
+          "ppmm_orientation": {
+            "left_T": true,
+            "right_T": true
+          },
+          "term_signs": {
+            "M00": 1,
+            "M01": -1,
+            "M10": 1,
+            "M11": 1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 33,
+            "U_T_matmul_V": 30,
+            "U_matmul_V_T": 30,
+            "V_matmul_U": 29,
+            "V_T_matmul_U": 30,
+            "U_T_matmul_V_T": 29
+          }
+        }
+      },
+      {
+        "variant_id": "q0184_L-swapped_R-normal_LT-1_RT-1_s1-1-1-1",
+        "variant": {
+          "variant_id": "q0184_L-swapped_R-normal_LT-1_RT-1_s1-1-1-1",
+          "source_map": {
+            "left": "swapped",
+            "right": "normal"
+          },
+          "ppmm_orientation": {
+            "left_T": true,
+            "right_T": true
+          },
+          "term_signs": {
+            "M00": 1,
+            "M01": -1,
+            "M10": -1,
+            "M11": -1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 33,
+            "U_T_matmul_V": 32,
+            "U_matmul_V_T": 32,
+            "V_matmul_U": 31,
+            "V_T_matmul_U": 32,
+            "U_T_matmul_V_T": 31
+          }
+        }
+      },
+      {
+        "variant_id": "q0037_L-normal_R-normal_LT-1_RT-0_s1-111",
+        "variant": {
+          "variant_id": "q0037_L-normal_R-normal_LT-1_RT-0_s1-111",
+          "source_map": {
+            "left": "normal",
+            "right": "normal"
+          },
+          "ppmm_orientation": {
+            "left_T": true,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": 1,
+            "M01": -1,
+            "M10": 1,
+            "M11": 1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 34,
+            "U_T_matmul_V": 37,
+            "U_matmul_V_T": 37,
+            "V_matmul_U": 38,
+            "V_T_matmul_U": 37,
+            "U_T_matmul_V_T": 38
+          }
+        }
+      },
+      {
+        "variant_id": "q0185_L-swapped_R-normal_LT-1_RT-1_s-1111",
+        "variant": {
+          "variant_id": "q0185_L-swapped_R-normal_LT-1_RT-1_s-1111",
+          "source_map": {
+            "left": "swapped",
+            "right": "normal"
+          },
+          "ppmm_orientation": {
+            "left_T": true,
+            "right_T": true
+          },
+          "term_signs": {
+            "M00": -1,
+            "M01": 1,
+            "M10": 1,
+            "M11": 1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 35,
+            "U_T_matmul_V": 32,
+            "U_matmul_V_T": 32,
+            "V_matmul_U": 33,
+            "V_T_matmul_U": 32,
+            "U_T_matmul_V_T": 33
+          }
+        }
+      },
+      {
+        "variant_id": "q0252_L-swapped_R-swapped_LT-1_RT-1_s-11-1-1",
+        "variant": {
+          "variant_id": "q0252_L-swapped_R-swapped_LT-1_RT-1_s-11-1-1",
+          "source_map": {
+            "left": "swapped",
+            "right": "swapped"
+          },
+          "ppmm_orientation": {
+            "left_T": true,
+            "right_T": true
+          },
+          "term_signs": {
+            "M00": -1,
+            "M01": 1,
+            "M10": -1,
+            "M11": -1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 40,
+            "U_T_matmul_V": 39,
+            "U_matmul_V_T": 39,
+            "V_matmul_U": 38,
+            "V_T_matmul_U": 39,
+            "U_T_matmul_V_T": 38
+          }
+        }
+      },
+      {
+        "variant_id": "q0044_L-normal_R-normal_LT-1_RT-0_s-11-1-1",
+        "variant": {
+          "variant_id": "q0044_L-normal_R-normal_LT-1_RT-0_s-11-1-1",
+          "source_map": {
+            "left": "normal",
+            "right": "normal"
+          },
+          "ppmm_orientation": {
+            "left_T": true,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": -1,
+            "M01": 1,
+            "M10": -1,
+            "M11": -1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 42,
+            "U_T_matmul_V": 39,
+            "U_matmul_V_T": 39,
+            "V_matmul_U": 40,
+            "V_T_matmul_U": 39,
+            "U_T_matmul_V_T": 40
+          }
+        }
+      },
+      {
+        "variant_id": "q0245_L-swapped_R-swapped_LT-1_RT-1_s1-111",
+        "variant": {
+          "variant_id": "q0245_L-swapped_R-swapped_LT-1_RT-1_s1-111",
+          "source_map": {
+            "left": "swapped",
+            "right": "swapped"
+          },
+          "ppmm_orientation": {
+            "left_T": true,
+            "right_T": true
+          },
+          "term_signs": {
+            "M00": 1,
+            "M01": -1,
+            "M10": 1,
+            "M11": 1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 42,
+            "U_T_matmul_V": 41,
+            "U_matmul_V_T": 41,
+            "V_matmul_U": 42,
+            "V_T_matmul_U": 41,
+            "U_T_matmul_V_T": 42
+          }
+        }
+      },
+      {
+        "variant_id": "q0005_L-normal_R-normal_LT-0_RT-0_s1-111",
+        "variant": {
+          "variant_id": "q0005_L-normal_R-normal_LT-0_RT-0_s1-111",
+          "source_map": {
+            "left": "normal",
+            "right": "normal"
+          },
+          "ppmm_orientation": {
+            "left_T": false,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": 1,
+            "M01": -1,
+            "M10": 1,
+            "M11": 1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 43,
+            "U_T_matmul_V": 42,
+            "U_matmul_V_T": 42,
+            "V_matmul_U": 41,
+            "V_T_matmul_U": 42,
+            "U_T_matmul_V_T": 41
+          }
+        }
+      },
+      {
+        "variant_id": "q0012_L-normal_R-normal_LT-0_RT-0_s-11-1-1",
+        "variant": {
+          "variant_id": "q0012_L-normal_R-normal_LT-0_RT-0_s-11-1-1",
+          "source_map": {
+            "left": "normal",
+            "right": "normal"
+          },
+          "ppmm_orientation": {
+            "left_T": false,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": -1,
+            "M01": 1,
+            "M10": -1,
+            "M11": -1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 43,
+            "U_T_matmul_V": 44,
+            "U_matmul_V_T": 44,
+            "V_matmul_U": 45,
+            "V_T_matmul_U": 44,
+            "U_T_matmul_V_T": 45
+          }
+        }
+      }
+    ]
+  },
+  "global_decision": {
+    "value": "ppmm_source_sign_sweep_no_exact_variant",
+    "next_step": "WP4-Y2r",
+    "next_goal": "Switch to plaintext symbolic Algorithm 3 simulation and compare exact intermediate formulas.",
+    "zh": "PP-MM source/sign 扫描仍未找到 exact variant；下一步做明文符号模拟，而不是继续盲扫。"
+  },
+  "saved": "/workspace/FIDESlib-GPT/reports/wp4y2q_ppmm_source_sign_sweep_report.json"
+}
+====================================================================================================
+saved: /workspace/FIDESlib-GPT/reports/wp4y2q_ppmm_source_sign_sweep_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

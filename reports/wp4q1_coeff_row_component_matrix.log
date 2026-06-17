@@ -1,0 +1,241 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+WP4-Q1 coefficient-row component matrix report
+{
+  "experiment": "wp4q1_coeff_row_component_matrix",
+  "purpose": "Extract/inspect true coefficient-row ciphertext rows as paper-style row-wise A/B component matrix metadata.",
+  "status": "component_extraction_inspect_only",
+  "N": 4,
+  "input_matrix_M_i64": [
+    [
+      1,
+      1,
+      -1,
+      -1
+    ],
+    [
+      -1,
+      3,
+      -1,
+      -1
+    ],
+    [
+      -3,
+      0,
+      1,
+      1
+    ],
+    [
+      -3,
+      0,
+      -1,
+      -1
+    ]
+  ],
+  "component_matrix_summary": {
+    "num_rows": 4,
+    "consistent_shape": true,
+    "expected_parts": 2,
+    "expected_towers": 4,
+    "expected_ring_dim": 16384,
+    "paper_mapping": "rowwise: B = GetElements()[0] / c0, A = GetElements()[1] / c1",
+    "rows": [
+      {
+        "row_index": 0,
+        "num_parts": 2,
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0,
+        "encoding_type": 1,
+        "parts": [
+          {
+            "part_index": 0,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              944070154775316399,
+              1087469327770458148,
+              1048258832663899557,
+              911574222090383081,
+              1018657244759827559,
+              100391223062625553,
+              697176263122585843,
+              89717246713095000
+            ]
+          },
+          {
+            "part_index": 1,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              786513063106780934,
+              1116399457662164975,
+              422164056619205827,
+              556883166671534158,
+              1071156621359903857,
+              864851757543083568,
+              471021028897522144,
+              601798535565138258
+            ]
+          }
+        ]
+      },
+      {
+        "row_index": 1,
+        "num_parts": 2,
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0,
+        "encoding_type": 1,
+        "parts": [
+          {
+            "part_index": 0,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              919221138624969462,
+              373736162986951322,
+              218355599483993026,
+              218618422516456045,
+              1051422276770807557,
+              369694814619450500,
+              1053143159275527492,
+              655646813159722610
+            ]
+          },
+          {
+            "part_index": 1,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              125714497016601765,
+              568587536433846841,
+              41190763900527834,
+              359844354874785635,
+              1108863364673031057,
+              383197185287171530,
+              283084654870144383,
+              554683006825429542
+            ]
+          }
+        ]
+      },
+      {
+        "row_index": 2,
+        "num_parts": 2,
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0,
+        "encoding_type": 1,
+        "parts": [
+          {
+            "part_index": 0,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              427530520446720652,
+              755072841108124988,
+              894811277591974643,
+              583933534702621813,
+              423249068175555135,
+              552071229688564812,
+              925215675493785344,
+              862964458211838029
+            ]
+          },
+          {
+            "part_index": 1,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              939670612677861702,
+              139602957896221722,
+              435411642038511761,
+              169407727313374064,
+              779682957963596884,
+              293473580462509128,
+              411651794946504314,
+              966183858323318171
+            ]
+          }
+        ]
+      },
+      {
+        "row_index": 3,
+        "num_parts": 2,
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0,
+        "encoding_type": 1,
+        "parts": [
+          {
+            "part_index": 0,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              1125208949286506079,
+              146949587689308957,
+              643676882211476220,
+              518464289990116770,
+              651739600114847998,
+              337347756545633828,
+              335425529753582703,
+              1020681729826940211
+            ]
+          },
+          {
+            "part_index": 1,
+            "num_towers": 4,
+            "ring_dim": 16384,
+            "tower0_modulus_u64": 1152921504606748673,
+            "tower0_coeff_head_u64": [
+              431346515456841043,
+              190331432562643100,
+              831444817311520972,
+              301877295764931213,
+              788462352353024604,
+              469729652175576154,
+              750959368364917380,
+              1119555453927782851
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "all_rows_are_coef_encoding_type_1": true,
+    "all_rows_have_two_parts": true,
+    "consistent_shape": true,
+    "expected_ring_dim_is_16384": true
+  }
+}
+====================================================================================================
+saved: /workspace/FIDESlib-GPT/reports/wp4q1_coeff_row_component_matrix_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

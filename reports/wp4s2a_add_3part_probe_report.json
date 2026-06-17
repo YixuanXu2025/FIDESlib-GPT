@@ -1,0 +1,223 @@
+{
+  "experiment": "wp4s2a_add_3part_probe",
+  "purpose": "Verify that no-relin 3-component ciphertexts can be added: (c0,c1,c2) + (d0,d1,d2) -> 3-component ciphertext.",
+  "status": "primitive_probe_only_no_relin_no_rescale_no_full_ccmm",
+  "input_rows_i64": [
+    [
+      1,
+      -2,
+      3,
+      -1
+    ],
+    [
+      2,
+      1,
+      -1,
+      0
+    ],
+    [
+      -1,
+      0,
+      2,
+      3
+    ],
+    [
+      3,
+      -3,
+      1,
+      2
+    ]
+  ],
+  "formula": {
+    "value": "sum = mul_no_relin(ct0, ct1) + mul_no_relin(ct2, ct3)",
+    "zh": "先生成两个三分量乘法结果，再验证三分量密文加法是否保持结构"
+  },
+  "prod01": {
+    "ok": true,
+    "value": {
+      "valid": true,
+      "openfhe_level": 0,
+      "openfhe_noise_scale_deg": 1,
+      "openfhe_scaling_factor": 1.0,
+      "openfhe_slots": 0,
+      "openfhe_encoding_type": 1,
+      "num_parts": 3,
+      "parts_summary": [
+        {
+          "part_index": 0,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            881209064709956025,
+            912282978660861001,
+            678614982599419364,
+            204422868086546363,
+            855639169744589364,
+            841497259160071092,
+            474460662232679622,
+            736353578675325548
+          ]
+        },
+        {
+          "part_index": 1,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            954978779023434230,
+            375086800350346841,
+            1040035984234844849,
+            1141228880585972810,
+            454811215079461732,
+            139168400264282927,
+            545570209136915151,
+            417285374388682565
+          ]
+        },
+        {
+          "part_index": 2,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            881885494347086725,
+            197152894808749495,
+            1057832829200243914,
+            784260975048813589,
+            549127142147039128,
+            1056776765739721541,
+            264778522607031072,
+            998838326687352887
+          ]
+        }
+      ]
+    }
+  },
+  "prod23": {
+    "ok": true,
+    "value": {
+      "valid": true,
+      "openfhe_level": 0,
+      "openfhe_noise_scale_deg": 1,
+      "openfhe_scaling_factor": 1.0,
+      "openfhe_slots": 0,
+      "openfhe_encoding_type": 1,
+      "num_parts": 3,
+      "parts_summary": [
+        {
+          "part_index": 0,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            191393950104387400,
+            28684864692103258,
+            855763445771941241,
+            774617315271053973,
+            542569321364300049,
+            113596199946256692,
+            642897759757741550,
+            400124646963864120
+          ]
+        },
+        {
+          "part_index": 1,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            615508666733463468,
+            326513587055866055,
+            349213863164231410,
+            909626671810253128,
+            489383578483726618,
+            857168409743169529,
+            625105032040140926,
+            1026697749031173592
+          ]
+        },
+        {
+          "part_index": 2,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            316069153802328092,
+            255901806859480036,
+            755753934122692875,
+            389293738188513582,
+            858603768697241274,
+            489163183234582521,
+            1147123346110168251,
+            111420274332799683
+          ]
+        }
+      ]
+    }
+  },
+  "add_call": {
+    "ok": true,
+    "error": null
+  },
+  "add_output": {
+    "ok": true,
+    "value": {
+      "valid": true,
+      "openfhe_level": 0,
+      "openfhe_noise_scale_deg": 1,
+      "openfhe_scaling_factor": 1.0,
+      "openfhe_slots": 0,
+      "openfhe_encoding_type": 1,
+      "num_parts": 3,
+      "parts_summary": [
+        {
+          "part_index": 0,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            1072603014814343425,
+            940967843352964259,
+            381456923764611932,
+            979040183357600336,
+            245286986502140740,
+            955093459106327784,
+            1117358421990421172,
+            1136478225639189668
+          ]
+        },
+        {
+          "part_index": 1,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            417565941150149025,
+            701600387406212896,
+            236328342792327586,
+            897934047789477265,
+            944194793563188350,
+            996336810007452456,
+            17753736570307404,
+            291061618813107484
+          ]
+        },
+        {
+          "part_index": 2,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            45033143542666144,
+            453054701668229531,
+            660665258716188116,
+            20633208630578498,
+            254809406237531729,
+            393018444367555389,
+            258980364110450650,
+            1110258601020152570
+          ]
+        }
+      ]
+    }
+  },
+  "checks": {
+    "prod01_is_3part（第一个乘法结果是 c0/c1/c2 三分量密文）": true,
+    "prod23_is_3part（第二个乘法结果是 c0/c1/c2 三分量密文）": true,
+    "add_3part_call_ok（三分量密文加法调用成功）": true,
+    "add_3part_output_valid（三分量加法输出密文有效）": true,
+    "add_3part_preserves_three_rlwe_parts（三分量加法输出仍有 c0/c1/c2）": true
+  }
+}

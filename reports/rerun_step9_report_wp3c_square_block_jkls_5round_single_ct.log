@@ -1,0 +1,45 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+总体信息
+输入大小: (64, 64)
+W大小: (64, 64)
+连续轮数: 5
+rotation sigma: 1
+实际生成的 rotation key 数量: 69
+仅首次加密一次(us): 846121.858
+仅最后解密一次(us): 567189.843
+====================================================================================================
+单输入密文 + 连续5轮同一W + 最后解密（JKLS-only）
+轮次              核心(us)     pMult均值(us)     add均值(us)    rotate均值(us)
+--------------------------------------------------------------------
+1         33403155.260      198468.477      8785.790        8959.590
+2         33310035.161      197237.463      8861.847        9021.180
+3         33136821.988      197027.694      8694.269        8863.128
+4         33211219.276      197148.808      8763.147        8921.948
+5         33095619.777      196675.798      8724.445        8839.920
+--------------------------------------------------------------------
+第2轮及以后中位数:
+  核心计算(us):  33174020.632
+  pMult均值(us): 197088.251
+  add均值(us):   8743.796
+  rotate均值(us): 8892.538
+最终一次解密后的误差(max_abs_err): 9.624523e-13
+====================================================================================================
+报告已保存
+JSON路径: /workspace/FIDESlib-GPT/reports/wp3c_square_block_jkls_5round_single_ct_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

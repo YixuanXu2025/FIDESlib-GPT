@@ -1,0 +1,85 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+runtime info（运行时信息）: {'ring_dim': 16384, 'cyclotomic_order': 32768}
+====================================================================================================
+role-specific output block 0/5
+[partial] output_block=0, mid_block=0, part=0
+[partial] output_block=0, mid_block=0, part=1
+[partial] output_block=0, mid_block=1, part=0
+[partial] output_block=0, mid_block=1, part=1
+[partial] output_block=0, mid_block=2, part=0
+[partial] output_block=0, mid_block=2, part=1
+[partial] output_block=0, mid_block=3, part=0
+[partial] output_block=0, mid_block=3, part=1
+[partial] output_block=0, mid_block=4, part=0
+[partial] output_block=0, mid_block=4, part=1
+[partial] output_block=0, mid_block=5, part=0
+[partial] output_block=0, mid_block=5, part=1
+[done block] output_block=0, err=8.299139e-12
+====================================================================================================
+role-specific output block 1/5
+[partial] output_block=1, mid_block=0, part=0
+[partial] output_block=1, mid_block=0, part=1
+[partial] output_block=1, mid_block=1, part=0
+[partial] output_block=1, mid_block=1, part=1
+[partial] output_block=1, mid_block=2, part=0
+[partial] output_block=1, mid_block=2, part=1
+[partial] output_block=1, mid_block=3, part=0
+[partial] output_block=1, mid_block=3, part=1
+[partial] output_block=1, mid_block=4, part=0
+[partial] output_block=1, mid_block=4, part=1
+[partial] output_block=1, mid_block=5, part=0
+[partial] output_block=1, mid_block=5, part=1
+[done block] output_block=1, err=7.061018e-12
+====================================================================================================
+role-specific output block 2/5
+[partial] output_block=2, mid_block=0, part=0
+[partial] output_block=2, mid_block=0, part=1
+[partial] output_block=2, mid_block=1, part=0
+[partial] output_block=2, mid_block=1, part=1
+[partial] output_block=2, mid_block=2, part=0
+[partial] output_block=2, mid_block=2, part=1
+[partial] output_block=2, mid_block=3, part=0
+[partial] output_block=2, mid_block=3, part=1
+[partial] output_block=2, mid_block=4, part=0
+[partial] output_block=2, mid_block=4, part=1
+[partial] output_block=2, mid_block=5, part=0
+[partial] output_block=2, mid_block=5, part=1
+[done block] output_block=2, err=6.707523e-12
+====================================================================================================
+role-specific output block 3/5
+[partial] output_block=3, mid_block=0, part=0
+[partial] output_block=3, mid_block=0, part=1
+[partial] output_block=3, mid_block=1, part=0
+[partial] output_block=3, mid_block=1, part=1
+[partial] output_block=3, mid_block=2, part=0
+[partial] output_block=3, mid_block=2, part=1
+[partial] output_block=3, mid_block=3, part=0
+[partial] output_block=3, mid_block=3, part=1
+[partial] output_block=3, mid_block=4, part=0
+[partial] output_block=3, mid_block=4, part=1
+[partial] output_block=3, mid_block=5, part=0
+[partial] output_block=3, mid_block=5, part=1
+[done block] output_block=3, err=7.972289e-12
+====================================================================================================
+role-specific output block 4/5
+[partial] output_block=4, mid_block=0, part=0
+[partial] output_block=4, mid_block=0, part=1
+[partial] output_block=4, mid_block=1, part=0
+[partial] output_block=4, mid_block=1, part=1
+[partial] output_block=4, mid_block=2, part=0
+[partial] output_block=4, mid_block=2, part=1
+[partial] output_block=4, mid_block=3, part=0
+[partial] output_block=4, mid_block=3, part=1
+[partial] output_block=4, mid_block=4, part=0
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8FIDESlib9GPUmallocEiiP11CUstream_stb+0x22c)[0x7f4cdce05d9c]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8FIDESlib4CKKS19CudaMallocAuxBufferERNS_6StreamEmi+0x71)[0x7f4cdcdba151]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8FIDESlib4CKKS13LimbPartitionC2ERNS0_11ContextDataERKmPiib+0x425)[0x7f4cdcdc7b95]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZNSt6vectorIN8FIDESlib4CKKS13LimbPartitionESaIS2_EE17_M_realloc_insertIJRNS1_11ContextDataERKmPiRmRbEEEvN9__gnu_cxx17__normal_iteratorIPS2_S4_EEDpOT_+0xbd)[0x7f4cdcd99cdd]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8FIDESlib4CKKS7RNSPolyC2ERNS0_11ContextDataEibb+0x115)[0x7f4cdcd96a45]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8FIDESlib4CKKS11ContextData14getAuxilarPolyEv+0x122)[0x7f4cdcd9db02]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8FIDESlib4CKKS10CiphertextC2ERSt10shared_ptrINS0_11ContextDataEE+0x1fb)[0x7f4cdcd89e7b]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8fideslib17CryptoContextImplIjE20CopyDeviceCiphertextERKNS_14CiphertextImplIjEE+0x100)[0x7f4cdce4ceb0]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8fideslib14CiphertextImplIjEC1ERKS1_+0x5ce)[0x7f4cdce3e02e]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(+0x289467)[0x7f4cdce3e467]
+Cuda failure /root/fideslib/src/CudaUtils.cu:359: 'out of memory'

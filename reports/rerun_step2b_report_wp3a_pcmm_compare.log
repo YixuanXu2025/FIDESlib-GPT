@@ -1,0 +1,89 @@
+====================================================================================================
+WP3-A Compare / Case 1: square input
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+  case_name: square_input_8x8__8x8
+  rows: 8
+  mid_dim: 8
+  out_dim: 8
+  split_dim: 4
+  physical_slots: 8
+  plain_repeats: 5
+  he_repeats: 1
+  plain_reference_us_median: 11.06103515625
+  repeats: 1
+  max_abs_err: 6.563596888220502e-12
+  encrypt_us_median: 261736.41064453125
+  core_us_median: 1331123.3823242188
+  decrypt_us_median: 93735.19091796875
+  total_us_median: 1686806.8041992188
+  plain_vs_ref_max_abs_err: 0.0
+  plain_vs_he_max_abs_err: 6.563596888220502e-12
+  he_core_vs_plain_ratio: 120343.47269677305
+  he_total_vs_plain_ratio: 152499.90442766962
+  y_plain_first_row: [0.41169963250860997, 0.18288801222346573, 0.4472290307499146, -1.1988808570933838, -0.3746654190604378, -0.5849183348874956, -0.11559034656727868, 0.7936748967294399]
+  y_he_first_row: [0.41169963251150093, 0.18288801222302048, 0.44722903075060805, -1.1988808570967908, -0.3746654190573393, -0.5849183348854254, -0.11559034656877348, 0.7936748967275504]
+====================================================================================================
+WP3-A Compare / Case 2: non-square input
+  case_name: rect_input_4x8__8x8
+  rows: 4
+  mid_dim: 8
+  out_dim: 8
+  split_dim: 4
+  physical_slots: 8
+  plain_repeats: 5
+  he_repeats: 1
+  plain_reference_us_median: 11.2607421875
+  repeats: 1
+  max_abs_err: 1.2139898027813123e-11
+  encrypt_us_median: 130762.5029296875
+  core_us_median: 659046.7368164062
+  decrypt_us_median: 46281.07470703125
+  total_us_median: 836188.205078125
+  plain_vs_ref_max_abs_err: 0.0
+  plain_vs_he_max_abs_err: 1.2139898027813123e-11
+  he_core_vs_plain_ratio: 58526.047914317925
+  he_total_vs_plain_ratio: 74256.9353915532
+  y_plain_first_row: [-0.17047670929644276, 0.2192811143832494, -0.25301956029533884, 0.12291868608635537, -0.5035836847578029, 0.14167572532474965, -0.32951137165291194, 0.05785754159139882]
+  y_he_first_row: [-0.17047670928839465, 0.21928111437974268, -0.25301956029507777, 0.12291868608963917, -0.503583684758661, 0.14167572532044093, -0.32951137164936245, 0.057857541590649084]
+====================================================================================================
+WP3-A Compare / Case 3: non-square output
+  case_name: square_input_8x8__8x16
+  rows: 8
+  mid_dim: 8
+  out_dim: 16
+  split_dim: 4
+  physical_slots: 16
+  plain_repeats: 5
+  he_repeats: 1
+  plain_reference_us_median: 11.75439453125
+  repeats: 1
+  max_abs_err: 9.331535544276903e-12
+  encrypt_us_median: 264749.83349609375
+  core_us_median: 2633932.7802734375
+  decrypt_us_median: 96195.97119140625
+  total_us_median: 2995092.3994140625
+  plain_vs_ref_max_abs_err: 0.0
+  plain_vs_he_max_abs_err: 9.331535544276903e-12
+  he_core_vs_plain_ratio: 224080.68516595356
+  he_total_vs_plain_ratio: 254806.18261122418
+  y_plain_first_row: [-0.6190352922102257, -0.016264826544755855, 0.9961317622835668, 0.08893620101037578, 0.04994122935132217, 0.11085000668127205, -0.3223070584692835, -0.7928508168571278, 0.03995008090176394, 0.2172648217132153, 0.5493661172936324, 0.5509944082444259, -0.0843749216947976, -0.2834724421959135, 0.2271523095851224, -0.35031507650559135]
+  y_he_first_row: [-0.6190352922060998, -0.016264826542216684, 0.996131762283387, 0.08893620101713832, 0.04994122935116456, 0.1108500066794035, -0.32230705846659014, -0.792850816852542, 0.03995008089816419, 0.21726482170970784, 0.5493661172907094, 0.5509944082470842, -0.08437492169236512, -0.28347244220196577, 0.2271523095876385, -0.35031507650452115]
+====================================================================================================
+Report Saved
+JSON report saved to: /workspace/FIDESlib-GPT/reports/wp3a_pcmm_compare_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

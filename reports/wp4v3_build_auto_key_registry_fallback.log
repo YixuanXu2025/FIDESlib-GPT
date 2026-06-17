@@ -1,0 +1,224 @@
+[ 50%] Built target fideslib_gpt_minimal
+[ 66%] Building CXX object CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘CiphertextHandle FidesCKKSContext::eval_automorphism_coeff_ct(CiphertextHandle&, uint32_t)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:443:35: error: base operand of ‘->’ has non-pointer type ‘std::map<unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > >, std::less<unsigned int>, std::allocator<std::pair<const unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > > > > >’
+  443 |                 || registered_keys->empty()
+      |                                   ^~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:444:35: error: base operand of ‘->’ has non-pointer type ‘std::map<unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > >, std::less<unsigned int>, std::allocator<std::pair<const unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > > > > >’
+  444 |                 || registered_keys->find(alpha) == registered_keys->end()
+      |                                   ^~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:444:67: error: base operand of ‘->’ has non-pointer type ‘std::map<unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > >, std::less<unsigned int>, std::allocator<std::pair<const unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > > > > >’
+  444 |                 || registered_keys->find(alpha) == registered_keys->end()
+      |                                                                   ^~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:451:76: error: no match for ‘operator*’ (operand type is ‘std::map<unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > >, std::less<unsigned int>, std::allocator<std::pair<const unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > > > > >’)
+  451 |             out_native = (*native_cc)->EvalAutomorphism(*native_ct, alpha, *registered_keys);
+      |                                                                            ^~~~~~~~~~~~~~~~
+In file included from /root/fideslib/deps/openfhe-install/include/openfhe/pke/openfhe.h:51,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:18:
+/root/fideslib/deps/openfhe-install/include/openfhe/core/math/matrix.h:727:17: note: candidate: ‘template<class Element> lbcrypto::Matrix<Element> lbcrypto::operator*(const Element&, const lbcrypto::Matrix<Element>&)’
+  727 | Matrix<Element> operator*(Element const& e, Matrix<Element> const& M) {
+      |                 ^~~~~~~~
+/root/fideslib/deps/openfhe-install/include/openfhe/core/math/matrix.h:727:17: note:   template argument deduction/substitution failed:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:451:77: note:   candidate expects 2 arguments, 1 provided
+  451 |             out_native = (*native_cc)->EvalAutomorphism(*native_ct, alpha, *registered_keys);
+      |                                                                             ^~~~~~~~~~~~~~~
+In file included from /root/fideslib/deps/openfhe-install/include/openfhe/pke/openfhe.h:53,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:18:
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/ciphertext.h:607:21: note: candidate: ‘template<class Element> lbcrypto::Ciphertext<Element> lbcrypto::operator*(lbcrypto::Ciphertext<Element>&, lbcrypto::Ciphertext<Element>&)’
+  607 | Ciphertext<Element> operator*(const Ciphertext<Element>& a, const Ciphertext<Element>& b) {
+      |                     ^~~~~~~~
+/root/fideslib/deps/openfhe-install/include/openfhe/pke/ciphertext.h:607:21: note:   template argument deduction/substitution failed:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:451:77: note:   ‘std::map<unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > >, std::less<unsigned int>, std::allocator<std::pair<const unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > > > > >’ is not derived from ‘lbcrypto::Ciphertext<Element>’
+  451 |             out_native = (*native_cc)->EvalAutomorphism(*native_ct, alpha, *registered_keys);
+      |                                                                             ^~~~~~~~~~~~~~~
+In file included from /root/fideslib/api/CryptoContext.hpp:5,
+                 from /root/fideslib/api/Ciphertext.hpp:8,
+                 from /root/fideslib/api/fideslib.hpp:5,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:1:
+/usr/include/c++/11/complex:392:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator*(const std::complex<_Tp>&, const std::complex<_Tp>&)’
+  392 |     operator*(const complex<_Tp>& __x, const complex<_Tp>& __y)
+      |     ^~~~~~~~
+/usr/include/c++/11/complex:392:5: note:   template argument deduction/substitution failed:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:451:77: note:   ‘std::map<unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > >, std::less<unsigned int>, std::allocator<std::pair<const unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > > > > >’ is not derived from ‘const std::complex<_Tp>’
+  451 |             out_native = (*native_cc)->EvalAutomorphism(*native_ct, alpha, *registered_keys);
+      |                                                                             ^~~~~~~~~~~~~~~
+In file included from /root/fideslib/api/CryptoContext.hpp:5,
+                 from /root/fideslib/api/Ciphertext.hpp:8,
+                 from /root/fideslib/api/fideslib.hpp:5,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:1:
+/usr/include/c++/11/complex:401:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator*(const std::complex<_Tp>&, const _Tp&)’
+  401 |     operator*(const complex<_Tp>& __x, const _Tp& __y)
+      |     ^~~~~~~~
+/usr/include/c++/11/complex:401:5: note:   template argument deduction/substitution failed:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:451:77: note:   ‘std::map<unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > >, std::less<unsigned int>, std::allocator<std::pair<const unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > > > > >’ is not derived from ‘const std::complex<_Tp>’
+  451 |             out_native = (*native_cc)->EvalAutomorphism(*native_ct, alpha, *registered_keys);
+      |                                                                             ^~~~~~~~~~~~~~~
+In file included from /root/fideslib/api/CryptoContext.hpp:5,
+                 from /root/fideslib/api/Ciphertext.hpp:8,
+                 from /root/fideslib/api/fideslib.hpp:5,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:1:
+/usr/include/c++/11/complex:410:5: note: candidate: ‘template<class _Tp> constexpr std::complex<_Tp> std::operator*(const _Tp&, const std::complex<_Tp>&)’
+  410 |     operator*(const _Tp& __x, const complex<_Tp>& __y)
+      |     ^~~~~~~~
+/usr/include/c++/11/complex:410:5: note:   template argument deduction/substitution failed:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:451:77: note:   candidate expects 2 arguments, 1 provided
+  451 |             out_native = (*native_cc)->EvalAutomorphism(*native_ct, alpha, *registered_keys);
+      |                                                                             ^~~~~~~~~~~~~~~
+In file included from /usr/include/c++/11/valarray:603,
+                 from /usr/local/lib/python3.10/dist-packages/pybind11/include/pybind11/stl.h:26,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:5:
+/usr/include/c++/11/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom1, class _Dom2> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Expr, std::_Expr, _Dom1, _Dom2>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const std::_Expr<_Dom1, typename _Dom1::value_type>&, const std::_Expr<_Dom2, typename _Dom2::value_type>&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/11/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:451:77: note:   ‘std::map<unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > >, std::less<unsigned int>, std::allocator<std::pair<const unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > > > > >’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  451 |             out_native = (*native_cc)->EvalAutomorphism(*native_ct, alpha, *registered_keys);
+      |                                                                             ^~~~~~~~~~~~~~~
+In file included from /usr/include/c++/11/valarray:603,
+                 from /usr/local/lib/python3.10/dist-packages/pybind11/include/pybind11/stl.h:26,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:5:
+/usr/include/c++/11/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Expr, std::_Constant, _Dom, typename _Dom::value_type>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const std::_Expr<_Dom1, typename _Dom1::value_type>&, const typename _Dom::value_type&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/11/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:451:77: note:   ‘std::map<unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > >, std::less<unsigned int>, std::allocator<std::pair<const unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > > > > >’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  451 |             out_native = (*native_cc)->EvalAutomorphism(*native_ct, alpha, *registered_keys);
+      |                                                                             ^~~~~~~~~~~~~~~
+In file included from /usr/include/c++/11/valarray:603,
+                 from /usr/local/lib/python3.10/dist-packages/pybind11/include/pybind11/stl.h:26,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:5:
+/usr/include/c++/11/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Constant, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const typename _Dom::value_type&, const std::_Expr<_Dom1, typename _Dom1::value_type>&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/11/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:451:77: note:   candidate expects 2 arguments, 1 provided
+  451 |             out_native = (*native_cc)->EvalAutomorphism(*native_ct, alpha, *registered_keys);
+      |                                                                             ^~~~~~~~~~~~~~~
+In file included from /usr/include/c++/11/valarray:603,
+                 from /usr/local/lib/python3.10/dist-packages/pybind11/include/pybind11/stl.h:26,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:5:
+/usr/include/c++/11/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Expr, std::_ValArray, _Dom, typename _Dom::value_type>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const std::_Expr<_Dom1, typename _Dom1::value_type>&, const std::valarray<typename _Dom::value_type>&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/11/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:451:77: note:   ‘std::map<unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > >, std::less<unsigned int>, std::allocator<std::pair<const unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > > > > >’ is not derived from ‘const std::_Expr<_Dom1, typename _Dom1::value_type>’
+  451 |             out_native = (*native_cc)->EvalAutomorphism(*native_ct, alpha, *registered_keys);
+      |                                                                             ^~~~~~~~~~~~~~~
+In file included from /usr/include/c++/11/valarray:603,
+                 from /usr/local/lib/python3.10/dist-packages/pybind11/include/pybind11/stl.h:26,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:5:
+/usr/include/c++/11/bits/valarray_after.h:407:5: note: candidate: ‘template<class _Dom> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_ValArray, std::_Expr, typename _Dom::value_type, _Dom>, typename std::__fun<std::__multiplies, typename _Dom1::value_type>::result_type> std::operator*(const std::valarray<typename _Dom::value_type>&, const std::_Expr<_Dom1, typename _Dom1::value_type>&)’
+  407 |     _DEFINE_EXPR_BINARY_OPERATOR(*, struct std::__multiplies)
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/11/bits/valarray_after.h:407:5: note:   template argument deduction/substitution failed:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:451:77: note:   candidate expects 2 arguments, 1 provided
+  451 |             out_native = (*native_cc)->EvalAutomorphism(*native_ct, alpha, *registered_keys);
+      |                                                                             ^~~~~~~~~~~~~~~
+In file included from /usr/local/lib/python3.10/dist-packages/pybind11/include/pybind11/stl.h:26,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:5:
+/usr/include/c++/11/valarray:1188:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_ValArray, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__multiplies, _Tp>::result_type> std::operator*(const std::valarray<_Tp>&, const std::valarray<_Tp>&)’
+ 1188 | _DEFINE_BINARY_OPERATOR(*, __multiplies)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/11/valarray:1188:1: note:   template argument deduction/substitution failed:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:451:77: note:   ‘std::map<unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > >, std::less<unsigned int>, std::allocator<std::pair<const unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > > > > >’ is not derived from ‘const std::valarray<_Tp>’
+  451 |             out_native = (*native_cc)->EvalAutomorphism(*native_ct, alpha, *registered_keys);
+      |                                                                             ^~~~~~~~~~~~~~~
+In file included from /usr/local/lib/python3.10/dist-packages/pybind11/include/pybind11/stl.h:26,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:5:
+/usr/include/c++/11/valarray:1188:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_ValArray, std::_Constant, _Tp, _Tp>, typename std::__fun<std::__multiplies, _Tp>::result_type> std::operator*(const std::valarray<_Tp>&, const typename std::valarray<_Tp>::value_type&)’
+ 1188 | _DEFINE_BINARY_OPERATOR(*, __multiplies)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/11/valarray:1188:1: note:   template argument deduction/substitution failed:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:451:77: note:   ‘std::map<unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > >, std::less<unsigned int>, std::allocator<std::pair<const unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > > > > >’ is not derived from ‘const std::valarray<_Tp>’
+  451 |             out_native = (*native_cc)->EvalAutomorphism(*native_ct, alpha, *registered_keys);
+      |                                                                             ^~~~~~~~~~~~~~~
+In file included from /usr/local/lib/python3.10/dist-packages/pybind11/include/pybind11/stl.h:26,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:5:
+/usr/include/c++/11/valarray:1188:1: note: candidate: ‘template<class _Tp> std::_Expr<std::__detail::_BinClos<std::__multiplies, std::_Constant, std::_ValArray, _Tp, _Tp>, typename std::__fun<std::__multiplies, _Tp>::result_type> std::operator*(const typename std::valarray<_Tp>::value_type&, const std::valarray<_Tp>&)’
+ 1188 | _DEFINE_BINARY_OPERATOR(*, __multiplies)
+      | ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/11/valarray:1188:1: note:   template argument deduction/substitution failed:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:451:77: note:   candidate expects 2 arguments, 1 provided
+  451 |             out_native = (*native_cc)->EvalAutomorphism(*native_ct, alpha, *registered_keys);
+      |                                                                             ^~~~~~~~~~~~~~~
+In file included from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/bigintdyn/ubintdyn.h:46,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/bigintdyn/mubintvecdyn.h:43,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/bigintdyn/backenddyn.h:44,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/bigintbackend.h:38,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/math-hal.h:48,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/elemparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/default/ilparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/lat-backend.h:49,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/lat-hal.h:35,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/openfhecore.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/pke/openfhe.h:40,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:18:
+/root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/integer.h:117:14: note: candidate: ‘bigintdyn::ubint<long unsigned int> lbcrypto::operator*(const bigintdyn::ubint<long unsigned int>&, const bigintdyn::ubint<long unsigned int>&)’
+  117 |     friend T operator*(const T& a, const T& b) {
+      |              ^~~~~~~~
+/root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/integer.h:117:14: note:   candidate expects 2 arguments, 1 provided
+In file included from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/math-hal.h:47,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/elemparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/default/ilparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/lat-backend.h:49,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/lat-hal.h:35,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/openfhecore.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/pke/openfhe.h:40,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:18:
+/root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/vector.h:364:14: note: candidate: ‘bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > lbcrypto::operator*(const bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> >&, const bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> >&)’
+  364 |     friend T operator*(const T& a, const T& b) {
+      |              ^~~~~~~~
+/root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/vector.h:364:14: note:   candidate expects 2 arguments, 1 provided
+/root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/vector.h:336:14: note: candidate: ‘bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > lbcrypto::operator*(const bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> >&, const bigintdyn::ubint<long unsigned int>&)’
+  336 |     friend T operator*(const T& a, const I& b) {
+      |              ^~~~~~~~
+/root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/vector.h:336:14: note:   candidate expects 2 arguments, 1 provided
+In file included from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/default/dcrtpoly.h:41,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/lat-backend.h:52,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/lat-hal.h:35,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/openfhecore.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/pke/openfhe.h:40,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:18:
+/root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/dcrtpoly-interface.h:1595:31: note: candidate: ‘lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > lbcrypto::operator*(int64_t, const lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > >&)’
+ 1595 |     friend inline DerivedType operator*(int64_t a, const DerivedType& b) {
+      |                               ^~~~~~~~
+/root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/dcrtpoly-interface.h:1595:31: note:   candidate expects 2 arguments, 1 provided
+/root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/dcrtpoly-interface.h:1585:31: note: candidate: ‘lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > lbcrypto::operator*(const lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > >&, int64_t)’
+ 1585 |     friend inline DerivedType operator*(const DerivedType& a, int64_t b) {
+      |                               ^~~~~~~~
+/root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/dcrtpoly-interface.h:1585:31: note:   candidate expects 2 arguments, 1 provided
+/root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/dcrtpoly-interface.h:1575:31: note: candidate: ‘lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > lbcrypto::operator*(const BigIntType&, const lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > >&)’
+ 1575 |     friend inline DerivedType operator*(const BigIntType& a, const DerivedType& b) {
+      |                               ^~~~~~~~
+/root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/dcrtpoly-interface.h:1575:31: note:   candidate expects 2 arguments, 1 provided
+/root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/dcrtpoly-interface.h:1565:31: note: candidate: ‘lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > lbcrypto::operator*(const lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > >&, const std::vector<bigintdyn::ubint<long unsigned int>, std::allocator<bigintdyn::ubint<long unsigned int> > >&)’
+ 1565 |     friend inline DerivedType operator*(const DerivedType& a, const std::vector<BigIntType>& b) {
+      |                               ^~~~~~~~
+/root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/dcrtpoly-interface.h:1565:31: note:   candidate expects 2 arguments, 1 provided
+/root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/dcrtpoly-interface.h:1555:31: note: candidate: ‘lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > lbcrypto::operator*(const lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > >&, const BigIntType&)’
+ 1555 |     friend inline DerivedType operator*(const DerivedType& a, const BigIntType& b) {
+      |                               ^~~~~~~~
+/root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/dcrtpoly-interface.h:1555:31: note:   candidate expects 2 arguments, 1 provided
+/root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/dcrtpoly-interface.h:1545:31: note: candidate: ‘lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > lbcrypto::operator*(const lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > >&, const lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > >&)’
+ 1545 |     friend inline DerivedType operator*(const DerivedType& a, const DerivedType& b) {
+      |                               ^~~~~~~~
+/root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/dcrtpoly-interface.h:1545:31: note:   candidate expects 2 arguments, 1 provided
+In file included from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/bigintdyn/mubintvecdyn.h:43,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/bigintdyn/backenddyn.h:44,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/bigintbackend.h:38,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/math/math-hal.h:48,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/elemparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/default/ilparams.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/hal/lat-backend.h:49,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/lattice/lat-hal.h:35,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/core/openfhecore.h:39,
+                 from /root/fideslib/deps/openfhe-install/include/openfhe/pke/openfhe.h:40,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:18:
+/root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/bigintdyn/ubintdyn.h: In instantiation of ‘bigintdyn::ubint<limb_t>::ubint(T) [with T = std::map<unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > >, std::less<unsigned int>, std::allocator<std::pair<const unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > > > > >; typename std::enable_if<((! is_integral_v<T>) && (! is_floating_point_v<T>)), bool>::type <anonymous> = true; limb_t = long unsigned int]’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:442:36:   required from here
+/root/fideslib/deps/openfhe-install/include/openfhe/core/math/hal/bigintdyn/ubintdyn.h:217:26: error: invalid cast from type ‘std::map<unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > >, std::less<unsigned int>, std::allocator<std::pair<const unsigned int, std::shared_ptr<lbcrypto::EvalKeyImpl<lbcrypto::DCRTPolyImpl<bigintdyn::mubintvec<bigintdyn::ubint<long unsigned int> > > > > > > >’ to type ‘BasicInteger’ {aka ‘long unsigned int’}
+  217 |     ubint(T val) : ubint(BasicInteger(val)) {}
+      |                          ^~~~~~~~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/_fideslib.dir/build.make:79: CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:90: CMakeFiles/_fideslib.dir/all] Error 2
+gmake: *** [Makefile:91: all] Error 2

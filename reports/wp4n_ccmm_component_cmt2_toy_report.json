@@ -1,0 +1,167 @@
+{
+  "experiment": "wp4n_ccmm_component_cmt2_toy",
+  "purpose": "Validate Park-2025 Algorithm 3 using component-level toy Algorithm 2 C-MT with exact toy Auto/key-switch and exact toy relin.",
+  "status": "component_level_toy_not_real_he",
+  "N": 4,
+  "sk": [
+    1.0,
+    -1.0,
+    0.0,
+    1.0
+  ],
+  "U": [
+    [
+      -1.0,
+      -2.0,
+      0.0,
+      -1.0
+    ],
+    [
+      2.0,
+      -1.0,
+      -2.0,
+      0.0
+    ],
+    [
+      -1.0,
+      2.0,
+      2.0,
+      -2.0
+    ],
+    [
+      -1.0,
+      2.0,
+      -2.0,
+      -2.0
+    ]
+  ],
+  "V": [
+    [
+      -1.0,
+      -1.0,
+      1.0,
+      1.0
+    ],
+    [
+      0.0,
+      2.0,
+      -1.0,
+      -2.0
+    ],
+    [
+      -1.0,
+      1.0,
+      -2.0,
+      -1.0
+    ],
+    [
+      0.0,
+      -1.0,
+      0.0,
+      -1.0
+    ]
+  ],
+  "W_ref_UV": [
+    [
+      1.0,
+      -2.0,
+      1.0,
+      4.0
+    ],
+    [
+      0.0,
+      -6.0,
+      7.0,
+      6.0
+    ],
+    [
+      -1.0,
+      9.0,
+      -7.0,
+      -5.0
+    ],
+    [
+      3.0,
+      5.0,
+      1.0,
+      -1.0
+    ]
+  ],
+  "W_rec": [
+    [
+      1.0,
+      -2.0,
+      1.0,
+      4.0
+    ],
+    [
+      0.0,
+      -6.0,
+      7.0,
+      6.0
+    ],
+    [
+      -1.0,
+      9.0,
+      -7.0,
+      -5.0
+    ],
+    [
+      3.0,
+      5.0,
+      1.0,
+      -1.0
+    ]
+  ],
+  "errors": {
+    "U_rowwise_reconstruct_max_abs_err": 0.0,
+    "V_rowwise_reconstruct_max_abs_err": 0.0,
+    "CMT_ctU_preserves_plaintext_max_abs_err": 0.0,
+    "CCMM_component_toy_to_UV_max_abs_err": 0.0
+  },
+  "orientations": {
+    "ctU": "rowwise",
+    "ctU_after_cmt": "columnwise",
+    "ctW": "rowwise"
+  },
+  "algorithm3_trace": {
+    "left_col_orientation": "columnwise",
+    "M00_shape": [
+      4,
+      4
+    ],
+    "M01_shape": [
+      4,
+      4
+    ],
+    "M10_shape": [
+      4,
+      4
+    ],
+    "M11_shape": [
+      4,
+      4
+    ],
+    "check_orientation": "rowwise",
+    "hat_orientation": "rowwise",
+    "C2_shape": [
+      4,
+      4
+    ],
+    "C1_shape": [
+      4,
+      4
+    ],
+    "C0_shape": [
+      4,
+      4
+    ]
+  },
+  "notes": [
+    "This is no longer the reconstruct-based C-MT oracle from WP4-L.",
+    "C-MT uses Algorithm 2 structure on toy RLWE components.",
+    "Auto uses exact toy switching keys from sigma(sk) to sk.",
+    "Relinearization uses exact toy switching key from sk^2 to sk.",
+    "Still not real FIDESlib/OpenFHE HE: no RNS, no gadget decomposition, no rescale modulus management."
+  ]
+}

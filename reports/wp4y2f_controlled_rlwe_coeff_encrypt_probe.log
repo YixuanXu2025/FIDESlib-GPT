@@ -1,0 +1,5247 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+WP4-Y2f controlled RLWE coefficient-row encryption probe
+{
+  "experiment": "wp4y2f_controlled_rlwe_coeff_encrypt_probe",
+  "purpose": "Bypass high-level encrypt_coeff_row_i64 and construct controlled RLWE coefficient-row ciphertexts using exported secret-key coefficients. This validates whether c0/c1 raw-imported coefficient ciphertexts can satisfy c0 + c1*sk = m under decrypt_coeff_row_i64.",
+  "status": "debug_controlled_sk_rlwe_probe_not_secure",
+  "warning": {
+    "value": "This uses the secret key to construct ciphertexts and is not secure encryption.",
+    "zh": "该脚本使用 secret key 构造 ciphertext，只用于验证语义，不是最终安全加密。"
+  },
+  "n": 8,
+  "cases": [
+    {
+      "formula": "plus_phase_c0_eq_m_minus_a_sk",
+      "a_scalar": 0,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 0,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 0,
+            "c0_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 0,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 0,
+            "c0_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 0,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 0,
+            "c0_tower0_coeffs": [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 0,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 0,
+            "c0_tower0_coeffs": [
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "a_scalar": 0,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 0,
+            "c0_tower0_coeffs": [
+              1152921504606748670,
+              1152921504606748671,
+              1152921504606748672,
+              0,
+              1,
+              2,
+              3,
+              4
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -3,
+                -2,
+                -1,
+                0,
+                1,
+                2,
+                3,
+                4
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "a_scalar": 0,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 0,
+            "c0_tower0_coeffs": [
+              1,
+              1152921504606748672,
+              1,
+              1152921504606748672,
+              1,
+              1152921504606748672,
+              1,
+              1152921504606748672
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                1,
+                -1,
+                1,
+                -1,
+                1,
+                -1,
+                1,
+                -1
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "a_scalar": 0,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 0,
+            "c0_tower0_coeffs": [
+              7,
+              0,
+              1152921504606748668,
+              2,
+              1152921504606748672,
+              0,
+              3,
+              1152921504606748669
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                7,
+                0,
+                -5,
+                2,
+                -1,
+                0,
+                3,
+                -4
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      ],
+      "summary": {
+        "all_build_ok": true,
+        "all_decrypt_ok": true,
+        "all_exact": true,
+        "exact_count": 7,
+        "max_abs_err_over_rows": 0
+      }
+    },
+    {
+      "formula": "plus_phase_c0_eq_m_minus_a_sk",
+      "a_scalar": 1,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 1,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 1,
+            "c0_tower0_coeffs": [
+              1,
+              1152921504606748672,
+              0,
+              0,
+              1152921504606748672,
+              0,
+              0,
+              1
+            ],
+            "c1_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 1,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 1,
+            "c0_tower0_coeffs": [
+              2,
+              1152921504606748672,
+              0,
+              0,
+              1152921504606748672,
+              0,
+              0,
+              1
+            ],
+            "c1_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 1,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 1,
+            "c0_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              1152921504606748672,
+              0,
+              0,
+              1
+            ],
+            "c1_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 1,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 1,
+            "c0_tower0_coeffs": [
+              1,
+              1152921504606748672,
+              0,
+              1,
+              1152921504606748672,
+              0,
+              0,
+              1
+            ],
+            "c1_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "a_scalar": 1,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 1,
+            "c0_tower0_coeffs": [
+              1152921504606748671,
+              1152921504606748670,
+              1152921504606748672,
+              0,
+              0,
+              2,
+              3,
+              5
+            ],
+            "c1_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -3,
+                -2,
+                -1,
+                0,
+                1,
+                2,
+                3,
+                4
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "a_scalar": 1,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 1,
+            "c0_tower0_coeffs": [
+              2,
+              1152921504606748671,
+              1,
+              1152921504606748672,
+              0,
+              1152921504606748672,
+              1,
+              0
+            ],
+            "c1_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                1,
+                -1,
+                1,
+                -1,
+                1,
+                -1,
+                1,
+                -1
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "a_scalar": 1,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 1,
+            "c0_tower0_coeffs": [
+              8,
+              1152921504606748672,
+              1152921504606748668,
+              2,
+              1152921504606748671,
+              0,
+              3,
+              1152921504606748670
+            ],
+            "c1_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                7,
+                0,
+                -5,
+                2,
+                -1,
+                0,
+                3,
+                -4
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      ],
+      "summary": {
+        "all_build_ok": true,
+        "all_decrypt_ok": true,
+        "all_exact": true,
+        "exact_count": 7,
+        "max_abs_err_over_rows": 0
+      }
+    },
+    {
+      "formula": "plus_phase_c0_eq_m_minus_a_sk",
+      "a_scalar": 3,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 3,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 3,
+            "c0_tower0_coeffs": [
+              3,
+              1152921504606748670,
+              0,
+              0,
+              1152921504606748670,
+              0,
+              0,
+              3
+            ],
+            "c1_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 3,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 3,
+            "c0_tower0_coeffs": [
+              4,
+              1152921504606748670,
+              0,
+              0,
+              1152921504606748670,
+              0,
+              0,
+              3
+            ],
+            "c1_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 3,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 3,
+            "c0_tower0_coeffs": [
+              3,
+              1152921504606748671,
+              0,
+              0,
+              1152921504606748670,
+              0,
+              0,
+              3
+            ],
+            "c1_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 3,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 3,
+            "c0_tower0_coeffs": [
+              3,
+              1152921504606748670,
+              0,
+              1,
+              1152921504606748670,
+              0,
+              0,
+              3
+            ],
+            "c1_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "a_scalar": 3,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 3,
+            "c0_tower0_coeffs": [
+              0,
+              1152921504606748668,
+              1152921504606748672,
+              0,
+              1152921504606748671,
+              2,
+              3,
+              7
+            ],
+            "c1_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -3,
+                -2,
+                -1,
+                0,
+                1,
+                2,
+                3,
+                4
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "a_scalar": 3,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 3,
+            "c0_tower0_coeffs": [
+              4,
+              1152921504606748669,
+              1,
+              1152921504606748672,
+              1152921504606748671,
+              1152921504606748672,
+              1,
+              2
+            ],
+            "c1_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                1,
+                -1,
+                1,
+                -1,
+                1,
+                -1,
+                1,
+                -1
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "a_scalar": 3,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 3,
+            "c0_tower0_coeffs": [
+              10,
+              1152921504606748670,
+              1152921504606748668,
+              2,
+              1152921504606748669,
+              0,
+              3,
+              1152921504606748672
+            ],
+            "c1_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                7,
+                0,
+                -5,
+                2,
+                -1,
+                0,
+                3,
+                -4
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      ],
+      "summary": {
+        "all_build_ok": true,
+        "all_decrypt_ok": true,
+        "all_exact": true,
+        "exact_count": 7,
+        "max_abs_err_over_rows": 0
+      }
+    },
+    {
+      "formula": "plus_phase_c0_eq_m_minus_a_sk",
+      "a_scalar": 7,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 7,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 7,
+            "c0_tower0_coeffs": [
+              7,
+              1152921504606748666,
+              0,
+              0,
+              1152921504606748666,
+              0,
+              0,
+              7
+            ],
+            "c1_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 7,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 7,
+            "c0_tower0_coeffs": [
+              8,
+              1152921504606748666,
+              0,
+              0,
+              1152921504606748666,
+              0,
+              0,
+              7
+            ],
+            "c1_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 7,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 7,
+            "c0_tower0_coeffs": [
+              7,
+              1152921504606748667,
+              0,
+              0,
+              1152921504606748666,
+              0,
+              0,
+              7
+            ],
+            "c1_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 7,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 7,
+            "c0_tower0_coeffs": [
+              7,
+              1152921504606748666,
+              0,
+              1,
+              1152921504606748666,
+              0,
+              0,
+              7
+            ],
+            "c1_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "a_scalar": 7,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 7,
+            "c0_tower0_coeffs": [
+              4,
+              1152921504606748664,
+              1152921504606748672,
+              0,
+              1152921504606748667,
+              2,
+              3,
+              11
+            ],
+            "c1_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -3,
+                -2,
+                -1,
+                0,
+                1,
+                2,
+                3,
+                4
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "a_scalar": 7,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 7,
+            "c0_tower0_coeffs": [
+              8,
+              1152921504606748665,
+              1,
+              1152921504606748672,
+              1152921504606748667,
+              1152921504606748672,
+              1,
+              6
+            ],
+            "c1_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                1,
+                -1,
+                1,
+                -1,
+                1,
+                -1,
+                1,
+                -1
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "a_scalar": 7,
+          "formula": "plus_phase_c0_eq_m_minus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "plus_phase_c0_eq_m_minus_a_sk",
+            "a_scalar": 7,
+            "c0_tower0_coeffs": [
+              14,
+              1152921504606748666,
+              1152921504606748668,
+              2,
+              1152921504606748665,
+              0,
+              3,
+              3
+            ],
+            "c1_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                7,
+                0,
+                -5,
+                2,
+                -1,
+                0,
+                3,
+                -4
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      ],
+      "summary": {
+        "all_build_ok": true,
+        "all_decrypt_ok": true,
+        "all_exact": true,
+        "exact_count": 7,
+        "max_abs_err_over_rows": 0
+      }
+    },
+    {
+      "formula": "minus_phase_c0_eq_m_plus_a_sk",
+      "a_scalar": 0,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 0,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 0,
+            "c0_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 0,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 0,
+            "c0_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 0,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 0,
+            "c0_tower0_coeffs": [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 0,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 0,
+            "c0_tower0_coeffs": [
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "a_scalar": 0,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 0,
+            "c0_tower0_coeffs": [
+              1152921504606748670,
+              1152921504606748671,
+              1152921504606748672,
+              0,
+              1,
+              2,
+              3,
+              4
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -3,
+                -2,
+                -1,
+                0,
+                1,
+                2,
+                3,
+                4
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "a_scalar": 0,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 0,
+            "c0_tower0_coeffs": [
+              1,
+              1152921504606748672,
+              1,
+              1152921504606748672,
+              1,
+              1152921504606748672,
+              1,
+              1152921504606748672
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                1,
+                -1,
+                1,
+                -1,
+                1,
+                -1,
+                1,
+                -1
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "a_scalar": 0,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 0,
+            "c0_tower0_coeffs": [
+              7,
+              0,
+              1152921504606748668,
+              2,
+              1152921504606748672,
+              0,
+              3,
+              1152921504606748669
+            ],
+            "c1_tower0_coeffs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                7,
+                0,
+                -5,
+                2,
+                -1,
+                0,
+                3,
+                -4
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": true,
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      ],
+      "summary": {
+        "all_build_ok": true,
+        "all_decrypt_ok": true,
+        "all_exact": true,
+        "exact_count": 7,
+        "max_abs_err_over_rows": 0
+      }
+    },
+    {
+      "formula": "minus_phase_c0_eq_m_plus_a_sk",
+      "a_scalar": 1,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 1,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 1,
+            "c0_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ],
+            "c1_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -2,
+                2,
+                0,
+                0,
+                2,
+                0,
+                0,
+                -2
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 2,
+            "l1_err": 8,
+            "diff": [
+              -2,
+              2,
+              0,
+              0,
+              2,
+              0,
+              0,
+              -2
+            ]
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 1,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 1,
+            "c0_tower0_coeffs": [
+              0,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ],
+            "c1_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -1,
+                2,
+                0,
+                0,
+                2,
+                0,
+                0,
+                -2
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 2,
+            "l1_err": 8,
+            "diff": [
+              -2,
+              2,
+              0,
+              0,
+              2,
+              0,
+              0,
+              -2
+            ]
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 1,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 1,
+            "c0_tower0_coeffs": [
+              1152921504606748672,
+              2,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ],
+            "c1_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -2,
+                3,
+                0,
+                0,
+                2,
+                0,
+                0,
+                -2
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 2,
+            "l1_err": 8,
+            "diff": [
+              -2,
+              2,
+              0,
+              0,
+              2,
+              0,
+              0,
+              -2
+            ]
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 1,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 1,
+            "c0_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              1,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ],
+            "c1_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -2,
+                2,
+                0,
+                1,
+                2,
+                0,
+                0,
+                -2
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 2,
+            "l1_err": 8,
+            "diff": [
+              -2,
+              2,
+              0,
+              0,
+              2,
+              0,
+              0,
+              -2
+            ]
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "a_scalar": 1,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 1,
+            "c0_tower0_coeffs": [
+              1152921504606748669,
+              1152921504606748672,
+              1152921504606748672,
+              0,
+              2,
+              2,
+              3,
+              3
+            ],
+            "c1_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -5,
+                0,
+                -1,
+                0,
+                3,
+                2,
+                3,
+                2
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 2,
+            "l1_err": 8,
+            "diff": [
+              -2,
+              2,
+              0,
+              0,
+              2,
+              0,
+              0,
+              -2
+            ]
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "a_scalar": 1,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 1,
+            "c0_tower0_coeffs": [
+              0,
+              0,
+              1,
+              1152921504606748672,
+              2,
+              1152921504606748672,
+              1,
+              1152921504606748671
+            ],
+            "c1_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -1,
+                1,
+                1,
+                -1,
+                3,
+                -1,
+                1,
+                -3
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 2,
+            "l1_err": 8,
+            "diff": [
+              -2,
+              2,
+              0,
+              0,
+              2,
+              0,
+              0,
+              -2
+            ]
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "a_scalar": 1,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 1,
+            "c0_tower0_coeffs": [
+              6,
+              1,
+              1152921504606748668,
+              2,
+              0,
+              0,
+              3,
+              1152921504606748668
+            ],
+            "c1_tower0_coeffs": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                5,
+                2,
+                -5,
+                2,
+                1,
+                0,
+                3,
+                -6
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 2,
+            "l1_err": 8,
+            "diff": [
+              -2,
+              2,
+              0,
+              0,
+              2,
+              0,
+              0,
+              -2
+            ]
+          }
+        }
+      ],
+      "summary": {
+        "all_build_ok": true,
+        "all_decrypt_ok": true,
+        "all_exact": false,
+        "exact_count": 0,
+        "max_abs_err_over_rows": 2
+      }
+    },
+    {
+      "formula": "minus_phase_c0_eq_m_plus_a_sk",
+      "a_scalar": 3,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 3,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 3,
+            "c0_tower0_coeffs": [
+              1152921504606748670,
+              3,
+              0,
+              0,
+              3,
+              0,
+              0,
+              1152921504606748670
+            ],
+            "c1_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -6,
+                6,
+                0,
+                0,
+                6,
+                0,
+                0,
+                -6
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 6,
+            "l1_err": 24,
+            "diff": [
+              -6,
+              6,
+              0,
+              0,
+              6,
+              0,
+              0,
+              -6
+            ]
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 3,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 3,
+            "c0_tower0_coeffs": [
+              1152921504606748671,
+              3,
+              0,
+              0,
+              3,
+              0,
+              0,
+              1152921504606748670
+            ],
+            "c1_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -5,
+                6,
+                0,
+                0,
+                6,
+                0,
+                0,
+                -6
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 6,
+            "l1_err": 24,
+            "diff": [
+              -6,
+              6,
+              0,
+              0,
+              6,
+              0,
+              0,
+              -6
+            ]
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 3,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 3,
+            "c0_tower0_coeffs": [
+              1152921504606748670,
+              4,
+              0,
+              0,
+              3,
+              0,
+              0,
+              1152921504606748670
+            ],
+            "c1_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -6,
+                7,
+                0,
+                0,
+                6,
+                0,
+                0,
+                -6
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 6,
+            "l1_err": 24,
+            "diff": [
+              -6,
+              6,
+              0,
+              0,
+              6,
+              0,
+              0,
+              -6
+            ]
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 3,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 3,
+            "c0_tower0_coeffs": [
+              1152921504606748670,
+              3,
+              0,
+              1,
+              3,
+              0,
+              0,
+              1152921504606748670
+            ],
+            "c1_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -6,
+                6,
+                0,
+                1,
+                6,
+                0,
+                0,
+                -6
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 6,
+            "l1_err": 24,
+            "diff": [
+              -6,
+              6,
+              0,
+              0,
+              6,
+              0,
+              0,
+              -6
+            ]
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "a_scalar": 3,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 3,
+            "c0_tower0_coeffs": [
+              1152921504606748667,
+              1,
+              1152921504606748672,
+              0,
+              4,
+              2,
+              3,
+              1
+            ],
+            "c1_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -9,
+                4,
+                -1,
+                0,
+                7,
+                2,
+                3,
+                -2
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 6,
+            "l1_err": 24,
+            "diff": [
+              -6,
+              6,
+              0,
+              0,
+              6,
+              0,
+              0,
+              -6
+            ]
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "a_scalar": 3,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 3,
+            "c0_tower0_coeffs": [
+              1152921504606748671,
+              2,
+              1,
+              1152921504606748672,
+              4,
+              1152921504606748672,
+              1,
+              1152921504606748669
+            ],
+            "c1_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -5,
+                5,
+                1,
+                -1,
+                7,
+                -1,
+                1,
+                -7
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 6,
+            "l1_err": 24,
+            "diff": [
+              -6,
+              6,
+              0,
+              0,
+              6,
+              0,
+              0,
+              -6
+            ]
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "a_scalar": 3,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 3,
+            "c0_tower0_coeffs": [
+              4,
+              3,
+              1152921504606748668,
+              2,
+              2,
+              0,
+              3,
+              1152921504606748666
+            ],
+            "c1_tower0_coeffs": [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                1,
+                6,
+                -5,
+                2,
+                5,
+                0,
+                3,
+                -10
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 6,
+            "l1_err": 24,
+            "diff": [
+              -6,
+              6,
+              0,
+              0,
+              6,
+              0,
+              0,
+              -6
+            ]
+          }
+        }
+      ],
+      "summary": {
+        "all_build_ok": true,
+        "all_decrypt_ok": true,
+        "all_exact": false,
+        "exact_count": 0,
+        "max_abs_err_over_rows": 6
+      }
+    },
+    {
+      "formula": "minus_phase_c0_eq_m_plus_a_sk",
+      "a_scalar": 7,
+      "rows": [
+        {
+          "row_name": "zero8",
+          "input_row": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 7,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 7,
+            "c0_tower0_coeffs": [
+              1152921504606748666,
+              7,
+              0,
+              0,
+              7,
+              0,
+              0,
+              1152921504606748666
+            ],
+            "c1_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -14,
+                14,
+                0,
+                0,
+                14,
+                0,
+                0,
+                -14
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 14,
+            "l1_err": 56,
+            "diff": [
+              -14,
+              14,
+              0,
+              0,
+              14,
+              0,
+              0,
+              -14
+            ]
+          }
+        },
+        {
+          "row_name": "basis0",
+          "input_row": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 7,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 7,
+            "c0_tower0_coeffs": [
+              1152921504606748667,
+              7,
+              0,
+              0,
+              7,
+              0,
+              0,
+              1152921504606748666
+            ],
+            "c1_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -13,
+                14,
+                0,
+                0,
+                14,
+                0,
+                0,
+                -14
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 14,
+            "l1_err": 56,
+            "diff": [
+              -14,
+              14,
+              0,
+              0,
+              14,
+              0,
+              0,
+              -14
+            ]
+          }
+        },
+        {
+          "row_name": "basis1",
+          "input_row": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 7,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 7,
+            "c0_tower0_coeffs": [
+              1152921504606748666,
+              8,
+              0,
+              0,
+              7,
+              0,
+              0,
+              1152921504606748666
+            ],
+            "c1_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -14,
+                15,
+                0,
+                0,
+                14,
+                0,
+                0,
+                -14
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 14,
+            "l1_err": 56,
+            "diff": [
+              -14,
+              14,
+              0,
+              0,
+              14,
+              0,
+              0,
+              -14
+            ]
+          }
+        },
+        {
+          "row_name": "basis3",
+          "input_row": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "a_scalar": 7,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 7,
+            "c0_tower0_coeffs": [
+              1152921504606748666,
+              7,
+              0,
+              1,
+              7,
+              0,
+              0,
+              1152921504606748666
+            ],
+            "c1_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -14,
+                14,
+                0,
+                1,
+                14,
+                0,
+                0,
+                -14
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 14,
+            "l1_err": 56,
+            "diff": [
+              -14,
+              14,
+              0,
+              0,
+              14,
+              0,
+              0,
+              -14
+            ]
+          }
+        },
+        {
+          "row_name": "small_mixed",
+          "input_row": [
+            -3,
+            -2,
+            -1,
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "a_scalar": 7,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 7,
+            "c0_tower0_coeffs": [
+              1152921504606748663,
+              5,
+              1152921504606748672,
+              0,
+              8,
+              2,
+              3,
+              1152921504606748670
+            ],
+            "c1_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -17,
+                12,
+                -1,
+                0,
+                15,
+                2,
+                3,
+                -10
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 14,
+            "l1_err": 56,
+            "diff": [
+              -14,
+              14,
+              0,
+              0,
+              14,
+              0,
+              0,
+              -14
+            ]
+          }
+        },
+        {
+          "row_name": "alternating",
+          "input_row": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ],
+          "a_scalar": 7,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 7,
+            "c0_tower0_coeffs": [
+              1152921504606748667,
+              6,
+              1,
+              1152921504606748672,
+              8,
+              1152921504606748672,
+              1,
+              1152921504606748665
+            ],
+            "c1_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -13,
+                13,
+                1,
+                -1,
+                15,
+                -1,
+                1,
+                -15
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 14,
+            "l1_err": 56,
+            "diff": [
+              -14,
+              14,
+              0,
+              0,
+              14,
+              0,
+              0,
+              -14
+            ]
+          }
+        },
+        {
+          "row_name": "large_small_mix",
+          "input_row": [
+            7,
+            0,
+            -5,
+            2,
+            -1,
+            0,
+            3,
+            -4
+          ],
+          "a_scalar": 7,
+          "formula": "minus_phase_c0_eq_m_plus_a_sk",
+          "build": {
+            "ok": true,
+            "error": null
+          },
+          "build_trace": {
+            "formula": "minus_phase_c0_eq_m_plus_a_sk",
+            "a_scalar": 7,
+            "c0_tower0_coeffs": [
+              0,
+              7,
+              1152921504606748668,
+              2,
+              6,
+              0,
+              3,
+              1152921504606748662
+            ],
+            "c1_tower0_coeffs": [
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "sk_tower0_coeffs": [
+              1152921504606748672,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1152921504606748672
+            ]
+          },
+          "decrypt_after_compress": {
+            "compress": {
+              "ok": true,
+              "error": null
+            },
+            "decrypt": {
+              "ok": true,
+              "error": null,
+              "value": [
+                -7,
+                14,
+                -5,
+                2,
+                13,
+                0,
+                3,
+                -18
+              ]
+            }
+          },
+          "compare_to_input": {
+            "exact": false,
+            "max_abs_err": 14,
+            "l1_err": 56,
+            "diff": [
+              -14,
+              14,
+              0,
+              0,
+              14,
+              0,
+              0,
+              -14
+            ]
+          }
+        }
+      ],
+      "summary": {
+        "all_build_ok": true,
+        "all_decrypt_ok": true,
+        "all_exact": false,
+        "exact_count": 0,
+        "max_abs_err_over_rows": 14
+      }
+    }
+  ],
+  "context_summary": {
+    "num_moduli": 4,
+    "moduli_u64": [
+      1152921504606748673,
+      1125899904679937,
+      1125899908022273,
+      557057
+    ],
+    "template_ring_dim": 16384,
+    "template_num_towers": 4,
+    "sk_num_towers": 4,
+    "sk_coeff_count": 8,
+    "sk_tower0_coeffs": [
+      1152921504606748672,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1152921504606748672
+    ]
+  },
+  "checks": {
+    "any_group_all_exact（是否存在任一公式/a 组合全部精确）": true,
+    "any_nonzero_a_group_all_exact（是否存在非零 c1 的组合全部精确）": true,
+    "successful_groups（全部精确的组合）": [
+      {
+        "formula": "plus_phase_c0_eq_m_minus_a_sk",
+        "a_scalar": 0,
+        "summary": {
+          "all_build_ok": true,
+          "all_decrypt_ok": true,
+          "all_exact": true,
+          "exact_count": 7,
+          "max_abs_err_over_rows": 0
+        }
+      },
+      {
+        "formula": "plus_phase_c0_eq_m_minus_a_sk",
+        "a_scalar": 1,
+        "summary": {
+          "all_build_ok": true,
+          "all_decrypt_ok": true,
+          "all_exact": true,
+          "exact_count": 7,
+          "max_abs_err_over_rows": 0
+        }
+      },
+      {
+        "formula": "plus_phase_c0_eq_m_minus_a_sk",
+        "a_scalar": 3,
+        "summary": {
+          "all_build_ok": true,
+          "all_decrypt_ok": true,
+          "all_exact": true,
+          "exact_count": 7,
+          "max_abs_err_over_rows": 0
+        }
+      },
+      {
+        "formula": "plus_phase_c0_eq_m_minus_a_sk",
+        "a_scalar": 7,
+        "summary": {
+          "all_build_ok": true,
+          "all_decrypt_ok": true,
+          "all_exact": true,
+          "exact_count": 7,
+          "max_abs_err_over_rows": 0
+        }
+      },
+      {
+        "formula": "minus_phase_c0_eq_m_plus_a_sk",
+        "a_scalar": 0,
+        "summary": {
+          "all_build_ok": true,
+          "all_decrypt_ok": true,
+          "all_exact": true,
+          "exact_count": 7,
+          "max_abs_err_over_rows": 0
+        }
+      }
+    ],
+    "ranked_groups（按 exact_count 排序）": [
+      {
+        "formula": "minus_phase_c0_eq_m_plus_a_sk",
+        "a_scalar": 0,
+        "summary": {
+          "all_build_ok": true,
+          "all_decrypt_ok": true,
+          "all_exact": true,
+          "exact_count": 7,
+          "max_abs_err_over_rows": 0
+        }
+      },
+      {
+        "formula": "plus_phase_c0_eq_m_minus_a_sk",
+        "a_scalar": 0,
+        "summary": {
+          "all_build_ok": true,
+          "all_decrypt_ok": true,
+          "all_exact": true,
+          "exact_count": 7,
+          "max_abs_err_over_rows": 0
+        }
+      },
+      {
+        "formula": "plus_phase_c0_eq_m_minus_a_sk",
+        "a_scalar": 1,
+        "summary": {
+          "all_build_ok": true,
+          "all_decrypt_ok": true,
+          "all_exact": true,
+          "exact_count": 7,
+          "max_abs_err_over_rows": 0
+        }
+      },
+      {
+        "formula": "plus_phase_c0_eq_m_minus_a_sk",
+        "a_scalar": 3,
+        "summary": {
+          "all_build_ok": true,
+          "all_decrypt_ok": true,
+          "all_exact": true,
+          "exact_count": 7,
+          "max_abs_err_over_rows": 0
+        }
+      },
+      {
+        "formula": "plus_phase_c0_eq_m_minus_a_sk",
+        "a_scalar": 7,
+        "summary": {
+          "all_build_ok": true,
+          "all_decrypt_ok": true,
+          "all_exact": true,
+          "exact_count": 7,
+          "max_abs_err_over_rows": 0
+        }
+      },
+      {
+        "formula": "minus_phase_c0_eq_m_plus_a_sk",
+        "a_scalar": 1,
+        "summary": {
+          "all_build_ok": true,
+          "all_decrypt_ok": true,
+          "all_exact": false,
+          "exact_count": 0,
+          "max_abs_err_over_rows": 2
+        }
+      },
+      {
+        "formula": "minus_phase_c0_eq_m_plus_a_sk",
+        "a_scalar": 3,
+        "summary": {
+          "all_build_ok": true,
+          "all_decrypt_ok": true,
+          "all_exact": false,
+          "exact_count": 0,
+          "max_abs_err_over_rows": 6
+        }
+      },
+      {
+        "formula": "minus_phase_c0_eq_m_plus_a_sk",
+        "a_scalar": 7,
+        "summary": {
+          "all_build_ok": true,
+          "all_decrypt_ok": true,
+          "all_exact": false,
+          "exact_count": 0,
+          "max_abs_err_over_rows": 14
+        }
+      }
+    ]
+  },
+  "global_decision": {
+    "value": "controlled_rlwe_coeff_row_encryption_works",
+    "recommended_formula": "plus_phase_c0_eq_m_minus_a_sk",
+    "recommended_a_scalar": 1,
+    "next_step": "WP4-Y2g",
+    "next_goal": "Wrap controlled RLWE coefficient-row construction and re-run rowwise bundle/C-MT oracle with non-transparent c1.",
+    "zh": "controlled RLWE coefficient-row 构造可用；下一步封装并替换 transparent 输入。"
+  }
+}
+====================================================================================================
+saved: /workspace/FIDESlib-GPT/reports/wp4y2f_controlled_rlwe_coeff_encrypt_probe_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

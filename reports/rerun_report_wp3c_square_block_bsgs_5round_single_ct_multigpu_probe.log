@@ -1,0 +1,293 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+多卡验证配置
+devices = (0, 1, 2, 3, 4, 5, 6, 7)
+rotation_steps_count = 15
+GPU P2P? 0
+f4e3ac974551:74828:74828 [7] NCCL INFO Bootstrap: Using eth0:172.17.0.3<0>
+f4e3ac974551:74828:74828 [0] NCCL INFO cudaDriverVersion 12020
+f4e3ac974551:74828:74828 [0] NCCL INFO NCCL version 2.27.3+cuda12.9
+f4e3ac974551:74828:75113 [3] NCCL INFO NET/Plugin: Could not find: libnccl-net.so. 
+f4e3ac974551:74828:75113 [3] NCCL INFO NET/IB : No device found.
+f4e3ac974551:74828:75113 [3] NCCL INFO NET/IB : Using [RO]; OOB eth0:172.17.0.3<0>
+f4e3ac974551:74828:75113 [3] NCCL INFO NET/Socket : Using [0]eth0:172.17.0.3<0>
+f4e3ac974551:74828:75113 [3] NCCL INFO Initialized NET plugin Socket
+f4e3ac974551:74828:75113 [3] NCCL INFO Assigned NET plugin Socket to comm
+f4e3ac974551:74828:75113 [3] NCCL INFO Using network Socket
+f4e3ac974551:74828:75111 [1] NCCL INFO Assigned NET plugin Socket to comm
+f4e3ac974551:74828:75111 [1] NCCL INFO Using network Socket
+f4e3ac974551:74828:75117 [7] NCCL INFO Assigned NET plugin Socket to comm
+f4e3ac974551:74828:75117 [7] NCCL INFO Using network Socket
+f4e3ac974551:74828:75116 [6] NCCL INFO Assigned NET plugin Socket to comm
+f4e3ac974551:74828:75116 [6] NCCL INFO Using network Socket
+f4e3ac974551:74828:75115 [5] NCCL INFO Assigned NET plugin Socket to comm
+f4e3ac974551:74828:75115 [5] NCCL INFO Using network Socket
+f4e3ac974551:74828:75114 [4] NCCL INFO Assigned NET plugin Socket to comm
+f4e3ac974551:74828:75114 [4] NCCL INFO Using network Socket
+f4e3ac974551:74828:75110 [0] NCCL INFO Assigned NET plugin Socket to comm
+f4e3ac974551:74828:75110 [0] NCCL INFO Using network Socket
+f4e3ac974551:74828:75112 [2] NCCL INFO Assigned NET plugin Socket to comm
+f4e3ac974551:74828:75112 [2] NCCL INFO Using network Socket
+f4e3ac974551:74828:75113 [3] NCCL INFO ncclCommInitRank comm 0x55a5faf75930 rank 3 nranks 8 cudaDev 3 nvmlDev 3 busId 37000 commId 0x2df26d0184a0c8ad - Init START
+f4e3ac974551:74828:75111 [1] NCCL INFO ncclCommInitRank comm 0x55a5fad4c3d0 rank 1 nranks 8 cudaDev 1 nvmlDev 1 busId 35000 commId 0x2df26d0184a0c8ad - Init START
+f4e3ac974551:74828:75115 [5] NCCL INFO ncclCommInitRank comm 0x55a5fb19ed50 rank 5 nranks 8 cudaDev 5 nvmlDev 5 busId 9c000 commId 0x2df26d0184a0c8ad - Init START
+f4e3ac974551:74828:75112 [2] NCCL INFO ncclCommInitRank comm 0x55a5fae60e80 rank 2 nranks 8 cudaDev 2 nvmlDev 2 busId 36000 commId 0x2df26d0184a0c8ad - Init START
+f4e3ac974551:74828:75110 [0] NCCL INFO ncclCommInitRank comm 0x55a5fac378e0 rank 0 nranks 8 cudaDev 0 nvmlDev 0 busId 34000 commId 0x2df26d0184a0c8ad - Init START
+f4e3ac974551:74828:75114 [4] NCCL INFO ncclCommInitRank comm 0x55a5fb08a3e0 rank 4 nranks 8 cudaDev 4 nvmlDev 4 busId 9b000 commId 0x2df26d0184a0c8ad - Init START
+f4e3ac974551:74828:75117 [7] NCCL INFO ncclCommInitRank comm 0x55a5fb3c82b0 rank 7 nranks 8 cudaDev 7 nvmlDev 7 busId 9e000 commId 0x2df26d0184a0c8ad - Init START
+f4e3ac974551:74828:75116 [6] NCCL INFO ncclCommInitRank comm 0x55a5fb2b3800 rank 6 nranks 8 cudaDev 6 nvmlDev 6 busId 9d000 commId 0x2df26d0184a0c8ad - Init START
+f4e3ac974551:74828:75113 [3] NCCL INFO RAS client listening socket at ::1<28028>
+f4e3ac974551:74828:75117 [7] NCCL INFO Bootstrap timings total 0.001389 (create 0.000026, send 0.000087, recv 0.000439, ring 0.000234, delay 0.000000)
+f4e3ac974551:74828:75112 [2] NCCL INFO Bootstrap timings total 0.001479 (create 0.000053, send 0.000191, recv 0.000343, ring 0.000290, delay 0.000000)
+f4e3ac974551:74828:75115 [5] NCCL INFO Bootstrap timings total 0.001536 (create 0.000051, send 0.000191, recv 0.000634, ring 0.000214, delay 0.000000)
+f4e3ac974551:74828:75111 [1] NCCL INFO Bootstrap timings total 0.001542 (create 0.000057, send 0.000195, recv 0.000272, ring 0.000280, delay 0.000000)
+f4e3ac974551:74828:75113 [3] NCCL INFO Bootstrap timings total 0.001629 (create 0.000034, send 0.000112, recv 0.000717, ring 0.000296, delay 0.000000)
+f4e3ac974551:74828:75116 [6] NCCL INFO Bootstrap timings total 0.001368 (create 0.000053, send 0.000194, recv 0.000532, ring 0.000193, delay 0.000000)
+f4e3ac974551:74828:75114 [4] NCCL INFO Bootstrap timings total 0.001412 (create 0.000051, send 0.000190, recv 0.000489, ring 0.000227, delay 0.000000)
+f4e3ac974551:74828:75110 [0] NCCL INFO Bootstrap timings total 0.001484 (create 0.000054, send 0.000192, recv 0.000411, ring 0.000265, delay 0.000000)
+f4e3ac974551:74828:75117 [7] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+f4e3ac974551:74828:75110 [0] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+f4e3ac974551:74828:75116 [6] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+f4e3ac974551:74828:75113 [3] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+f4e3ac974551:74828:75115 [5] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+f4e3ac974551:74828:75111 [1] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+f4e3ac974551:74828:75114 [4] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+f4e3ac974551:74828:75113 [3] NCCL INFO Setting affinity for GPU 3 to 0-23,48-71
+f4e3ac974551:74828:75117 [7] NCCL INFO Setting affinity for GPU 7 to 24-47,72-95
+f4e3ac974551:74828:75117 [7] NCCL INFO NVLS multicast support is not available on dev 7 (NVLS_NCHANNELS 0)
+f4e3ac974551:74828:75113 [3] NCCL INFO NVLS multicast support is not available on dev 3 (NVLS_NCHANNELS 0)
+f4e3ac974551:74828:75115 [5] NCCL INFO Setting affinity for GPU 5 to 24-47,72-95
+f4e3ac974551:74828:75115 [5] NCCL INFO NVLS multicast support is not available on dev 5 (NVLS_NCHANNELS 0)
+f4e3ac974551:74828:75114 [4] NCCL INFO Setting affinity for GPU 4 to 24-47,72-95
+f4e3ac974551:74828:75114 [4] NCCL INFO NVLS multicast support is not available on dev 4 (NVLS_NCHANNELS 0)
+f4e3ac974551:74828:75116 [6] NCCL INFO Setting affinity for GPU 6 to 24-47,72-95
+f4e3ac974551:74828:75116 [6] NCCL INFO NVLS multicast support is not available on dev 6 (NVLS_NCHANNELS 0)
+f4e3ac974551:74828:75112 [2] NCCL INFO Setting affinity for GPU 2 to 0-23,48-71
+f4e3ac974551:74828:75111 [1] NCCL INFO Setting affinity for GPU 1 to 0-23,48-71
+f4e3ac974551:74828:75112 [2] NCCL INFO NVLS multicast support is not available on dev 2 (NVLS_NCHANNELS 0)
+f4e3ac974551:74828:75110 [0] NCCL INFO Setting affinity for GPU 0 to 0-23,48-71
+f4e3ac974551:74828:75111 [1] NCCL INFO NVLS multicast support is not available on dev 1 (NVLS_NCHANNELS 0)
+f4e3ac974551:74828:75110 [0] NCCL INFO NVLS multicast support is not available on dev 0 (NVLS_NCHANNELS 0)
+f4e3ac974551:74828:75111 [1] NCCL INFO comm 0x55a5fad4c3d0 rank 1 nRanks 8 nNodes 1 localRanks 8 localRank 1 MNNVL 0
+f4e3ac974551:74828:75114 [4] NCCL INFO comm 0x55a5fb08a3e0 rank 4 nRanks 8 nNodes 1 localRanks 8 localRank 4 MNNVL 0
+f4e3ac974551:74828:75112 [2] NCCL INFO comm 0x55a5fae60e80 rank 2 nRanks 8 nNodes 1 localRanks 8 localRank 2 MNNVL 0
+f4e3ac974551:74828:75117 [7] NCCL INFO comm 0x55a5fb3c82b0 rank 7 nRanks 8 nNodes 1 localRanks 8 localRank 7 MNNVL 0
+f4e3ac974551:74828:75113 [3] NCCL INFO comm 0x55a5faf75930 rank 3 nRanks 8 nNodes 1 localRanks 8 localRank 3 MNNVL 0
+f4e3ac974551:74828:75115 [5] NCCL INFO comm 0x55a5fb19ed50 rank 5 nRanks 8 nNodes 1 localRanks 8 localRank 5 MNNVL 0
+f4e3ac974551:74828:75116 [6] NCCL INFO comm 0x55a5fb2b3800 rank 6 nRanks 8 nNodes 1 localRanks 8 localRank 6 MNNVL 0
+f4e3ac974551:74828:75110 [0] NCCL INFO comm 0x55a5fac378e0 rank 0 nRanks 8 nNodes 1 localRanks 8 localRank 0 MNNVL 0
+f4e3ac974551:74828:75116 [6] NCCL INFO Trees [0] 7/-1/-1->6->5 [1] 7/-1/-1->6->5
+f4e3ac974551:74828:75116 [6] NCCL INFO P2P Chunksize set to 131072
+f4e3ac974551:74828:75110 [0] NCCL INFO Channel 00/02 : 0 1 2 3 4 5 6 7
+f4e3ac974551:74828:75114 [4] NCCL INFO Trees [0] 5/-1/-1->4->3 [1] 5/-1/-1->4->3
+f4e3ac974551:74828:75114 [4] NCCL INFO P2P Chunksize set to 131072
+f4e3ac974551:74828:75112 [2] NCCL INFO Trees [0] 3/-1/-1->2->1 [1] 3/-1/-1->2->1
+f4e3ac974551:74828:75112 [2] NCCL INFO P2P Chunksize set to 131072
+f4e3ac974551:74828:75117 [7] NCCL INFO Trees [0] -1/-1/-1->7->6 [1] -1/-1/-1->7->6
+f4e3ac974551:74828:75117 [7] NCCL INFO P2P Chunksize set to 131072
+f4e3ac974551:74828:75113 [3] NCCL INFO Trees [0] 4/-1/-1->3->2 [1] 4/-1/-1->3->2
+f4e3ac974551:74828:75113 [3] NCCL INFO P2P Chunksize set to 131072
+f4e3ac974551:74828:75111 [1] NCCL INFO Trees [0] 2/-1/-1->1->0 [1] 2/-1/-1->1->0
+f4e3ac974551:74828:75111 [1] NCCL INFO P2P Chunksize set to 131072
+f4e3ac974551:74828:75110 [0] NCCL INFO Channel 01/02 : 0 1 2 3 4 5 6 7
+f4e3ac974551:74828:75116 [6] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+f4e3ac974551:74828:75110 [0] NCCL INFO Trees [0] 1/-1/-1->0->-1 [1] 1/-1/-1->0->-1
+f4e3ac974551:74828:75110 [0] NCCL INFO P2P Chunksize set to 131072
+f4e3ac974551:74828:75115 [5] NCCL INFO Trees [0] 6/-1/-1->5->4 [1] 6/-1/-1->5->4
+f4e3ac974551:74828:75115 [5] NCCL INFO P2P Chunksize set to 131072
+f4e3ac974551:74828:75110 [0] NCCL INFO Check P2P Type isAllDirectP2p 0 directMode 1
+f4e3ac974551:74828:75114 [4] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+f4e3ac974551:74828:75120 [0] NCCL INFO [Proxy Service] Device 0 CPU core 11
+f4e3ac974551:74828:75112 [2] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+f4e3ac974551:74828:75126 [4] NCCL INFO [Proxy Service UDS] Device 4 CPU core 87
+f4e3ac974551:74828:75117 [7] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+f4e3ac974551:74828:75123 [6] NCCL INFO [Proxy Service UDS] Device 6 CPU core 87
+f4e3ac974551:74828:75125 [5] NCCL INFO [Proxy Service UDS] Device 5 CPU core 40
+f4e3ac974551:74828:75121 [5] NCCL INFO [Proxy Service] Device 5 CPU core 86
+f4e3ac974551:74828:75119 [6] NCCL INFO [Proxy Service] Device 6 CPU core 85
+f4e3ac974551:74828:75113 [3] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+f4e3ac974551:74828:75122 [4] NCCL INFO [Proxy Service] Device 4 CPU core 32
+f4e3ac974551:74828:75127 [2] NCCL INFO [Proxy Service] Device 2 CPU core 8
+f4e3ac974551:74828:75124 [0] NCCL INFO [Proxy Service UDS] Device 0 CPU core 6
+f4e3ac974551:74828:75111 [1] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+f4e3ac974551:74828:75128 [2] NCCL INFO [Proxy Service UDS] Device 2 CPU core 9
+f4e3ac974551:74828:75129 [7] NCCL INFO [Proxy Service] Device 7 CPU core 91
+f4e3ac974551:74828:75131 [7] NCCL INFO [Proxy Service UDS] Device 7 CPU core 93
+f4e3ac974551:74828:75133 [1] NCCL INFO [Proxy Service] Device 1 CPU core 15
+f4e3ac974551:74828:75130 [3] NCCL INFO [Proxy Service] Device 3 CPU core 58
+f4e3ac974551:74828:75134 [1] NCCL INFO [Proxy Service UDS] Device 1 CPU core 18
+f4e3ac974551:74828:75132 [3] NCCL INFO [Proxy Service UDS] Device 3 CPU core 60
+f4e3ac974551:74828:75116 [6] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+f4e3ac974551:74828:75116 [6] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+f4e3ac974551:74828:75117 [7] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+f4e3ac974551:74828:75117 [7] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+f4e3ac974551:74828:75112 [2] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+f4e3ac974551:74828:75112 [2] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+f4e3ac974551:74828:75111 [1] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+f4e3ac974551:74828:75111 [1] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+f4e3ac974551:74828:75113 [3] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+f4e3ac974551:74828:75113 [3] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+f4e3ac974551:74828:75114 [4] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+f4e3ac974551:74828:75114 [4] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+f4e3ac974551:74828:75115 [5] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+f4e3ac974551:74828:75115 [5] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+f4e3ac974551:74828:75110 [0] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+f4e3ac974551:74828:75110 [0] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+f4e3ac974551:74828:75110 [0] NCCL INFO CC Off, workFifoBytes 1048576
+f4e3ac974551:74828:75113 [3] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so. Using internal tuner plugin.
+f4e3ac974551:74828:75113 [3] NCCL INFO ncclCommInitRank comm 0x55a5faf75930 rank 3 nranks 8 cudaDev 3 nvmlDev 3 busId 37000 commId 0x2df26d0184a0c8ad - Init COMPLETE
+f4e3ac974551:74828:75113 [3] NCCL INFO Init timings - ncclCommInitRank: rank 3 nranks 8 total 0.82 (kernels 0.56, alloc 0.08, bootstrap 0.00, allgathers 0.06, topo 0.05, graphs 0.06, connections 0.01, rest 0.00)
+f4e3ac974551:74828:75116 [6] NCCL INFO ncclCommInitRank comm 0x55a5fb2b3800 rank 6 nranks 8 cudaDev 6 nvmlDev 6 busId 9d000 commId 0x2df26d0184a0c8ad - Init COMPLETE
+f4e3ac974551:74828:75112 [2] NCCL INFO ncclCommInitRank comm 0x55a5fae60e80 rank 2 nranks 8 cudaDev 2 nvmlDev 2 busId 36000 commId 0x2df26d0184a0c8ad - Init COMPLETE
+f4e3ac974551:74828:75112 [2] NCCL INFO Init timings - ncclCommInitRank: rank 2 nranks 8 total 0.82 (kernels 0.59, alloc 0.05, bootstrap 0.00, allgathers 0.00, topo 0.07, graphs 0.10, connections 0.01, rest 0.00)
+f4e3ac974551:74828:75116 [6] NCCL INFO Init timings - ncclCommInitRank: rank 6 nranks 8 total 0.82 (kernels 0.58, alloc 0.06, bootstrap 0.00, allgathers 0.04, topo 0.07, graphs 0.07, connections 0.01, rest 0.00)
+f4e3ac974551:74828:75115 [5] NCCL INFO ncclCommInitRank comm 0x55a5fb19ed50 rank 5 nranks 8 cudaDev 5 nvmlDev 5 busId 9c000 commId 0x2df26d0184a0c8ad - Init COMPLETE
+f4e3ac974551:74828:75115 [5] NCCL INFO Init timings - ncclCommInitRank: rank 5 nranks 8 total 0.82 (kernels 0.58, alloc 0.06, bootstrap 0.00, allgathers 0.03, topo 0.07, graphs 0.07, connections 0.01, rest 0.00)
+f4e3ac974551:74828:75110 [0] NCCL INFO ncclCommInitRank comm 0x55a5fac378e0 rank 0 nranks 8 cudaDev 0 nvmlDev 0 busId 34000 commId 0x2df26d0184a0c8ad - Init COMPLETE
+f4e3ac974551:74828:75110 [0] NCCL INFO Init timings - ncclCommInitRank: rank 0 nranks 8 total 0.82 (kernels 0.59, alloc 0.05, bootstrap 0.00, allgathers 0.00, topo 0.07, graphs 0.10, connections 0.01, rest 0.00)
+f4e3ac974551:74828:75117 [7] NCCL INFO ncclCommInitRank comm 0x55a5fb3c82b0 rank 7 nranks 8 cudaDev 7 nvmlDev 7 busId 9e000 commId 0x2df26d0184a0c8ad - Init COMPLETE
+f4e3ac974551:74828:75117 [7] NCCL INFO Init timings - ncclCommInitRank: rank 7 nranks 8 total 0.82 (kernels 0.56, alloc 0.08, bootstrap 0.00, allgathers 0.07, topo 0.05, graphs 0.05, connections 0.01, rest 0.00)
+f4e3ac974551:74828:75114 [4] NCCL INFO ncclCommInitRank comm 0x55a5fb08a3e0 rank 4 nranks 8 cudaDev 4 nvmlDev 4 busId 9b000 commId 0x2df26d0184a0c8ad - Init COMPLETE
+f4e3ac974551:74828:75114 [4] NCCL INFO Init timings - ncclCommInitRank: rank 4 nranks 8 total 0.82 (kernels 0.59, alloc 0.05, bootstrap 0.00, allgathers 0.04, topo 0.07, graphs 0.07, connections 0.01, rest 0.00)
+f4e3ac974551:74828:75111 [1] NCCL INFO ncclCommInitRank comm 0x55a5fad4c3d0 rank 1 nranks 8 cudaDev 1 nvmlDev 1 busId 35000 commId 0x2df26d0184a0c8ad - Init COMPLETE
+f4e3ac974551:74828:75111 [1] NCCL INFO Init timings - ncclCommInitRank: rank 1 nranks 8 total 0.82 (kernels 0.56, alloc 0.08, bootstrap 0.00, allgathers 0.03, topo 0.07, graphs 0.07, connections 0.01, rest 0.00)
+[runtime.info()] {'ring_dim': 131072, 'cyclotomic_order': 262144}
+f4e3ac974551:74828:75161 [7] NCCL INFO Channel 00 : 7[7] -> 0[0] via SHM/direct/direct
+f4e3ac974551:74828:75158 [0] NCCL INFO Channel 00 : 0[0] -> 1[1] via SHM/direct/direct
+f4e3ac974551:74828:75160 [4] NCCL INFO Channel 00 : 4[4] -> 5[5] via SHM/direct/direct
+f4e3ac974551:74828:75159 [6] NCCL INFO Channel 00 : 6[6] -> 7[7] via SHM/direct/direct
+f4e3ac974551:74828:75162 [5] NCCL INFO Channel 00 : 5[5] -> 6[6] via SHM/direct/direct
+f4e3ac974551:74828:75161 [7] NCCL INFO Channel 01 : 7[7] -> 0[0] via SHM/direct/direct
+f4e3ac974551:74828:75158 [0] NCCL INFO Channel 01 : 0[0] -> 1[1] via SHM/direct/direct
+f4e3ac974551:74828:75160 [4] NCCL INFO Channel 01 : 4[4] -> 5[5] via SHM/direct/direct
+f4e3ac974551:74828:75159 [6] NCCL INFO Channel 01 : 6[6] -> 7[7] via SHM/direct/direct
+f4e3ac974551:74828:75163 [3] NCCL INFO Channel 00 : 3[3] -> 4[4] via SHM/direct/direct
+f4e3ac974551:74828:75162 [5] NCCL INFO Channel 01 : 5[5] -> 6[6] via SHM/direct/direct
+f4e3ac974551:74828:75164 [1] NCCL INFO Channel 00 : 1[1] -> 2[2] via SHM/direct/direct
+f4e3ac974551:74828:75165 [2] NCCL INFO Channel 00 : 2[2] -> 3[3] via SHM/direct/direct
+f4e3ac974551:74828:75163 [3] NCCL INFO Channel 01 : 3[3] -> 4[4] via SHM/direct/direct
+f4e3ac974551:74828:75164 [1] NCCL INFO Channel 01 : 1[1] -> 2[2] via SHM/direct/direct
+f4e3ac974551:74828:75165 [2] NCCL INFO Channel 01 : 2[2] -> 3[3] via SHM/direct/direct
+f4e3ac974551:74828:75165 [2] NCCL INFO Connected all rings, use ring PXN 0 GDR 1
+f4e3ac974551:74828:75158 [0] NCCL INFO Connected all rings, use ring PXN 0 GDR 1
+f4e3ac974551:74828:75164 [1] NCCL INFO Connected all rings, use ring PXN 0 GDR 1
+f4e3ac974551:74828:75162 [5] NCCL INFO Connected all rings, use ring PXN 0 GDR 1
+f4e3ac974551:74828:75161 [7] NCCL INFO Connected all rings, use ring PXN 0 GDR 1
+f4e3ac974551:74828:75160 [4] NCCL INFO Connected all rings, use ring PXN 0 GDR 1
+f4e3ac974551:74828:75163 [3] NCCL INFO Connected all rings, use ring PXN 0 GDR 1
+f4e3ac974551:74828:75159 [6] NCCL INFO Connected all rings, use ring PXN 0 GDR 1
+f4e3ac974551:74828:75196 [6] NCCL INFO Channel 00 : 6[6] -> 7[7] via SHM/direct/direct
+f4e3ac974551:74828:75196 [6] NCCL INFO Channel 01 : 6[6] -> 7[7] via SHM/direct/direct
+f4e3ac974551:74828:75196 [6] NCCL INFO Channel 00 : 6[6] -> 0[0] via SHM/direct/direct
+f4e3ac974551:74828:75196 [6] NCCL INFO Channel 01 : 6[6] -> 0[0] via SHM/direct/direct
+f4e3ac974551:74828:75196 [6] NCCL INFO Channel 00 : 6[6] -> 1[1] via SHM/direct/direct
+f4e3ac974551:74828:75196 [6] NCCL INFO Channel 01 : 6[6] -> 1[1] via SHM/direct/direct
+f4e3ac974551:74828:75196 [6] NCCL INFO Channel 00 : 6[6] -> 2[2] via SHM/direct/direct
+f4e3ac974551:74828:75196 [6] NCCL INFO Channel 01 : 6[6] -> 2[2] via SHM/direct/direct
+f4e3ac974551:74828:75196 [6] NCCL INFO Channel 00 : 6[6] -> 3[3] via SHM/direct/direct
+f4e3ac974551:74828:75196 [6] NCCL INFO Channel 01 : 6[6] -> 3[3] via SHM/direct/direct
+f4e3ac974551:74828:75196 [6] NCCL INFO Channel 00 : 6[6] -> 4[4] via SHM/direct/direct
+f4e3ac974551:74828:75196 [6] NCCL INFO Channel 01 : 6[6] -> 4[4] via SHM/direct/direct
+f4e3ac974551:74828:75196 [6] NCCL INFO Channel 00 : 6[6] -> 5[5] via SHM/direct/direct
+f4e3ac974551:74828:75196 [6] NCCL INFO Channel 01 : 6[6] -> 5[5] via SHM/direct/direct
+f4e3ac974551:74828:78125 [5] NCCL INFO Channel 00 : 5[5] -> 6[6] via SHM/direct/direct
+f4e3ac974551:74828:78125 [5] NCCL INFO Channel 01 : 5[5] -> 6[6] via SHM/direct/direct
+f4e3ac974551:74828:78125 [5] NCCL INFO Channel 00 : 5[5] -> 7[7] via SHM/direct/direct
+f4e3ac974551:74828:78125 [5] NCCL INFO Channel 01 : 5[5] -> 7[7] via SHM/direct/direct
+f4e3ac974551:74828:78125 [5] NCCL INFO Channel 00 : 5[5] -> 0[0] via SHM/direct/direct
+f4e3ac974551:74828:78125 [5] NCCL INFO Channel 01 : 5[5] -> 0[0] via SHM/direct/direct
+f4e3ac974551:74828:78125 [5] NCCL INFO Channel 00 : 5[5] -> 1[1] via SHM/direct/direct
+f4e3ac974551:74828:78125 [5] NCCL INFO Channel 01 : 5[5] -> 1[1] via SHM/direct/direct
+f4e3ac974551:74828:78125 [5] NCCL INFO Channel 00 : 5[5] -> 2[2] via SHM/direct/direct
+f4e3ac974551:74828:78125 [5] NCCL INFO Channel 01 : 5[5] -> 2[2] via SHM/direct/direct
+f4e3ac974551:74828:78125 [5] NCCL INFO Channel 00 : 5[5] -> 3[3] via SHM/direct/direct
+f4e3ac974551:74828:78125 [5] NCCL INFO Channel 01 : 5[5] -> 3[3] via SHM/direct/direct
+f4e3ac974551:74828:78125 [5] NCCL INFO Channel 00 : 5[5] -> 4[4] via SHM/direct/direct
+f4e3ac974551:74828:78125 [5] NCCL INFO Channel 01 : 5[5] -> 4[4] via SHM/direct/direct
+f4e3ac974551:74828:81047 [4] NCCL INFO Channel 00 : 4[4] -> 5[5] via SHM/direct/direct
+f4e3ac974551:74828:81047 [4] NCCL INFO Channel 01 : 4[4] -> 5[5] via SHM/direct/direct
+f4e3ac974551:74828:81047 [4] NCCL INFO Channel 00 : 4[4] -> 6[6] via SHM/direct/direct
+f4e3ac974551:74828:81047 [4] NCCL INFO Channel 01 : 4[4] -> 6[6] via SHM/direct/direct
+f4e3ac974551:74828:81047 [4] NCCL INFO Channel 00 : 4[4] -> 7[7] via SHM/direct/direct
+f4e3ac974551:74828:81047 [4] NCCL INFO Channel 01 : 4[4] -> 7[7] via SHM/direct/direct
+f4e3ac974551:74828:81047 [4] NCCL INFO Channel 00 : 4[4] -> 0[0] via SHM/direct/direct
+f4e3ac974551:74828:81047 [4] NCCL INFO Channel 01 : 4[4] -> 0[0] via SHM/direct/direct
+f4e3ac974551:74828:81047 [4] NCCL INFO Channel 00 : 4[4] -> 1[1] via SHM/direct/direct
+f4e3ac974551:74828:81047 [4] NCCL INFO Channel 01 : 4[4] -> 1[1] via SHM/direct/direct
+f4e3ac974551:74828:81047 [4] NCCL INFO Channel 00 : 4[4] -> 2[2] via SHM/direct/direct
+f4e3ac974551:74828:81047 [4] NCCL INFO Channel 01 : 4[4] -> 2[2] via SHM/direct/direct
+f4e3ac974551:74828:81047 [4] NCCL INFO Channel 00 : 4[4] -> 3[3] via SHM/direct/direct
+f4e3ac974551:74828:81047 [4] NCCL INFO Channel 01 : 4[4] -> 3[3] via SHM/direct/direct
+f4e3ac974551:74828:83979 [3] NCCL INFO Channel 00 : 3[3] -> 4[4] via SHM/direct/direct
+f4e3ac974551:74828:83979 [3] NCCL INFO Channel 01 : 3[3] -> 4[4] via SHM/direct/direct
+f4e3ac974551:74828:83979 [3] NCCL INFO Channel 00 : 3[3] -> 5[5] via SHM/direct/direct
+f4e3ac974551:74828:83979 [3] NCCL INFO Channel 01 : 3[3] -> 5[5] via SHM/direct/direct
+f4e3ac974551:74828:83979 [3] NCCL INFO Channel 00 : 3[3] -> 6[6] via SHM/direct/direct
+f4e3ac974551:74828:83979 [3] NCCL INFO Channel 01 : 3[3] -> 6[6] via SHM/direct/direct
+f4e3ac974551:74828:83979 [3] NCCL INFO Channel 00 : 3[3] -> 7[7] via SHM/direct/direct
+f4e3ac974551:74828:83979 [3] NCCL INFO Channel 01 : 3[3] -> 7[7] via SHM/direct/direct
+f4e3ac974551:74828:83979 [3] NCCL INFO Channel 00 : 3[3] -> 0[0] via SHM/direct/direct
+f4e3ac974551:74828:83979 [3] NCCL INFO Channel 01 : 3[3] -> 0[0] via SHM/direct/direct
+f4e3ac974551:74828:83979 [3] NCCL INFO Channel 00 : 3[3] -> 1[1] via SHM/direct/direct
+f4e3ac974551:74828:83979 [3] NCCL INFO Channel 01 : 3[3] -> 1[1] via SHM/direct/direct
+f4e3ac974551:74828:83979 [3] NCCL INFO Channel 00 : 3[3] -> 2[2] via SHM/direct/direct
+f4e3ac974551:74828:83979 [3] NCCL INFO Channel 01 : 3[3] -> 2[2] via SHM/direct/direct
+f4e3ac974551:74828:86905 [2] NCCL INFO Channel 00 : 2[2] -> 3[3] via SHM/direct/direct
+f4e3ac974551:74828:86905 [2] NCCL INFO Channel 01 : 2[2] -> 3[3] via SHM/direct/direct
+f4e3ac974551:74828:86905 [2] NCCL INFO Channel 00 : 2[2] -> 4[4] via SHM/direct/direct
+f4e3ac974551:74828:86905 [2] NCCL INFO Channel 01 : 2[2] -> 4[4] via SHM/direct/direct
+f4e3ac974551:74828:86905 [2] NCCL INFO Channel 00 : 2[2] -> 5[5] via SHM/direct/direct
+f4e3ac974551:74828:86905 [2] NCCL INFO Channel 01 : 2[2] -> 5[5] via SHM/direct/direct
+f4e3ac974551:74828:86905 [2] NCCL INFO Channel 00 : 2[2] -> 6[6] via SHM/direct/direct
+f4e3ac974551:74828:86905 [2] NCCL INFO Channel 01 : 2[2] -> 6[6] via SHM/direct/direct
+f4e3ac974551:74828:86905 [2] NCCL INFO Channel 00 : 2[2] -> 7[7] via SHM/direct/direct
+f4e3ac974551:74828:86905 [2] NCCL INFO Channel 01 : 2[2] -> 7[7] via SHM/direct/direct
+f4e3ac974551:74828:86905 [2] NCCL INFO Channel 00 : 2[2] -> 0[0] via SHM/direct/direct
+f4e3ac974551:74828:86905 [2] NCCL INFO Channel 01 : 2[2] -> 0[0] via SHM/direct/direct
+f4e3ac974551:74828:86905 [2] NCCL INFO Channel 00 : 2[2] -> 1[1] via SHM/direct/direct
+f4e3ac974551:74828:86905 [2] NCCL INFO Channel 01 : 2[2] -> 1[1] via SHM/direct/direct
+====================================================================================================
+总体信息
+输入大小: (64, 64)
+W大小: (64, 64)
+连续轮数: 5
+rotation sigma: 1
+实际生成的 rotation key 数量: 15
+仅首次加密一次(us): 893092.081
+仅最后解密一次(us): 689676.214
+====================================================================================================
+单输入密文 + 连续5轮同一W + 最后解密（BSGS-only multi-GPU probe）
+轮次         cache构建(us)      命中      新建          核心(us)     pMult均值(us)     add均值(us)    rotate均值(us)
+----------------------------------------------------------------------------------------------------
+1           131827.250       0       1    27962541.462      202883.052     10611.755       28782.488
+2               66.233       1       0    27349892.508      202883.981      9818.403       11313.190
+3              112.940       1       0    27359411.763      203158.254      9660.238       11222.576
+4               62.948       1       0    27471932.175      203962.550      9808.629       10934.764
+5              114.003       1       0    27110001.187      201243.385      9710.460       10788.660
+----------------------------------------------------------------------------------------------------
+第2轮及以后中位数:
+  cache构建(us): 89.587
+  核心计算(us):  27354652.136
+  pMult均值(us): 203021.117
+  add均值(us):   9759.544
+  rotate均值(us): 11078.670
+最终一次解密后的误差(max_abs_err): 7.034373e-13
+====================================================================================================
+报告已保存
+JSON路径: /workspace/FIDESlib-GPT/reports/wp3c_square_block_bsgs_5round_single_ct_multigpu_probe_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

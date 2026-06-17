@@ -1,0 +1,232 @@
+==============================================================================================================
+Launching block-parallel BSGS workers
+gpu_groups=[(0, 1), (2, 3), (4, 5), (6, 7)]
+num_workers=4
+==============================================================================================================
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU P2P? 0
+GPU P2P? 0
+GPU P2P? 0
+GPU P2P? 0
+e1484d733358:387232:387232 [1] NCCL INFO Bootstrap: Using eth0:172.17.0.2<0>
+e1484d733358:387232:387232 [0] NCCL INFO cudaDriverVersion 12020
+e1484d733358:387232:387232 [0] NCCL INFO NCCL version 2.27.3+cuda12.9
+e1484d733358:387232:387936 [1] NCCL INFO NET/Plugin: Could not find: libnccl-net.so. 
+e1484d733358:387232:387936 [1] NCCL INFO NET/IB : No device found.
+e1484d733358:387232:387936 [1] NCCL INFO NET/IB : Using [RO]; OOB eth0:172.17.0.2<0>
+e1484d733358:387232:387936 [1] NCCL INFO NET/Socket : Using [0]eth0:172.17.0.2<0>
+e1484d733358:387232:387936 [1] NCCL INFO Initialized NET plugin Socket
+e1484d733358:387232:387936 [1] NCCL INFO Assigned NET plugin Socket to comm
+e1484d733358:387232:387936 [1] NCCL INFO Using network Socket
+e1484d733358:387232:387935 [0] NCCL INFO Assigned NET plugin Socket to comm
+e1484d733358:387232:387935 [0] NCCL INFO Using network Socket
+e1484d733358:387232:387936 [1] NCCL INFO ncclCommInitRank comm 0x55b21bd1a1e0 rank 1 nranks 2 cudaDev 1 nvmlDev 3 busId 37000 commId 0x47e8d6161358d123 - Init START
+e1484d733358:387232:387935 [0] NCCL INFO ncclCommInitRank comm 0x55b21bc0a1b0 rank 0 nranks 2 cudaDev 0 nvmlDev 2 busId 36000 commId 0x47e8d6161358d123 - Init START
+e1484d733358:387232:387936 [1] NCCL INFO RAS client listening socket at ::1<28028>
+e1484d733358:387232:387936 [1] NCCL INFO Bootstrap timings total 0.000901 (create 0.000026, send 0.000090, recv 0.000349, ring 0.000028, delay 0.000000)
+e1484d733358:387232:387935 [0] NCCL INFO Bootstrap timings total 0.000795 (create 0.000055, send 0.000210, recv 0.000154, ring 0.000024, delay 0.000000)
+e1484d733358:387232:387936 [1] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+e1484d733358:387232:387936 [1] NCCL INFO Setting affinity for GPU 3 to 0-23,48-71
+e1484d733358:387232:387935 [0] NCCL INFO Setting affinity for GPU 2 to 0-23,48-71
+e1484d733358:387232:387935 [0] NCCL INFO comm 0x55b21bc0a1b0 rank 0 nRanks 2 nNodes 1 localRanks 2 localRank 0 MNNVL 0
+e1484d733358:387232:387936 [1] NCCL INFO comm 0x55b21bd1a1e0 rank 1 nRanks 2 nNodes 1 localRanks 2 localRank 1 MNNVL 0
+e1484d733358:387232:387935 [0] NCCL INFO Channel 00/02 : 0 1
+e1484d733358:387232:387935 [0] NCCL INFO Channel 01/02 : 0 1
+e1484d733358:387232:387936 [1] NCCL INFO Trees [0] -1/-1/-1->1->0 [1] -1/-1/-1->1->0
+e1484d733358:387232:387935 [0] NCCL INFO Trees [0] 1/-1/-1->0->-1 [1] 1/-1/-1->0->-1
+e1484d733358:387232:387935 [0] NCCL INFO P2P Chunksize set to 131072
+e1484d733358:387232:387936 [1] NCCL INFO P2P Chunksize set to 131072
+e1484d733358:387232:387936 [1] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+e1484d733358:387232:387947 [1] NCCL INFO [Proxy Service] Device 1 CPU core 15
+e1484d733358:387232:387935 [0] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+e1484d733358:387232:387935 [0] NCCL INFO Check P2P Type isAllDirectP2p 0 directMode 1
+e1484d733358:387232:387948 [1] NCCL INFO [Proxy Service UDS] Device 1 CPU core 64
+e1484d733358:387232:387949 [0] NCCL INFO [Proxy Service] Device 0 CPU core 19
+e1484d733358:387232:387950 [0] NCCL INFO [Proxy Service UDS] Device 0 CPU core 21
+e1484d733358:387232:387936 [1] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+e1484d733358:387232:387936 [1] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+e1484d733358:387232:387935 [0] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+e1484d733358:387232:387935 [0] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+e1484d733358:387232:387935 [0] NCCL INFO CC Off, workFifoBytes 1048576
+e1484d733358:387232:387936 [1] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so. Using internal tuner plugin.
+e1484d733358:387232:387936 [1] NCCL INFO ncclCommInitRank comm 0x55b21bd1a1e0 rank 1 nranks 2 cudaDev 1 nvmlDev 3 busId 37000 commId 0x47e8d6161358d123 - Init COMPLETE
+e1484d733358:387232:387936 [1] NCCL INFO Init timings - ncclCommInitRank: rank 1 nranks 2 total 0.33 (kernels 0.20, alloc 0.11, bootstrap 0.00, allgathers 0.00, topo 0.01, graphs 0.00, e1484d733358:387237:387237 [1] NCCL INFO Bootstrap: Using eth0:172.17.0.2<0>
+e1484d733358:387237:387237 [0] NCCL INFO cudaDriverVersion 12020
+e1484d733358:387237:387237 [0] NCCL INFO NCCL version 2.27.3+cuda12.9
+e1484d733358:387237:387941 [0] NCCL INFO NET/Plugin: Could not find: libnccl-net.so. 
+e1484d733358:387237:387941 [0] NCCL INFO NET/IB : No device found.
+e1484d733358:387237:387941 [0] NCCL INFO NET/IB : Using [RO]; OOB eth0:172.17.0.2<0>
+e1484d733358:387237:387941 [0] NCCL INFO NET/Socket : Using [0]eth0:172.17.0.2<0>
+e1484d733358:387237:387941 [0] NCCL INFO Initialized NET plugin Socket
+e1484d733358:387237:387941 [0] NCCL INFO Assigned NET plugin Socket to comm
+e1484d733358:387237:387941 [0] NCCL INFO Using network Socket
+e1484d733358:387237:387942 [1] NCCL INFO Assigned NET plugin Socket to comm
+e1484d733358:387237:387942 [1] NCCL INFO Using network Socket
+e1484d733358:387237:387941 [0] NCCL INFO ncclCommInitRank comm 0x56431532e0f0 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 34000 commId 0xdccb2db6e6036b0f - Init START
+e1484d733358:387237:387942 [1] NCCL INFO ncclCommInitRank comm 0x56431543e130 rank 1 nranks 2 cudaDev 1 nvmlDev 1 busId 35000 commId 0xdccb2db6e6036b0f - Init START
+e1484d733358:387237:387941 [0] NCCL INFO RAS client listening socket at ::1<28028>
+e1484d733358:387237:387941 [0] NCCL INFO Bootstrap timings total 0.000854 (create 0.000031, send 0.000092, recv 0.000266, ring 0.000018, delay 0.000000)
+e1484d733358:387237:387942 [1] NCCL INFO Bootstrap timings total 0.000768 (create 0.000059, send 0.000219, recv 0.000091, ring 0.000014, delay 0.000000)
+e1484d733358:387237:387941 [0] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+e1484d733358:387237:387942 [1] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+e1484d733358:387237:387942 [1] NCCL INFO Setting affinity for GPU 1 to 0-23,48-71
+e1484d733358:387237:387941 [0] NCCL INFO Setting affinity for GPU 0 to 0-23,48-71
+e1484d733358:387237:387942 [1] NCCL INFO comm 0x56431543e130 rank 1 nRanks 2 nNodes 1 localRanks 2 localRank 1 MNNVL 0
+e1484d733358:387237:387941 [0] NCCL INFO comm 0x56431532e0f0 rank 0 nRanks 2 nNodes 1 localRanks 2 localRank 0 MNNVL 0
+e1484d733358:387237:387942 [1] NCCL INFO Trees [0] -1/-1/-1->1->0 [1] -1/-1/-1->1->0
+e1484d733358:387237:387942 [1] NCCL INFO P2P Chunksize set to 131072
+e1484d733358:387237:387941 [0] NCCL INFO Channel 00/02 : 0 1
+e1484d733358:387237:387941 [0] NCCL INFO Channel 01/02 : 0 1
+e1484d733358:387237:387941 [0] NCCL INFO Trees [0] 1/-1/-1->0->-1 [1] 1/-1/-1->0->-1
+e1484d733358:387237:387941 [0] NCCL INFO P2P Chunksize set to 131072
+e1484d733358:387237:387942 [1] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+e1484d733358:387237:387941 [0] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+e1484d733358:387237:387941 [0] NCCL INFO Check P2P Type isAllDirectP2p 0 directMode 1
+e1484d733358:387237:387952 [1] NCCL INFO [Proxy Service] Device 1 CPU core 12
+e1484d733358:387237:387953 [1] NCCL INFO [Proxy Service UDS] Device 1 CPU core 10
+e1484d733358:387237:387954 [0] NCCL INFO [Proxy Service] Device 0 CPU core 14
+e1484d733358:387237:387955 [0] NCCL INFO [Proxy Service UDS] Device 0 CPU core 65
+e1484d733358:387237:387942 [1] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+e1484d733358:387237:387942 [1] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+e1484d733358:387237:387941 [0] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+e1484d733358:387237:387941 [0] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+e1484d733358:387237:387941 [0] NCCL INFO CC Off, workFifoBytes 1048576
+e1484d733358:387237:387942 [1] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so. Using internal tuner plugin.
+e1484d733358:387237:387942 [1] NCCL INFO ncclCommInitRank comm 0x56431543e130 rank 1 nranks 2 cudaDev 1 nvmlDev 1 busId 35000 commId 0xdccb2db6e6036b0f - Init COMPLETE
+e1484d733358:387237:387942 [1] NCCL INFO Init timings - ncclCommInitRank: rank 1 nranks 2 total 0.30 (ke1484d733358:387235:387235 [1] NCCL INFO Bootstrap: Using eth0:172.17.0.2<0>
+e1484d733358:387235:387235 [0] NCCL INFO cudaDriverVersion 12020
+e1484d733358:387235:387235 [0] NCCL INFO NCCL version 2.27.3+cuda12.9
+e1484d733358:387235:387938 [0] NCCL INFO NET/Plugin: Could not find: libnccl-net.so. 
+e1484d733358:387235:387938 [0] NCCL INFO NET/IB : No device found.
+e1484d733358:387235:387938 [0] NCCL INFO NET/IB : Using [RO]; OOB eth0:172.17.0.2<0>
+e1484d733358:387235:387938 [0] NCCL INFO NET/Socket : Using [0]eth0:172.17.0.2<0>
+e1484d733358:387235:387938 [0] NCCL INFO Initialized NET plugin Socket
+e1484d733358:387235:387938 [0] NCCL INFO Assigned NET plugin Socket to comm
+e1484d733358:387235:387938 [0] NCCL INFO Using network Socket
+e1484d733358:387235:387939 [1] NCCL INFO Assigned NET plugin Socket to comm
+e1484d733358:387235:387939 [1] NCCL INFO Using network Socket
+e1484d733358:387235:387938 [0] NCCL INFO ncclCommInitRank comm 0x55fb97328870 rank 0 nranks 2 cudaDev 0 nvmlDev 6 busId 9d000 commId 0xc72b6dfa85d78a73 - Init START
+e1484d733358:387235:387939 [1] NCCL INFO ncclCommInitRank comm 0x55fb974388c0 rank 1 nranks 2 cudaDev 1 nvmlDev 7 busId 9e000 commId 0xc72b6dfa85d78a73 - Init START
+e1484d733358:387235:387939 [1] NCCL INFO RAS client listening socket at ::1<28028>
+e1484d733358:387235:387939 [1] NCCL INFO Bootstrap timings total 0.000591 (create 0.000020, send 0.000061, recv 0.000121, ring 0.000018, delay 0.000000)
+e1484d733358:387235:387938 [0] NCCL INFO Bootstrap timings total 0.000604 (create 0.000023, send 0.000069, recv 0.000165, ring 0.000015, delay 0.000000)
+e1484d733358:387235:387939 [1] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+e1484d733358:387235:387938 [0] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+e1484d733358:387235:387939 [1] NCCL INFO Setting affinity for GPU 7 to 24-47,72-95
+e1484d733358:387235:387938 [0] NCCL INFO Setting affinity for GPU 6 to 24-47,72-95
+e1484d733358:387235:387938 [0] NCCL INFO comm 0x55fb97328870 rank 0 nRanks 2 nNodes 1 localRanks 2 localRank 0 MNNVL 0
+e1484d733358:387235:387938 [0] NCCL INFO Channel 00/02 : 0 1
+e1484d733358:387235:387938 [0] NCCL INFO Channel 01/02 : 0 1
+e1484d733358:387235:387938 [0] NCCL INFO Trees [0] 1/-1/-1->0->-1 [1] 1/-1/-1->0->-1
+e1484d733358:387235:387938 [0] NCCL INFO P2P Chunksize set to 131072
+e1484d733358:387235:387939 [1] NCCL INFO comm 0x55fb974388c0 rank 1 nRanks 2 nNodes 1 localRanks 2 localRank 1 MNNVL 0
+e1484d733358:387235:387939 [1] NCCL INFO Trees [0] -1/-1/-1->1->0 [1] -1/-1/-1->1->0
+e1484d733358:387235:387939 [1] NCCL INFO P2P Chunksize set to 131072
+e1484d733358:387235:387938 [0] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+e1484d733358:387235:387938 [0] NCCL INFO Check P2P Type isAllDirectP2p 0 directMode 1
+e1484d733358:387235:387939 [1] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+e1484d733358:387235:387958 [0] NCCL INFO [Proxy Service UDS] Device 0 CPU core 41
+e1484d733358:387235:387957 [0] NCCL INFO [Proxy Service] Device 0 CPU core 28
+e1484d733358:387235:387959 [1] NCCL INFO [Proxy Service] Device 1 CPU core 81
+e1484d733358:387235:387960 [1] NCCL INFO [Proxy Service UDS] Device 1 CPU core 46
+e1484d733358:387235:387938 [0] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+e1484d733358:387235:387938 [0] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+e1484d733358:387235:387939 [1] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+e1484d733358:387235:387939 [1] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+e1484d733358:387235:387938 [0] NCCL INFO CC Off, workFifoBytes 1048576
+e1484d733358:387235:387938 [0] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so. Using internal tuner plugin.
+e1484d733358:387235:387938 [0] NCCL INFO ncclCommInitRank comm 0x55fb97328870 rank 0 nranks 2 cudaDev 0 nvmlDev 6 busId 9d000 commId 0xc72b6dfa85d78a73 - Init COMPLETE
+e1484d733358:387235:387938 [0] NCCL INFO Init timings - ncclCommInitRank: rank 0 nranks 2 total 0.32 e1484d733358:387236:387236 [1] NCCL INFO Bootstrap: Using eth0:172.17.0.2<0>
+e1484d733358:387236:387236 [0] NCCL INFO cudaDriverVersion 12020
+e1484d733358:387236:387236 [0] NCCL INFO NCCL version 2.27.3+cuda12.9
+e1484d733358:387236:387944 [0] NCCL INFO NET/Plugin: Could not find: libnccl-net.so. 
+e1484d733358:387236:387944 [0] NCCL INFO NET/IB : No device found.
+e1484d733358:387236:387944 [0] NCCL INFO NET/IB : Using [RO]; OOB eth0:172.17.0.2<0>
+e1484d733358:387236:387944 [0] NCCL INFO NET/Socket : Using [0]eth0:172.17.0.2<0>
+e1484d733358:387236:387944 [0] NCCL INFO Initialized NET plugin Socket
+e1484d733358:387236:387944 [0] NCCL INFO Assigned NET plugin Socket to comm
+e1484d733358:387236:387944 [0] NCCL INFO Using network Socket
+e1484d733358:387236:387945 [1] NCCL INFO Assigned NET plugin Socket to comm
+e1484d733358:387236:387945 [1] NCCL INFO Using network Socket
+e1484d733358:387236:387945 [1] NCCL INFO ncclCommInitRank comm 0x55a9ea415d90 rank 1 nranks 2 cudaDev 1 nvmlDev 5 busId 9c000 commId 0x14be82d2848d5cc4 - Init START
+e1484d733358:387236:387944 [0] NCCL INFO ncclCommInitRank comm 0x55a9ea305d50 rank 0 nranks 2 cudaDev 0 nvmlDev 4 busId 9b000 commId 0x14be82d2848d5cc4 - Init START
+e1484d733358:387236:387945 [1] NCCL INFO RAS client listening socket at ::1<28028>
+e1484d733358:387236:387945 [1] NCCL INFO Bootstrap timings total 0.000619 (create 0.000030, send 0.000074, recv 0.000122, ring 0.000016, delay 0.000000)
+e1484d733358:387236:387944 [0] NCCL INFO Bootstrap timings total 0.000582 (create 0.000030, send 0.000108, recv 0.000092, ring 0.000014, delay 0.000000)
+e1484d733358:387236:387945 [1] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+e1484d733358:387236:387944 [0] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+e1484d733358:387236:387945 [1] NCCL INFO Setting affinity for GPU 5 to 24-47,72-95
+e1484d733358:387236:387944 [0] NCCL INFO Setting affinity for GPU 4 to 24-47,72-95
+e1484d733358:387236:387944 [0] NCCL INFO comm 0x55a9ea305d50 rank 0 nRanks 2 nNodes 1 localRanks 2 localRank 0 MNNVL 0
+e1484d733358:387236:387945 [1] NCCL INFO comm 0x55a9ea415d90 rank 1 nRanks 2 nNodes 1 localRanks 2 localRank 1 MNNVL 0
+e1484d733358:387236:387944 [0] NCCL INFO Channel 00/02 : 0 1
+e1484d733358:387236:387944 [0] NCCL INFO Channel 01/02 : 0 1
+e1484d733358:387236:387944 [0] NCCL INFO Trees [0] 1/-1/-1->0->-1 [1] 1/-1/-1->0->-1
+e1484d733358:387236:387944 [0] NCCL INFO P2P Chunksize set to 131072
+e1484d733358:387236:387945 [1] NCCL INFO Trees [0] -1/-1/-1->1->0 [1] -1/-1/-1->1->0
+e1484d733358:387236:387945 [1] NCCL INFO P2P Chunksize set to 131072
+e1484d733358:387236:387944 [0] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+e1484d733358:387236:387944 [0] NCCL INFO Check P2P Type isAllDirectP2p 0 directMode 1
+e1484d733358:387236:387945 [1] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+e1484d733358:387236:387962 [0] NCCL INFO [Proxy Service] Device 0 CPU core 77
+e1484d733358:387236:387964 [1] NCCL INFO [Proxy Service] Device 1 CPU core 39
+e1484d733358:387236:387963 [0] NCCL INFO [Proxy Service UDS] Device 0 CPU core 80
+e1484d733358:387236:387965 [1] NCCL INFO [Proxy Service UDS] Device 1 CPU core 74
+e1484d733358:387236:387945 [1] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+e1484d733358:387236:387945 [1] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+e1484d733358:387236:387944 [0] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+e1484d733358:387236:387944 [0] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+e1484d733358:387236:387944 [0] NCCL INFO CC Off, workFifoBytes 1048576
+e1484d733358:387236:387944 [0] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so. Using internal tuner plugin.
+e1484d733358:387236:387944 [0] NCCL INFO ncclCommInitRank comm 0x55a9ea305d50 rank 0 nranks 2 cudaDev 0 nvmlDev 4 busId 9b000 commId 0x14be82d2848d5cc4 - Init COMPLETE
+e1484d733358:387236:387944 [0] NCCL INFO Init timings - ncclCommInitRank: rank 0 nranks 2 total 0.33 connections 0.00, rest 0.00)
+e1484d733358:387232:387935 [0] NCCL INFO ncclCommInitRank comm 0x55b21bc0a1b0 rank 0 nranks 2 cudaDev 0 nvmlDev 2 busId 36000 commId 0x47e8d6161358d123 - Init COMPLETE
+e1484d733358:387232:387935 [0] NCCL INFO Init timings - ncclCommInitRank: rank 0 nranks 2 total 0.33 (kernels 0.20, alloc 0.11, bootstrap 0.00, allgathers 0.00, topo 0.01, graphs 0.00, connections 0.00, rest 0.00)
+e1484d733358:387232:388082 [0] NCCL INFO Channel 00 : 0[2] -> 1[3] via SHM/direct/direct
+e1484d733358:387232:388082 [0] NCCL INFO Channel 01 : 0[2] -> 1[3] via SHM/direct/direct
+e1484d733358:387232:388083 [1] NCCL INFO Channel 00 : 1[3] -> 0[2] via SHM/direct/direct
+e1484d733358:387232:388083 [1] NCCL INFO Channel 01 : 1[3] -> 0[2] via SHM/direct/direct
+e1484d733358:387232:388083 [1] NCCL INFO Connected all rings, use ring PXN 0 GDR 1
+e1484d733358:387232:388082 [0] NCCL INFO Connected all rings, use ring PXN 0 GDR 1
+e1484d733358:387232:388117 [0] NCCL INFO Channel 00 : 0[2] -> 1[3] via SHM/direct/direct
+e1484d733358:387232:388117 [0] NCCL INFO Channel 01 : 0[2] -> 1[3] via SHM/direct/direct
+
+[2026-05-05 11:32:56] e1484d733358:387232:387947 [1] misc/shmutils.cc:87 NCCL WARN Error: failed to extend /dev/shm/nccl-XjkW6C to 9637892 bytes, error: No space left on device (28)
+
+[2026-05-05 11:32:56] e1484d733358:387232:387947 [1] misc/shmutils.cc:128 NCCL WARN Error while creating shared memory segment /dev/shm/nccl-XjkW6C (size 9637888), error: No space left on device (28)
+e1484d733358:387232:387947 [1] NCCL INFO transport/shm.cc:549 -> 2
+e1484d733358:387232:387947 [1] NCCL INFO transport/shm.cc:491 -> 2
+e1484d733358:387232:388118 [1] NCCL INFO transport/shm.cc:153 -> 2
+e1484d733358:387232:388118 [1] NCCL INFO transport.cc:35 -> 2
+e1484d733358:387232:388118 [1] NCCL INFO transport.cc:148 -> 2
+e1484d733358:387232:388118 [1] NCCL INFO group.cc:131 -> 2
+e1484d733358:387232:388118 [1] NCCL INFO group.cc:73 -> 2 [Async thread]
+e1484d733358:387232:387625 [1] NCCL INFO group.cc:475 -> 2
+e1484d733358:387232:387625 [1] NCCL INFO group.cc:694 -> 2
+e1484d733358:387232:387625 [1] NCCL INFO group.cc:104 -> 2
+Failed, NCCL error /root/fideslib/src/CKKS/LimbPartitionMGPU.cu:336 'unhandled system error (run with NCCL_DEBUG=INFO for details)'
+Traceback (most recent call last):
+  File "/workspace/FIDESlib-GPT/scripts/report_wp3d_bsgs_block_parallel_8gpu_probe_isolated.py", line 594, in <module>
+    main()
+  File "/workspace/FIDESlib-GPT/scripts/report_wp3d_bsgs_block_parallel_8gpu_probe_isolated.py", line 550, in main
+    r = fut.result()
+  File "/usr/lib/python3.10/concurrent/futures/_base.py", line 451, in result
+    return self.__get_result()
+  File "/usr/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+    raise self._exception
+concurrent.futures.process.BrokenProcessPool: A process in the process pool was terminated abruptly while the future was running or pending.

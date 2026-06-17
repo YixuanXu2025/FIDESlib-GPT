@@ -1,0 +1,425 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+WP4-X4 temporary pair C-MT probe
+{
+  "experiment": "wp4x4_temp_pair_cmt_probe",
+  "purpose": "Construct temporary two-component bundles (M01,0) and (M00,0), then run C-MT on them as required by Park-2025 Algorithm 3 lines 3 and 4.",
+  "status": "temp_pair_cmt_probe_no_keyswitch_no_final_decrypt",
+  "n": 4,
+  "coeff_count": 4,
+  "input_U_i64": [
+    [
+      2,
+      0,
+      2,
+      -1
+    ],
+    [
+      1,
+      2,
+      1,
+      -2
+    ],
+    [
+      -1,
+      0,
+      0,
+      -1
+    ],
+    [
+      -2,
+      0,
+      -2,
+      0
+    ]
+  ],
+  "input_V_i64": [
+    [
+      1,
+      1,
+      2,
+      0
+    ],
+    [
+      -1,
+      -1,
+      -1,
+      1
+    ],
+    [
+      1,
+      0,
+      -2,
+      2
+    ],
+    [
+      0,
+      2,
+      2,
+      1
+    ]
+  ],
+  "reference_U_matmul_V_i64": [
+    [
+      4,
+      0,
+      -2,
+      3
+    ],
+    [
+      0,
+      -5,
+      -6,
+      2
+    ],
+    [
+      -1,
+      -3,
+      -4,
+      -1
+    ],
+    [
+      -4,
+      -2,
+      0,
+      -4
+    ]
+  ],
+  "component_order": {
+    "paper_pair": "(A, B)",
+    "openfhe_elements": "GetElements()[0]=c0=B, GetElements()[1]=c1=A",
+    "T01": "(M01,0) is encoded as c0=0, c1=M01",
+    "T00": "(M00,0) is encoded as c0=0, c1=M00"
+  },
+  "paper_algorithm3_lines": {
+    "line1": "(A_U,B_U)=Transpose(ct_U)",
+    "line2": "M00=A_U@A_V, M01=A_U@B_V, M10=B_U@A_V, M11=B_U@B_V",
+    "line3": "(A_check,B_check)=Transpose((M01,0))",
+    "line4": "(A_hat,B_hat)=Transpose((M00,0))"
+  },
+  "temp_pair_bundles": {
+    "T01_M01_0": {
+      "num_rows": 4,
+      "consistent_shape": true,
+      "expected_parts": 2,
+      "expected_towers": 4,
+      "expected_ring_dim": 16384,
+      "rows": [
+        {
+          "row_index": 0,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 1,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 2,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 3,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        }
+      ]
+    },
+    "T00_M00_0": {
+      "num_rows": 4,
+      "consistent_shape": true,
+      "expected_parts": 2,
+      "expected_towers": 4,
+      "expected_ring_dim": 16384,
+      "rows": [
+        {
+          "row_index": 0,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 1,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 2,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 3,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        }
+      ]
+    }
+  },
+  "T01_after_cmt": {
+    "num_rows": 4,
+    "consistent_shape": {
+      "value": true,
+      "zh": "所有 C-MT 输出 ciphertext 的 component/tower/ring_dim 形状一致"
+    },
+    "expected_parts": {
+      "value": 2,
+      "zh": "每个 C-MT 输出 ciphertext 的 RLWE component 数量；应为 2，即 c0/c1"
+    },
+    "expected_towers": {
+      "value": 4,
+      "zh": "每个 DCRTPoly component 的 RNS tower 数量"
+    },
+    "expected_ring_dim": {
+      "value": 16384,
+      "zh": "C-MT 输出 ciphertext 的 ring dimension"
+    },
+    "orientation": {
+      "value": "cmt_transformed_expected_columnwise",
+      "zh": "根据 WP4-N toy 结果，C-MT 后语义上应转为 column-wise / transformed bundle"
+    },
+    "rows": [
+      {
+        "row_index": 0,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "RLWE component 数量；应为 c0/c1 两部分"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "row_index": 1,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "RLWE component 数量；应为 c0/c1 两部分"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "row_index": 2,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "RLWE component 数量；应为 c0/c1 两部分"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "row_index": 3,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "RLWE component 数量；应为 c0/c1 两部分"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      }
+    ]
+  },
+  "T00_after_cmt": {
+    "num_rows": 4,
+    "consistent_shape": {
+      "value": true,
+      "zh": "所有 C-MT 输出 ciphertext 的 component/tower/ring_dim 形状一致"
+    },
+    "expected_parts": {
+      "value": 2,
+      "zh": "每个 C-MT 输出 ciphertext 的 RLWE component 数量；应为 2，即 c0/c1"
+    },
+    "expected_towers": {
+      "value": 4,
+      "zh": "每个 DCRTPoly component 的 RNS tower 数量"
+    },
+    "expected_ring_dim": {
+      "value": 16384,
+      "zh": "C-MT 输出 ciphertext 的 ring dimension"
+    },
+    "orientation": {
+      "value": "cmt_transformed_expected_columnwise",
+      "zh": "根据 WP4-N toy 结果，C-MT 后语义上应转为 column-wise / transformed bundle"
+    },
+    "rows": [
+      {
+        "row_index": 0,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "RLWE component 数量；应为 c0/c1 两部分"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "row_index": 1,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "RLWE component 数量；应为 c0/c1 两部分"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "row_index": 2,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "RLWE component 数量；应为 c0/c1 两部分"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "row_index": 3,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "RLWE component 数量；应为 c0/c1 两部分"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      }
+    ]
+  },
+  "M10_M11_available_for_line6": {
+    "M10_rows_count": 4,
+    "M11_rows_count": 4,
+    "M10_M11_pair_inspect": {
+      "num_rows": 4,
+      "consistent_shape": true,
+      "expected_parts": 2,
+      "expected_towers": 4,
+      "expected_ring_dim": 16384,
+      "rows": [
+        {
+          "row_index": 0,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 1,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 2,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        },
+        {
+          "row_index": 3,
+          "encoding_type": 1,
+          "num_parts": 2,
+          "level": 0,
+          "slots": 0
+        }
+      ]
+    },
+    "zh": "line6 需要加入 paper pair (M10,M11)，OpenFHE component order 为 c0=M11, c1=M10。"
+  },
+  "checks": {
+    "algorithm3_transposes_U_not_V（Algorithm 3 先 C-MT(U)，不是 C-MT(V)）": true,
+    "U_cmt_auto_alphas_expected（C-MT(U) alpha 是 [1,3,5,7]）": true,
+    "T01_temp_pair_is_2part（临时 bundle T01=(M01,0) 是 c0/c1 二分量）": true,
+    "T00_temp_pair_is_2part（临时 bundle T00=(M00,0) 是 c0/c1 二分量）": true,
+    "T01_cmt_has_4_rows（Transpose((M01,0)) 输出 4 行）": true,
+    "T00_cmt_has_4_rows（Transpose((M00,0)) 输出 4 行）": true,
+    "T01_cmt_rows_are_2part（Transpose((M01,0)) 输出仍是二分量）": true,
+    "T00_cmt_rows_are_2part（Transpose((M00,0)) 输出仍是二分量）": true,
+    "T01_cmt_auto_alphas_expected（Transpose((M01,0)) alpha 是 [1,3,5,7]）": true,
+    "T00_cmt_auto_alphas_expected（Transpose((M00,0)) alpha 是 [1,3,5,7]）": true,
+    "M10_M11_raw_ppmm_pair_available（line6 的 (M10,M11) pair 已可构造）": true,
+    "ready_for_X5_keyswitch_line5（已完成 line3/line4 临时 pair C-MT，可进入 line5 KS_{s²->s} 组装探针）": true
+  },
+  "summary": {
+    "next_step": "WP4-X5",
+    "next_step_goal": "Implement Algorithm 3 line5/line6 structure: use Transpose((M00,0)) result as the sk^2-related term, key-switch/relinearize it back to sk, then combine with Transpose((M01,0)) and (M10,M11).",
+    "zh": "X4 完成临时 pair C-MT；下一步处理 line5 的 KS_{s²→s} 与 line6 的三项组合。"
+  }
+}
+====================================================================================================
+saved: /workspace/FIDESlib-GPT/reports/wp4x4_temp_pair_cmt_probe_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

@@ -1,0 +1,57 @@
+[ 50%] Built target fideslib_gpt_minimal
+[ 66%] Building CXX object CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘CiphertextHandle FidesCKKSContext::encrypt_coeff_row_i64(const std::vector<long int>&)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:149:65: error: ‘using element_type = class fideslib::PublicKeyImpl<unsigned int>’ {aka ‘class fideslib::PublicKeyImpl<unsigned int>’} has no member named ‘cpu’
+  149 |         auto* native_pk = std::any_cast<OpenFHEPublicKey>(&pk_->cpu);
+      |                                                                 ^~~
+/workspace/FIDESlib-GPT/bindings/bindings.cpp: In member function ‘std::vector<long int> FidesCKKSContext::decrypt_coeff_row_i64(CiphertextHandle&, std::size_t)’:
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:181:66: error: ‘using element_type = class fideslib::PrivateKeyImpl<unsigned int>’ {aka ‘class fideslib::PrivateKeyImpl<unsigned int>’} has no member named ‘cpu’
+  181 |         auto* native_sk = std::any_cast<OpenFHEPrivateKey>(&sk_->cpu);
+      |                                                                  ^~~
+In file included from /usr/include/c++/11/ext/alloc_traits.h:34,
+                 from /usr/include/c++/11/bits/stl_uninitialized.h:64,
+                 from /usr/include/c++/11/vector:66,
+                 from /root/fideslib/api/CCParams.hpp:7,
+                 from /root/fideslib/api/fideslib.hpp:4,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:1:
+/usr/include/c++/11/bits/alloc_traits.h: In instantiation of ‘static constexpr void std::allocator_traits<std::allocator<_Up> >::construct(std::allocator_traits<std::allocator<_Up> >::allocator_type&, _Up*, _Args&& ...) [with _Up = fideslib::CiphertextImpl<unsigned int>; _Args = {}; _Tp = fideslib::CiphertextImpl<unsigned int>; std::allocator_traits<std::allocator<_Up> >::allocator_type = std::allocator<fideslib::CiphertextImpl<unsigned int> >]’:
+/usr/include/c++/11/bits/shared_ptr_base.h:519:39:   required from ‘std::_Sp_counted_ptr_inplace<_Tp, _Alloc, _Lp>::_Sp_counted_ptr_inplace(_Alloc, _Args&& ...) [with _Args = {}; _Tp = fideslib::CiphertextImpl<unsigned int>; _Alloc = std::allocator<fideslib::CiphertextImpl<unsigned int> >; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr_base.h:650:16:   required from ‘std::__shared_count<_Lp>::__shared_count(_Tp*&, std::_Sp_alloc_shared_tag<_Alloc>, _Args&& ...) [with _Tp = fideslib::CiphertextImpl<unsigned int>; _Alloc = std::allocator<fideslib::CiphertextImpl<unsigned int> >; _Args = {}; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr_base.h:1342:14:   required from ‘std::__shared_ptr<_Tp, _Lp>::__shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<fideslib::CiphertextImpl<unsigned int> >; _Args = {}; _Tp = fideslib::CiphertextImpl<unsigned int>; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr.h:409:59:   required from ‘std::shared_ptr<_Tp>::shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<fideslib::CiphertextImpl<unsigned int> >; _Args = {}; _Tp = fideslib::CiphertextImpl<unsigned int>]’
+/usr/include/c++/11/bits/shared_ptr.h:862:14:   required from ‘std::shared_ptr<_Tp> std::allocate_shared(const _Alloc&, _Args&& ...) [with _Tp = fideslib::CiphertextImpl<unsigned int>; _Alloc = std::allocator<fideslib::CiphertextImpl<unsigned int> >; _Args = {}]’
+/usr/include/c++/11/bits/shared_ptr.h:878:39:   required from ‘std::shared_ptr<_Tp> std::make_shared(_Args&& ...) [with _Tp = fideslib::CiphertextImpl<unsigned int>; _Args = {}]’
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:161:62:   required from here
+/usr/include/c++/11/bits/alloc_traits.h:518:28: error: no matching function for call to ‘construct_at(fideslib::CiphertextImpl<unsigned int>*&)’
+  518 |           std::construct_at(__p, std::forward<_Args>(__args)...);
+      |           ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/11/bits/stl_iterator.h:85,
+                 from /usr/include/c++/11/bits/stl_algobase.h:67,
+                 from /usr/include/c++/11/vector:60,
+                 from /root/fideslib/api/CCParams.hpp:7,
+                 from /root/fideslib/api/fideslib.hpp:4,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:1:
+/usr/include/c++/11/bits/stl_construct.h:94:5: note: candidate: ‘template<class _Tp, class ... _Args> constexpr decltype (::new(void*(0)) _Tp) std::construct_at(_Tp*, _Args&& ...)’
+   94 |     construct_at(_Tp* __location, _Args&&... __args)
+      |     ^~~~~~~~~~~~
+/usr/include/c++/11/bits/stl_construct.h:94:5: note:   template argument deduction/substitution failed:
+/usr/include/c++/11/bits/stl_construct.h: In substitution of ‘template<class _Tp, class ... _Args> constexpr decltype (::new(void*(0)) _Tp) std::construct_at(_Tp*, _Args&& ...) [with _Tp = fideslib::CiphertextImpl<unsigned int>; _Args = {}]’:
+/usr/include/c++/11/bits/alloc_traits.h:518:21:   required from ‘static constexpr void std::allocator_traits<std::allocator<_Up> >::construct(std::allocator_traits<std::allocator<_Up> >::allocator_type&, _Up*, _Args&& ...) [with _Up = fideslib::CiphertextImpl<unsigned int>; _Args = {}; _Tp = fideslib::CiphertextImpl<unsigned int>; std::allocator_traits<std::allocator<_Up> >::allocator_type = std::allocator<fideslib::CiphertextImpl<unsigned int> >]’
+/usr/include/c++/11/bits/shared_ptr_base.h:519:39:   required from ‘std::_Sp_counted_ptr_inplace<_Tp, _Alloc, _Lp>::_Sp_counted_ptr_inplace(_Alloc, _Args&& ...) [with _Args = {}; _Tp = fideslib::CiphertextImpl<unsigned int>; _Alloc = std::allocator<fideslib::CiphertextImpl<unsigned int> >; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr_base.h:650:16:   required from ‘std::__shared_count<_Lp>::__shared_count(_Tp*&, std::_Sp_alloc_shared_tag<_Alloc>, _Args&& ...) [with _Tp = fideslib::CiphertextImpl<unsigned int>; _Alloc = std::allocator<fideslib::CiphertextImpl<unsigned int> >; _Args = {}; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr_base.h:1342:14:   required from ‘std::__shared_ptr<_Tp, _Lp>::__shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<fideslib::CiphertextImpl<unsigned int> >; _Args = {}; _Tp = fideslib::CiphertextImpl<unsigned int>; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic]’
+/usr/include/c++/11/bits/shared_ptr.h:409:59:   required from ‘std::shared_ptr<_Tp>::shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<fideslib::CiphertextImpl<unsigned int> >; _Args = {}; _Tp = fideslib::CiphertextImpl<unsigned int>]’
+/usr/include/c++/11/bits/shared_ptr.h:862:14:   required from ‘std::shared_ptr<_Tp> std::allocate_shared(const _Alloc&, _Args&& ...) [with _Tp = fideslib::CiphertextImpl<unsigned int>; _Alloc = std::allocator<fideslib::CiphertextImpl<unsigned int> >; _Args = {}]’
+/usr/include/c++/11/bits/shared_ptr.h:878:39:   required from ‘std::shared_ptr<_Tp> std::make_shared(_Args&& ...) [with _Tp = fideslib::CiphertextImpl<unsigned int>; _Args = {}]’
+/workspace/FIDESlib-GPT/bindings/bindings.cpp:161:62:   required from here
+/usr/include/c++/11/bits/stl_construct.h:96:17: error: use of deleted function ‘fideslib::CiphertextImpl<unsigned int>::CiphertextImpl()’
+   96 |     -> decltype(::new((void*)0) _Tp(std::declval<_Args>()...))
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /root/fideslib/api/fideslib.hpp:5,
+                 from /workspace/FIDESlib-GPT/bindings/bindings.cpp:1:
+/root/fideslib/api/Ciphertext.hpp:15:9: note: declared here
+   15 |         CiphertextImpl()  = delete;
+      |         ^~~~~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/_fideslib.dir/build.make:79: CMakeFiles/_fideslib.dir/bindings/bindings.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:90: CMakeFiles/_fideslib.dir/all] Error 2
+gmake: *** [Makefile:91: all] Error 2

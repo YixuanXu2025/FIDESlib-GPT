@@ -1,0 +1,68 @@
+====================================================================================================
+square-block BSGS / 案例1
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+  案例名称: square_block_bsgs_64x64__64x64
+  方块维度 d: 64
+  原始输入形状: (64, 64)
+  原始权重形状: (64, 64)
+  明文参考中位时间(us): 14.62353515625
+  输入密文数: 1
+  输出密文数: 1
+  加密中位时间(us): 19587.57373046875
+  核心计算中位时间(us): 916232.3100585938
+  解密中位时间(us): 15420.71484375
+  核心相对明文倍数: 62654.638585595516
+  正确性误差(max_abs_err): 2.2121360299109938e-11
+  首行前8个输出: [0.3759989504845634, 0.36486797942669913, -2.774648565879735, -1.5524049719901378, -0.9558142597981674, 3.9618151980125886, 0.8298309995881639, 0.34873834537105103]
+  操作统计: {'per_kernel': {'pMult': 127, 'rotate': 29, 'add': 126, 'kernel_calls': 1}, 'total': {'pMult': 127, 'rotate': 29, 'add': 126, 'kernel_calls': 1, '输入密文数': 1, '输出密文数': 1}}
+====================================================================================================
+square-block BSGS / 案例2
+  案例名称: square_block_bsgs_padded_8x64__64x64
+  方块维度 d: 64
+  原始输入形状: (8, 64)
+  原始权重形状: (64, 64)
+  明文参考中位时间(us): 5.43017578125
+  输入密文数: 1
+  输出密文数: 1
+  加密中位时间(us): 19784.2529296875
+  核心计算中位时间(us): 920686.0952148438
+  解密中位时间(us): 15581.75390625
+  核心相对明文倍数: 169549.96160417228
+  正确性误差(max_abs_err): 1.669009375149244e-11
+  首行前8个输出: [0.9534137788680858, -1.4101978507202662, 0.6695831318504581, 1.5294614008017404, 0.4193861070573839, 0.2827826574608359, 0.18144832632779948, -0.48186526565068855]
+  操作统计: {'per_kernel': {'pMult': 127, 'rotate': 29, 'add': 126, 'kernel_calls': 1}, 'total': {'pMult': 127, 'rotate': 29, 'add': 126, 'kernel_calls': 1, '输入密文数': 1, '输出密文数': 1}}
+====================================================================================================
+square-block BSGS / 案例3
+  案例名称: square_block_bsgs_padded_split_8x64__64x128
+  方块维度 d: 64
+  原始输入形状: (8, 64)
+  原始权重形状: (64, 128)
+  明文参考中位时间(us): 8.43896484375
+  输入密文数: 1
+  输出密文数: 2
+  加密中位时间(us): 18768.71728515625
+  核心计算中位时间(us): 1828403.7651367188
+  解密中位时间(us): 31644.349609375
+  核心相对明文倍数: 216662.0905514089
+  正确性误差(max_abs_err): 1.9598600520254195e-11
+  首行前8个输出: [1.2864011099155783, -0.06220442467525516, -1.682134014763102, 0.9508754962702035, 1.701284736072463, 0.08612846565162224, -0.9589488361021788, 2.8572508077637697]
+  操作统计: {'per_kernel': {'pMult': 127, 'rotate': 29, 'add': 126, 'kernel_calls': 1}, 'total': {'pMult': 254, 'rotate': 58, 'add': 252, 'kernel_calls': 2, '输入密文数': 1, '输出密文数': 2}}
+====================================================================================================
+报告已保存
+  JSON路径: /workspace/FIDESlib-GPT/reports/wp3c_square_block_bsgs_baseline_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

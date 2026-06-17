@@ -1,0 +1,2561 @@
+{
+  "experiment": "wp4w3c_component_formula_final_probe",
+  "purpose": "Run final packing/compress/decrypt diagnostics on the component-formula Algorithm 3 skeleton. This verifies whether explicit C0/C1/C2 assembly fixes the V3 dense one-hot failure.",
+  "status": "component_formula_final_diagnostic_not_true_ppmm_yet",
+  "cases": [
+    {
+      "name": "basis_E00_times_E00",
+      "zh": "理论输出 E00；检查最简单 one-hot 是否扩散",
+      "input_U": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "input_V": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "reference_U_matmul_V": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "decrypted_output": [
+        [
+          -11,
+          6,
+          -15,
+          11
+        ],
+        [
+          20,
+          25,
+          13,
+          -15
+        ],
+        [
+          -21,
+          -19,
+          -18,
+          -9
+        ],
+        [
+          20,
+          7,
+          0,
+          11
+        ]
+      ],
+      "row_reports": [
+        {
+          "row_index": 0,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            -11,
+            6,
+            -15,
+            11
+          ]
+        },
+        {
+          "row_index": 1,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            20,
+            25,
+            13,
+            -15
+          ]
+        },
+        {
+          "row_index": 2,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            -21,
+            -19,
+            -18,
+            -9
+          ]
+        },
+        {
+          "row_index": 3,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            20,
+            7,
+            0,
+            11
+          ]
+        }
+      ],
+      "packed_summary": {
+        "num_rows": {
+          "value": 4,
+          "zh": "row-wise packed 输出 ciphertext 数量；4x4 矩阵应为 4 个 row ciphertext"
+        },
+        "consistent_shape": {
+          "value": true,
+          "zh": "所有 row-wise packed 输出 ciphertext 的 component/tower/ring_dim 形状一致"
+        },
+        "expected_parts": {
+          "value": 2,
+          "zh": "每个 row-wise packed 输出 ciphertext 的 RLWE component 数量；应为 2"
+        },
+        "expected_towers": {
+          "value": 1,
+          "zh": "每个 DCRTPoly component 的 RNS tower 数量"
+        },
+        "expected_ring_dim": {
+          "value": 16384,
+          "zh": "row-wise packed 输出 ciphertext 的 ring dimension"
+        },
+        "rows": [
+          {
+            "row_index": 0,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 1,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 2,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 3,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          }
+        ]
+      },
+      "component_trace_summary": {
+        "uses_whole_ciphertext_multiply": false,
+        "right_cmt_auto_alphas": [
+          1,
+          3,
+          5,
+          7
+        ]
+      },
+      "pack_trace_exps": [
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ]
+      ],
+      "analysis": {
+        "all_rows_decrypted": true,
+        "exact": false,
+        "max_abs_err": 25,
+        "diff": [
+          [
+            -12,
+            6,
+            -15,
+            11
+          ],
+          [
+            20,
+            25,
+            13,
+            -15
+          ],
+          [
+            -21,
+            -19,
+            -18,
+            -9
+          ],
+          [
+            20,
+            7,
+            0,
+            11
+          ]
+        ],
+        "nonzero_positions_got": [
+          [
+            0,
+            0,
+            -11
+          ],
+          [
+            0,
+            1,
+            6
+          ],
+          [
+            0,
+            2,
+            -15
+          ],
+          [
+            0,
+            3,
+            11
+          ],
+          [
+            1,
+            0,
+            20
+          ],
+          [
+            1,
+            1,
+            25
+          ],
+          [
+            1,
+            2,
+            13
+          ],
+          [
+            1,
+            3,
+            -15
+          ],
+          [
+            2,
+            0,
+            -21
+          ],
+          [
+            2,
+            1,
+            -19
+          ],
+          [
+            2,
+            2,
+            -18
+          ],
+          [
+            2,
+            3,
+            -9
+          ],
+          [
+            3,
+            0,
+            20
+          ],
+          [
+            3,
+            1,
+            7
+          ],
+          [
+            3,
+            3,
+            11
+          ]
+        ],
+        "nonzero_positions_ref": [
+          [
+            0,
+            0,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "name": "basis_E01_times_E10",
+      "zh": "理论输出 E00；检查内积索引是否对齐",
+      "input_U": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "input_V": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "reference_U_matmul_V": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "decrypted_output": [
+        [
+          20,
+          -12,
+          24,
+          -20
+        ],
+        [
+          10,
+          24,
+          19,
+          -2
+        ],
+        [
+          -21,
+          -6,
+          -16,
+          -13
+        ],
+        [
+          22,
+          10,
+          -15,
+          -14
+        ]
+      ],
+      "row_reports": [
+        {
+          "row_index": 0,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            20,
+            -12,
+            24,
+            -20
+          ]
+        },
+        {
+          "row_index": 1,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            10,
+            24,
+            19,
+            -2
+          ]
+        },
+        {
+          "row_index": 2,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            -21,
+            -6,
+            -16,
+            -13
+          ]
+        },
+        {
+          "row_index": 3,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            22,
+            10,
+            -15,
+            -14
+          ]
+        }
+      ],
+      "packed_summary": {
+        "num_rows": {
+          "value": 4,
+          "zh": "row-wise packed 输出 ciphertext 数量；4x4 矩阵应为 4 个 row ciphertext"
+        },
+        "consistent_shape": {
+          "value": true,
+          "zh": "所有 row-wise packed 输出 ciphertext 的 component/tower/ring_dim 形状一致"
+        },
+        "expected_parts": {
+          "value": 2,
+          "zh": "每个 row-wise packed 输出 ciphertext 的 RLWE component 数量；应为 2"
+        },
+        "expected_towers": {
+          "value": 1,
+          "zh": "每个 DCRTPoly component 的 RNS tower 数量"
+        },
+        "expected_ring_dim": {
+          "value": 16384,
+          "zh": "row-wise packed 输出 ciphertext 的 ring dimension"
+        },
+        "rows": [
+          {
+            "row_index": 0,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 1,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 2,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 3,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          }
+        ]
+      },
+      "component_trace_summary": {
+        "uses_whole_ciphertext_multiply": false,
+        "right_cmt_auto_alphas": [
+          1,
+          3,
+          5,
+          7
+        ]
+      },
+      "pack_trace_exps": [
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ]
+      ],
+      "analysis": {
+        "all_rows_decrypted": true,
+        "exact": false,
+        "max_abs_err": 24,
+        "diff": [
+          [
+            19,
+            -12,
+            24,
+            -20
+          ],
+          [
+            10,
+            24,
+            19,
+            -2
+          ],
+          [
+            -21,
+            -6,
+            -16,
+            -13
+          ],
+          [
+            22,
+            10,
+            -15,
+            -14
+          ]
+        ],
+        "nonzero_positions_got": [
+          [
+            0,
+            0,
+            20
+          ],
+          [
+            0,
+            1,
+            -12
+          ],
+          [
+            0,
+            2,
+            24
+          ],
+          [
+            0,
+            3,
+            -20
+          ],
+          [
+            1,
+            0,
+            10
+          ],
+          [
+            1,
+            1,
+            24
+          ],
+          [
+            1,
+            2,
+            19
+          ],
+          [
+            1,
+            3,
+            -2
+          ],
+          [
+            2,
+            0,
+            -21
+          ],
+          [
+            2,
+            1,
+            -6
+          ],
+          [
+            2,
+            2,
+            -16
+          ],
+          [
+            2,
+            3,
+            -13
+          ],
+          [
+            3,
+            0,
+            22
+          ],
+          [
+            3,
+            1,
+            10
+          ],
+          [
+            3,
+            2,
+            -15
+          ],
+          [
+            3,
+            3,
+            -14
+          ]
+        ],
+        "nonzero_positions_ref": [
+          [
+            0,
+            0,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "name": "basis_E01_times_E12",
+      "zh": "理论输出 E02；检查列 placement",
+      "input_U": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "input_V": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "reference_U_matmul_V": [
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "decrypted_output": [
+        [
+          12,
+          -5,
+          -8,
+          -12
+        ],
+        [
+          15,
+          23,
+          -18,
+          19
+        ],
+        [
+          10,
+          -10,
+          -20,
+          23
+        ],
+        [
+          -9,
+          -21,
+          -13,
+          13
+        ]
+      ],
+      "row_reports": [
+        {
+          "row_index": 0,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            12,
+            -5,
+            -8,
+            -12
+          ]
+        },
+        {
+          "row_index": 1,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            15,
+            23,
+            -18,
+            19
+          ]
+        },
+        {
+          "row_index": 2,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            10,
+            -10,
+            -20,
+            23
+          ]
+        },
+        {
+          "row_index": 3,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            -9,
+            -21,
+            -13,
+            13
+          ]
+        }
+      ],
+      "packed_summary": {
+        "num_rows": {
+          "value": 4,
+          "zh": "row-wise packed 输出 ciphertext 数量；4x4 矩阵应为 4 个 row ciphertext"
+        },
+        "consistent_shape": {
+          "value": true,
+          "zh": "所有 row-wise packed 输出 ciphertext 的 component/tower/ring_dim 形状一致"
+        },
+        "expected_parts": {
+          "value": 2,
+          "zh": "每个 row-wise packed 输出 ciphertext 的 RLWE component 数量；应为 2"
+        },
+        "expected_towers": {
+          "value": 1,
+          "zh": "每个 DCRTPoly component 的 RNS tower 数量"
+        },
+        "expected_ring_dim": {
+          "value": 16384,
+          "zh": "row-wise packed 输出 ciphertext 的 ring dimension"
+        },
+        "rows": [
+          {
+            "row_index": 0,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 1,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 2,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 3,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          }
+        ]
+      },
+      "component_trace_summary": {
+        "uses_whole_ciphertext_multiply": false,
+        "right_cmt_auto_alphas": [
+          1,
+          3,
+          5,
+          7
+        ]
+      },
+      "pack_trace_exps": [
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ]
+      ],
+      "analysis": {
+        "all_rows_decrypted": true,
+        "exact": false,
+        "max_abs_err": 23,
+        "diff": [
+          [
+            12,
+            -5,
+            -9,
+            -12
+          ],
+          [
+            15,
+            23,
+            -18,
+            19
+          ],
+          [
+            10,
+            -10,
+            -20,
+            23
+          ],
+          [
+            -9,
+            -21,
+            -13,
+            13
+          ]
+        ],
+        "nonzero_positions_got": [
+          [
+            0,
+            0,
+            12
+          ],
+          [
+            0,
+            1,
+            -5
+          ],
+          [
+            0,
+            2,
+            -8
+          ],
+          [
+            0,
+            3,
+            -12
+          ],
+          [
+            1,
+            0,
+            15
+          ],
+          [
+            1,
+            1,
+            23
+          ],
+          [
+            1,
+            2,
+            -18
+          ],
+          [
+            1,
+            3,
+            19
+          ],
+          [
+            2,
+            0,
+            10
+          ],
+          [
+            2,
+            1,
+            -10
+          ],
+          [
+            2,
+            2,
+            -20
+          ],
+          [
+            2,
+            3,
+            23
+          ],
+          [
+            3,
+            0,
+            -9
+          ],
+          [
+            3,
+            1,
+            -21
+          ],
+          [
+            3,
+            2,
+            -13
+          ],
+          [
+            3,
+            3,
+            13
+          ]
+        ],
+        "nonzero_positions_ref": [
+          [
+            0,
+            2,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "name": "basis_E23_times_E31",
+      "zh": "理论输出 E21；检查行列 orientation",
+      "input_U": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "input_V": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ]
+      ],
+      "reference_U_matmul_V": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "decrypted_output": [
+        [
+          1,
+          -10,
+          -17,
+          1
+        ],
+        [
+          -17,
+          4,
+          -16,
+          14
+        ],
+        [
+          -9,
+          10,
+          -1,
+          3
+        ],
+        [
+          4,
+          -5,
+          -12,
+          23
+        ]
+      ],
+      "row_reports": [
+        {
+          "row_index": 0,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            1,
+            -10,
+            -17,
+            1
+          ]
+        },
+        {
+          "row_index": 1,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            -17,
+            4,
+            -16,
+            14
+          ]
+        },
+        {
+          "row_index": 2,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            -9,
+            10,
+            -1,
+            3
+          ]
+        },
+        {
+          "row_index": 3,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            4,
+            -5,
+            -12,
+            23
+          ]
+        }
+      ],
+      "packed_summary": {
+        "num_rows": {
+          "value": 4,
+          "zh": "row-wise packed 输出 ciphertext 数量；4x4 矩阵应为 4 个 row ciphertext"
+        },
+        "consistent_shape": {
+          "value": true,
+          "zh": "所有 row-wise packed 输出 ciphertext 的 component/tower/ring_dim 形状一致"
+        },
+        "expected_parts": {
+          "value": 2,
+          "zh": "每个 row-wise packed 输出 ciphertext 的 RLWE component 数量；应为 2"
+        },
+        "expected_towers": {
+          "value": 1,
+          "zh": "每个 DCRTPoly component 的 RNS tower 数量"
+        },
+        "expected_ring_dim": {
+          "value": 16384,
+          "zh": "row-wise packed 输出 ciphertext 的 ring dimension"
+        },
+        "rows": [
+          {
+            "row_index": 0,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 1,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 2,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 3,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          }
+        ]
+      },
+      "component_trace_summary": {
+        "uses_whole_ciphertext_multiply": false,
+        "right_cmt_auto_alphas": [
+          1,
+          3,
+          5,
+          7
+        ]
+      },
+      "pack_trace_exps": [
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ]
+      ],
+      "analysis": {
+        "all_rows_decrypted": true,
+        "exact": false,
+        "max_abs_err": 23,
+        "diff": [
+          [
+            1,
+            -10,
+            -17,
+            1
+          ],
+          [
+            -17,
+            4,
+            -16,
+            14
+          ],
+          [
+            -9,
+            9,
+            -1,
+            3
+          ],
+          [
+            4,
+            -5,
+            -12,
+            23
+          ]
+        ],
+        "nonzero_positions_got": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            -10
+          ],
+          [
+            0,
+            2,
+            -17
+          ],
+          [
+            0,
+            3,
+            1
+          ],
+          [
+            1,
+            0,
+            -17
+          ],
+          [
+            1,
+            1,
+            4
+          ],
+          [
+            1,
+            2,
+            -16
+          ],
+          [
+            1,
+            3,
+            14
+          ],
+          [
+            2,
+            0,
+            -9
+          ],
+          [
+            2,
+            1,
+            10
+          ],
+          [
+            2,
+            2,
+            -1
+          ],
+          [
+            2,
+            3,
+            3
+          ],
+          [
+            3,
+            0,
+            4
+          ],
+          [
+            3,
+            1,
+            -5
+          ],
+          [
+            3,
+            2,
+            -12
+          ],
+          [
+            3,
+            3,
+            23
+          ]
+        ],
+        "nonzero_positions_ref": [
+          [
+            2,
+            1,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "name": "identity_times_random_small",
+      "zh": "I·V 应等于 V",
+      "input_U": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "input_V": [
+        [
+          0,
+          -1,
+          2,
+          2
+        ],
+        [
+          1,
+          -1,
+          -2,
+          2
+        ],
+        [
+          1,
+          0,
+          -1,
+          0
+        ],
+        [
+          -2,
+          2,
+          -1,
+          2
+        ]
+      ],
+      "reference_U_matmul_V": [
+        [
+          0,
+          -1,
+          2,
+          2
+        ],
+        [
+          1,
+          -1,
+          -2,
+          2
+        ],
+        [
+          1,
+          0,
+          -1,
+          0
+        ],
+        [
+          -2,
+          2,
+          -1,
+          2
+        ]
+      ],
+      "decrypted_output": [
+        [
+          21,
+          -15,
+          9,
+          -4
+        ],
+        [
+          -24,
+          -16,
+          -2,
+          -14
+        ],
+        [
+          25,
+          -20,
+          -2,
+          -9
+        ],
+        [
+          24,
+          19,
+          15,
+          21
+        ]
+      ],
+      "row_reports": [
+        {
+          "row_index": 0,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            21,
+            -15,
+            9,
+            -4
+          ]
+        },
+        {
+          "row_index": 1,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            -24,
+            -16,
+            -2,
+            -14
+          ]
+        },
+        {
+          "row_index": 2,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            25,
+            -20,
+            -2,
+            -9
+          ]
+        },
+        {
+          "row_index": 3,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            24,
+            19,
+            15,
+            21
+          ]
+        }
+      ],
+      "packed_summary": {
+        "num_rows": {
+          "value": 4,
+          "zh": "row-wise packed 输出 ciphertext 数量；4x4 矩阵应为 4 个 row ciphertext"
+        },
+        "consistent_shape": {
+          "value": true,
+          "zh": "所有 row-wise packed 输出 ciphertext 的 component/tower/ring_dim 形状一致"
+        },
+        "expected_parts": {
+          "value": 2,
+          "zh": "每个 row-wise packed 输出 ciphertext 的 RLWE component 数量；应为 2"
+        },
+        "expected_towers": {
+          "value": 1,
+          "zh": "每个 DCRTPoly component 的 RNS tower 数量"
+        },
+        "expected_ring_dim": {
+          "value": 16384,
+          "zh": "row-wise packed 输出 ciphertext 的 ring dimension"
+        },
+        "rows": [
+          {
+            "row_index": 0,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 1,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 2,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 3,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          }
+        ]
+      },
+      "component_trace_summary": {
+        "uses_whole_ciphertext_multiply": false,
+        "right_cmt_auto_alphas": [
+          1,
+          3,
+          5,
+          7
+        ]
+      },
+      "pack_trace_exps": [
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ]
+      ],
+      "analysis": {
+        "all_rows_decrypted": true,
+        "exact": false,
+        "max_abs_err": 26,
+        "diff": [
+          [
+            21,
+            -14,
+            7,
+            -6
+          ],
+          [
+            -25,
+            -15,
+            0,
+            -16
+          ],
+          [
+            24,
+            -20,
+            -1,
+            -9
+          ],
+          [
+            26,
+            17,
+            16,
+            19
+          ]
+        ],
+        "nonzero_positions_got": [
+          [
+            0,
+            0,
+            21
+          ],
+          [
+            0,
+            1,
+            -15
+          ],
+          [
+            0,
+            2,
+            9
+          ],
+          [
+            0,
+            3,
+            -4
+          ],
+          [
+            1,
+            0,
+            -24
+          ],
+          [
+            1,
+            1,
+            -16
+          ],
+          [
+            1,
+            2,
+            -2
+          ],
+          [
+            1,
+            3,
+            -14
+          ],
+          [
+            2,
+            0,
+            25
+          ],
+          [
+            2,
+            1,
+            -20
+          ],
+          [
+            2,
+            2,
+            -2
+          ],
+          [
+            2,
+            3,
+            -9
+          ],
+          [
+            3,
+            0,
+            24
+          ],
+          [
+            3,
+            1,
+            19
+          ],
+          [
+            3,
+            2,
+            15
+          ],
+          [
+            3,
+            3,
+            21
+          ]
+        ],
+        "nonzero_positions_ref": [
+          [
+            0,
+            1,
+            -1
+          ],
+          [
+            0,
+            2,
+            2
+          ],
+          [
+            0,
+            3,
+            2
+          ],
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            -1
+          ],
+          [
+            1,
+            2,
+            -2
+          ],
+          [
+            1,
+            3,
+            2
+          ],
+          [
+            2,
+            0,
+            1
+          ],
+          [
+            2,
+            2,
+            -1
+          ],
+          [
+            3,
+            0,
+            -2
+          ],
+          [
+            3,
+            1,
+            2
+          ],
+          [
+            3,
+            2,
+            -1
+          ],
+          [
+            3,
+            3,
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "name": "random_small_times_identity",
+      "zh": "U·I 应等于 U",
+      "input_U": [
+        [
+          2,
+          -1,
+          -1,
+          -1
+        ],
+        [
+          -2,
+          0,
+          -2,
+          -2
+        ],
+        [
+          -1,
+          -2,
+          2,
+          2
+        ],
+        [
+          2,
+          1,
+          1,
+          -2
+        ]
+      ],
+      "input_V": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "reference_U_matmul_V": [
+        [
+          2,
+          -1,
+          -1,
+          -1
+        ],
+        [
+          -2,
+          0,
+          -2,
+          -2
+        ],
+        [
+          -1,
+          -2,
+          2,
+          2
+        ],
+        [
+          2,
+          1,
+          1,
+          -2
+        ]
+      ],
+      "decrypted_output": [
+        [
+          -21,
+          -16,
+          2,
+          16
+        ],
+        [
+          -3,
+          -19,
+          -8,
+          -12
+        ],
+        [
+          6,
+          -18,
+          -8,
+          -8
+        ],
+        [
+          -11,
+          7,
+          17,
+          23
+        ]
+      ],
+      "row_reports": [
+        {
+          "row_index": 0,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            -21,
+            -16,
+            2,
+            16
+          ]
+        },
+        {
+          "row_index": 1,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            -3,
+            -19,
+            -8,
+            -12
+          ]
+        },
+        {
+          "row_index": 2,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            6,
+            -18,
+            -8,
+            -8
+          ]
+        },
+        {
+          "row_index": 3,
+          "decrypt_ok": true,
+          "error": null,
+          "value": [
+            -11,
+            7,
+            17,
+            23
+          ]
+        }
+      ],
+      "packed_summary": {
+        "num_rows": {
+          "value": 4,
+          "zh": "row-wise packed 输出 ciphertext 数量；4x4 矩阵应为 4 个 row ciphertext"
+        },
+        "consistent_shape": {
+          "value": true,
+          "zh": "所有 row-wise packed 输出 ciphertext 的 component/tower/ring_dim 形状一致"
+        },
+        "expected_parts": {
+          "value": 2,
+          "zh": "每个 row-wise packed 输出 ciphertext 的 RLWE component 数量；应为 2"
+        },
+        "expected_towers": {
+          "value": 1,
+          "zh": "每个 DCRTPoly component 的 RNS tower 数量"
+        },
+        "expected_ring_dim": {
+          "value": 16384,
+          "zh": "row-wise packed 输出 ciphertext 的 ring dimension"
+        },
+        "rows": [
+          {
+            "row_index": 0,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 1,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 2,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 3,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "row-wise packed 输出应为 2 个 RLWE component，即 c0/c1"
+            },
+            "level": 3,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          }
+        ]
+      },
+      "component_trace_summary": {
+        "uses_whole_ciphertext_multiply": false,
+        "right_cmt_auto_alphas": [
+          1,
+          3,
+          5,
+          7
+        ]
+      },
+      "pack_trace_exps": [
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ]
+      ],
+      "analysis": {
+        "all_rows_decrypted": true,
+        "exact": false,
+        "max_abs_err": 25,
+        "diff": [
+          [
+            -23,
+            -15,
+            3,
+            17
+          ],
+          [
+            -1,
+            -19,
+            -6,
+            -10
+          ],
+          [
+            7,
+            -16,
+            -10,
+            -10
+          ],
+          [
+            -13,
+            6,
+            16,
+            25
+          ]
+        ],
+        "nonzero_positions_got": [
+          [
+            0,
+            0,
+            -21
+          ],
+          [
+            0,
+            1,
+            -16
+          ],
+          [
+            0,
+            2,
+            2
+          ],
+          [
+            0,
+            3,
+            16
+          ],
+          [
+            1,
+            0,
+            -3
+          ],
+          [
+            1,
+            1,
+            -19
+          ],
+          [
+            1,
+            2,
+            -8
+          ],
+          [
+            1,
+            3,
+            -12
+          ],
+          [
+            2,
+            0,
+            6
+          ],
+          [
+            2,
+            1,
+            -18
+          ],
+          [
+            2,
+            2,
+            -8
+          ],
+          [
+            2,
+            3,
+            -8
+          ],
+          [
+            3,
+            0,
+            -11
+          ],
+          [
+            3,
+            1,
+            7
+          ],
+          [
+            3,
+            2,
+            17
+          ],
+          [
+            3,
+            3,
+            23
+          ]
+        ],
+        "nonzero_positions_ref": [
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            1,
+            -1
+          ],
+          [
+            0,
+            2,
+            -1
+          ],
+          [
+            0,
+            3,
+            -1
+          ],
+          [
+            1,
+            0,
+            -2
+          ],
+          [
+            1,
+            2,
+            -2
+          ],
+          [
+            1,
+            3,
+            -2
+          ],
+          [
+            2,
+            0,
+            -1
+          ],
+          [
+            2,
+            1,
+            -2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            3,
+            2
+          ],
+          [
+            3,
+            0,
+            2
+          ],
+          [
+            3,
+            1,
+            1
+          ],
+          [
+            3,
+            2,
+            1
+          ],
+          [
+            3,
+            3,
+            -2
+          ]
+        ]
+      }
+    }
+  ],
+  "pipeline": {
+    "step1": {
+      "value": "W_component = ccmm_algorithm3_component_formula_skeleton(U,V)",
+      "zh": "使用显式 C0/C1/C2 component 公式，不调用整密文乘法"
+    },
+    "step2": {
+      "value": "W_relin = relinearize_ciphertext_matrix(W_component)",
+      "zh": "每个位置从 c0/c1/c2 压回 c0/c1"
+    },
+    "step3": {
+      "value": "W_rows = pack_relinearized_position_matrix_rowwise(W_relin)",
+      "zh": "把 16 个位置级 ciphertext pack 成 4 个 row-wise ciphertext"
+    },
+    "step4": {
+      "value": "Compress(..., towers_left=1) then decrypt_coeff_row_i64",
+      "zh": "压缩到 1 个 RNS tower 后最终解密"
+    }
+  },
+  "expected_interpretation": {
+    "if_exact": {
+      "value": "component formula skeleton fixed the previous issue",
+      "zh": "如果 one-hot 和 identity 用例通过，则 component-formula skeleton 至少小尺寸可用"
+    },
+    "if_dense_wrong": {
+      "value": "pairwise skeleton is still not true PP-MM placement",
+      "zh": "如果 one-hot 仍扩散，说明必须实现论文真正 PP-MM placement/indexing"
+    }
+  },
+  "checks": {
+    "all_cases_decrypted（所有测试用例都成功解密）": true,
+    "component_trace_uses_no_whole_ciphertext_multiply（component skeleton 未使用整密文乘法）": true,
+    "all_right_cmt_auto_alphas_expected（所有 case 的 C-MT alpha 都是 [1,3,5,7]）": true,
+    "exact_case_count（完全等于 U@V 的 case 数量）": 0,
+    "failed_case_count（不等于 U@V 的 case 数量）": 6,
+    "one_hot_dense_failure_summary（one-hot 失败时输出非零数量诊断）": [
+      {
+        "name": "basis_E00_times_E00",
+        "got_nonzero_count": 15,
+        "ref_nonzero_count": 1
+      },
+      {
+        "name": "basis_E01_times_E10",
+        "got_nonzero_count": 16,
+        "ref_nonzero_count": 1
+      },
+      {
+        "name": "basis_E01_times_E12",
+        "got_nonzero_count": 16,
+        "ref_nonzero_count": 1
+      },
+      {
+        "name": "basis_E23_times_E31",
+        "got_nonzero_count": 16,
+        "ref_nonzero_count": 1
+      }
+    ]
+  },
+  "summary": {
+    "exact_cases": [],
+    "failed_cases": [
+      "basis_E00_times_E00",
+      "basis_E01_times_E10",
+      "basis_E01_times_E12",
+      "basis_E23_times_E31",
+      "identity_times_random_small",
+      "random_small_times_identity"
+    ],
+    "next_step_if_all_exact": "Promote component-formula skeleton to experimental CCMM API.",
+    "next_step_if_dense_wrong": "WP4-X1: implement true PP-MM placement/indexing from the paper, not pairwise position skeleton.",
+    "zh": "如果 one-hot 仍然密集扩散，则 C0/C1/C2 公式可运行但 pairwise skeleton 仍不是论文真正 PP-MM。"
+  }
+}

@@ -1,0 +1,880 @@
+{
+  "experiment": "wp4t2_relinearize_algorithm3_matrix",
+  "purpose": "Relinearize all 16 no-relin ciphertexts produced by the real Algorithm 3 skeleton: each c0/c1/c2 ciphertext becomes c0/c1.",
+  "status": "algorithm3_positionwise_relinearization_only_no_row_packing_no_final_decrypt",
+  "input_U_i64": [
+    [
+      3,
+      0,
+      0,
+      3
+    ],
+    [
+      -1,
+      -3,
+      -3,
+      -2
+    ],
+    [
+      -2,
+      1,
+      -1,
+      2
+    ],
+    [
+      1,
+      -2,
+      1,
+      -2
+    ]
+  ],
+  "input_V_i64": [
+    [
+      0,
+      -2,
+      -2,
+      -2
+    ],
+    [
+      -3,
+      -3,
+      3,
+      2
+    ],
+    [
+      1,
+      3,
+      2,
+      -1
+    ],
+    [
+      3,
+      -1,
+      2,
+      3
+    ]
+  ],
+  "reference_U_matmul_V_plain": [
+    [
+      9,
+      -9,
+      0,
+      3
+    ],
+    [
+      0,
+      4,
+      -17,
+      -7
+    ],
+    [
+      2,
+      -4,
+      9,
+      13
+    ],
+    [
+      1,
+      9,
+      -10,
+      -13
+    ]
+  ],
+  "pipeline": {
+    "step1": {
+      "value": "W_no_relin = Algorithm3Skeleton(U, V)",
+      "zh": "先运行 Algorithm 3 skeleton，得到 4x4 个三分量位置级 ciphertext"
+    },
+    "step2": {
+      "value": "W_relin[i][j] = Relinearize(W_no_relin[i][j])",
+      "zh": "对每个位置级三分量 ciphertext 做重线性化，压回二分量"
+    }
+  },
+  "no_relin_summary": {
+    "shape": {
+      "value": [
+        4,
+        4
+      ],
+      "zh": "no-relin 结果矩阵形状"
+    },
+    "num_ciphertexts": {
+      "value": 16,
+      "zh": "结果矩阵中的 ciphertext 总数"
+    },
+    "consistent_shape": {
+      "value": true,
+      "zh": "所有 no-relin 输出 ciphertext 的 component/tower/ring_dim 形状一致"
+    },
+    "expected_parts": {
+      "value": 3,
+      "zh": "每个 no-relin 输出 ciphertext 的 RLWE component 数量；应为 3"
+    },
+    "expected_towers": {
+      "value": 4,
+      "zh": "每个 DCRTPoly component 的 RNS tower 数量"
+    },
+    "expected_ring_dim": {
+      "value": 16384,
+      "zh": "输出 ciphertext 的 ring dimension"
+    },
+    "entries": [
+      {
+        "matrix_index": [
+          0,
+          0
+        ],
+        "flat_index": 0,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          0,
+          1
+        ],
+        "flat_index": 1,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          0,
+          2
+        ],
+        "flat_index": 2,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          0,
+          3
+        ],
+        "flat_index": 3,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          1,
+          0
+        ],
+        "flat_index": 4,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          1,
+          1
+        ],
+        "flat_index": 5,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          1,
+          2
+        ],
+        "flat_index": 6,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          1,
+          3
+        ],
+        "flat_index": 7,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          2,
+          0
+        ],
+        "flat_index": 8,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          2,
+          1
+        ],
+        "flat_index": 9,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          2,
+          2
+        ],
+        "flat_index": 10,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          2,
+          3
+        ],
+        "flat_index": 11,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          3,
+          0
+        ],
+        "flat_index": 12,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          3,
+          1
+        ],
+        "flat_index": 13,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          3,
+          2
+        ],
+        "flat_index": 14,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          3,
+          3
+        ],
+        "flat_index": 15,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 3,
+          "zh": "no-relin 乘法输出应为 3 个 RLWE component，即 c0/c1/c2"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      }
+    ]
+  },
+  "relin_trace": [
+    [
+      {
+        "i": 0,
+        "j": 0,
+        "operation": "relinearize_coeff_ct(W_no_relin[i][j])",
+        "zh": "将 W_no_relin[0][0] 从三分量 c0/c1/c2 压回二分量 c0/c1"
+      },
+      {
+        "i": 0,
+        "j": 1,
+        "operation": "relinearize_coeff_ct(W_no_relin[i][j])",
+        "zh": "将 W_no_relin[0][1] 从三分量 c0/c1/c2 压回二分量 c0/c1"
+      },
+      {
+        "i": 0,
+        "j": 2,
+        "operation": "relinearize_coeff_ct(W_no_relin[i][j])",
+        "zh": "将 W_no_relin[0][2] 从三分量 c0/c1/c2 压回二分量 c0/c1"
+      },
+      {
+        "i": 0,
+        "j": 3,
+        "operation": "relinearize_coeff_ct(W_no_relin[i][j])",
+        "zh": "将 W_no_relin[0][3] 从三分量 c0/c1/c2 压回二分量 c0/c1"
+      }
+    ],
+    [
+      {
+        "i": 1,
+        "j": 0,
+        "operation": "relinearize_coeff_ct(W_no_relin[i][j])",
+        "zh": "将 W_no_relin[1][0] 从三分量 c0/c1/c2 压回二分量 c0/c1"
+      },
+      {
+        "i": 1,
+        "j": 1,
+        "operation": "relinearize_coeff_ct(W_no_relin[i][j])",
+        "zh": "将 W_no_relin[1][1] 从三分量 c0/c1/c2 压回二分量 c0/c1"
+      },
+      {
+        "i": 1,
+        "j": 2,
+        "operation": "relinearize_coeff_ct(W_no_relin[i][j])",
+        "zh": "将 W_no_relin[1][2] 从三分量 c0/c1/c2 压回二分量 c0/c1"
+      },
+      {
+        "i": 1,
+        "j": 3,
+        "operation": "relinearize_coeff_ct(W_no_relin[i][j])",
+        "zh": "将 W_no_relin[1][3] 从三分量 c0/c1/c2 压回二分量 c0/c1"
+      }
+    ],
+    [
+      {
+        "i": 2,
+        "j": 0,
+        "operation": "relinearize_coeff_ct(W_no_relin[i][j])",
+        "zh": "将 W_no_relin[2][0] 从三分量 c0/c1/c2 压回二分量 c0/c1"
+      },
+      {
+        "i": 2,
+        "j": 1,
+        "operation": "relinearize_coeff_ct(W_no_relin[i][j])",
+        "zh": "将 W_no_relin[2][1] 从三分量 c0/c1/c2 压回二分量 c0/c1"
+      },
+      {
+        "i": 2,
+        "j": 2,
+        "operation": "relinearize_coeff_ct(W_no_relin[i][j])",
+        "zh": "将 W_no_relin[2][2] 从三分量 c0/c1/c2 压回二分量 c0/c1"
+      },
+      {
+        "i": 2,
+        "j": 3,
+        "operation": "relinearize_coeff_ct(W_no_relin[i][j])",
+        "zh": "将 W_no_relin[2][3] 从三分量 c0/c1/c2 压回二分量 c0/c1"
+      }
+    ],
+    [
+      {
+        "i": 3,
+        "j": 0,
+        "operation": "relinearize_coeff_ct(W_no_relin[i][j])",
+        "zh": "将 W_no_relin[3][0] 从三分量 c0/c1/c2 压回二分量 c0/c1"
+      },
+      {
+        "i": 3,
+        "j": 1,
+        "operation": "relinearize_coeff_ct(W_no_relin[i][j])",
+        "zh": "将 W_no_relin[3][1] 从三分量 c0/c1/c2 压回二分量 c0/c1"
+      },
+      {
+        "i": 3,
+        "j": 2,
+        "operation": "relinearize_coeff_ct(W_no_relin[i][j])",
+        "zh": "将 W_no_relin[3][2] 从三分量 c0/c1/c2 压回二分量 c0/c1"
+      },
+      {
+        "i": 3,
+        "j": 3,
+        "operation": "relinearize_coeff_ct(W_no_relin[i][j])",
+        "zh": "将 W_no_relin[3][3] 从三分量 c0/c1/c2 压回二分量 c0/c1"
+      }
+    ]
+  ],
+  "relin_summary": {
+    "shape": {
+      "value": [
+        4,
+        4
+      ],
+      "zh": "relinearized 结果矩阵形状"
+    },
+    "num_ciphertexts": {
+      "value": 16,
+      "zh": "relinearized 结果矩阵中的 ciphertext 总数"
+    },
+    "consistent_shape": {
+      "value": true,
+      "zh": "所有 relinearized 输出 ciphertext 的 component/tower/ring_dim 形状一致"
+    },
+    "expected_parts": {
+      "value": 2,
+      "zh": "每个 relinearized 输出 ciphertext 的 RLWE component 数量；应为 2"
+    },
+    "expected_towers": {
+      "value": 4,
+      "zh": "每个 DCRTPoly component 的 RNS tower 数量"
+    },
+    "expected_ring_dim": {
+      "value": 16384,
+      "zh": "输出 ciphertext 的 ring dimension"
+    },
+    "entries": [
+      {
+        "matrix_index": [
+          0,
+          0
+        ],
+        "flat_index": 0,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "relinearize 后应为 2 个 RLWE component，即 c0/c1"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          0,
+          1
+        ],
+        "flat_index": 1,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "relinearize 后应为 2 个 RLWE component，即 c0/c1"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          0,
+          2
+        ],
+        "flat_index": 2,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "relinearize 后应为 2 个 RLWE component，即 c0/c1"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          0,
+          3
+        ],
+        "flat_index": 3,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "relinearize 后应为 2 个 RLWE component，即 c0/c1"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          1,
+          0
+        ],
+        "flat_index": 4,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "relinearize 后应为 2 个 RLWE component，即 c0/c1"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          1,
+          1
+        ],
+        "flat_index": 5,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "relinearize 后应为 2 个 RLWE component，即 c0/c1"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          1,
+          2
+        ],
+        "flat_index": 6,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "relinearize 后应为 2 个 RLWE component，即 c0/c1"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          1,
+          3
+        ],
+        "flat_index": 7,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "relinearize 后应为 2 个 RLWE component，即 c0/c1"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          2,
+          0
+        ],
+        "flat_index": 8,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "relinearize 后应为 2 个 RLWE component，即 c0/c1"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          2,
+          1
+        ],
+        "flat_index": 9,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "relinearize 后应为 2 个 RLWE component，即 c0/c1"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          2,
+          2
+        ],
+        "flat_index": 10,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "relinearize 后应为 2 个 RLWE component，即 c0/c1"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          2,
+          3
+        ],
+        "flat_index": 11,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "relinearize 后应为 2 个 RLWE component，即 c0/c1"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          3,
+          0
+        ],
+        "flat_index": 12,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "relinearize 后应为 2 个 RLWE component，即 c0/c1"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          3,
+          1
+        ],
+        "flat_index": 13,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "relinearize 后应为 2 个 RLWE component，即 c0/c1"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          3,
+          2
+        ],
+        "flat_index": 14,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "relinearize 后应为 2 个 RLWE component，即 c0/c1"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "matrix_index": [
+          3,
+          3
+        ],
+        "flat_index": 15,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "relinearize 后应为 2 个 RLWE component，即 c0/c1"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      }
+    ]
+  },
+  "checks": {
+    "no_relin_matrix_shape_is_4x4（重线性化前矩阵形状是 4x4）": true,
+    "no_relin_has_16_ciphertexts（重线性化前共有 16 个 ciphertext）": true,
+    "no_relin_each_has_three_parts（重线性化前每个 ciphertext 都是 c0/c1/c2 三分量）": true,
+    "relin_matrix_shape_is_4x4（重线性化后矩阵形状仍是 4x4）": true,
+    "relin_has_16_ciphertexts（重线性化后仍共有 16 个位置级 ciphertext）": true,
+    "relin_consistent_shape（重线性化后所有 ciphertext 的 component/tower/ring_dim 形状一致）": true,
+    "relin_each_has_two_parts（重线性化后每个 ciphertext 都压回 c0/c1 二分量）": true,
+    "relin_uses_coef_encoding（重线性化后每个 ciphertext 仍是 coefficient encoding）": true,
+    "relin_ring_dim_16384（重线性化后 ring_dim 仍是 16384）": true
+  }
+}

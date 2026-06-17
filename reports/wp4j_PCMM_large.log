@@ -1,0 +1,289 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+[phase] encrypt rows
+[phase] GPU-only component linear transform chain via rt.component_linear_transform_gpu
+[component_linear_transform_gpu] layer=0
+[component_linear_transform_gpu] layer=1
+[component_linear_transform_gpu] layer=2
+[component_linear_transform_gpu] layer=3
+[phase] explicit materialize via rt.materialize_gpu_ciphertexts
+[phase] decrypt materialized rows
+====================================================================================================
+WP4-J PCMM large report
+{
+  "experiment": "wp4j_PCMM_large",
+  "purpose": "Validate formal GPU-only component-linear-transform / materialize / decrypt API layering.",
+  "matrix_shape": "64x64 @ 64x64",
+  "n": 64,
+  "layers": 4,
+  "slots": 64,
+  "seed": 205700,
+  "timing_us": {
+    "encrypt_rows": 2883830.1840820312,
+    "gpu_only_compute_layer_times": [
+      618911.859375,
+      616723.5942382812,
+      650644.5649414062,
+      626233.8012695312
+    ],
+    "explicit_materialize_all_rows": 2321453.69140625,
+    "decrypt_materialized_rows": 750211.1235351562,
+    "gpu_only_compute_total": 2512513.8198242188
+  },
+  "states": {
+    "gpu_only_compute_states_first2_each_layer": [
+      [
+        {
+          "valid": true,
+          "loaded": true,
+          "gpu": 130,
+          "has_cpu": true,
+          "level": 4294967295,
+          "noise_scale_deg": 2,
+          "original_level": 5
+        },
+        {
+          "valid": true,
+          "loaded": true,
+          "gpu": 132,
+          "has_cpu": true,
+          "level": 4294967295,
+          "noise_scale_deg": 2,
+          "original_level": 5
+        }
+      ],
+      [
+        {
+          "valid": true,
+          "loaded": true,
+          "gpu": 258,
+          "has_cpu": true,
+          "level": 4294967295,
+          "noise_scale_deg": 2,
+          "original_level": 5
+        },
+        {
+          "valid": true,
+          "loaded": true,
+          "gpu": 260,
+          "has_cpu": true,
+          "level": 4294967295,
+          "noise_scale_deg": 2,
+          "original_level": 5
+        }
+      ],
+      [
+        {
+          "valid": true,
+          "loaded": true,
+          "gpu": 386,
+          "has_cpu": true,
+          "level": 4294967295,
+          "noise_scale_deg": 2,
+          "original_level": 5
+        },
+        {
+          "valid": true,
+          "loaded": true,
+          "gpu": 388,
+          "has_cpu": true,
+          "level": 4294967295,
+          "noise_scale_deg": 2,
+          "original_level": 5
+        }
+      ],
+      [
+        {
+          "valid": true,
+          "loaded": true,
+          "gpu": 514,
+          "has_cpu": true,
+          "level": 4294967295,
+          "noise_scale_deg": 2,
+          "original_level": 5
+        },
+        {
+          "valid": true,
+          "loaded": true,
+          "gpu": 516,
+          "has_cpu": true,
+          "level": 4294967295,
+          "noise_scale_deg": 2,
+          "original_level": 5
+        }
+      ]
+    ],
+    "materialized_states_first2": [
+      {
+        "valid": true,
+        "loaded": false,
+        "gpu": 0,
+        "has_cpu": true,
+        "level": 4294967295,
+        "noise_scale_deg": 2,
+        "original_level": 5
+      },
+      {
+        "valid": true,
+        "loaded": false,
+        "gpu": 0,
+        "has_cpu": true,
+        "level": 4294967295,
+        "noise_scale_deg": 2,
+        "original_level": 5
+      }
+    ]
+  },
+  "errors": {
+    "component_linear_transform_to_ref_max_abs_err": 8.733014311701481e-13
+  },
+  "Y_ref_first_row": [
+    26.36251767293311,
+    -19.256663488984064,
+    -18.09796374043388,
+    -23.28918609812562,
+    -9.796166477211024,
+    19.59929932588316,
+    -13.873050873191858,
+    -29.518165818280696,
+    -14.618721800279133,
+    -7.646098037852775,
+    32.916233857423535,
+    8.87628671955911,
+    -4.033335437723478,
+    51.21295144028515,
+    -4.018137973369026,
+    -4.855054734781335,
+    5.183662469933313,
+    28.33436893275132,
+    -20.270953676018543,
+    -20.8810901655918,
+    26.82569458853998,
+    6.793567330095632,
+    11.229011418975029,
+    4.423637166206936,
+    -6.458740362325939,
+    23.11274043859213,
+    -14.38085731827282,
+    -33.4098671226153,
+    48.83439378807323,
+    52.39074984939665,
+    -31.62704536413853,
+    -0.9385391343626237,
+    -39.07050725331668,
+    29.939098058014828,
+    -3.9947301736540854,
+    -29.34049519083965,
+    -15.078219916392044,
+    31.12012145586058,
+    -1.8758374265833635,
+    20.444494832359425,
+    37.81051563642567,
+    -4.568388311715277,
+    12.758246571232094,
+    12.437995891672127,
+    18.21270961796847,
+    34.661224382977416,
+    13.337375073225472,
+    -14.603762544768962,
+    -2.7065648119966266,
+    36.132348332250736,
+    -69.81332012947284,
+    36.28846924338985,
+    14.682922087599124,
+    -18.07150218664777,
+    30.193099225299246,
+    47.5790086597055,
+    -35.92348996281886,
+    3.9058632852075625,
+    28.049350951957862,
+    -15.050707806286127,
+    34.03285965825673,
+    5.706322893229737,
+    15.997689645856875,
+    -25.297022695816448
+  ],
+  "dec_first_row": [
+    26.362517672932828,
+    -19.256663488983808,
+    -18.097963740434004,
+    -23.28918609812569,
+    -9.796166477211289,
+    19.59929932588292,
+    -13.873050873191843,
+    -29.518165818280465,
+    -14.618721800279488,
+    -7.646098037852667,
+    32.91623385742325,
+    8.876286719559161,
+    -4.033335437723492,
+    51.212951440285096,
+    -4.018137973369052,
+    -4.855054734780818,
+    5.183662469933406,
+    28.33436893275136,
+    -20.270953676018166,
+    -20.88109016559207,
+    26.82569458853969,
+    6.793567330095838,
+    11.229011418975201,
+    4.423637166207033,
+    -6.458740362325791,
+    23.11274043859204,
+    -14.380857318272716,
+    -33.40986712261555,
+    48.83439378807358,
+    52.39074984939688,
+    -31.627045364139075,
+    -0.938539134362653,
+    -39.0705072533173,
+    29.939098058015002,
+    -3.994730173653986,
+    -29.340495190840038,
+    -15.07821991639184,
+    31.120121455860474,
+    -1.8758374265834954,
+    20.444494832359098,
+    37.810515636425905,
+    -4.568388311715186,
+    12.758246571232032,
+    12.437995891672216,
+    18.21270961796892,
+    34.661224382977124,
+    13.337375073225767,
+    -14.603762544769282,
+    -2.706564811996748,
+    36.13234833225086,
+    -69.81332012947232,
+    36.28846924338991,
+    14.682922087599138,
+    -18.07150218664787,
+    30.193099225299267,
+    47.57900865970582,
+    -35.9234899628187,
+    3.905863285207575,
+    28.049350951957855,
+    -15.050707806285828,
+    34.032859658256776,
+    5.706322893229842,
+    15.997689645856969,
+    -25.29702269581651
+  ]
+}
+====================================================================================================
+saved: /workspace/FIDESlib-GPT/reports/wp4j_PCMM_large.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

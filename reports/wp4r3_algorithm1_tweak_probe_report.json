@@ -1,0 +1,289 @@
+{
+  "experiment": "wp4r3_algorithm1_tweak_probe",
+  "purpose": "Implement and smoke-test real Park-2025 Algorithm 1 Tweak using coefficient ciphertext primitives.",
+  "status": "algorithm1_tweak_probe_only_no_cmt_no_ccmm",
+  "input_matrix_M_i64": [
+    [
+      -1,
+      -3,
+      -2,
+      -2
+    ],
+    [
+      0,
+      2,
+      -3,
+      0
+    ],
+    [
+      2,
+      1,
+      -3,
+      1
+    ],
+    [
+      3,
+      0,
+      2,
+      2
+    ]
+  ],
+  "formula": {
+    "value": "ct_prime[j] = sum_i X^(2*i*j*N/n) * ct_i",
+    "zh": "Algorithm 1 Tweak：第 j 个输出由所有输入行密文乘单项式后相加得到"
+  },
+  "input_bundle": {
+    "shape": [
+      4,
+      4
+    ],
+    "ring_dim": 16384,
+    "encoding_type": {
+      "value": 1,
+      "zh": "OpenFHE coefficient encoding 类型；1 表示 coefficient-style encoding"
+    },
+    "num_parts": {
+      "value": 2,
+      "zh": "每个 RLWE ciphertext 的 component 数量；应为 2，即 c0 和 c1"
+    },
+    "num_towers": {
+      "value": 4,
+      "zh": "每个 DCRTPoly component 的 RNS tower 数量"
+    },
+    "orientation": {
+      "value": "rowwise",
+      "zh": "当前 bundle 是 row-wise，每个 ciphertext 加密矩阵的一行"
+    },
+    "mapping": {
+      "value": "B=c0/GetElements()[0], A=c1/GetElements()[1]",
+      "zh": "论文映射：B 是 c0，A 是 c1，因此 A·sk+B 近似表示明文矩阵"
+    }
+  },
+  "tweak_trace": [
+    {
+      "j": 0,
+      "terms": [
+        {
+          "i": 0,
+          "j": 0,
+          "exp": 0,
+          "formula": "2*i*j*ring_dim/n",
+          "zh": "第 j=0 个输出中，第 i=0 行乘以 X^0"
+        },
+        {
+          "i": 1,
+          "j": 0,
+          "exp": 0,
+          "formula": "2*i*j*ring_dim/n",
+          "zh": "第 j=0 个输出中，第 i=1 行乘以 X^0"
+        },
+        {
+          "i": 2,
+          "j": 0,
+          "exp": 0,
+          "formula": "2*i*j*ring_dim/n",
+          "zh": "第 j=0 个输出中，第 i=2 行乘以 X^0"
+        },
+        {
+          "i": 3,
+          "j": 0,
+          "exp": 0,
+          "formula": "2*i*j*ring_dim/n",
+          "zh": "第 j=0 个输出中，第 i=3 行乘以 X^0"
+        }
+      ],
+      "zh": "输出 ct_prime[0] 是所有 i 项 X^(2*i*j*N/n)·ct_i 的和"
+    },
+    {
+      "j": 1,
+      "terms": [
+        {
+          "i": 0,
+          "j": 1,
+          "exp": 0,
+          "formula": "2*i*j*ring_dim/n",
+          "zh": "第 j=1 个输出中，第 i=0 行乘以 X^0"
+        },
+        {
+          "i": 1,
+          "j": 1,
+          "exp": 8192,
+          "formula": "2*i*j*ring_dim/n",
+          "zh": "第 j=1 个输出中，第 i=1 行乘以 X^8192"
+        },
+        {
+          "i": 2,
+          "j": 1,
+          "exp": 16384,
+          "formula": "2*i*j*ring_dim/n",
+          "zh": "第 j=1 个输出中，第 i=2 行乘以 X^16384"
+        },
+        {
+          "i": 3,
+          "j": 1,
+          "exp": 24576,
+          "formula": "2*i*j*ring_dim/n",
+          "zh": "第 j=1 个输出中，第 i=3 行乘以 X^24576"
+        }
+      ],
+      "zh": "输出 ct_prime[1] 是所有 i 项 X^(2*i*j*N/n)·ct_i 的和"
+    },
+    {
+      "j": 2,
+      "terms": [
+        {
+          "i": 0,
+          "j": 2,
+          "exp": 0,
+          "formula": "2*i*j*ring_dim/n",
+          "zh": "第 j=2 个输出中，第 i=0 行乘以 X^0"
+        },
+        {
+          "i": 1,
+          "j": 2,
+          "exp": 16384,
+          "formula": "2*i*j*ring_dim/n",
+          "zh": "第 j=2 个输出中，第 i=1 行乘以 X^16384"
+        },
+        {
+          "i": 2,
+          "j": 2,
+          "exp": 32768,
+          "formula": "2*i*j*ring_dim/n",
+          "zh": "第 j=2 个输出中，第 i=2 行乘以 X^32768"
+        },
+        {
+          "i": 3,
+          "j": 2,
+          "exp": 49152,
+          "formula": "2*i*j*ring_dim/n",
+          "zh": "第 j=2 个输出中，第 i=3 行乘以 X^49152"
+        }
+      ],
+      "zh": "输出 ct_prime[2] 是所有 i 项 X^(2*i*j*N/n)·ct_i 的和"
+    },
+    {
+      "j": 3,
+      "terms": [
+        {
+          "i": 0,
+          "j": 3,
+          "exp": 0,
+          "formula": "2*i*j*ring_dim/n",
+          "zh": "第 j=3 个输出中，第 i=0 行乘以 X^0"
+        },
+        {
+          "i": 1,
+          "j": 3,
+          "exp": 24576,
+          "formula": "2*i*j*ring_dim/n",
+          "zh": "第 j=3 个输出中，第 i=1 行乘以 X^24576"
+        },
+        {
+          "i": 2,
+          "j": 3,
+          "exp": 49152,
+          "formula": "2*i*j*ring_dim/n",
+          "zh": "第 j=3 个输出中，第 i=2 行乘以 X^49152"
+        },
+        {
+          "i": 3,
+          "j": 3,
+          "exp": 73728,
+          "formula": "2*i*j*ring_dim/n",
+          "zh": "第 j=3 个输出中，第 i=3 行乘以 X^73728"
+        }
+      ],
+      "zh": "输出 ct_prime[3] 是所有 i 项 X^(2*i*j*N/n)·ct_i 的和"
+    }
+  ],
+  "tweak_output": {
+    "num_rows": 4,
+    "consistent_shape": {
+      "value": true,
+      "zh": "所有 Tweak 输出 ciphertext 的 component/tower/ring_dim 形状一致"
+    },
+    "expected_parts": {
+      "value": 2,
+      "zh": "每个输出 ciphertext 的 RLWE component 数量；应为 2，即 c0/c1"
+    },
+    "expected_towers": {
+      "value": 4,
+      "zh": "每个 DCRTPoly component 的 RNS tower 数量"
+    },
+    "expected_ring_dim": {
+      "value": 16384,
+      "zh": "输出 ciphertext 的 ring dimension"
+    },
+    "rows": [
+      {
+        "row_index": 0,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "RLWE component 数量；应为 c0/c1 两部分"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "row_index": 1,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "RLWE component 数量；应为 c0/c1 两部分"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "row_index": 2,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "RLWE component 数量；应为 c0/c1 两部分"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      },
+      {
+        "row_index": 3,
+        "encoding_type": {
+          "value": 1,
+          "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+        },
+        "num_parts": {
+          "value": 2,
+          "zh": "RLWE component 数量；应为 c0/c1 两部分"
+        },
+        "level": 0,
+        "noise_scale_deg": 1,
+        "scaling_factor": 1.0,
+        "slots": 0
+      }
+    ]
+  },
+  "checks": {
+    "tweak_output_has_4_rows（Tweak 输出有 4 个 ciphertext）": true,
+    "tweak_output_consistent_shape（Tweak 输出 component/tower/ring_dim 形状一致）": true,
+    "tweak_output_has_two_rlwe_parts（每个 Tweak 输出仍有 c0/c1 两个 RLWE component）": true,
+    "tweak_output_uses_coef_encoding（每个 Tweak 输出仍是 coefficient encoding）": true,
+    "tweak_output_ring_dim_16384（Tweak 输出 ring_dim 仍是 16384）": true,
+    "tweak_trace_exponents_are_expected（Tweak 指数符合 2*i*j*N/n 公式）": true
+  }
+}

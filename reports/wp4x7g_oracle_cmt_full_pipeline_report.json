@@ -1,0 +1,5186 @@
+{
+  "experiment": "wp4x7g_oracle_cmt_full_pipeline",
+  "purpose": "Use debug-only logical-n C-MT oracle inside the full Algorithm 3 pipeline. This isolates PP-MM/line5/line6 algebra from the known homomorphic C-MT dimension-contract failure.",
+  "status": "debug_oracle_pipeline_no_security_no_homomorphic_cmt",
+  "n": 4,
+  "warning": {
+    "value": "This uses transparent inputs and logical-n raw C-MT oracle. It is not secure and not a final CCMM implementation.",
+    "zh": "本脚本使用 transparent ciphertext 与 raw oracle C-MT，只用于定位代数问题。"
+  },
+  "cases": [
+    {
+      "name": "basis_E00_times_E00",
+      "zh": "理论 U@V = E00",
+      "input_U": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "input_V": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "references": {
+        "U_matmul_V": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "U_transpose_matmul_V": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "U_matmul_V_transpose": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "V_matmul_U": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "V_transpose_matmul_U": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "final": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            -8,
+            -4,
+            20,
+            -23
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "trace": {
+        "U_template_info": {
+          "template_num_towers": 4,
+          "template_ring_dim": 16384,
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "V_template_info": {
+          "template_num_towers": 4,
+          "template_ring_dim": 16384,
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "U_cmt_trace": {
+          "input_c0_row0_tower0": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "input_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c0_row0_tower0": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "output_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "T01_cmt_trace": {
+          "input_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "input_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "T00_cmt_trace": {
+          "input_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "input_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "Ahat_export": {
+          "part": 1,
+          "num_rows": 4,
+          "num_towers": 4,
+          "ring_dim": 16384,
+          "coeff_count": 16384,
+          "row0_tower0_coeff_head": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "Bhat_export": {
+          "part": 0,
+          "num_rows": 4,
+          "num_towers": 4,
+          "ring_dim": 16384,
+          "coeff_count": 16384,
+          "row0_tower0_coeff_head": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "line5_ks_inputs": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 3,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "line5_ks_outputs": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "line5_rows": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "line6_pre_rows": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "raw_ppmm_moduli": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ]
+      },
+      "analysis": {
+        "all_rows_decrypted": true,
+        "matches": {
+          "U_matmul_V": false,
+          "U_transpose_matmul_V": false,
+          "U_matmul_V_transpose": false,
+          "V_matmul_U": false,
+          "V_transpose_matmul_U": false
+        },
+        "errors": {
+          "U_matmul_V": {
+            "max_abs_err": 23,
+            "l1_err": 56,
+            "diff": [
+              [
+                -9,
+                -4,
+                20,
+                -23
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "ref_nonzero_positions": [
+              [
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "U_transpose_matmul_V": {
+            "max_abs_err": 23,
+            "l1_err": 56,
+            "diff": [
+              [
+                -9,
+                -4,
+                20,
+                -23
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "ref_nonzero_positions": [
+              [
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "U_matmul_V_transpose": {
+            "max_abs_err": 23,
+            "l1_err": 56,
+            "diff": [
+              [
+                -9,
+                -4,
+                20,
+                -23
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "ref_nonzero_positions": [
+              [
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "V_matmul_U": {
+            "max_abs_err": 23,
+            "l1_err": 56,
+            "diff": [
+              [
+                -9,
+                -4,
+                20,
+                -23
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "ref_nonzero_positions": [
+              [
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "V_transpose_matmul_U": {
+            "max_abs_err": 23,
+            "l1_err": 56,
+            "diff": [
+              [
+                -9,
+                -4,
+                20,
+                -23
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "ref_nonzero_positions": [
+              [
+                0,
+                0,
+                1
+              ]
+            ]
+          }
+        },
+        "nonzero_positions_got": [
+          [
+            0,
+            0,
+            -8
+          ],
+          [
+            0,
+            1,
+            -4
+          ],
+          [
+            0,
+            2,
+            20
+          ],
+          [
+            0,
+            3,
+            -23
+          ]
+        ]
+      }
+    },
+    {
+      "name": "basis_E01_times_E10",
+      "zh": "理论 U@V = E00",
+      "input_U": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "input_V": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "references": {
+        "U_matmul_V": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "U_transpose_matmul_V": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "U_matmul_V_transpose": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "V_matmul_U": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "V_transpose_matmul_U": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "final": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "trace": {
+        "U_template_info": {
+          "template_num_towers": 4,
+          "template_ring_dim": 16384,
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "V_template_info": {
+          "template_num_towers": 4,
+          "template_ring_dim": 16384,
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "U_cmt_trace": {
+          "input_c0_row0_tower0": [
+            0,
+            1,
+            0,
+            0
+          ],
+          "input_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "T01_cmt_trace": {
+          "input_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "input_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "T00_cmt_trace": {
+          "input_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "input_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "Ahat_export": {
+          "part": 1,
+          "num_rows": 4,
+          "num_towers": 4,
+          "ring_dim": 16384,
+          "coeff_count": 16384,
+          "row0_tower0_coeff_head": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "Bhat_export": {
+          "part": 0,
+          "num_rows": 4,
+          "num_towers": 4,
+          "ring_dim": 16384,
+          "coeff_count": 16384,
+          "row0_tower0_coeff_head": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "line5_ks_inputs": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 3,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "line5_ks_outputs": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "line5_rows": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "line6_pre_rows": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "raw_ppmm_moduli": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ]
+      },
+      "analysis": {
+        "all_rows_decrypted": true,
+        "matches": {
+          "U_matmul_V": false,
+          "U_transpose_matmul_V": true,
+          "U_matmul_V_transpose": true,
+          "V_matmul_U": false,
+          "V_transpose_matmul_U": true
+        },
+        "errors": {
+          "U_matmul_V": {
+            "max_abs_err": 1,
+            "l1_err": 1,
+            "diff": [
+              [
+                -1,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "ref_nonzero_positions": [
+              [
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "U_transpose_matmul_V": {
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "ref_nonzero_positions": []
+          },
+          "U_matmul_V_transpose": {
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "ref_nonzero_positions": []
+          },
+          "V_matmul_U": {
+            "max_abs_err": 1,
+            "l1_err": 1,
+            "diff": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                -1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "ref_nonzero_positions": [
+              [
+                1,
+                1,
+                1
+              ]
+            ]
+          },
+          "V_transpose_matmul_U": {
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "ref_nonzero_positions": []
+          }
+        },
+        "nonzero_positions_got": []
+      }
+    },
+    {
+      "name": "basis_E01_times_E12",
+      "zh": "理论 U@V = E02",
+      "input_U": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "input_V": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "references": {
+        "U_matmul_V": [
+          [
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "U_transpose_matmul_V": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "U_matmul_V_transpose": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "V_matmul_U": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "V_transpose_matmul_U": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "final": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "trace": {
+        "U_template_info": {
+          "template_num_towers": 4,
+          "template_ring_dim": 16384,
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "V_template_info": {
+          "template_num_towers": 4,
+          "template_ring_dim": 16384,
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "U_cmt_trace": {
+          "input_c0_row0_tower0": [
+            0,
+            1,
+            0,
+            0
+          ],
+          "input_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "T01_cmt_trace": {
+          "input_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "input_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "T00_cmt_trace": {
+          "input_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "input_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "Ahat_export": {
+          "part": 1,
+          "num_rows": 4,
+          "num_towers": 4,
+          "ring_dim": 16384,
+          "coeff_count": 16384,
+          "row0_tower0_coeff_head": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "Bhat_export": {
+          "part": 0,
+          "num_rows": 4,
+          "num_towers": 4,
+          "ring_dim": 16384,
+          "coeff_count": 16384,
+          "row0_tower0_coeff_head": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "line5_ks_inputs": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 3,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "line5_ks_outputs": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "line5_rows": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "line6_pre_rows": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "raw_ppmm_moduli": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ]
+      },
+      "analysis": {
+        "all_rows_decrypted": true,
+        "matches": {
+          "U_matmul_V": false,
+          "U_transpose_matmul_V": true,
+          "U_matmul_V_transpose": true,
+          "V_matmul_U": true,
+          "V_transpose_matmul_U": true
+        },
+        "errors": {
+          "U_matmul_V": {
+            "max_abs_err": 1,
+            "l1_err": 1,
+            "diff": [
+              [
+                0,
+                0,
+                -1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "ref_nonzero_positions": [
+              [
+                0,
+                2,
+                1
+              ]
+            ]
+          },
+          "U_transpose_matmul_V": {
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "ref_nonzero_positions": []
+          },
+          "U_matmul_V_transpose": {
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "ref_nonzero_positions": []
+          },
+          "V_matmul_U": {
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "ref_nonzero_positions": []
+          },
+          "V_transpose_matmul_U": {
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "ref_nonzero_positions": []
+          }
+        },
+        "nonzero_positions_got": []
+      }
+    },
+    {
+      "name": "basis_E23_times_E31",
+      "zh": "理论 U@V = E21",
+      "input_U": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "input_V": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ]
+      ],
+      "references": {
+        "U_matmul_V": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "U_transpose_matmul_V": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "U_matmul_V_transpose": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "V_matmul_U": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "V_transpose_matmul_U": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "final": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "trace": {
+        "U_template_info": {
+          "template_num_towers": 4,
+          "template_ring_dim": 16384,
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "V_template_info": {
+          "template_num_towers": 4,
+          "template_ring_dim": 16384,
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "U_cmt_trace": {
+          "input_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "input_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "T01_cmt_trace": {
+          "input_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "input_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "T00_cmt_trace": {
+          "input_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "input_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "Ahat_export": {
+          "part": 1,
+          "num_rows": 4,
+          "num_towers": 4,
+          "ring_dim": 16384,
+          "coeff_count": 16384,
+          "row0_tower0_coeff_head": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "Bhat_export": {
+          "part": 0,
+          "num_rows": 4,
+          "num_towers": 4,
+          "ring_dim": 16384,
+          "coeff_count": 16384,
+          "row0_tower0_coeff_head": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "line5_ks_inputs": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 3,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "line5_ks_outputs": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "line5_rows": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "line6_pre_rows": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "raw_ppmm_moduli": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ]
+      },
+      "analysis": {
+        "all_rows_decrypted": true,
+        "matches": {
+          "U_matmul_V": false,
+          "U_transpose_matmul_V": true,
+          "U_matmul_V_transpose": true,
+          "V_matmul_U": true,
+          "V_transpose_matmul_U": true
+        },
+        "errors": {
+          "U_matmul_V": {
+            "max_abs_err": 1,
+            "l1_err": 1,
+            "diff": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                -1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "ref_nonzero_positions": [
+              [
+                2,
+                1,
+                1
+              ]
+            ]
+          },
+          "U_transpose_matmul_V": {
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "ref_nonzero_positions": []
+          },
+          "U_matmul_V_transpose": {
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "ref_nonzero_positions": []
+          },
+          "V_matmul_U": {
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "ref_nonzero_positions": []
+          },
+          "V_transpose_matmul_U": {
+            "max_abs_err": 0,
+            "l1_err": 0,
+            "diff": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "ref_nonzero_positions": []
+          }
+        },
+        "nonzero_positions_got": []
+      }
+    },
+    {
+      "name": "identity_times_random_small",
+      "zh": "I·V 应等于 V",
+      "input_U": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "input_V": [
+        [
+          2,
+          1,
+          2,
+          1
+        ],
+        [
+          0,
+          1,
+          2,
+          2
+        ],
+        [
+          2,
+          -1,
+          -1,
+          -1
+        ],
+        [
+          -2,
+          0,
+          -2,
+          -1
+        ]
+      ],
+      "references": {
+        "U_matmul_V": [
+          [
+            2,
+            1,
+            2,
+            1
+          ],
+          [
+            0,
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -2,
+            0,
+            -2,
+            -1
+          ]
+        ],
+        "U_transpose_matmul_V": [
+          [
+            2,
+            1,
+            2,
+            1
+          ],
+          [
+            0,
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -2,
+            0,
+            -2,
+            -1
+          ]
+        ],
+        "U_matmul_V_transpose": [
+          [
+            2,
+            0,
+            2,
+            -2
+          ],
+          [
+            1,
+            1,
+            -1,
+            0
+          ],
+          [
+            2,
+            2,
+            -1,
+            -2
+          ],
+          [
+            1,
+            2,
+            -1,
+            -1
+          ]
+        ],
+        "V_matmul_U": [
+          [
+            2,
+            1,
+            2,
+            1
+          ],
+          [
+            0,
+            1,
+            2,
+            2
+          ],
+          [
+            2,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -2,
+            0,
+            -2,
+            -1
+          ]
+        ],
+        "V_transpose_matmul_U": [
+          [
+            2,
+            0,
+            2,
+            -2
+          ],
+          [
+            1,
+            1,
+            -1,
+            0
+          ],
+          [
+            2,
+            2,
+            -1,
+            -2
+          ],
+          [
+            1,
+            2,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "final": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            2,
+            12,
+            0,
+            10
+          ],
+          [
+            10,
+            4,
+            13,
+            23
+          ],
+          [
+            8,
+            15,
+            -13,
+            -19
+          ],
+          [
+            -10,
+            -8,
+            20,
+            13
+          ]
+        ]
+      },
+      "trace": {
+        "U_template_info": {
+          "template_num_towers": 4,
+          "template_ring_dim": 16384,
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "V_template_info": {
+          "template_num_towers": 4,
+          "template_ring_dim": 16384,
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "U_cmt_trace": {
+          "input_c0_row0_tower0": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "input_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c0_row0_tower0": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "output_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "T01_cmt_trace": {
+          "input_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "input_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "T00_cmt_trace": {
+          "input_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "input_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "Ahat_export": {
+          "part": 1,
+          "num_rows": 4,
+          "num_towers": 4,
+          "ring_dim": 16384,
+          "coeff_count": 16384,
+          "row0_tower0_coeff_head": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "Bhat_export": {
+          "part": 0,
+          "num_rows": 4,
+          "num_towers": 4,
+          "ring_dim": 16384,
+          "coeff_count": 16384,
+          "row0_tower0_coeff_head": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "line5_ks_inputs": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 3,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "line5_ks_outputs": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "line5_rows": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "line6_pre_rows": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "raw_ppmm_moduli": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ]
+      },
+      "analysis": {
+        "all_rows_decrypted": true,
+        "matches": {
+          "U_matmul_V": false,
+          "U_transpose_matmul_V": false,
+          "U_matmul_V_transpose": false,
+          "V_matmul_U": false,
+          "V_transpose_matmul_U": false
+        },
+        "errors": {
+          "U_matmul_V": {
+            "max_abs_err": 22,
+            "l1_err": 171,
+            "diff": [
+              [
+                0,
+                11,
+                -2,
+                9
+              ],
+              [
+                10,
+                3,
+                11,
+                21
+              ],
+              [
+                6,
+                16,
+                -12,
+                -18
+              ],
+              [
+                -8,
+                -8,
+                22,
+                14
+              ]
+            ],
+            "ref_nonzero_positions": [
+              [
+                0,
+                0,
+                2
+              ],
+              [
+                0,
+                1,
+                1
+              ],
+              [
+                0,
+                2,
+                2
+              ],
+              [
+                0,
+                3,
+                1
+              ],
+              [
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                2,
+                2
+              ],
+              [
+                1,
+                3,
+                2
+              ],
+              [
+                2,
+                0,
+                2
+              ],
+              [
+                2,
+                1,
+                -1
+              ],
+              [
+                2,
+                2,
+                -1
+              ],
+              [
+                2,
+                3,
+                -1
+              ],
+              [
+                3,
+                0,
+                -2
+              ],
+              [
+                3,
+                2,
+                -2
+              ],
+              [
+                3,
+                3,
+                -1
+              ]
+            ]
+          },
+          "U_transpose_matmul_V": {
+            "max_abs_err": 22,
+            "l1_err": 171,
+            "diff": [
+              [
+                0,
+                11,
+                -2,
+                9
+              ],
+              [
+                10,
+                3,
+                11,
+                21
+              ],
+              [
+                6,
+                16,
+                -12,
+                -18
+              ],
+              [
+                -8,
+                -8,
+                22,
+                14
+              ]
+            ],
+            "ref_nonzero_positions": [
+              [
+                0,
+                0,
+                2
+              ],
+              [
+                0,
+                1,
+                1
+              ],
+              [
+                0,
+                2,
+                2
+              ],
+              [
+                0,
+                3,
+                1
+              ],
+              [
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                2,
+                2
+              ],
+              [
+                1,
+                3,
+                2
+              ],
+              [
+                2,
+                0,
+                2
+              ],
+              [
+                2,
+                1,
+                -1
+              ],
+              [
+                2,
+                2,
+                -1
+              ],
+              [
+                2,
+                3,
+                -1
+              ],
+              [
+                3,
+                0,
+                -2
+              ],
+              [
+                3,
+                2,
+                -2
+              ],
+              [
+                3,
+                3,
+                -1
+              ]
+            ]
+          },
+          "U_matmul_V_transpose": {
+            "max_abs_err": 23,
+            "l1_err": 179,
+            "diff": [
+              [
+                0,
+                12,
+                -2,
+                12
+              ],
+              [
+                9,
+                3,
+                14,
+                23
+              ],
+              [
+                6,
+                13,
+                -12,
+                -17
+              ],
+              [
+                -11,
+                -10,
+                21,
+                14
+              ]
+            ],
+            "ref_nonzero_positions": [
+              [
+                0,
+                0,
+                2
+              ],
+              [
+                0,
+                2,
+                2
+              ],
+              [
+                0,
+                3,
+                -2
+              ],
+              [
+                1,
+                0,
+                1
+              ],
+              [
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                2,
+                -1
+              ],
+              [
+                2,
+                0,
+                2
+              ],
+              [
+                2,
+                1,
+                2
+              ],
+              [
+                2,
+                2,
+                -1
+              ],
+              [
+                2,
+                3,
+                -2
+              ],
+              [
+                3,
+                0,
+                1
+              ],
+              [
+                3,
+                1,
+                2
+              ],
+              [
+                3,
+                2,
+                -1
+              ],
+              [
+                3,
+                3,
+                -1
+              ]
+            ]
+          },
+          "V_matmul_U": {
+            "max_abs_err": 22,
+            "l1_err": 171,
+            "diff": [
+              [
+                0,
+                11,
+                -2,
+                9
+              ],
+              [
+                10,
+                3,
+                11,
+                21
+              ],
+              [
+                6,
+                16,
+                -12,
+                -18
+              ],
+              [
+                -8,
+                -8,
+                22,
+                14
+              ]
+            ],
+            "ref_nonzero_positions": [
+              [
+                0,
+                0,
+                2
+              ],
+              [
+                0,
+                1,
+                1
+              ],
+              [
+                0,
+                2,
+                2
+              ],
+              [
+                0,
+                3,
+                1
+              ],
+              [
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                2,
+                2
+              ],
+              [
+                1,
+                3,
+                2
+              ],
+              [
+                2,
+                0,
+                2
+              ],
+              [
+                2,
+                1,
+                -1
+              ],
+              [
+                2,
+                2,
+                -1
+              ],
+              [
+                2,
+                3,
+                -1
+              ],
+              [
+                3,
+                0,
+                -2
+              ],
+              [
+                3,
+                2,
+                -2
+              ],
+              [
+                3,
+                3,
+                -1
+              ]
+            ]
+          },
+          "V_transpose_matmul_U": {
+            "max_abs_err": 23,
+            "l1_err": 179,
+            "diff": [
+              [
+                0,
+                12,
+                -2,
+                12
+              ],
+              [
+                9,
+                3,
+                14,
+                23
+              ],
+              [
+                6,
+                13,
+                -12,
+                -17
+              ],
+              [
+                -11,
+                -10,
+                21,
+                14
+              ]
+            ],
+            "ref_nonzero_positions": [
+              [
+                0,
+                0,
+                2
+              ],
+              [
+                0,
+                2,
+                2
+              ],
+              [
+                0,
+                3,
+                -2
+              ],
+              [
+                1,
+                0,
+                1
+              ],
+              [
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                2,
+                -1
+              ],
+              [
+                2,
+                0,
+                2
+              ],
+              [
+                2,
+                1,
+                2
+              ],
+              [
+                2,
+                2,
+                -1
+              ],
+              [
+                2,
+                3,
+                -2
+              ],
+              [
+                3,
+                0,
+                1
+              ],
+              [
+                3,
+                1,
+                2
+              ],
+              [
+                3,
+                2,
+                -1
+              ],
+              [
+                3,
+                3,
+                -1
+              ]
+            ]
+          }
+        },
+        "nonzero_positions_got": [
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            1,
+            12
+          ],
+          [
+            0,
+            3,
+            10
+          ],
+          [
+            1,
+            0,
+            10
+          ],
+          [
+            1,
+            1,
+            4
+          ],
+          [
+            1,
+            2,
+            13
+          ],
+          [
+            1,
+            3,
+            23
+          ],
+          [
+            2,
+            0,
+            8
+          ],
+          [
+            2,
+            1,
+            15
+          ],
+          [
+            2,
+            2,
+            -13
+          ],
+          [
+            2,
+            3,
+            -19
+          ],
+          [
+            3,
+            0,
+            -10
+          ],
+          [
+            3,
+            1,
+            -8
+          ],
+          [
+            3,
+            2,
+            20
+          ],
+          [
+            3,
+            3,
+            13
+          ]
+        ]
+      }
+    },
+    {
+      "name": "random_small_times_identity",
+      "zh": "U·I 应等于 U",
+      "input_U": [
+        [
+          1,
+          -1,
+          2,
+          -2
+        ],
+        [
+          -1,
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          -1,
+          0,
+          0
+        ],
+        [
+          2,
+          -2,
+          2,
+          -2
+        ]
+      ],
+      "input_V": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "references": {
+        "U_matmul_V": [
+          [
+            1,
+            -1,
+            2,
+            -2
+          ],
+          [
+            -1,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            -1,
+            0,
+            0
+          ],
+          [
+            2,
+            -2,
+            2,
+            -2
+          ]
+        ],
+        "U_transpose_matmul_V": [
+          [
+            1,
+            -1,
+            2,
+            2
+          ],
+          [
+            -1,
+            0,
+            -1,
+            -2
+          ],
+          [
+            2,
+            0,
+            0,
+            2
+          ],
+          [
+            -2,
+            0,
+            0,
+            -2
+          ]
+        ],
+        "U_matmul_V_transpose": [
+          [
+            1,
+            -1,
+            2,
+            -2
+          ],
+          [
+            -1,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            -1,
+            0,
+            0
+          ],
+          [
+            2,
+            -2,
+            2,
+            -2
+          ]
+        ],
+        "V_matmul_U": [
+          [
+            1,
+            -1,
+            2,
+            -2
+          ],
+          [
+            -1,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            -1,
+            0,
+            0
+          ],
+          [
+            2,
+            -2,
+            2,
+            -2
+          ]
+        ],
+        "V_transpose_matmul_U": [
+          [
+            1,
+            -1,
+            2,
+            -2
+          ],
+          [
+            -1,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            -1,
+            0,
+            0
+          ],
+          [
+            2,
+            -2,
+            2,
+            -2
+          ]
+        ]
+      },
+      "final": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            18,
+            -8,
+            16,
+            4
+          ],
+          [
+            -18,
+            20,
+            17,
+            6
+          ],
+          [
+            18,
+            -13,
+            0,
+            -12
+          ],
+          [
+            -18,
+            13,
+            0,
+            12
+          ]
+        ]
+      },
+      "trace": {
+        "U_template_info": {
+          "template_num_towers": 4,
+          "template_ring_dim": 16384,
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "V_template_info": {
+          "template_num_towers": 4,
+          "template_ring_dim": 16384,
+          "moduli_u64": [
+            1152921504606748673,
+            1125899904679937,
+            1125899908022273,
+            557057
+          ]
+        },
+        "U_cmt_trace": {
+          "input_c0_row0_tower0": [
+            1,
+            1152921504606748672,
+            2,
+            1152921504606748671
+          ],
+          "input_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c0_row0_tower0": [
+            1,
+            1152921504606748672,
+            2,
+            2
+          ],
+          "output_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "T01_cmt_trace": {
+          "input_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "input_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "T00_cmt_trace": {
+          "input_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "input_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c0_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_c1_row0_tower0": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "Ahat_export": {
+          "part": 1,
+          "num_rows": 4,
+          "num_towers": 4,
+          "ring_dim": 16384,
+          "coeff_count": 16384,
+          "row0_tower0_coeff_head": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "Bhat_export": {
+          "part": 0,
+          "num_rows": 4,
+          "num_towers": 4,
+          "ring_dim": 16384,
+          "coeff_count": 16384,
+          "row0_tower0_coeff_head": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "line5_ks_inputs": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 3,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 3,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "line5_ks_outputs": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "line5_rows": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "line6_pre_rows": {
+          "num_rows": 4,
+          "consistent_shape": true,
+          "expected_parts": 2,
+          "expected_towers": 4,
+          "expected_ring_dim": 16384,
+          "rows": [
+            {
+              "row_index": 0,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 1,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 2,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            },
+            {
+              "row_index": 3,
+              "encoding_type": 1,
+              "num_parts": 2,
+              "level": 0,
+              "slots": 0
+            }
+          ]
+        },
+        "raw_ppmm_moduli": [
+          1152921504606748673,
+          1125899904679937,
+          1125899908022273,
+          557057
+        ]
+      },
+      "analysis": {
+        "all_rows_decrypted": true,
+        "matches": {
+          "U_matmul_V": false,
+          "U_transpose_matmul_V": false,
+          "U_matmul_V_transpose": false,
+          "V_matmul_U": false,
+          "V_transpose_matmul_U": false
+        },
+        "errors": {
+          "U_matmul_V": {
+            "max_abs_err": 20,
+            "l1_err": 195,
+            "diff": [
+              [
+                17,
+                -7,
+                14,
+                6
+              ],
+              [
+                -17,
+                20,
+                17,
+                6
+              ],
+              [
+                16,
+                -12,
+                0,
+                -12
+              ],
+              [
+                -20,
+                15,
+                -2,
+                14
+              ]
+            ],
+            "ref_nonzero_positions": [
+              [
+                0,
+                0,
+                1
+              ],
+              [
+                0,
+                1,
+                -1
+              ],
+              [
+                0,
+                2,
+                2
+              ],
+              [
+                0,
+                3,
+                -2
+              ],
+              [
+                1,
+                0,
+                -1
+              ],
+              [
+                2,
+                0,
+                2
+              ],
+              [
+                2,
+                1,
+                -1
+              ],
+              [
+                3,
+                0,
+                2
+              ],
+              [
+                3,
+                1,
+                -2
+              ],
+              [
+                3,
+                2,
+                2
+              ],
+              [
+                3,
+                3,
+                -2
+              ]
+            ]
+          },
+          "U_transpose_matmul_V": {
+            "max_abs_err": 20,
+            "l1_err": 189,
+            "diff": [
+              [
+                17,
+                -7,
+                14,
+                2
+              ],
+              [
+                -17,
+                20,
+                18,
+                8
+              ],
+              [
+                16,
+                -13,
+                0,
+                -14
+              ],
+              [
+                -16,
+                13,
+                0,
+                14
+              ]
+            ],
+            "ref_nonzero_positions": [
+              [
+                0,
+                0,
+                1
+              ],
+              [
+                0,
+                1,
+                -1
+              ],
+              [
+                0,
+                2,
+                2
+              ],
+              [
+                0,
+                3,
+                2
+              ],
+              [
+                1,
+                0,
+                -1
+              ],
+              [
+                1,
+                2,
+                -1
+              ],
+              [
+                1,
+                3,
+                -2
+              ],
+              [
+                2,
+                0,
+                2
+              ],
+              [
+                2,
+                3,
+                2
+              ],
+              [
+                3,
+                0,
+                -2
+              ],
+              [
+                3,
+                3,
+                -2
+              ]
+            ]
+          },
+          "U_matmul_V_transpose": {
+            "max_abs_err": 20,
+            "l1_err": 195,
+            "diff": [
+              [
+                17,
+                -7,
+                14,
+                6
+              ],
+              [
+                -17,
+                20,
+                17,
+                6
+              ],
+              [
+                16,
+                -12,
+                0,
+                -12
+              ],
+              [
+                -20,
+                15,
+                -2,
+                14
+              ]
+            ],
+            "ref_nonzero_positions": [
+              [
+                0,
+                0,
+                1
+              ],
+              [
+                0,
+                1,
+                -1
+              ],
+              [
+                0,
+                2,
+                2
+              ],
+              [
+                0,
+                3,
+                -2
+              ],
+              [
+                1,
+                0,
+                -1
+              ],
+              [
+                2,
+                0,
+                2
+              ],
+              [
+                2,
+                1,
+                -1
+              ],
+              [
+                3,
+                0,
+                2
+              ],
+              [
+                3,
+                1,
+                -2
+              ],
+              [
+                3,
+                2,
+                2
+              ],
+              [
+                3,
+                3,
+                -2
+              ]
+            ]
+          },
+          "V_matmul_U": {
+            "max_abs_err": 20,
+            "l1_err": 195,
+            "diff": [
+              [
+                17,
+                -7,
+                14,
+                6
+              ],
+              [
+                -17,
+                20,
+                17,
+                6
+              ],
+              [
+                16,
+                -12,
+                0,
+                -12
+              ],
+              [
+                -20,
+                15,
+                -2,
+                14
+              ]
+            ],
+            "ref_nonzero_positions": [
+              [
+                0,
+                0,
+                1
+              ],
+              [
+                0,
+                1,
+                -1
+              ],
+              [
+                0,
+                2,
+                2
+              ],
+              [
+                0,
+                3,
+                -2
+              ],
+              [
+                1,
+                0,
+                -1
+              ],
+              [
+                2,
+                0,
+                2
+              ],
+              [
+                2,
+                1,
+                -1
+              ],
+              [
+                3,
+                0,
+                2
+              ],
+              [
+                3,
+                1,
+                -2
+              ],
+              [
+                3,
+                2,
+                2
+              ],
+              [
+                3,
+                3,
+                -2
+              ]
+            ]
+          },
+          "V_transpose_matmul_U": {
+            "max_abs_err": 20,
+            "l1_err": 195,
+            "diff": [
+              [
+                17,
+                -7,
+                14,
+                6
+              ],
+              [
+                -17,
+                20,
+                17,
+                6
+              ],
+              [
+                16,
+                -12,
+                0,
+                -12
+              ],
+              [
+                -20,
+                15,
+                -2,
+                14
+              ]
+            ],
+            "ref_nonzero_positions": [
+              [
+                0,
+                0,
+                1
+              ],
+              [
+                0,
+                1,
+                -1
+              ],
+              [
+                0,
+                2,
+                2
+              ],
+              [
+                0,
+                3,
+                -2
+              ],
+              [
+                1,
+                0,
+                -1
+              ],
+              [
+                2,
+                0,
+                2
+              ],
+              [
+                2,
+                1,
+                -1
+              ],
+              [
+                3,
+                0,
+                2
+              ],
+              [
+                3,
+                1,
+                -2
+              ],
+              [
+                3,
+                2,
+                2
+              ],
+              [
+                3,
+                3,
+                -2
+              ]
+            ]
+          }
+        },
+        "nonzero_positions_got": [
+          [
+            0,
+            0,
+            18
+          ],
+          [
+            0,
+            1,
+            -8
+          ],
+          [
+            0,
+            2,
+            16
+          ],
+          [
+            0,
+            3,
+            4
+          ],
+          [
+            1,
+            0,
+            -18
+          ],
+          [
+            1,
+            1,
+            20
+          ],
+          [
+            1,
+            2,
+            17
+          ],
+          [
+            1,
+            3,
+            6
+          ],
+          [
+            2,
+            0,
+            18
+          ],
+          [
+            2,
+            1,
+            -13
+          ],
+          [
+            2,
+            3,
+            -12
+          ],
+          [
+            3,
+            0,
+            -18
+          ],
+          [
+            3,
+            1,
+            13
+          ],
+          [
+            3,
+            3,
+            12
+          ]
+        ]
+      }
+    }
+  ],
+  "checks": {
+    "all_cases_decrypted（所有 oracle pipeline case 都成功解密）": true,
+    "all_line5_ks_inputs_are_3part（所有 line5 KS 输入都是三分量）": true,
+    "all_line5_rows_are_2part（所有 line5 输出都是二分量）": true,
+    "all_line6_pre_rows_are_2part（所有 line6 pre-rescale 输出都是二分量）": true,
+    "match_counts_by_reference（与不同参考矩阵匹配的 case 数）": {
+      "U_matmul_V": 0,
+      "U_transpose_matmul_V": 3,
+      "U_matmul_V_transpose": 3,
+      "V_matmul_U": 2,
+      "V_transpose_matmul_U": 3
+    },
+    "oracle_pipeline_matches_U_matmul_V_all_cases（oracle pipeline 是否全部等于 U@V）": false
+  },
+  "summary": {
+    "if_matches_U_matmul_V": "Downstream Algorithm 3 algebra is correct under logical-n C-MT. The remaining task is a real logical-n homomorphic C-MT or dimension-compatible benchmark.",
+    "if_matches_another_reference": "The pipeline is algebraically consistent but has orientation convention mismatch. Promote the matching reference to guide fixes.",
+    "if_matches_none": "Even with logical-n C-MT oracle, PP-MM/line5/line6 algebra is still wrong. Next step: symbolic plaintext Algorithm 3 simulation for line5/line6.",
+    "next_step": "WP4-X7h",
+    "zh": "X7g 判断：排除 C-MT 维度问题后，后续 Algorithm 3 代数是否正确。"
+  }
+}

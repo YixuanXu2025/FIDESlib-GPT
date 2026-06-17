@@ -1,0 +1,389 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+WP4-W3a assemble Algorithm 3 components
+{
+  "experiment": "wp4w3a_assemble_algorithm3_components",
+  "purpose": "Assemble a paper-aligned Algorithm 3 three-component ciphertext from component primitive outputs: C0=L0R0, C1=L0R1+L1R0, C2=L1R1.",
+  "status": "single_pair_component_formula_assembly_probe_no_full_ppmm_no_final_decrypt",
+  "input_U_i64": [
+    [
+      0,
+      -2,
+      1,
+      -2
+    ],
+    [
+      -1,
+      0,
+      2,
+      1
+    ],
+    [
+      -2,
+      0,
+      2,
+      -2
+    ],
+    [
+      -1,
+      -1,
+      1,
+      -2
+    ]
+  ],
+  "input_V_i64": [
+    [
+      0,
+      -1,
+      1,
+      1
+    ],
+    [
+      2,
+      1,
+      1,
+      1
+    ],
+    [
+      2,
+      2,
+      1,
+      -1
+    ],
+    [
+      -2,
+      1,
+      -1,
+      2
+    ]
+  ],
+  "reference_U_matmul_V_i64": [
+    [
+      2,
+      -2,
+      1,
+      -7
+    ],
+    [
+      2,
+      6,
+      0,
+      -1
+    ],
+    [
+      8,
+      4,
+      2,
+      -8
+    ],
+    [
+      4,
+      0,
+      1,
+      -7
+    ]
+  ],
+  "formula": {
+    "C0": "component_mul(L0, R0)",
+    "C1": "component_add(component_mul(L0, R1), component_mul(L1, R0))",
+    "C2": "component_mul(L1, R1)",
+    "assemble": "(C0, C1, C2)",
+    "zh": "这里 L0/L1 来自 U 的 c0/c1，R0/R1 来自 C-MT(V) 的 c0/c1。"
+  },
+  "component_outputs": {
+    "C0": {
+      "ok": true,
+      "value": {
+        "valid": true,
+        "openfhe_level": 0,
+        "openfhe_noise_scale_deg": 1,
+        "openfhe_scaling_factor": 1.0,
+        "openfhe_slots": 0,
+        "openfhe_encoding_type": 1,
+        "num_parts": 1,
+        "parts_summary": [
+          {
+            "part_index": 0,
+            "num_towers": 4,
+            "tower0_ring_dim": 16384,
+            "tower0_coeff_head": [
+              1000549156989204511,
+              410819686205205506,
+              900192104530024452,
+              879863450660417917,
+              443827655966413713,
+              245472649849200772,
+              402670602711662282,
+              147179288742720970
+            ]
+          }
+        ]
+      }
+    },
+    "C1_left": {
+      "ok": true,
+      "value": {
+        "valid": true,
+        "openfhe_level": 0,
+        "openfhe_noise_scale_deg": 1,
+        "openfhe_scaling_factor": 1.0,
+        "openfhe_slots": 0,
+        "openfhe_encoding_type": 1,
+        "num_parts": 1,
+        "parts_summary": [
+          {
+            "part_index": 0,
+            "num_towers": 4,
+            "tower0_ring_dim": 16384,
+            "tower0_coeff_head": [
+              388467636099903894,
+              829048914529560301,
+              676267845690771089,
+              373607848413339930,
+              580719959087143600,
+              186602654532881534,
+              774146544754588066,
+              1069573712519795750
+            ]
+          }
+        ]
+      }
+    },
+    "C1_right": {
+      "ok": true,
+      "value": {
+        "valid": true,
+        "openfhe_level": 0,
+        "openfhe_noise_scale_deg": 1,
+        "openfhe_scaling_factor": 1.0,
+        "openfhe_slots": 0,
+        "openfhe_encoding_type": 1,
+        "num_parts": 1,
+        "parts_summary": [
+          {
+            "part_index": 0,
+            "num_towers": 4,
+            "tower0_ring_dim": 16384,
+            "tower0_coeff_head": [
+              1003923712607709160,
+              948866312221536065,
+              630546239952607985,
+              1130639787491767963,
+              588350764789409845,
+              761856685057786905,
+              519443808715368359,
+              810768467744677601
+            ]
+          }
+        ]
+      }
+    },
+    "C1_sum": {
+      "ok": true,
+      "value": {
+        "valid": true,
+        "openfhe_level": 0,
+        "openfhe_noise_scale_deg": 1,
+        "openfhe_scaling_factor": 1.0,
+        "openfhe_slots": 0,
+        "openfhe_encoding_type": 1,
+        "num_parts": 1,
+        "parts_summary": [
+          {
+            "part_index": 0,
+            "num_towers": 4,
+            "tower0_ring_dim": 16384,
+            "tower0_coeff_head": [
+              239469844100864381,
+              624993722144347693,
+              153892581036630401,
+              351326131298359220,
+              16149219269804772,
+              948459339590668439,
+              140668848863207752,
+              727420675657724678
+            ]
+          }
+        ]
+      }
+    },
+    "C2": {
+      "ok": true,
+      "value": {
+        "valid": true,
+        "openfhe_level": 0,
+        "openfhe_noise_scale_deg": 1,
+        "openfhe_scaling_factor": 1.0,
+        "openfhe_slots": 0,
+        "openfhe_encoding_type": 1,
+        "num_parts": 1,
+        "parts_summary": [
+          {
+            "part_index": 0,
+            "num_towers": 4,
+            "tower0_ring_dim": 16384,
+            "tower0_coeff_head": [
+              1042942525880257464,
+              712178659138706751,
+              829636661232963102,
+              1011379639577805115,
+              576287247545087178,
+              646609165259315249,
+              754421725879588794,
+              729490910853694500
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "assembled_output": {
+    "ok": true,
+    "value": {
+      "valid": true,
+      "openfhe_level": 0,
+      "openfhe_noise_scale_deg": 1,
+      "openfhe_scaling_factor": 1.0,
+      "openfhe_slots": 0,
+      "openfhe_encoding_type": 1,
+      "num_parts": 3,
+      "parts_summary": [
+        {
+          "part_index": 0,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            1000549156989204511,
+            410819686205205506,
+            900192104530024452,
+            879863450660417917,
+            443827655966413713,
+            245472649849200772,
+            402670602711662282,
+            147179288742720970
+          ]
+        },
+        {
+          "part_index": 1,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            239469844100864381,
+            624993722144347693,
+            153892581036630401,
+            351326131298359220,
+            16149219269804772,
+            948459339590668439,
+            140668848863207752,
+            727420675657724678
+          ]
+        },
+        {
+          "part_index": 2,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            1042942525880257464,
+            712178659138706751,
+            829636661232963102,
+            1011379639577805115,
+            576287247545087178,
+            646609165259315249,
+            754421725879588794,
+            729490910853694500
+          ]
+        }
+      ]
+    }
+  },
+  "whole_no_relin_reference": {
+    "ok": true,
+    "value": {
+      "valid": true,
+      "openfhe_level": 0,
+      "openfhe_noise_scale_deg": 1,
+      "openfhe_scaling_factor": 1.0,
+      "openfhe_slots": 0,
+      "openfhe_encoding_type": 1,
+      "num_parts": 3,
+      "parts_summary": [
+        {
+          "part_index": 0,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            1000549156989204511,
+            410819686205205506,
+            900192104530024452,
+            879863450660417917,
+            443827655966413713,
+            245472649849200772,
+            402670602711662282,
+            147179288742720970
+          ]
+        },
+        {
+          "part_index": 1,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            239469844100864381,
+            624993722144347693,
+            153892581036630401,
+            351326131298359220,
+            16149219269804772,
+            948459339590668439,
+            140668848863207752,
+            727420675657724678
+          ]
+        },
+        {
+          "part_index": 2,
+          "num_towers": 4,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            1042942525880257464,
+            712178659138706751,
+            829636661232963102,
+            1011379639577805115,
+            576287247545087178,
+            646609165259315249,
+            754421725879588794,
+            729490910853694500
+          ]
+        }
+      ]
+    }
+  },
+  "checks": {
+    "all_C0_C1_C2_terms_are_1part（C0/C1/C2 相关 component 项都是 1-component）": true,
+    "assembled_output_is_3part（组装后输出是 c0/c1/c2 三分量 ciphertext）": true,
+    "assembled_output_uses_coef_encoding（组装后仍是 coefficient encoding）": true,
+    "whole_no_relin_reference_is_3part（旧 no-relin 参考输出也是三分量）": true,
+    "V_cmt_auto_alphas_expected（C-MT(V) Auto alpha 是 [1,3,5,7]）": true,
+    "ready_for_W3b_component_ppmm_matrix（已具备组装单个三分量输出的能力）": true
+  },
+  "summary": {
+    "next_step": "WP4-W3b",
+    "next_step_goal": "Lift this single-pair C0/C1/C2 component assembly into a matrix-level component PP-MM skeleton, then diagnose whether PP-MM placement must follow the paper's Algorithm 3 rather than old positionwise multiplication.",
+    "zh": "下一步把单个三分量组装推广到 component matrix PP-MM 层。"
+  }
+}
+====================================================================================================
+saved: /workspace/FIDESlib-GPT/reports/wp4w3a_assemble_algorithm3_components_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

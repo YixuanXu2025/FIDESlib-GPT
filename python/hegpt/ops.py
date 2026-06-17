@@ -574,7 +574,7 @@ def build_input_cipher_placeholders_from_matrix(
     if matrix.ndim != 2:
         raise ValueError(f"matrix must be 2D, got ndim={matrix.ndim}")
 
-    layout = make_matrix_block_layout(
+    layout = make_legacy_matrix_block_tile_layout(
         rows=matrix.shape[0],
         cols=matrix.shape[1],
         ring_dim=ring_dim,
@@ -668,7 +668,7 @@ def build_plain_tiled_blocks_from_matrix(
     if matrix.ndim != 2:
         raise ValueError(f"matrix must be 2D, got ndim={matrix.ndim}")
 
-    layout = make_matrix_block_layout(
+    layout = make_legacy_matrix_block_tile_layout(
         rows=matrix.shape[0],
         cols=matrix.shape[1],
         ring_dim=ring_dim,
@@ -827,3 +827,184 @@ def summarize_cipher_tile_mapping(encrypted_result, k=3):
     for key, ct in items[:k]:
         out.append((key, ct.summary()))
     return out
+
+
+def make_legacy_matrix_block_tile_layout(
+    rows,
+    cols,
+    ring_dim=16384,
+    block_rows=128,
+    block_cols=128,
+    tile_rows=64,
+    tile_cols=128,
+):
+    """
+    Legacy matrix-block/tile layout helper for old block/tile roundtrip experiments.
+
+    This intentionally does NOT replace make_matrix_block_layout(...).
+
+    Use this only for the old layout:
+      matrix shape: rows x cols
+      logical block: block_rows x block_cols
+      physical tile: tile_rows x tile_cols
+
+    It returns a plain dict matching the early block/tile roundtrip scripts.
+    """
+    rows = int(rows)
+    cols = int(cols)
+    ring_dim = int(ring_dim)
+    block_rows = int(block_rows)
+    block_cols = int(block_cols)
+    tile_rows = int(tile_rows)
+    tile_cols = int(tile_cols)
+
+    if rows <= 0 or cols <= 0:
+        raise ValueError("rows and cols must be positive")
+    if block_rows <= 0 or block_cols <= 0:
+        raise ValueError("block_rows and block_cols must be positive")
+    if tile_rows <= 0 or tile_cols <= 0:
+        raise ValueError("tile_rows and tile_cols must be positive")
+
+    if block_rows % tile_rows != 0:
+        raise ValueError("block_rows must be divisible by tile_rows")
+
+    if block_cols != tile_cols:
+        raise ValueError(
+            "legacy row-tile layout expects block_cols == tile_cols"
+        )
+
+    slots_per_ct = ring_dim // 2
+    physical_tile_elems = tile_rows * tile_cols
+
+    if physical_tile_elems > slots_per_ct:
+        raise ValueError(
+            f"physical tile {tile_rows}x{tile_cols}={physical_tile_elems} "
+            f"exceeds slots_per_ct={slots_per_ct}"
+        )
+
+    padded_rows = ((rows + block_rows - 1) // block_rows) * block_rows
+    padded_cols = ((cols + block_cols - 1) // block_cols) * block_cols
+
+    num_row_blocks = padded_rows // block_rows
+    num_col_blocks = padded_cols // block_cols
+    num_logical_blocks = num_row_blocks * num_col_blocks
+    tiles_per_logical_block = block_rows // tile_rows
+    num_physical_tiles = num_logical_blocks * tiles_per_logical_block
+
+    return {
+        "rows": rows,
+        "cols": cols,
+        "ring_dim": ring_dim,
+        "slots_per_ct": slots_per_ct,
+        "block_rows": block_rows,
+        "block_cols": block_cols,
+        "tile_rows": tile_rows,
+        "tile_cols": tile_cols,
+        "logical_shape": (rows, cols),
+        "padded_shape": (padded_rows, padded_cols),
+        "logical_block_shape": (block_rows, block_cols),
+        "physical_tile_shape": (tile_rows, tile_cols),
+        "num_row_blocks": num_row_blocks,
+        "num_col_blocks": num_col_blocks,
+        "num_logical_blocks": num_logical_blocks,
+        "tiles_per_logical_block": tiles_per_logical_block,
+        "num_physical_tiles": num_physical_tiles,
+        "layout_kind": "legacy_matrix_block_tile_row_major",
+    }
+
+
+class _LegacyLayoutDict(dict):
+    """
+    Dict with attribute access.
+
+    Used only by legacy block/tile roundtrip experiments.
+    It allows both:
+      layout["tile_rows"]
+      layout.tile_rows
+      layout.summary()
+    """
+
+    def __getattr__(self, name):
+        try:
+            return self[name]
+        except KeyError as e:
+            raise AttributeError(name) from e
+
+    def summary(self):
+        return dict(self)
+
+
+def make_legacy_matrix_block_tile_layout(
+    rows,
+    cols,
+    ring_dim=16384,
+    block_rows=128,
+    block_cols=128,
+    tile_rows=64,
+    tile_cols=128,
+):
+    """
+    Legacy matrix-block/tile layout helper for old block/tile roundtrip experiments.
+
+    This intentionally does NOT replace make_matrix_block_layout(...).
+
+    It returns a dict-like object that also supports attribute access, because
+    older helper code uses layout.tile_rows / layout.padded_shape style access.
+    """
+    rows = int(rows)
+    cols = int(cols)
+    ring_dim = int(ring_dim)
+    block_rows = int(block_rows)
+    block_cols = int(block_cols)
+    tile_rows = int(tile_rows)
+    tile_cols = int(tile_cols)
+
+    if rows <= 0 or cols <= 0:
+        raise ValueError("rows and cols must be positive")
+    if block_rows <= 0 or block_cols <= 0:
+        raise ValueError("block_rows and block_cols must be positive")
+    if tile_rows <= 0 or tile_cols <= 0:
+        raise ValueError("tile_rows and tile_cols must be positive")
+    if block_rows % tile_rows != 0:
+        raise ValueError("block_rows must be divisible by tile_rows")
+    if block_cols != tile_cols:
+        raise ValueError("legacy row-tile layout expects block_cols == tile_cols")
+
+    slots_per_ct = ring_dim // 2
+    physical_tile_elems = tile_rows * tile_cols
+
+    if physical_tile_elems > slots_per_ct:
+        raise ValueError(
+            f"physical tile {tile_rows}x{tile_cols}={physical_tile_elems} "
+            f"exceeds slots_per_ct={slots_per_ct}"
+        )
+
+    padded_rows = ((rows + block_rows - 1) // block_rows) * block_rows
+    padded_cols = ((cols + block_cols - 1) // block_cols) * block_cols
+
+    num_row_blocks = padded_rows // block_rows
+    num_col_blocks = padded_cols // block_cols
+    num_logical_blocks = num_row_blocks * num_col_blocks
+    tiles_per_logical_block = block_rows // tile_rows
+    num_physical_tiles = num_logical_blocks * tiles_per_logical_block
+
+    return _LegacyLayoutDict({
+        "rows": rows,
+        "cols": cols,
+        "ring_dim": ring_dim,
+        "slots_per_ct": slots_per_ct,
+        "block_rows": block_rows,
+        "block_cols": block_cols,
+        "tile_rows": tile_rows,
+        "tile_cols": tile_cols,
+        "logical_shape": (rows, cols),
+        "padded_shape": (padded_rows, padded_cols),
+        "logical_block_shape": (block_rows, block_cols),
+        "physical_tile_shape": (tile_rows, tile_cols),
+        "num_row_blocks": num_row_blocks,
+        "num_col_blocks": num_col_blocks,
+        "num_logical_blocks": num_logical_blocks,
+        "tiles_per_logical_block": tiles_per_logical_block,
+        "num_physical_tiles": num_physical_tiles,
+        "layout_kind": "legacy_matrix_block_tile_row_major",
+    })

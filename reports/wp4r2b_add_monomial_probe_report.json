@@ -1,0 +1,416 @@
+{
+  "experiment": "wp4r2b_add_monomial_probe",
+  "purpose": "Smoke test coefficient ciphertext add and component-wise monomial multiply X^exp · ct.",
+  "status": "primitive_probe_only_no_full_tweak",
+  "input_row_a_i64": [
+    1,
+    -2,
+    3,
+    -1
+  ],
+  "input_row_b_i64": [
+    2,
+    1,
+    -1,
+    0
+  ],
+  "exps": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    16383,
+    16384,
+    16385
+  ],
+  "input_a": {
+    "ok": true,
+    "value": {
+      "valid": true,
+      "openfhe_level": 0,
+      "openfhe_noise_scale_deg": 1,
+      "openfhe_scaling_factor": 1.0,
+      "openfhe_slots": 0,
+      "openfhe_encoding_type": 1,
+      "num_parts": 2,
+      "num_towers_part0": 4,
+      "ring_dim_part0_tower0": 16384,
+      "tower0_coeff_head_part0": [
+        1021455276545116120,
+        212817919304793121,
+        149893421295283354,
+        452248589988975290,
+        587326018809118888,
+        1085265698043706885,
+        200771058150903359,
+        1131312850203902555
+      ]
+    }
+  },
+  "input_b": {
+    "ok": true,
+    "value": {
+      "valid": true,
+      "openfhe_level": 0,
+      "openfhe_noise_scale_deg": 1,
+      "openfhe_scaling_factor": 1.0,
+      "openfhe_slots": 0,
+      "openfhe_encoding_type": 1,
+      "num_parts": 2,
+      "num_towers_part0": 4,
+      "ring_dim_part0_tower0": 16384,
+      "tower0_coeff_head_part0": [
+        303264024480334466,
+        820712080234726813,
+        697984917372691213,
+        1130315263463904730,
+        543752274399485458,
+        655655068201330887,
+        738106998981106633,
+        890808281948595120
+      ]
+    }
+  },
+  "add_call": {
+    "ok": true,
+    "error": null
+  },
+  "add_output": {
+    "ok": true,
+    "value": {
+      "valid": true,
+      "openfhe_level": 0,
+      "openfhe_noise_scale_deg": 1,
+      "openfhe_scaling_factor": 1.0,
+      "openfhe_slots": 0,
+      "openfhe_encoding_type": 1,
+      "num_parts": 2,
+      "num_towers_part0": 4,
+      "ring_dim_part0_tower0": 16384,
+      "tower0_coeff_head_part0": [
+        171797796418701913,
+        1033529999539519934,
+        847878338667974567,
+        429642348846131347,
+        1131078293208604346,
+        587999261638289099,
+        938878057132009992,
+        869199627545749002
+      ]
+    }
+  },
+  "monomial_cases": [
+    {
+      "exp": 0,
+      "call": {
+        "ok": true,
+        "error": null
+      },
+      "output": {
+        "ok": true,
+        "value": {
+          "valid": true,
+          "openfhe_level": 0,
+          "openfhe_noise_scale_deg": 1,
+          "openfhe_scaling_factor": 1.0,
+          "openfhe_slots": 0,
+          "openfhe_encoding_type": 1,
+          "num_parts": 2,
+          "num_towers_part0": 4,
+          "ring_dim_part0_tower0": 16384,
+          "tower0_coeff_head_part0": [
+            1021455276545116120,
+            212817919304793121,
+            149893421295283354,
+            452248589988975290,
+            587326018809118888,
+            1085265698043706885,
+            200771058150903359,
+            1131312850203902555
+          ]
+        }
+      },
+      "checks": {
+        "output_valid（输出密文有效）": true,
+        "output_coef_encoding_type_1（输出仍是 coefficient encoding 类型 1）": true,
+        "output_has_two_rlwe_parts（输出仍有 c0/c1 两个 RLWE component）": true,
+        "output_ring_dim_16384（输出 ring_dim 仍是 16384）": true
+      }
+    },
+    {
+      "exp": 1,
+      "call": {
+        "ok": true,
+        "error": null
+      },
+      "output": {
+        "ok": true,
+        "value": {
+          "valid": true,
+          "openfhe_level": 0,
+          "openfhe_noise_scale_deg": 1,
+          "openfhe_scaling_factor": 1.0,
+          "openfhe_slots": 0,
+          "openfhe_encoding_type": 1,
+          "num_parts": 2,
+          "num_towers_part0": 4,
+          "ring_dim_part0_tower0": 16384,
+          "tower0_coeff_head_part0": [
+            590192881784750962,
+            475146105049114178,
+            878005594525402901,
+            175156602140258236,
+            818740662393583332,
+            930857909766899812,
+            1128924654352735859,
+            1107039216148488281
+          ]
+        }
+      },
+      "checks": {
+        "output_valid（输出密文有效）": true,
+        "output_coef_encoding_type_1（输出仍是 coefficient encoding 类型 1）": true,
+        "output_has_two_rlwe_parts（输出仍有 c0/c1 两个 RLWE component）": true,
+        "output_ring_dim_16384（输出 ring_dim 仍是 16384）": true
+      }
+    },
+    {
+      "exp": 2,
+      "call": {
+        "ok": true,
+        "error": null
+      },
+      "output": {
+        "ok": true,
+        "value": {
+          "valid": true,
+          "openfhe_level": 0,
+          "openfhe_noise_scale_deg": 1,
+          "openfhe_scaling_factor": 1.0,
+          "openfhe_slots": 0,
+          "openfhe_encoding_type": 1,
+          "num_parts": 2,
+          "num_towers_part0": 4,
+          "ring_dim_part0_tower0": 16384,
+          "tower0_coeff_head_part0": [
+            552376170125643477,
+            356385399908141515,
+            76013592984222143,
+            71138199329496340,
+            538585009655287291,
+            956896644872930538,
+            28983725871556824,
+            631307003816843400
+          ]
+        }
+      },
+      "checks": {
+        "output_valid（输出密文有效）": true,
+        "output_coef_encoding_type_1（输出仍是 coefficient encoding 类型 1）": true,
+        "output_has_two_rlwe_parts（输出仍有 c0/c1 两个 RLWE component）": true,
+        "output_ring_dim_16384（输出 ring_dim 仍是 16384）": true
+      }
+    },
+    {
+      "exp": 3,
+      "call": {
+        "ok": true,
+        "error": null
+      },
+      "output": {
+        "ok": true,
+        "value": {
+          "valid": true,
+          "openfhe_level": 0,
+          "openfhe_noise_scale_deg": 1,
+          "openfhe_scaling_factor": 1.0,
+          "openfhe_slots": 0,
+          "openfhe_encoding_type": 1,
+          "num_parts": 2,
+          "num_towers_part0": 4,
+          "ring_dim_part0_tower0": 16384,
+          "tower0_coeff_head_part0": [
+            501506945734210024,
+            986162018110121098,
+            503428617683859816,
+            670317582397754725,
+            566937599543383597,
+            1151009985068562597,
+            92942781043286685,
+            451309272529250028
+          ]
+        }
+      },
+      "checks": {
+        "output_valid（输出密文有效）": true,
+        "output_coef_encoding_type_1（输出仍是 coefficient encoding 类型 1）": true,
+        "output_has_two_rlwe_parts（输出仍有 c0/c1 两个 RLWE component）": true,
+        "output_ring_dim_16384（输出 ring_dim 仍是 16384）": true
+      }
+    },
+    {
+      "exp": 4,
+      "call": {
+        "ok": true,
+        "error": null
+      },
+      "output": {
+        "ok": true,
+        "value": {
+          "valid": true,
+          "openfhe_level": 0,
+          "openfhe_noise_scale_deg": 1,
+          "openfhe_scaling_factor": 1.0,
+          "openfhe_slots": 0,
+          "openfhe_encoding_type": 1,
+          "num_parts": 2,
+          "num_towers_part0": 4,
+          "ring_dim_part0_tower0": 16384,
+          "tower0_coeff_head_part0": [
+            784631194225560157,
+            798245753578032793,
+            185250671650224271,
+            435661141629778487,
+            440740613294523239,
+            1037243870147013003,
+            514804584718402681,
+            90729603183941639
+          ]
+        }
+      },
+      "checks": {
+        "output_valid（输出密文有效）": true,
+        "output_coef_encoding_type_1（输出仍是 coefficient encoding 类型 1）": true,
+        "output_has_two_rlwe_parts（输出仍有 c0/c1 两个 RLWE component）": true,
+        "output_ring_dim_16384（输出 ring_dim 仍是 16384）": true
+      }
+    },
+    {
+      "exp": 16383,
+      "call": {
+        "ok": true,
+        "error": null
+      },
+      "output": {
+        "ok": true,
+        "value": {
+          "valid": true,
+          "openfhe_level": 0,
+          "openfhe_noise_scale_deg": 1,
+          "openfhe_scaling_factor": 1.0,
+          "openfhe_slots": 0,
+          "openfhe_encoding_type": 1,
+          "num_parts": 2,
+          "num_towers_part0": 4,
+          "ring_dim_part0_tower0": 16384,
+          "tower0_coeff_head_part0": [
+            551011325476172835,
+            435959687194829128,
+            249941775213183049,
+            615283992219142263,
+            86076473025382012,
+            898346740057751730,
+            829196643133962220,
+            913326128903970308
+          ]
+        }
+      },
+      "checks": {
+        "output_valid（输出密文有效）": true,
+        "output_coef_encoding_type_1（输出仍是 coefficient encoding 类型 1）": true,
+        "output_has_two_rlwe_parts（输出仍有 c0/c1 两个 RLWE component）": true,
+        "output_ring_dim_16384（输出 ring_dim 仍是 16384）": true
+      }
+    },
+    {
+      "exp": 16384,
+      "call": {
+        "ok": true,
+        "error": null
+      },
+      "output": {
+        "ok": true,
+        "value": {
+          "valid": true,
+          "openfhe_level": 0,
+          "openfhe_noise_scale_deg": 1,
+          "openfhe_scaling_factor": 1.0,
+          "openfhe_slots": 0,
+          "openfhe_encoding_type": 1,
+          "num_parts": 2,
+          "num_towers_part0": 4,
+          "ring_dim_part0_tower0": 16384,
+          "tower0_coeff_head_part0": [
+            131466228061632553,
+            940103585301955552,
+            1003028083311465319,
+            700672914617773383,
+            565595485797629785,
+            67655806563041788,
+            952150446455845314,
+            21608654402846118
+          ]
+        }
+      },
+      "checks": {
+        "output_valid（输出密文有效）": true,
+        "output_coef_encoding_type_1（输出仍是 coefficient encoding 类型 1）": true,
+        "output_has_two_rlwe_parts（输出仍有 c0/c1 两个 RLWE component）": true,
+        "output_ring_dim_16384（输出 ring_dim 仍是 16384）": true
+      }
+    },
+    {
+      "exp": 16385,
+      "call": {
+        "ok": true,
+        "error": null
+      },
+      "output": {
+        "ok": true,
+        "value": {
+          "valid": true,
+          "openfhe_level": 0,
+          "openfhe_noise_scale_deg": 1,
+          "openfhe_scaling_factor": 1.0,
+          "openfhe_slots": 0,
+          "openfhe_encoding_type": 1,
+          "num_parts": 2,
+          "num_towers_part0": 4,
+          "ring_dim_part0_tower0": 16384,
+          "tower0_coeff_head_part0": [
+            562728622821997711,
+            677775399557634495,
+            274915910081345772,
+            977764902466490437,
+            334180842213165341,
+            222063594839848861,
+            23996850254012814,
+            45882288458260392
+          ]
+        }
+      },
+      "checks": {
+        "output_valid（输出密文有效）": true,
+        "output_coef_encoding_type_1（输出仍是 coefficient encoding 类型 1）": true,
+        "output_has_two_rlwe_parts（输出仍有 c0/c1 两个 RLWE component）": true,
+        "output_ring_dim_16384（输出 ring_dim 仍是 16384）": true
+      }
+    }
+  ],
+  "summary": {
+    "add_call_ok（coefficient ciphertext 加法调用成功）": true,
+    "add_output_shape_ok（加法输出仍保持 coefficient/c0c1/ring_dim 结构）": true,
+    "all_monomial_calls_ok（所有 X^exp·ct 调用成功）": true,
+    "successful_monomial_exps（成功的 exp 列表）": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      16383,
+      16384,
+      16385
+    ]
+  }
+}

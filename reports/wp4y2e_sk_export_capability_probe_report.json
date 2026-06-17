@@ -1,0 +1,80 @@
+{
+  "experiment": "wp4y2e_sk_export_capability_probe",
+  "purpose": "Check whether Python runtime already exposes secret-key coefficient export needed for controlled SK/RLWE coefficient-row encryption.",
+  "status": "capability_probe",
+  "required_for_next": {
+    "api": "export_secret_key_coeff_u64(coeff_count)",
+    "zh": "Y2e controlled RLWE probe 需要导出 secret key 的 RNS coefficient prefix。"
+  },
+  "python_runtime_attrs": {
+    "export_secret_key_coeff_u64": true,
+    "export_sk_coeff_u64": false,
+    "export_secret_key_coeffs_u64": false,
+    "export_private_key_coeff_u64": false,
+    "inspect_secret_key_coeff_u64": false
+  },
+  "context_attrs": {
+    "export_secret_key_coeff_u64": true,
+    "export_sk_coeff_u64": false,
+    "export_secret_key_coeffs_u64": false,
+    "export_private_key_coeff_u64": false,
+    "inspect_secret_key_coeff_u64": false
+  },
+  "calls": {
+    "export_secret_key_coeff_u64": {
+      "ok": true,
+      "value": [
+        [
+          1152921504606748672,
+          1,
+          0,
+          1152921504606748672,
+          1,
+          1,
+          1,
+          0
+        ],
+        [
+          1125899904679936,
+          1,
+          0,
+          1125899904679936,
+          1,
+          1,
+          1,
+          0
+        ],
+        [
+          1125899908022272,
+          1,
+          0,
+          1125899908022272,
+          1,
+          1,
+          1,
+          0
+        ],
+        [
+          557056,
+          1,
+          0,
+          557056,
+          1,
+          1,
+          1,
+          0
+        ]
+      ]
+    }
+  },
+  "checks": {
+    "any_sk_export_api_available（是否已有 secret-key coefficient export API）": true,
+    "any_sk_export_call_ok（是否已有 API 可成功调用）": true
+  },
+  "summary": {
+    "if_available": "Proceed to Y2f controlled RLWE coefficient-row encryption in Python.",
+    "if_missing": "Patch bindings.cpp/runtime.py to expose export_secret_key_coeff_u64(coeff_count).",
+    "next_step": "WP4-Y2f",
+    "zh": "如果没有 secret-key export API，就先补 pybind；如果已有，就直接构造 controlled RLWE ciphertext。"
+  }
+}

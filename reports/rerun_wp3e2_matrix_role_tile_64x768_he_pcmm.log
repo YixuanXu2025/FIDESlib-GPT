@@ -1,0 +1,63 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+Runtime info
+runtime info（运行时信息）: {'ring_dim': 16384, 'cyclotomic_order': 32768}
+====================================================================================================
+WP3-E2 / Experiment 1: X=64x768 matrix-block / physical tile HE PCMM
+experiment（实验）: matrix_block_physical_tile_64x768_he_pcmm
+method（方法）: legacy physical row tile route using component HE backend
+target（目标）: Y = X(64x768) @ W(768x768)
+X_shape（X形状）: [64, 768]
+W_shape（W形状）: [768, 768]
+Y_shape（Y形状）: [64, 768]
+logical_block_shape（逻辑块形状）: [128, 128]
+physical_tile_shape（物理tile形状）: [64, 128]
+num_mid_blocks（中间维度块数）: 6
+num_out_blocks（输出维度块数）: 6
+nonzero_physical_tile_products（非零物理tile乘法数）: 36
+skipped_zero_physical_tile_products（跳过的全零物理tile乘法数）: 36
+plain_reference_us（明文参考用时）: 1167.7080078125
+encrypt_us_total（总加密用时）: 77500622.56640625
+component_compute_us_total（总HE核心计算用时）: 111619421.85986328
+he_add_partial_us_total（partial结果HE加法总用时）: 3409806.1513671875
+materialize_us_total（总materialize用时）: 333658919.3569336
+decrypt_us_total（总解密用时）: 5218013.152832031
+total_he_us（HE总用时）: 531406783.08740234
+max_abs_err（最大绝对误差）: 8.142819751810748e-12
+output_block_reports（各输出块报告）:
+  - {'output_block_index（输出块编号）': 0, 'num_partial_products（partial乘法数量）': 6, 'Y_block_shape（输出块形状）': [64, 128], 'max_abs_err（最大绝对误差）': 7.695177828281885e-12}
+  - {'output_block_index（输出块编号）': 1, 'num_partial_products（partial乘法数量）': 6, 'Y_block_shape（输出块形状）': [64, 128], 'max_abs_err（最大绝对误差）': 6.870948254800169e-12}
+  - {'output_block_index（输出块编号）': 2, 'num_partial_products（partial乘法数量）': 6, 'Y_block_shape（输出块形状）': [64, 128], 'max_abs_err（最大绝对误差）': 7.624123554705875e-12}
+  - {'output_block_index（输出块编号）': 3, 'num_partial_products（partial乘法数量）': 6, 'Y_block_shape（输出块形状）': [64, 128], 'max_abs_err（最大绝对误差）': 6.927791673660977e-12}
+  - {'output_block_index（输出块编号）': 4, 'num_partial_products（partial乘法数量）': 6, 'Y_block_shape（输出块形状）': [64, 128], 'max_abs_err（最大绝对误差）': 7.0912165028858e-12}
+  - {'output_block_index（输出块编号）': 5, 'num_partial_products（partial乘法数量）': 6, 'Y_block_shape（输出块形状）': [64, 128], 'max_abs_err（最大绝对误差）': 8.142819751810748e-12}
+Y_ref_first_row_first8（明文首行前8个）: [81.0, -30.0, 61.0, 1.0, -35.0, -7.0, 29.0, -13.0]
+Y_dec_first_row_first8（解密首行前8个）: [81.00000000000385, -30.000000000001606, 60.999999999997684, 0.9999999999960604, -34.99999999999883, -7.000000000000135, 29.000000000000473, -13.000000000002043]
+====================================================================================================
+WP3-E2 / Experiment 2: X=64x768 role-specific block tiling HE PCMM
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8FIDESlib9GPUmallocEiiP11CUstream_stb+0x22c)[0x7fe05af74d9c]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8FIDESlib4CKKS19CudaMallocAuxBufferERNS_6StreamEmi+0x71)[0x7fe05af29151]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8FIDESlib4CKKS13LimbPartitionC2ERNS0_11ContextDataERKmPiib+0x425)[0x7fe05af36b95]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZNSt6vectorIN8FIDESlib4CKKS13LimbPartitionESaIS2_EE17_M_realloc_insertIJRNS1_11ContextDataERKmPiRmRbEEEvN9__gnu_cxx17__normal_iteratorIPS2_S4_EEDpOT_+0xbd)[0x7fe05af08cdd]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8FIDESlib4CKKS7RNSPolyC2ERNS0_11ContextDataEibb+0x115)[0x7fe05af05a45]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8FIDESlib4CKKS11ContextData14getAuxilarPolyEv+0x122)[0x7fe05af0cb02]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8FIDESlib4CKKS10CiphertextC2ERSt10shared_ptrINS0_11ContextDataEE+0x1fb)[0x7fe05aef8e7b]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8fideslib17CryptoContextImplIjE20CopyDeviceCiphertextERKNS_14CiphertextImplIjEE+0x100)[0x7fe05afbbeb0]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8fideslib14CiphertextImplIjEC1ERKS1_+0x5ce)[0x7fe05afad02e]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZNK8fideslib14CiphertextImplIjE5CloneEv+0x5f)[0x7fe05afad1af]
+Cuda failure /root/fideslib/src/CudaUtils.cu:359: 'out of memory'

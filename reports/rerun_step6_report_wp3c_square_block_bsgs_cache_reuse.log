@@ -1,0 +1,42 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+同一case多轮复用测试 / cache_reuse_8x64__64x64
+轮次           cache构建(us)      命中      新建        加密(us)        核心(us)        解密(us)              误差
+--------------------------------------------------------------------------------------------------
+1             146055.211       0       1     19556.383    766422.007     15048.143    1.964451e-11
+2                 49.184       1       0     18357.699    757962.949     15481.483    2.278470e-11
+3                 47.586       1       0     18153.973    769015.295     15601.745    1.765921e-11
+4                 58.133       1       0     20935.308    769598.908     14637.693    2.026324e-11
+5                 49.354       1       0     18821.188    772260.402     15825.804    1.696909e-11
+--------------------------------------------------------------------------------------------------
+明文参考时间(us): 6.207
+第2轮及以后中位数:
+  cache构建时间(us): 49.269
+  cache命中块数: 1.0
+  cache新建块数: 0.0
+  加密时间(us): 18589.444
+  核心计算时间(us): 769307.102
+  解密时间(us): 15541.614
+  正确性误差(max_abs_err): 1.896122e-11
+  pMult平均单次(us): 5836.272
+  add平均单次(us): 134.568
+  rotate平均单次(us): 253.952
+====================================================================================================
+报告已保存
+JSON路径: /workspace/FIDESlib-GPT/reports/wp3c_square_block_bsgs_cache_reuse_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

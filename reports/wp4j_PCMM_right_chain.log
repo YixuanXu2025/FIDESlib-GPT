@@ -1,0 +1,32 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+[phase] encrypt columns
+[phase] GPU-only right-multiply chain via rt.component_linear_transform_gpu(cols, U.T)
+[component_linear_transform_gpu] layer=0 name=U3
+[component_linear_transform_gpu] layer=1 name=U2
+[component_linear_transform_gpu] layer=2 name=U1
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8FIDESlib9GPUmallocEiiP11CUstream_stb+0x382)[0x7ff181e74ef2]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8FIDESlib9VectorGPUImEC1ERNS_6StreamEiiPKm+0x72)[0x7ff181eab082]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8FIDESlib4CKKS4LimbImEC1ERNS0_11ContextDataEiRNS_6StreamEib+0x71)[0x7ff181e24541]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8FIDESlib4CKKS13LimbPartition8generateERSt6vectorINS_10LimbRecordESaIS3_EERS2_ISt7variantIJNS0_4LimbIjEENS8_ImEEEESaISB_EERNS_9VectorGPUIPvEEiPSH_PmmSK_mb+0x711)[0x7ff181e37601]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8FIDESlib4CKKS13LimbPartition19generateLimbToLevelEi+0x80)[0x7ff181e37da0]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8FIDESlib4CKKS7RNSPoly4growEibb+0x192)[0x7ff181e02572]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8FIDESlib4CKKS7RNSPoly4copyERKS1_+0x4c)[0x7ff181e0462c]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8FIDESlib4CKKS10Ciphertext4copyERKS1_+0x1dd)[0x7ff181df66dd]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8fideslib17CryptoContextImplIjE20CopyDeviceCiphertextERKNS_14CiphertextImplIjEE+0x10d)[0x7ff181ebbebd]
+/workspace/FIDESlib-GPT/build/_fideslib.cpython-310-x86_64-linux-gnu.so(_ZN8fideslib14CiphertextImplIjEC1ERKS1_+0x5ce)[0x7ff181ead02e]
+Cuda failure /root/fideslib/src/CudaUtils.cu:351: 'out of memory'

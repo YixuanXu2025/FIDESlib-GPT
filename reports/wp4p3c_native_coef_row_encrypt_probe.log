@@ -1,0 +1,198 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+WP4-P coefficient row encrypt/decrypt probe
+{
+  "experiment": "wp4p_coef_row_encrypt_probe",
+  "purpose": "Probe native OpenFHE CoefPackedEncoding encrypt/decrypt bridge through FIDESlib-GPT bindings.",
+  "status": "probe_only",
+  "input_row_i64": [
+    -3,
+    -2,
+    -1,
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "runtime_info": {
+    "ok": true,
+    "value": {
+      "ring_dim": 16384,
+      "cyclotomic_order": 32768
+    }
+  },
+  "slot_baseline_decrypt": {
+    "ok": true,
+    "value": [
+      -3.000000000000015,
+      -2.000000000000031,
+      -1.00000000000005,
+      -2.042810365310288e-14,
+      1.0000000000000095,
+      1.9999999999999416,
+      3.000000000000025,
+      3.999999999999999
+    ]
+  },
+  "slot_baseline_inspect": {
+    "ok": true,
+    "value": {
+      "valid": true,
+      "fides_loaded": true,
+      "fides_gpu_handle": 2,
+      "fides_level": 4294967295,
+      "fides_noise_scale_deg": 2,
+      "num_parts": 2,
+      "openfhe_level": 0,
+      "openfhe_noise_scale_deg": 2,
+      "openfhe_scaling_factor": 6.271904250631633e+20,
+      "openfhe_slots": 8,
+      "openfhe_encoding_type": 4,
+      "openfhe_key_tag": "99efaa982ca35e5cf5858b2712acf25a",
+      "parts_summary": [
+        {
+          "part_index": 0,
+          "openfhe_name": "GetElements()[0]",
+          "fides_raw_name": "sub_0 / c0",
+          "format": 0,
+          "num_towers": 4,
+          "tower0_modulus_u64": 1152921504606748673,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            1096477016553723433,
+            955491097725742733,
+            397676873508655001,
+            291494769665615858,
+            633319669415815824,
+            332140310046730654,
+            814275353168550911,
+            1110855344595783443
+          ],
+          "tower0_fnv1a64": "155915925499479381"
+        },
+        {
+          "part_index": 1,
+          "openfhe_name": "GetElements()[1]",
+          "fides_raw_name": "sub_1 / c1",
+          "format": 0,
+          "num_towers": 4,
+          "tower0_modulus_u64": 1152921504606748673,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            1128384412730686147,
+            54370222515276473,
+            510029141309146863,
+            785057148928710157,
+            942855775042617106,
+            368373116177189075,
+            660856342990147402,
+            697454081506737683
+          ],
+          "tower0_fnv1a64": "16355746427544099359"
+        }
+      ]
+    }
+  },
+  "coef_encrypt": {
+    "ok": true,
+    "error": null
+  },
+  "coef_storage_state": {
+    "ok": true,
+    "value": {
+      "valid": true,
+      "loaded": false,
+      "gpu": 0,
+      "has_cpu": true,
+      "level": 0,
+      "noise_scale_deg": 1,
+      "original_level": 0
+    }
+  },
+  "coef_decrypt": {
+    "ok": false,
+    "error": "RuntimeError('/root/fideslib/deps/openfhe-src/src/pke/lib/scheme/ckksrns/ckksrns-pke.cpp:l.60:Decrypt(): sizeQl 4!= 1. If sizeQl = 0, consider increasing the depth. If sizeQl > 1, check parameters (this is unsupported for NativePoly).')"
+  },
+  "coef_inspect": {
+    "ok": true,
+    "value": {
+      "valid": true,
+      "fides_loaded": false,
+      "fides_gpu_handle": 0,
+      "fides_level": 0,
+      "fides_noise_scale_deg": 1,
+      "num_parts": 2,
+      "openfhe_level": 0,
+      "openfhe_noise_scale_deg": 1,
+      "openfhe_scaling_factor": 1.0,
+      "openfhe_slots": 0,
+      "openfhe_encoding_type": 1,
+      "openfhe_key_tag": "99efaa982ca35e5cf5858b2712acf25a",
+      "parts_summary": [
+        {
+          "part_index": 0,
+          "openfhe_name": "GetElements()[0]",
+          "fides_raw_name": "sub_0 / c0",
+          "format": 0,
+          "num_towers": 4,
+          "tower0_modulus_u64": 1152921504606748673,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            557694157524825193,
+            1147572453756243566,
+            678392074250969938,
+            574434403851482188,
+            686346494305435393,
+            823571033125060039,
+            653347753593779170,
+            673912368744055774
+          ],
+          "tower0_fnv1a64": "15676413518704059684"
+        },
+        {
+          "part_index": 1,
+          "openfhe_name": "GetElements()[1]",
+          "fides_raw_name": "sub_1 / c1",
+          "format": 0,
+          "num_towers": 4,
+          "tower0_modulus_u64": 1152921504606748673,
+          "tower0_ring_dim": 16384,
+          "tower0_coeff_head": [
+            52560927295938911,
+            581215140854621192,
+            559406771872368004,
+            920471939667847239,
+            42292530379543528,
+            881935540910155836,
+            471441446252758584,
+            501242798138473019
+          ],
+          "tower0_fnv1a64": "10053451423240695207"
+        }
+      ]
+    }
+  },
+  "errors": {
+    "coef_roundtrip_exact": false,
+    "coef_roundtrip_max_abs_err": null
+  }
+}
+====================================================================================================
+saved: /workspace/FIDESlib-GPT/reports/wp4p_coef_row_encrypt_probe_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

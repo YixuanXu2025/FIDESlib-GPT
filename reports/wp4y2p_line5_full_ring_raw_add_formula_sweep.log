@@ -1,0 +1,481 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+====================================================================================================
+WP4-Y2p line5 full-ring raw-add formula sweep
+{
+  "experiment": "wp4y2p_line5_full_ring_raw_add_formula_sweep",
+  "status": "debug_formula_sweep_line5_raw_add",
+  "checks": {
+    "variants_tested（扫描 variant 数量）": 64,
+    "cases_per_variant（每个 variant 的 case 数量）": 4,
+    "any_variant_solves_U_matmul_V（是否有 variant 全部匹配 U@V）": false,
+    "any_variant_solves_any_reference（是否有 variant 全部匹配任一参考）": false,
+    "solved_variants（全部匹配的 variants）": [],
+    "best_variant": {
+      "variant_id": "v023_raw_component_T01-Bonly_T00-Aonly_ks_p0_lin_p1_as_c0_normal_M10_A_M11_B",
+      "variant": {
+        "variant_id": "v023_raw_component_T01-Bonly_T00-Aonly_ks_p0_lin_p1_as_c0_normal_M10_A_M11_B",
+        "a_scalar": 1,
+        "temp_cmt_mode": "raw_component",
+        "T01_placement": "Bonly",
+        "T00_placement": "Aonly",
+        "line5_variant": {
+          "id": "ks_p0_lin_p1_as_c0",
+          "ks_part": 0,
+          "lin_part": 1,
+          "lin_place": "c0"
+        },
+        "line6_mapping": "normal_M10_A_M11_B"
+      },
+      "summary": {
+        "num_cases_completed": 4,
+        "num_errors": 0,
+        "all_decrypted": true,
+        "all_line5_ks_inputs_are_3part": true,
+        "all_final_rows_are_2part": true,
+        "match_counts": {
+          "U_matmul_V": 0,
+          "U_T_matmul_V": 0,
+          "U_matmul_V_T": 0,
+          "V_matmul_U": 0,
+          "V_T_matmul_U": 0,
+          "U_T_matmul_V_T": 0
+        },
+        "total_l1": {
+          "U_matmul_V": 43,
+          "U_T_matmul_V": 46,
+          "U_matmul_V_T": 46,
+          "V_matmul_U": 45,
+          "V_T_matmul_U": 46,
+          "U_T_matmul_V_T": 45
+        }
+      }
+    },
+    "top10_variants": [
+      {
+        "variant_id": "v023_raw_component_T01-Bonly_T00-Aonly_ks_p0_lin_p1_as_c0_normal_M10_A_M11_B",
+        "variant": {
+          "variant_id": "v023_raw_component_T01-Bonly_T00-Aonly_ks_p0_lin_p1_as_c0_normal_M10_A_M11_B",
+          "a_scalar": 1,
+          "temp_cmt_mode": "raw_component",
+          "T01_placement": "Bonly",
+          "T00_placement": "Aonly",
+          "line5_variant": {
+            "id": "ks_p0_lin_p1_as_c0",
+            "ks_part": 0,
+            "lin_part": 1,
+            "lin_place": "c0"
+          },
+          "line6_mapping": "normal_M10_A_M11_B"
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 43,
+            "U_T_matmul_V": 46,
+            "U_matmul_V_T": 46,
+            "V_matmul_U": 45,
+            "V_T_matmul_U": 46,
+            "U_T_matmul_V_T": 45
+          }
+        }
+      },
+      {
+        "variant_id": "v027_raw_component_T01-Bonly_T00-Bonly_ks_p1_lin_p0_as_c0_normal_M10_A_M11_B",
+        "variant": {
+          "variant_id": "v027_raw_component_T01-Bonly_T00-Bonly_ks_p1_lin_p0_as_c0_normal_M10_A_M11_B",
+          "a_scalar": 1,
+          "temp_cmt_mode": "raw_component",
+          "T01_placement": "Bonly",
+          "T00_placement": "Bonly",
+          "line5_variant": {
+            "id": "ks_p1_lin_p0_as_c0",
+            "ks_part": 1,
+            "lin_part": 0,
+            "lin_place": "c0"
+          },
+          "line6_mapping": "normal_M10_A_M11_B"
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 43,
+            "U_T_matmul_V": 46,
+            "U_matmul_V_T": 46,
+            "V_matmul_U": 45,
+            "V_T_matmul_U": 46,
+            "U_T_matmul_V_T": 45
+          }
+        }
+      },
+      {
+        "variant_id": "v021_raw_component_T01-Bonly_T00-Aonly_ks_p0_lin_p1_as_c1_normal_M10_A_M11_B",
+        "variant": {
+          "variant_id": "v021_raw_component_T01-Bonly_T00-Aonly_ks_p0_lin_p1_as_c1_normal_M10_A_M11_B",
+          "a_scalar": 1,
+          "temp_cmt_mode": "raw_component",
+          "T01_placement": "Bonly",
+          "T00_placement": "Aonly",
+          "line5_variant": {
+            "id": "ks_p0_lin_p1_as_c1",
+            "ks_part": 0,
+            "lin_part": 1,
+            "lin_place": "c1"
+          },
+          "line6_mapping": "normal_M10_A_M11_B"
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 61,
+            "U_T_matmul_V": 64,
+            "U_matmul_V_T": 64,
+            "V_matmul_U": 63,
+            "V_T_matmul_U": 64,
+            "U_T_matmul_V_T": 63
+          }
+        }
+      },
+      {
+        "variant_id": "v025_raw_component_T01-Bonly_T00-Bonly_ks_p1_lin_p0_as_c1_normal_M10_A_M11_B",
+        "variant": {
+          "variant_id": "v025_raw_component_T01-Bonly_T00-Bonly_ks_p1_lin_p0_as_c1_normal_M10_A_M11_B",
+          "a_scalar": 1,
+          "temp_cmt_mode": "raw_component",
+          "T01_placement": "Bonly",
+          "T00_placement": "Bonly",
+          "line5_variant": {
+            "id": "ks_p1_lin_p0_as_c1",
+            "ks_part": 1,
+            "lin_part": 0,
+            "lin_place": "c1"
+          },
+          "line6_mapping": "normal_M10_A_M11_B"
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 61,
+            "U_T_matmul_V": 64,
+            "U_matmul_V_T": 64,
+            "V_matmul_U": 63,
+            "V_T_matmul_U": 64,
+            "U_T_matmul_V_T": 63
+          }
+        }
+      },
+      {
+        "variant_id": "v005_raw_component_T01-Aonly_T00-Aonly_ks_p0_lin_p1_as_c1_normal_M10_A_M11_B",
+        "variant": {
+          "variant_id": "v005_raw_component_T01-Aonly_T00-Aonly_ks_p0_lin_p1_as_c1_normal_M10_A_M11_B",
+          "a_scalar": 1,
+          "temp_cmt_mode": "raw_component",
+          "T01_placement": "Aonly",
+          "T00_placement": "Aonly",
+          "line5_variant": {
+            "id": "ks_p0_lin_p1_as_c1",
+            "ks_part": 0,
+            "lin_part": 1,
+            "lin_place": "c1"
+          },
+          "line6_mapping": "normal_M10_A_M11_B"
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 70,
+            "U_T_matmul_V": 73,
+            "U_matmul_V_T": 73,
+            "V_matmul_U": 72,
+            "V_T_matmul_U": 73,
+            "U_T_matmul_V_T": 72
+          }
+        }
+      },
+      {
+        "variant_id": "v009_raw_component_T01-Aonly_T00-Bonly_ks_p1_lin_p0_as_c1_normal_M10_A_M11_B",
+        "variant": {
+          "variant_id": "v009_raw_component_T01-Aonly_T00-Bonly_ks_p1_lin_p0_as_c1_normal_M10_A_M11_B",
+          "a_scalar": 1,
+          "temp_cmt_mode": "raw_component",
+          "T01_placement": "Aonly",
+          "T00_placement": "Bonly",
+          "line5_variant": {
+            "id": "ks_p1_lin_p0_as_c1",
+            "ks_part": 1,
+            "lin_part": 0,
+            "lin_place": "c1"
+          },
+          "line6_mapping": "normal_M10_A_M11_B"
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 70,
+            "U_T_matmul_V": 73,
+            "U_matmul_V_T": 73,
+            "V_matmul_U": 72,
+            "V_T_matmul_U": 73,
+            "U_T_matmul_V_T": 72
+          }
+        }
+      },
+      {
+        "variant_id": "v007_raw_component_T01-Aonly_T00-Aonly_ks_p0_lin_p1_as_c0_normal_M10_A_M11_B",
+        "variant": {
+          "variant_id": "v007_raw_component_T01-Aonly_T00-Aonly_ks_p0_lin_p1_as_c0_normal_M10_A_M11_B",
+          "a_scalar": 1,
+          "temp_cmt_mode": "raw_component",
+          "T01_placement": "Aonly",
+          "T00_placement": "Aonly",
+          "line5_variant": {
+            "id": "ks_p0_lin_p1_as_c0",
+            "ks_part": 0,
+            "lin_part": 1,
+            "lin_place": "c0"
+          },
+          "line6_mapping": "normal_M10_A_M11_B"
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 80,
+            "U_T_matmul_V": 81,
+            "U_matmul_V_T": 81,
+            "V_matmul_U": 80,
+            "V_T_matmul_U": 81,
+            "U_T_matmul_V_T": 80
+          }
+        }
+      },
+      {
+        "variant_id": "v011_raw_component_T01-Aonly_T00-Bonly_ks_p1_lin_p0_as_c0_normal_M10_A_M11_B",
+        "variant": {
+          "variant_id": "v011_raw_component_T01-Aonly_T00-Bonly_ks_p1_lin_p0_as_c0_normal_M10_A_M11_B",
+          "a_scalar": 1,
+          "temp_cmt_mode": "raw_component",
+          "T01_placement": "Aonly",
+          "T00_placement": "Bonly",
+          "line5_variant": {
+            "id": "ks_p1_lin_p0_as_c0",
+            "ks_part": 1,
+            "lin_part": 0,
+            "lin_place": "c0"
+          },
+          "line6_mapping": "normal_M10_A_M11_B"
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 80,
+            "U_T_matmul_V": 81,
+            "U_matmul_V_T": 81,
+            "V_matmul_U": 80,
+            "V_T_matmul_U": 81,
+            "U_T_matmul_V_T": 80
+          }
+        }
+      },
+      {
+        "variant_id": "v024_raw_component_T01-Bonly_T00-Aonly_ks_p0_lin_p1_as_c0_swapped_M11_A_M10_B",
+        "variant": {
+          "variant_id": "v024_raw_component_T01-Bonly_T00-Aonly_ks_p0_lin_p1_as_c0_swapped_M11_A_M10_B",
+          "a_scalar": 1,
+          "temp_cmt_mode": "raw_component",
+          "T01_placement": "Bonly",
+          "T00_placement": "Aonly",
+          "line5_variant": {
+            "id": "ks_p0_lin_p1_as_c0",
+            "ks_part": 0,
+            "lin_part": 1,
+            "lin_place": "c0"
+          },
+          "line6_mapping": "swapped_M11_A_M10_B"
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 167,
+            "U_T_matmul_V": 170,
+            "U_matmul_V_T": 170,
+            "V_matmul_U": 169,
+            "V_T_matmul_U": 170,
+            "U_T_matmul_V_T": 169
+          }
+        }
+      },
+      {
+        "variant_id": "v028_raw_component_T01-Bonly_T00-Bonly_ks_p1_lin_p0_as_c0_swapped_M11_A_M10_B",
+        "variant": {
+          "variant_id": "v028_raw_component_T01-Bonly_T00-Bonly_ks_p1_lin_p0_as_c0_swapped_M11_A_M10_B",
+          "a_scalar": 1,
+          "temp_cmt_mode": "raw_component",
+          "T01_placement": "Bonly",
+          "T00_placement": "Bonly",
+          "line5_variant": {
+            "id": "ks_p1_lin_p0_as_c0",
+            "ks_part": 1,
+            "lin_part": 0,
+            "lin_place": "c0"
+          },
+          "line6_mapping": "swapped_M11_A_M10_B"
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 167,
+            "U_T_matmul_V": 170,
+            "U_matmul_V_T": 170,
+            "V_matmul_U": 169,
+            "V_T_matmul_U": 170,
+            "U_T_matmul_V_T": 169
+          }
+        }
+      }
+    ]
+  },
+  "global_decision": {
+    "value": "component_formula_sweep_no_exact_variant",
+    "next_step": "WP4-Y2p",
+    "next_goal": "Expand sweep to PP-MM source mapping and signs, or compare against plaintext symbolic Algorithm 3.",
+    "zh": "当前扫描未找到全匹配 variant；下一步扩大到 PP-MM source mapping 和符号。"
+  },
+  "saved": "/workspace/FIDESlib-GPT/reports/wp4y2p_line5_full_ring_raw_add_formula_sweep_report.json"
+}
+====================================================================================================
+saved: /workspace/FIDESlib-GPT/reports/wp4y2p_line5_full_ring_raw_add_formula_sweep_report.json
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

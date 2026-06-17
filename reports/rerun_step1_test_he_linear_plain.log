@@ -1,0 +1,33 @@
+GPU 0: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 1: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 2: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 3: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 4: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 5: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 6: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+GPU 7: NVIDIA GeForce RTX 4090
+ SMs: 128, SharedMem: 100 KB, Blocks/SM: 24, Threads/SM: 1536, L2 size: 72 MB, Bus: 384-bit
+ct_x summary: {'name': 'x', 'shape': (4,), 'layout': 'token_hidden_contiguous', 'slots_used': 4, 'level': None, 'scale': None, 'device': 0, 'has_cipher': True, 'padded_shape': None, 'logical_block_shape': None, 'physical_tile_shape': None, 'block_coord': None, 'tile_index': None, 'logical_axes': None}
+ct_x handle valid: True
+x: [1. 2. 3. 4.]
+weight:
+ [[1.  0.  2. ]
+ [0.  1.  0.5]
+ [1.  1.  0. ]
+ [0.5 0.  1. ]]
+bias: [ 0.5 -1.   2. ]
+y_ref: [6.5 4.  9. ]
+y_he : [6.5 4.  9. ]
+max_abs_err: 1.4921397450962104e-13
+plaintext_linear_us: 59.37507376074791
+he_linear_plain_us: 36328.49780842662
+decrypt_us: 9109.782986342907
+he_total_us: 45438.280794769526
+Cuda failure /root/fideslib/src/CKKS/Context.cu:841: 'driver shutting down'

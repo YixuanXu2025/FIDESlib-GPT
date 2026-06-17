@@ -1,0 +1,964 @@
+{
+  "experiment": "wp4y2q_valid_variant_summary",
+  "purpose": "Re-rank Y2q PP-MM source/sign sweep while excluding variants that completed zero cases. The original Y2q ranking can be misleading because failed variants have total_l1=0.",
+  "input_report": "/workspace/FIDESlib-GPT/reports/wp4y2q_ppmm_source_sign_sweep_report.json",
+  "counts": {
+    "total_variants": 256,
+    "completed_all_cases_no_errors": 64,
+    "partial_completed": 0,
+    "failed_zero_completed": 192,
+    "cases_per_variant": 4
+  },
+  "error_summary": {
+    "unique_error_count": 1,
+    "top_errors": [
+      {
+        "error_key": "KeyError('towers')",
+        "count": 768,
+        "examples": [
+          {
+            "variant_id": "q0017_L-normal_R-normal_LT-0_RT-1_s1111",
+            "case": "basis_E00_times_E00",
+            "error": "KeyError('towers')"
+          },
+          {
+            "variant_id": "q0017_L-normal_R-normal_LT-0_RT-1_s1111",
+            "case": "basis_E01_times_E10",
+            "error": "KeyError('towers')"
+          },
+          {
+            "variant_id": "q0017_L-normal_R-normal_LT-0_RT-1_s1111",
+            "case": "basis_E01_times_E12",
+            "error": "KeyError('towers')"
+          },
+          {
+            "variant_id": "q0017_L-normal_R-normal_LT-0_RT-1_s1111",
+            "case": "basis_E23_times_E31",
+            "error": "KeyError('towers')"
+          },
+          {
+            "variant_id": "q0018_L-normal_R-normal_LT-0_RT-1_s111-1",
+            "case": "basis_E00_times_E00",
+            "error": "KeyError('towers')"
+          }
+        ]
+      }
+    ]
+  },
+  "valid_completed_results": {
+    "any_completed_variant_solves_U_matmul_V": false,
+    "any_completed_variant_solves_any_reference": false,
+    "solved_completed_variants": [],
+    "best_completed_variant": {
+      "variant_id": "q0004_L-normal_R-normal_LT-0_RT-0_s11-1-1",
+      "variant": {
+        "variant_id": "q0004_L-normal_R-normal_LT-0_RT-0_s11-1-1",
+        "source_map": {
+          "left": "normal",
+          "right": "normal"
+        },
+        "ppmm_orientation": {
+          "left_T": false,
+          "right_T": false
+        },
+        "term_signs": {
+          "M00": 1,
+          "M01": 1,
+          "M10": -1,
+          "M11": -1
+        }
+      },
+      "summary": {
+        "num_cases_completed": 4,
+        "num_errors": 0,
+        "all_decrypted": true,
+        "all_line5_ks_inputs_are_3part": true,
+        "all_final_rows_are_2part": true,
+        "match_counts": {
+          "U_matmul_V": 0,
+          "U_T_matmul_V": 0,
+          "U_matmul_V_T": 0,
+          "V_matmul_U": 0,
+          "V_T_matmul_U": 0,
+          "U_T_matmul_V_T": 0
+        },
+        "total_l1": {
+          "U_matmul_V": 47,
+          "U_T_matmul_V": 50,
+          "U_matmul_V_T": 50,
+          "V_matmul_U": 51,
+          "V_T_matmul_U": 50,
+          "U_T_matmul_V_T": 51
+        }
+      }
+    },
+    "top20_completed_variants": [
+      {
+        "variant_id": "q0004_L-normal_R-normal_LT-0_RT-0_s11-1-1",
+        "variant": {
+          "variant_id": "q0004_L-normal_R-normal_LT-0_RT-0_s11-1-1",
+          "source_map": {
+            "left": "normal",
+            "right": "normal"
+          },
+          "ppmm_orientation": {
+            "left_T": false,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": 1,
+            "M01": 1,
+            "M10": -1,
+            "M11": -1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 47,
+            "U_T_matmul_V": 50,
+            "U_matmul_V_T": 50,
+            "V_matmul_U": 51,
+            "V_T_matmul_U": 50,
+            "U_T_matmul_V_T": 51
+          }
+        }
+      },
+      {
+        "variant_id": "q0013_L-normal_R-normal_LT-0_RT-0_s-1-111",
+        "variant": {
+          "variant_id": "q0013_L-normal_R-normal_LT-0_RT-0_s-1-111",
+          "source_map": {
+            "left": "normal",
+            "right": "normal"
+          },
+          "ppmm_orientation": {
+            "left_T": false,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": -1,
+            "M01": -1,
+            "M10": 1,
+            "M11": 1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 55,
+            "U_T_matmul_V": 52,
+            "U_matmul_V_T": 52,
+            "V_matmul_U": 51,
+            "V_T_matmul_U": 52,
+            "U_T_matmul_V_T": 51
+          }
+        }
+      },
+      {
+        "variant_id": "q0016_L-normal_R-normal_LT-0_RT-0_s-1-1-1-1",
+        "variant": {
+          "variant_id": "q0016_L-normal_R-normal_LT-0_RT-0_s-1-1-1-1",
+          "source_map": {
+            "left": "normal",
+            "right": "normal"
+          },
+          "ppmm_orientation": {
+            "left_T": false,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": -1,
+            "M01": -1,
+            "M10": -1,
+            "M11": -1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 59,
+            "U_T_matmul_V": 60,
+            "U_matmul_V_T": 60,
+            "V_matmul_U": 59,
+            "V_T_matmul_U": 60,
+            "U_T_matmul_V_T": 59
+          }
+        }
+      },
+      {
+        "variant_id": "q0001_L-normal_R-normal_LT-0_RT-0_s1111",
+        "variant": {
+          "variant_id": "q0001_L-normal_R-normal_LT-0_RT-0_s1111",
+          "source_map": {
+            "left": "normal",
+            "right": "normal"
+          },
+          "ppmm_orientation": {
+            "left_T": false,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": 1,
+            "M01": 1,
+            "M10": 1,
+            "M11": 1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 61,
+            "U_T_matmul_V": 58,
+            "U_matmul_V_T": 58,
+            "V_matmul_U": 59,
+            "V_T_matmul_U": 58,
+            "U_T_matmul_V_T": 59
+          }
+        }
+      },
+      {
+        "variant_id": "q0005_L-normal_R-normal_LT-0_RT-0_s1-111",
+        "variant": {
+          "variant_id": "q0005_L-normal_R-normal_LT-0_RT-0_s1-111",
+          "source_map": {
+            "left": "normal",
+            "right": "normal"
+          },
+          "ppmm_orientation": {
+            "left_T": false,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": 1,
+            "M01": -1,
+            "M10": 1,
+            "M11": 1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 67,
+            "U_T_matmul_V": 68,
+            "U_matmul_V_T": 68,
+            "V_matmul_U": 67,
+            "V_T_matmul_U": 68,
+            "U_T_matmul_V_T": 67
+          }
+        }
+      },
+      {
+        "variant_id": "q0012_L-normal_R-normal_LT-0_RT-0_s-11-1-1",
+        "variant": {
+          "variant_id": "q0012_L-normal_R-normal_LT-0_RT-0_s-11-1-1",
+          "source_map": {
+            "left": "normal",
+            "right": "normal"
+          },
+          "ppmm_orientation": {
+            "left_T": false,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": -1,
+            "M01": 1,
+            "M10": -1,
+            "M11": -1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 71,
+            "U_T_matmul_V": 70,
+            "U_matmul_V_T": 70,
+            "V_matmul_U": 71,
+            "V_T_matmul_U": 70,
+            "U_T_matmul_V_T": 71
+          }
+        }
+      },
+      {
+        "variant_id": "q0008_L-normal_R-normal_LT-0_RT-0_s1-1-1-1",
+        "variant": {
+          "variant_id": "q0008_L-normal_R-normal_LT-0_RT-0_s1-1-1-1",
+          "source_map": {
+            "left": "normal",
+            "right": "normal"
+          },
+          "ppmm_orientation": {
+            "left_T": false,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": 1,
+            "M01": -1,
+            "M10": -1,
+            "M11": -1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 81,
+            "U_T_matmul_V": 82,
+            "U_matmul_V_T": 82,
+            "V_matmul_U": 81,
+            "V_T_matmul_U": 82,
+            "U_T_matmul_V_T": 81
+          }
+        }
+      },
+      {
+        "variant_id": "q0009_L-normal_R-normal_LT-0_RT-0_s-1111",
+        "variant": {
+          "variant_id": "q0009_L-normal_R-normal_LT-0_RT-0_s-1111",
+          "source_map": {
+            "left": "normal",
+            "right": "normal"
+          },
+          "ppmm_orientation": {
+            "left_T": false,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": -1,
+            "M01": 1,
+            "M10": 1,
+            "M11": 1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 87,
+            "U_T_matmul_V": 84,
+            "U_matmul_V_T": 84,
+            "V_matmul_U": 85,
+            "V_T_matmul_U": 84,
+            "U_T_matmul_V_T": 85
+          }
+        }
+      },
+      {
+        "variant_id": "q0141_L-swapped_R-normal_LT-0_RT-0_s-1-111",
+        "variant": {
+          "variant_id": "q0141_L-swapped_R-normal_LT-0_RT-0_s-1-111",
+          "source_map": {
+            "left": "swapped",
+            "right": "normal"
+          },
+          "ppmm_orientation": {
+            "left_T": false,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": -1,
+            "M01": -1,
+            "M10": 1,
+            "M11": 1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 89,
+            "U_T_matmul_V": 90,
+            "U_matmul_V_T": 90,
+            "V_matmul_U": 91,
+            "V_T_matmul_U": 90,
+            "U_T_matmul_V_T": 91
+          }
+        }
+      },
+      {
+        "variant_id": "q0144_L-swapped_R-normal_LT-0_RT-0_s-1-1-1-1",
+        "variant": {
+          "variant_id": "q0144_L-swapped_R-normal_LT-0_RT-0_s-1-1-1-1",
+          "source_map": {
+            "left": "swapped",
+            "right": "normal"
+          },
+          "ppmm_orientation": {
+            "left_T": false,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": -1,
+            "M01": -1,
+            "M10": -1,
+            "M11": -1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 93,
+            "U_T_matmul_V": 94,
+            "U_matmul_V_T": 94,
+            "V_matmul_U": 95,
+            "V_T_matmul_U": 94,
+            "U_T_matmul_V_T": 95
+          }
+        }
+      },
+      {
+        "variant_id": "q0129_L-swapped_R-normal_LT-0_RT-0_s1111",
+        "variant": {
+          "variant_id": "q0129_L-swapped_R-normal_LT-0_RT-0_s1111",
+          "source_map": {
+            "left": "swapped",
+            "right": "normal"
+          },
+          "ppmm_orientation": {
+            "left_T": false,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": 1,
+            "M01": 1,
+            "M10": 1,
+            "M11": 1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 95,
+            "U_T_matmul_V": 92,
+            "U_matmul_V_T": 92,
+            "V_matmul_U": 91,
+            "V_T_matmul_U": 92,
+            "U_T_matmul_V_T": 91
+          }
+        }
+      },
+      {
+        "variant_id": "q0132_L-swapped_R-normal_LT-0_RT-0_s11-1-1",
+        "variant": {
+          "variant_id": "q0132_L-swapped_R-normal_LT-0_RT-0_s11-1-1",
+          "source_map": {
+            "left": "swapped",
+            "right": "normal"
+          },
+          "ppmm_orientation": {
+            "left_T": false,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": 1,
+            "M01": 1,
+            "M10": -1,
+            "M11": -1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 95,
+            "U_T_matmul_V": 92,
+            "U_matmul_V_T": 92,
+            "V_matmul_U": 91,
+            "V_T_matmul_U": 92,
+            "U_T_matmul_V_T": 91
+          }
+        }
+      },
+      {
+        "variant_id": "q0207_L-swapped_R-swapped_LT-0_RT-0_s-1-1-11",
+        "variant": {
+          "variant_id": "q0207_L-swapped_R-swapped_LT-0_RT-0_s-1-1-11",
+          "source_map": {
+            "left": "swapped",
+            "right": "swapped"
+          },
+          "ppmm_orientation": {
+            "left_T": false,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": -1,
+            "M01": -1,
+            "M10": -1,
+            "M11": 1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 117,
+            "U_T_matmul_V": 118,
+            "U_matmul_V_T": 118,
+            "V_matmul_U": 117,
+            "V_T_matmul_U": 118,
+            "U_T_matmul_V_T": 117
+          }
+        }
+      },
+      {
+        "variant_id": "q0194_L-swapped_R-swapped_LT-0_RT-0_s111-1",
+        "variant": {
+          "variant_id": "q0194_L-swapped_R-swapped_LT-0_RT-0_s111-1",
+          "source_map": {
+            "left": "swapped",
+            "right": "swapped"
+          },
+          "ppmm_orientation": {
+            "left_T": false,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": 1,
+            "M01": 1,
+            "M10": 1,
+            "M11": -1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 119,
+            "U_T_matmul_V": 118,
+            "U_matmul_V_T": 118,
+            "V_matmul_U": 119,
+            "V_T_matmul_U": 118,
+            "U_T_matmul_V_T": 119
+          }
+        }
+      },
+      {
+        "variant_id": "q0142_L-swapped_R-normal_LT-0_RT-0_s-1-11-1",
+        "variant": {
+          "variant_id": "q0142_L-swapped_R-normal_LT-0_RT-0_s-1-11-1",
+          "source_map": {
+            "left": "swapped",
+            "right": "normal"
+          },
+          "ppmm_orientation": {
+            "left_T": false,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": -1,
+            "M01": -1,
+            "M10": 1,
+            "M11": -1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 119,
+            "U_T_matmul_V": 120,
+            "U_matmul_V_T": 120,
+            "V_matmul_U": 119,
+            "V_T_matmul_U": 120,
+            "U_T_matmul_V_T": 119
+          }
+        }
+      },
+      {
+        "variant_id": "q0205_L-swapped_R-swapped_LT-0_RT-0_s-1-111",
+        "variant": {
+          "variant_id": "q0205_L-swapped_R-swapped_LT-0_RT-0_s-1-111",
+          "source_map": {
+            "left": "swapped",
+            "right": "swapped"
+          },
+          "ppmm_orientation": {
+            "left_T": false,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": -1,
+            "M01": -1,
+            "M10": 1,
+            "M11": 1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 119,
+            "U_T_matmul_V": 120,
+            "U_matmul_V_T": 120,
+            "V_matmul_U": 121,
+            "V_T_matmul_U": 120,
+            "U_T_matmul_V_T": 121
+          }
+        }
+      },
+      {
+        "variant_id": "q0139_L-swapped_R-normal_LT-0_RT-0_s-11-11",
+        "variant": {
+          "variant_id": "q0139_L-swapped_R-normal_LT-0_RT-0_s-11-11",
+          "source_map": {
+            "left": "swapped",
+            "right": "normal"
+          },
+          "ppmm_orientation": {
+            "left_T": false,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": -1,
+            "M01": 1,
+            "M10": -1,
+            "M11": 1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 121,
+            "U_T_matmul_V": 122,
+            "U_matmul_V_T": 122,
+            "V_matmul_U": 123,
+            "V_T_matmul_U": 122,
+            "U_T_matmul_V_T": 123
+          }
+        }
+      },
+      {
+        "variant_id": "q0131_L-swapped_R-normal_LT-0_RT-0_s11-11",
+        "variant": {
+          "variant_id": "q0131_L-swapped_R-normal_LT-0_RT-0_s11-11",
+          "source_map": {
+            "left": "swapped",
+            "right": "normal"
+          },
+          "ppmm_orientation": {
+            "left_T": false,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": 1,
+            "M01": 1,
+            "M10": -1,
+            "M11": 1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 123,
+            "U_T_matmul_V": 122,
+            "U_matmul_V_T": 122,
+            "V_matmul_U": 123,
+            "V_T_matmul_U": 122,
+            "U_T_matmul_V_T": 123
+          }
+        }
+      },
+      {
+        "variant_id": "q0195_L-swapped_R-swapped_LT-0_RT-0_s11-11",
+        "variant": {
+          "variant_id": "q0195_L-swapped_R-swapped_LT-0_RT-0_s11-11",
+          "source_map": {
+            "left": "swapped",
+            "right": "swapped"
+          },
+          "ppmm_orientation": {
+            "left_T": false,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": 1,
+            "M01": 1,
+            "M10": -1,
+            "M11": 1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 123,
+            "U_T_matmul_V": 122,
+            "U_matmul_V_T": 122,
+            "V_matmul_U": 121,
+            "V_T_matmul_U": 122,
+            "U_T_matmul_V_T": 121
+          }
+        }
+      },
+      {
+        "variant_id": "q0196_L-swapped_R-swapped_LT-0_RT-0_s11-1-1",
+        "variant": {
+          "variant_id": "q0196_L-swapped_R-swapped_LT-0_RT-0_s11-1-1",
+          "source_map": {
+            "left": "swapped",
+            "right": "swapped"
+          },
+          "ppmm_orientation": {
+            "left_T": false,
+            "right_T": false
+          },
+          "term_signs": {
+            "M00": 1,
+            "M01": 1,
+            "M10": -1,
+            "M11": -1
+          }
+        },
+        "summary": {
+          "num_cases_completed": 4,
+          "num_errors": 0,
+          "all_decrypted": true,
+          "all_line5_ks_inputs_are_3part": true,
+          "all_final_rows_are_2part": true,
+          "match_counts": {
+            "U_matmul_V": 0,
+            "U_T_matmul_V": 0,
+            "U_matmul_V_T": 0,
+            "V_matmul_U": 0,
+            "V_T_matmul_U": 0,
+            "U_T_matmul_V_T": 0
+          },
+          "total_l1": {
+            "U_matmul_V": 123,
+            "U_T_matmul_V": 122,
+            "U_matmul_V_T": 122,
+            "V_matmul_U": 121,
+            "V_T_matmul_U": 122,
+            "U_T_matmul_V_T": 121
+          }
+        }
+      }
+    ]
+  },
+  "global_decision": {
+    "value": "valid_variants_completed_but_no_exact_solution",
+    "next_step": "WP4-Y2r",
+    "next_goal": "Now switch to plaintext symbolic Algorithm 3 simulation using the best completed variant.",
+    "zh": "已有有效完成的 variants 但没有 exact 解，此时才进入明文符号模拟。"
+  }
+}

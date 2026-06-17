@@ -1,0 +1,78 @@
+{
+  "experiment": "wp4j_component_pcmm_64x64_benchmark",
+  "purpose": "Benchmark component-level PCMM for X(64x64) @ W(64x64) with integer plaintext weights, matching the current fused raw component backend constraint.",
+  "n": 64,
+  "seed": 205764,
+  "shapes": {
+    "X": [
+      64,
+      64
+    ],
+    "W": [
+      64,
+      64
+    ],
+    "Y": [
+      64,
+      64
+    ],
+    "encrypted_input_rows": [
+      64,
+      64
+    ],
+    "component_transform_U": [
+      64,
+      64
+    ]
+  },
+  "method": {
+    "semantic_target": "Y = X @ W",
+    "component_transform_form": "(X @ W).T = W.T @ X.T",
+    "transform_info": {
+      "method": "component_linear_transform_gpu",
+      "target_type": "HERuntime",
+      "copyback": false
+    },
+    "materialize_info": {
+      "method": "materialize_gpu_ciphertexts",
+      "target_type": "HERuntime"
+    }
+  },
+  "timing_us": {
+    "encrypt_rows": 1079927.5712890625,
+    "component_compute": 244237.60400390625,
+    "explicit_materialize_all_rows": 813578.9462890625,
+    "decrypt_materialized_rows": 398608.267578125,
+    "total_including_encrypt_materialize_decrypt": 2536352.3891601562
+  },
+  "errors": {
+    "max_abs_err": 6.970424237806583e-12,
+    "mean_abs_err": 1.4354520741786932e-12,
+    "orientation_errors": {
+      "target_X_matmul_W": 6.970424237806583e-12,
+      "X_matmul_W_T": 77.9999999999967,
+      "W_matmul_X": 80.00000000000253,
+      "W_T_matmul_X_T_transposed": 6.970424237806583e-12
+    }
+  },
+  "Y_ref_first_row_first8": [
+    0.0,
+    3.0,
+    -9.0,
+    21.0,
+    -10.0,
+    -8.0,
+    15.0,
+    -10.0
+  ],
+  "Y_dec_first_row_first8": [
+    2.4079290759159354e-13,
+    3.00000000000308,
+    -9.000000000001656,
+    21.000000000001194,
+    -9.999999999999995,
+    -8.000000000000645,
+    15.00000000000071,
+    -9.999999999998087
+  ]
+}

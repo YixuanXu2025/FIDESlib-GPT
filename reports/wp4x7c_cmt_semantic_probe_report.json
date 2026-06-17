@@ -1,0 +1,2294 @@
+{
+  "experiment": "wp4x7c_cmt_semantic_probe",
+  "purpose": "Verify whether the real C-MT implementation is semantically valid for the current toy setting n=4 while ring_dim=16384. If C-MT(U) does not decrypt to U^T, then all downstream PP-MM/line5/line6 diagnostics are invalid under this dimension contract.",
+  "status": "semantic_probe_no_code_change",
+  "n": 4,
+  "ring_dim": 16384,
+  "dimension_contract_hypothesis": {
+    "value": "Park C-MT assumes N row ciphertexts for an N×N matrix where N is the ring degree; current toy uses only 4 rows with ring_dim=16384.",
+    "zh": "当前 4×4 toy 可能不满足论文 C-MT 的维度合同，因此 one-hot 扩散可能来自 C-MT 使用条件不成立。"
+  },
+  "cases": [
+    {
+      "name": "basis_E00",
+      "zh": "C-MT 后理论仍为 E00",
+      "input_U": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_CMT_output_U_transpose": [
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            -4,
+            3,
+            -8,
+            -12
+          ],
+          [
+            5,
+            -16,
+            -14,
+            10
+          ],
+          [
+            8,
+            -18,
+            15,
+            6
+          ],
+          [
+            -24,
+            6,
+            -21,
+            18
+          ]
+        ]
+      },
+      "cmt_output_summary": {
+        "num_rows": 4,
+        "consistent_shape": {
+          "value": true,
+          "zh": "所有 C-MT 输出 ciphertext 的 component/tower/ring_dim 形状一致"
+        },
+        "expected_parts": {
+          "value": 2,
+          "zh": "每个 C-MT 输出 ciphertext 的 RLWE component 数量；应为 2，即 c0/c1"
+        },
+        "expected_towers": {
+          "value": 4,
+          "zh": "每个 DCRTPoly component 的 RNS tower 数量"
+        },
+        "expected_ring_dim": {
+          "value": 16384,
+          "zh": "C-MT 输出 ciphertext 的 ring dimension"
+        },
+        "orientation": {
+          "value": "cmt_transformed_expected_columnwise",
+          "zh": "根据 WP4-N toy 结果，C-MT 后语义上应转为 column-wise / transformed bundle"
+        },
+        "rows": [
+          {
+            "row_index": 0,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "RLWE component 数量；应为 c0/c1 两部分"
+            },
+            "level": 0,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 1,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "RLWE component 数量；应为 c0/c1 两部分"
+            },
+            "level": 0,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 2,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "RLWE component 数量；应为 c0/c1 两部分"
+            },
+            "level": 0,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 3,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "RLWE component 数量；应为 c0/c1 两部分"
+            },
+            "level": 0,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          }
+        ]
+      },
+      "cmt_auto_alphas": [
+        1,
+        3,
+        5,
+        7
+      ],
+      "cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            -15,
+            25,
+            22,
+            22
+          ],
+          [
+            1,
+            -19,
+            2,
+            -24
+          ],
+          [
+            14,
+            -17,
+            -18,
+            -22
+          ],
+          [
+            -2,
+            -8,
+            -24,
+            -1
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": false,
+        "cmt_decrypt_equals_U_transpose": false,
+        "cmt_diff_to_U_transpose": [
+          [
+            -16,
+            25,
+            22,
+            22
+          ],
+          [
+            1,
+            -19,
+            2,
+            -24
+          ],
+          [
+            14,
+            -17,
+            -18,
+            -22
+          ],
+          [
+            -2,
+            -8,
+            -24,
+            -1
+          ]
+        ],
+        "expected_nonzero_positions": [
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -15
+          ],
+          [
+            0,
+            1,
+            25
+          ],
+          [
+            0,
+            2,
+            22
+          ],
+          [
+            0,
+            3,
+            22
+          ],
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            -19
+          ],
+          [
+            1,
+            2,
+            2
+          ],
+          [
+            1,
+            3,
+            -24
+          ],
+          [
+            2,
+            0,
+            14
+          ],
+          [
+            2,
+            1,
+            -17
+          ],
+          [
+            2,
+            2,
+            -18
+          ],
+          [
+            2,
+            3,
+            -22
+          ],
+          [
+            3,
+            0,
+            -2
+          ],
+          [
+            3,
+            1,
+            -8
+          ],
+          [
+            3,
+            2,
+            -24
+          ],
+          [
+            3,
+            3,
+            -1
+          ]
+        ],
+        "got_nonzero_count": 16,
+        "expected_nonzero_count": 1
+      }
+    },
+    {
+      "name": "basis_E01",
+      "zh": "C-MT 后理论为 E10",
+      "input_U": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_CMT_output_U_transpose": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            -7,
+            -6,
+            4,
+            17
+          ],
+          [
+            4,
+            -21,
+            -18,
+            9
+          ],
+          [
+            17,
+            25,
+            13,
+            -9
+          ],
+          [
+            -17,
+            -5,
+            17,
+            24
+          ]
+        ]
+      },
+      "cmt_output_summary": {
+        "num_rows": 4,
+        "consistent_shape": {
+          "value": true,
+          "zh": "所有 C-MT 输出 ciphertext 的 component/tower/ring_dim 形状一致"
+        },
+        "expected_parts": {
+          "value": 2,
+          "zh": "每个 C-MT 输出 ciphertext 的 RLWE component 数量；应为 2，即 c0/c1"
+        },
+        "expected_towers": {
+          "value": 4,
+          "zh": "每个 DCRTPoly component 的 RNS tower 数量"
+        },
+        "expected_ring_dim": {
+          "value": 16384,
+          "zh": "C-MT 输出 ciphertext 的 ring dimension"
+        },
+        "orientation": {
+          "value": "cmt_transformed_expected_columnwise",
+          "zh": "根据 WP4-N toy 结果，C-MT 后语义上应转为 column-wise / transformed bundle"
+        },
+        "rows": [
+          {
+            "row_index": 0,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "RLWE component 数量；应为 c0/c1 两部分"
+            },
+            "level": 0,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 1,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "RLWE component 数量；应为 c0/c1 两部分"
+            },
+            "level": 0,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 2,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "RLWE component 数量；应为 c0/c1 两部分"
+            },
+            "level": 0,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 3,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "RLWE component 数量；应为 c0/c1 两部分"
+            },
+            "level": 0,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          }
+        ]
+      },
+      "cmt_auto_alphas": [
+        1,
+        3,
+        5,
+        7
+      ],
+      "cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            -3,
+            -7,
+            16,
+            -9
+          ],
+          [
+            9,
+            3,
+            -1,
+            5
+          ],
+          [
+            12,
+            -3,
+            8,
+            16
+          ],
+          [
+            9,
+            14,
+            -13,
+            9
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": false,
+        "cmt_decrypt_equals_U_transpose": false,
+        "cmt_diff_to_U_transpose": [
+          [
+            -3,
+            -7,
+            16,
+            -9
+          ],
+          [
+            8,
+            3,
+            -1,
+            5
+          ],
+          [
+            12,
+            -3,
+            8,
+            16
+          ],
+          [
+            9,
+            14,
+            -13,
+            9
+          ]
+        ],
+        "expected_nonzero_positions": [
+          [
+            1,
+            0,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -3
+          ],
+          [
+            0,
+            1,
+            -7
+          ],
+          [
+            0,
+            2,
+            16
+          ],
+          [
+            0,
+            3,
+            -9
+          ],
+          [
+            1,
+            0,
+            9
+          ],
+          [
+            1,
+            1,
+            3
+          ],
+          [
+            1,
+            2,
+            -1
+          ],
+          [
+            1,
+            3,
+            5
+          ],
+          [
+            2,
+            0,
+            12
+          ],
+          [
+            2,
+            1,
+            -3
+          ],
+          [
+            2,
+            2,
+            8
+          ],
+          [
+            2,
+            3,
+            16
+          ],
+          [
+            3,
+            0,
+            9
+          ],
+          [
+            3,
+            1,
+            14
+          ],
+          [
+            3,
+            2,
+            -13
+          ],
+          [
+            3,
+            3,
+            9
+          ]
+        ],
+        "got_nonzero_count": 16,
+        "expected_nonzero_count": 1
+      }
+    },
+    {
+      "name": "basis_E23",
+      "zh": "C-MT 后理论为 E32",
+      "input_U": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected_CMT_output_U_transpose": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ]
+      ],
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            -23,
+            10,
+            15,
+            7
+          ],
+          [
+            25,
+            20,
+            -15,
+            -21
+          ],
+          [
+            -13,
+            20,
+            16,
+            -22
+          ],
+          [
+            -21,
+            5,
+            8,
+            -4
+          ]
+        ]
+      },
+      "cmt_output_summary": {
+        "num_rows": 4,
+        "consistent_shape": {
+          "value": true,
+          "zh": "所有 C-MT 输出 ciphertext 的 component/tower/ring_dim 形状一致"
+        },
+        "expected_parts": {
+          "value": 2,
+          "zh": "每个 C-MT 输出 ciphertext 的 RLWE component 数量；应为 2，即 c0/c1"
+        },
+        "expected_towers": {
+          "value": 4,
+          "zh": "每个 DCRTPoly component 的 RNS tower 数量"
+        },
+        "expected_ring_dim": {
+          "value": 16384,
+          "zh": "C-MT 输出 ciphertext 的 ring dimension"
+        },
+        "orientation": {
+          "value": "cmt_transformed_expected_columnwise",
+          "zh": "根据 WP4-N toy 结果，C-MT 后语义上应转为 column-wise / transformed bundle"
+        },
+        "rows": [
+          {
+            "row_index": 0,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "RLWE component 数量；应为 c0/c1 两部分"
+            },
+            "level": 0,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 1,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "RLWE component 数量；应为 c0/c1 两部分"
+            },
+            "level": 0,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 2,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "RLWE component 数量；应为 c0/c1 两部分"
+            },
+            "level": 0,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 3,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "RLWE component 数量；应为 c0/c1 两部分"
+            },
+            "level": 0,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          }
+        ]
+      },
+      "cmt_auto_alphas": [
+        1,
+        3,
+        5,
+        7
+      ],
+      "cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            18,
+            5,
+            24,
+            10
+          ],
+          [
+            -12,
+            -5,
+            -2,
+            -24
+          ],
+          [
+            20,
+            -24,
+            -19,
+            9
+          ],
+          [
+            -17,
+            24,
+            16,
+            1
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": false,
+        "cmt_decrypt_equals_U_transpose": false,
+        "cmt_diff_to_U_transpose": [
+          [
+            18,
+            5,
+            24,
+            10
+          ],
+          [
+            -12,
+            -5,
+            -2,
+            -24
+          ],
+          [
+            20,
+            -24,
+            -19,
+            9
+          ],
+          [
+            -17,
+            24,
+            15,
+            1
+          ]
+        ],
+        "expected_nonzero_positions": [
+          [
+            3,
+            2,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            18
+          ],
+          [
+            0,
+            1,
+            5
+          ],
+          [
+            0,
+            2,
+            24
+          ],
+          [
+            0,
+            3,
+            10
+          ],
+          [
+            1,
+            0,
+            -12
+          ],
+          [
+            1,
+            1,
+            -5
+          ],
+          [
+            1,
+            2,
+            -2
+          ],
+          [
+            1,
+            3,
+            -24
+          ],
+          [
+            2,
+            0,
+            20
+          ],
+          [
+            2,
+            1,
+            -24
+          ],
+          [
+            2,
+            2,
+            -19
+          ],
+          [
+            2,
+            3,
+            9
+          ],
+          [
+            3,
+            0,
+            -17
+          ],
+          [
+            3,
+            1,
+            24
+          ],
+          [
+            3,
+            2,
+            16
+          ],
+          [
+            3,
+            3,
+            1
+          ]
+        ],
+        "got_nonzero_count": 16,
+        "expected_nonzero_count": 1
+      }
+    },
+    {
+      "name": "random_small",
+      "zh": "随机小矩阵，C-MT 后理论为转置",
+      "input_U": [
+        [
+          1,
+          2,
+          -2,
+          -1
+        ],
+        [
+          2,
+          1,
+          2,
+          2
+        ],
+        [
+          -2,
+          -2,
+          -1,
+          1
+        ],
+        [
+          -1,
+          -1,
+          0,
+          2
+        ]
+      ],
+      "expected_input_decrypt": [
+        [
+          1,
+          2,
+          -2,
+          -1
+        ],
+        [
+          2,
+          1,
+          2,
+          2
+        ],
+        [
+          -2,
+          -2,
+          -1,
+          1
+        ],
+        [
+          -1,
+          -1,
+          0,
+          2
+        ]
+      ],
+      "expected_CMT_output_U_transpose": [
+        [
+          1,
+          2,
+          -2,
+          -1
+        ],
+        [
+          2,
+          1,
+          -2,
+          -1
+        ],
+        [
+          -2,
+          2,
+          -1,
+          0
+        ],
+        [
+          -1,
+          2,
+          1,
+          2
+        ]
+      ],
+      "input_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            25,
+            -2,
+            -12,
+            7
+          ],
+          [
+            -14,
+            -17,
+            11,
+            -6
+          ],
+          [
+            18,
+            -1,
+            -6,
+            -17
+          ],
+          [
+            -17,
+            -13,
+            -2,
+            6
+          ]
+        ]
+      },
+      "cmt_output_summary": {
+        "num_rows": 4,
+        "consistent_shape": {
+          "value": true,
+          "zh": "所有 C-MT 输出 ciphertext 的 component/tower/ring_dim 形状一致"
+        },
+        "expected_parts": {
+          "value": 2,
+          "zh": "每个 C-MT 输出 ciphertext 的 RLWE component 数量；应为 2，即 c0/c1"
+        },
+        "expected_towers": {
+          "value": 4,
+          "zh": "每个 DCRTPoly component 的 RNS tower 数量"
+        },
+        "expected_ring_dim": {
+          "value": 16384,
+          "zh": "C-MT 输出 ciphertext 的 ring dimension"
+        },
+        "orientation": {
+          "value": "cmt_transformed_expected_columnwise",
+          "zh": "根据 WP4-N toy 结果，C-MT 后语义上应转为 column-wise / transformed bundle"
+        },
+        "rows": [
+          {
+            "row_index": 0,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "RLWE component 数量；应为 c0/c1 两部分"
+            },
+            "level": 0,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 1,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "RLWE component 数量；应为 c0/c1 两部分"
+            },
+            "level": 0,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 2,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "RLWE component 数量；应为 c0/c1 两部分"
+            },
+            "level": 0,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          },
+          {
+            "row_index": 3,
+            "encoding_type": {
+              "value": 1,
+              "zh": "OpenFHE encoding type；1 表示 coefficient encoding"
+            },
+            "num_parts": {
+              "value": 2,
+              "zh": "RLWE component 数量；应为 c0/c1 两部分"
+            },
+            "level": 0,
+            "noise_scale_deg": 1,
+            "scaling_factor": 1.0,
+            "slots": 0
+          }
+        ]
+      },
+      "cmt_auto_alphas": [
+        1,
+        3,
+        5,
+        7
+      ],
+      "cmt_decrypt": {
+        "compress_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decrypt_reports": [
+          {
+            "row_index": 0,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 1,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 2,
+            "ok": true,
+            "error": null
+          },
+          {
+            "row_index": 3,
+            "ok": true,
+            "error": null
+          }
+        ],
+        "decoded": [
+          [
+            12,
+            17,
+            -9,
+            -10
+          ],
+          [
+            -10,
+            19,
+            4,
+            9
+          ],
+          [
+            3,
+            -24,
+            3,
+            -2
+          ],
+          [
+            -9,
+            -20,
+            -24,
+            9
+          ]
+        ]
+      },
+      "analysis": {
+        "input_decrypt_exact": false,
+        "cmt_decrypt_equals_U_transpose": false,
+        "cmt_diff_to_U_transpose": [
+          [
+            11,
+            15,
+            -7,
+            -9
+          ],
+          [
+            -12,
+            18,
+            6,
+            10
+          ],
+          [
+            5,
+            -26,
+            4,
+            -2
+          ],
+          [
+            -8,
+            -22,
+            -25,
+            7
+          ]
+        ],
+        "expected_nonzero_positions": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            2,
+            -2
+          ],
+          [
+            0,
+            3,
+            -1
+          ],
+          [
+            1,
+            0,
+            2
+          ],
+          [
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            2,
+            -2
+          ],
+          [
+            1,
+            3,
+            -1
+          ],
+          [
+            2,
+            0,
+            -2
+          ],
+          [
+            2,
+            1,
+            2
+          ],
+          [
+            2,
+            2,
+            -1
+          ],
+          [
+            3,
+            0,
+            -1
+          ],
+          [
+            3,
+            1,
+            2
+          ],
+          [
+            3,
+            2,
+            1
+          ],
+          [
+            3,
+            3,
+            2
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            12
+          ],
+          [
+            0,
+            1,
+            17
+          ],
+          [
+            0,
+            2,
+            -9
+          ],
+          [
+            0,
+            3,
+            -10
+          ],
+          [
+            1,
+            0,
+            -10
+          ],
+          [
+            1,
+            1,
+            19
+          ],
+          [
+            1,
+            2,
+            4
+          ],
+          [
+            1,
+            3,
+            9
+          ],
+          [
+            2,
+            0,
+            3
+          ],
+          [
+            2,
+            1,
+            -24
+          ],
+          [
+            2,
+            2,
+            3
+          ],
+          [
+            2,
+            3,
+            -2
+          ],
+          [
+            3,
+            0,
+            -9
+          ],
+          [
+            3,
+            1,
+            -20
+          ],
+          [
+            3,
+            2,
+            -24
+          ],
+          [
+            3,
+            3,
+            9
+          ]
+        ],
+        "got_nonzero_count": 16,
+        "expected_nonzero_count": 15
+      }
+    }
+  ],
+  "checks": {
+    "all_input_rows_decrypt_exact（所有输入 row-wise 加密都能正确解密回 U）": false,
+    "all_cmt_outputs_equal_transpose（所有 C-MT 输出都等于 U^T）": false,
+    "all_cmt_auto_alphas_expected（所有 C-MT alpha 都是 [1,3,5,7]）": true,
+    "any_cmt_case_passes（是否至少有一个 C-MT case 语义正确）": false,
+    "cmt_failure_nonzero_summary（C-MT 失败时的非零数量诊断）": [
+      {
+        "name": "basis_E00",
+        "expected_nonzero_count": 1,
+        "got_nonzero_count": 16,
+        "expected_nonzero_positions": [
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -15
+          ],
+          [
+            0,
+            1,
+            25
+          ],
+          [
+            0,
+            2,
+            22
+          ],
+          [
+            0,
+            3,
+            22
+          ],
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            1,
+            1,
+            -19
+          ],
+          [
+            1,
+            2,
+            2
+          ],
+          [
+            1,
+            3,
+            -24
+          ],
+          [
+            2,
+            0,
+            14
+          ],
+          [
+            2,
+            1,
+            -17
+          ],
+          [
+            2,
+            2,
+            -18
+          ],
+          [
+            2,
+            3,
+            -22
+          ],
+          [
+            3,
+            0,
+            -2
+          ],
+          [
+            3,
+            1,
+            -8
+          ],
+          [
+            3,
+            2,
+            -24
+          ],
+          [
+            3,
+            3,
+            -1
+          ]
+        ]
+      },
+      {
+        "name": "basis_E01",
+        "expected_nonzero_count": 1,
+        "got_nonzero_count": 16,
+        "expected_nonzero_positions": [
+          [
+            1,
+            0,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            -3
+          ],
+          [
+            0,
+            1,
+            -7
+          ],
+          [
+            0,
+            2,
+            16
+          ],
+          [
+            0,
+            3,
+            -9
+          ],
+          [
+            1,
+            0,
+            9
+          ],
+          [
+            1,
+            1,
+            3
+          ],
+          [
+            1,
+            2,
+            -1
+          ],
+          [
+            1,
+            3,
+            5
+          ],
+          [
+            2,
+            0,
+            12
+          ],
+          [
+            2,
+            1,
+            -3
+          ],
+          [
+            2,
+            2,
+            8
+          ],
+          [
+            2,
+            3,
+            16
+          ],
+          [
+            3,
+            0,
+            9
+          ],
+          [
+            3,
+            1,
+            14
+          ],
+          [
+            3,
+            2,
+            -13
+          ],
+          [
+            3,
+            3,
+            9
+          ]
+        ]
+      },
+      {
+        "name": "basis_E23",
+        "expected_nonzero_count": 1,
+        "got_nonzero_count": 16,
+        "expected_nonzero_positions": [
+          [
+            3,
+            2,
+            1
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            18
+          ],
+          [
+            0,
+            1,
+            5
+          ],
+          [
+            0,
+            2,
+            24
+          ],
+          [
+            0,
+            3,
+            10
+          ],
+          [
+            1,
+            0,
+            -12
+          ],
+          [
+            1,
+            1,
+            -5
+          ],
+          [
+            1,
+            2,
+            -2
+          ],
+          [
+            1,
+            3,
+            -24
+          ],
+          [
+            2,
+            0,
+            20
+          ],
+          [
+            2,
+            1,
+            -24
+          ],
+          [
+            2,
+            2,
+            -19
+          ],
+          [
+            2,
+            3,
+            9
+          ],
+          [
+            3,
+            0,
+            -17
+          ],
+          [
+            3,
+            1,
+            24
+          ],
+          [
+            3,
+            2,
+            16
+          ],
+          [
+            3,
+            3,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "random_small",
+        "expected_nonzero_count": 15,
+        "got_nonzero_count": 16,
+        "expected_nonzero_positions": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            2,
+            -2
+          ],
+          [
+            0,
+            3,
+            -1
+          ],
+          [
+            1,
+            0,
+            2
+          ],
+          [
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            2,
+            -2
+          ],
+          [
+            1,
+            3,
+            -1
+          ],
+          [
+            2,
+            0,
+            -2
+          ],
+          [
+            2,
+            1,
+            2
+          ],
+          [
+            2,
+            2,
+            -1
+          ],
+          [
+            3,
+            0,
+            -1
+          ],
+          [
+            3,
+            1,
+            2
+          ],
+          [
+            3,
+            2,
+            1
+          ],
+          [
+            3,
+            3,
+            2
+          ]
+        ],
+        "got_nonzero_positions": [
+          [
+            0,
+            0,
+            12
+          ],
+          [
+            0,
+            1,
+            17
+          ],
+          [
+            0,
+            2,
+            -9
+          ],
+          [
+            0,
+            3,
+            -10
+          ],
+          [
+            1,
+            0,
+            -10
+          ],
+          [
+            1,
+            1,
+            19
+          ],
+          [
+            1,
+            2,
+            4
+          ],
+          [
+            1,
+            3,
+            9
+          ],
+          [
+            2,
+            0,
+            3
+          ],
+          [
+            2,
+            1,
+            -24
+          ],
+          [
+            2,
+            2,
+            3
+          ],
+          [
+            2,
+            3,
+            -2
+          ],
+          [
+            3,
+            0,
+            -9
+          ],
+          [
+            3,
+            1,
+            -20
+          ],
+          [
+            3,
+            2,
+            -24
+          ],
+          [
+            3,
+            3,
+            9
+          ]
+        ]
+      }
+    ]
+  },
+  "summary": {
+    "next_if_cmt_passes": "C-MT is semantically correct for n=4; continue with plaintext-symbolic line2-line6 simulation.",
+    "next_if_cmt_fails": "Stop debugging line5/line6. Fix dimension contract: either test with row_count == ring_dim, or implement a block/padded C-MT variant whose mathematical dimension matches the logical matrix.",
+    "zh": "如果 C-MT 本身不等于转置，则 X6/X7b 的失败根因在维度合同/C-MT 层，不应继续调 PP-MM 或 line5 顺序。"
+  }
+}
